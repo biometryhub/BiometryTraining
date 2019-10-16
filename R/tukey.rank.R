@@ -1,16 +1,18 @@
+#' Compares means pairwise using Tukey's Honest Significant Difference test
+#'
+#' @param Mean The predicted mean from an \code{ASreml-R} \code{predict} function call.
+#' @param SED The Standard Error of Difference from an \code{ASreml-R} \code{predict} function call.
+#' @param Names The treatment names.
+#' @param crit.val The confidence level required.
+#' @author Remy van de Ven
+#'
+#' @return A data frame with the predicted means, standard errors and Tukey's rankings.
+#'
+#' @examples
+#' #This is not used by people, it forms part of tuk.out
+#'
 tukey.rank <- function(Mean, SED, Names = NULL, crit.val)
 {
-    # This function compares means pairwise
-    # Pairs not "significantly" different have a letter in common
-
-    # Significant corresponds by default to difference exceeding twice the sed
-    # 	This can be set to any multiple of sed by modifying crit.val
-    # The other optional argument is a vector of names for the Means.
-
-    # Essential arguments:
-    #	Vector of mean values (Mean)
-    #	Corresponding matrix of sed vals (SED).
-
     # Label the means
     if (length(Names)==0)
         Names <- names(Mean)

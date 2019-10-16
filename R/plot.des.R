@@ -1,13 +1,24 @@
+#' Produces graph of design layout
+#'
+#' @param design.obj An \code{agricolae} design object.
+#' @param nrows The number of rows in the design.
+#' @param ncols The number of columns in the design.
+#' @param brows For RCBD only. The number of rows in a block.
+#' @param bcols For RCBD only. The number of columns in a block.
+#'
+#' @return Returns ggplot object of design layout.
+#'
+#' @examples
+#' #This is not used by people, it forms part of des.info
+#'
+#'
 plot.des <- function(design.obj, nrows, ncols, brows, bcols){
 
     nth_element <- function(vector, starting_position, n) {
         vector[seq(starting_position, length(vector), n)]
     }
 
-    if (!require("RColorBrewer")) {
-        install.packages("RColorBrewer")
-        library(RColorBrewer)
-    }
+    require("RColorBrewer")
 
     des <- design.obj$parameters$design
 
@@ -129,7 +140,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols){
     # create the colours for the graph
     color_palette <- colorRampPalette(brewer.pal(11, "Spectral"))(ntrt)
     # create the graph
-    plt <- ggplot(des, aes(x = col, y = row, fill = trt)) + geom_tile(colour = "black") +
+    plt <- ggplot2::ggplot(des, aes(x = col, y = row, fill = trt)) + geom_tile(colour = "black") +
         geom_text(aes(label = trt)) +
         theme_bw() + scale_fill_manual(values = color_palette, name = "Treatment")
 

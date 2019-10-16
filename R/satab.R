@@ -1,6 +1,13 @@
-##############################################
-#### Graphing function #######################
-##############################################
+#' Produces a skeletal ANOVA table
+#'
+#' @param design.obj An \code{agricolae} design object.
+#'
+#' @return Prints skeletal ANOVA table to console output.
+#'
+#' @examples
+#' #This is not used by people, it forms part of des.info
+#'
+#'
 satab <- function(design.obj){
 
 des <- design.obj$parameters$design

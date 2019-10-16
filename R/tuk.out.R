@@ -1,4 +1,29 @@
-tuk.out <- function(pred.obj, model.obj, data, pred, sig = 0.95){
+#' Performs Tukey's Honest Significant Difference test and back-transforms natural log and squareroot transformed predicted values.
+#'
+#'
+#' @param pred.obj An ASReml-R prediction object.
+#' @param model.obj An ASReml-R model object.
+#' @param pred A character string of the main effect or interaction terms predicted from the model.
+#' @param sig The significance level to test at.
+#' @param trans Choice of \code{log} or \code{sqrt} to back-transform predicted values and standard errors in the output.
+#' @param offset A numeric value used in the transformation.
+#'
+#' @return A data frame with the predicted values of the Tuk
+#'
+#' @examples
+#' \dontrun{dat.asr <- asreml(Yield ~ Variety, random = ~ Block,
+#' residual = ~ id(Plot), data = dat)
+#'
+#' dat.pred <- predict(dat.asr, classify = "Variety",
+#'                     sed = TRUE)
+#'
+#' pred.out <- tuk.out(model.obj = dat.asr, pred.obj = dat.pred,
+#'                    data = dat, pred = "Variety", sig = 0.95)
+#'
+#' pred.out}
+tuk.out <- function(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0){
+
+    # Can we get the pred argument directly from the model.obj?
 
     #For use with asreml 4+
     if(packageVersion("asreml")>4) {
@@ -12,7 +37,7 @@ tuk.out <- function(pred.obj, model.obj, data, pred, sig = 0.95){
     }
 
     pp <- pp[!is.na(pp$predicted.value),]
-    pp$est.status <- NULL
+    pp$status <- NULL
 
     ifelse(grep(":", pred),
            pp$Names <- apply(pp[,unlist(strsplit(pred, ":"))], 1, paste, collapse = "-"),
@@ -36,5 +61,26 @@ tuk.out <- function(pred.obj, model.obj, data, pred, sig = 0.95){
     pp <- merge(pp, dat.tuk)
     pp$Names <- NULL
 
+    pp$ci <- qt(p = 1-(1-sig)/2, model.obj$nedf) * pp$std.error
+    pp$low <- pp$predicted.value - pp$ci
+    pp$up <- pp$predicted.value + pp$ci
+
+    if(trans == "log"){
+        pp$PredictedValue <- exp(pp$predicted.value) - offset
+        pp$ApproxSE <- abs(pp$std.error)*pp$PredictedValue
+        pp$ci <- qt(p = 1-(1-sig)/2, model.obj$nedf) * pp$std.error
+        pp$low <- exp(pp$predicted.value - pp$ci) - offset
+        pp$up <- exp(pp$predicted.value + pp$ci) - offset
+    }
+
+    if(trans == "sqrt"){
+        pp$PredictedValue <- (pp$predicted.value)^2 - offset
+        pp$ApproxSE <- 2*abs(pp$std.error)*pp$PredictedValue
+        pp$ci <- qt(p = 1-(1-sig)/2, model.obj$nedf) * pp$std.error
+        pp$low <- (pp$predicted.value - pp$ci)^2 - offset
+        pp$up <- (pp$predicted.value + pp$ci)^2 - offset
+    }
+
     return(pp)
 }
+
