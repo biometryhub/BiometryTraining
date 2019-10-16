@@ -13,8 +13,7 @@ of helper functions.
 
 ## Installation
 
-You can install the latest version of BiometryTraining from
-[GitHub](https://github.com/) with:
+You can install the latest version of BiometryTraining from GitHub with:
 
 ``` r
 # install.packages("devtools")
