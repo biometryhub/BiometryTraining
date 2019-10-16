@@ -4,9 +4,7 @@
 #'
 #' @return Prints skeletal ANOVA table to console output.
 #'
-#' @examples
-#' #This is not used by people, it forms part of des.info
-#'
+#' @keywords internal
 #'
 satab <- function(design.obj){
 

@@ -15,8 +15,4 @@ Prints skeletal ANOVA table to console output.
 \description{
 Produces a skeletal ANOVA table
 }
-\examples{
-#This is not used by people, it forms part of des.info
-
-
-}
+\keyword{internal}

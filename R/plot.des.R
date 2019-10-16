@@ -7,18 +7,14 @@
 #' @param bcols For RCBD only. The number of columns in a block.
 #'
 #' @return Returns ggplot object of design layout.
-#'
-#' @examples
-#' #This is not used by people, it forms part of des.info
-#'
+#' @importFrom grDevices colorRampPalette
+#' @keywords internal
 #'
 plot.des <- function(design.obj, nrows, ncols, brows, bcols){
 
     nth_element <- function(vector, starting_position, n) {
         vector[seq(starting_position, length(vector), n)]
     }
-
-    require("RColorBrewer")
 
     des <- design.obj$parameters$design
 
@@ -138,11 +134,11 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols){
 
 
     # create the colours for the graph
-    color_palette <- colorRampPalette(brewer.pal(11, "Spectral"))(ntrt)
+    color_palette <- RColorBrewer::colorRampPalette(brewer.pal(11, "Spectral"))(ntrt)
     # create the graph
-    plt <- ggplot2::ggplot(des, aes(x = col, y = row, fill = trt)) + geom_tile(colour = "black") +
-        geom_text(aes(label = trt)) +
-        theme_bw() + scale_fill_manual(values = color_palette, name = "Treatment")
+    plt <- ggplot2::ggplot(des, ggplot2::aes(x = col, y = row, fill = trt)) + ggplot2::geom_tile(colour = "black") +
+        ggplot2::geom_text(aes(label = trt)) +
+        ggplot2::theme_bw() + ggplot2::scale_fill_manual(values = color_palette, name = "Treatment")
 
     print(plt)
 

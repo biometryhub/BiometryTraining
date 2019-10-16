@@ -23,8 +23,4 @@ Returns ggplot object of design layout.
 \description{
 Produces graph of design layout
 }
-\examples{
-#This is not used by people, it forms part of des.info
-
-
-}
+\keyword{internal}

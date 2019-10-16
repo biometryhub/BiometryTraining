@@ -2,7 +2,7 @@
 % Please edit documentation in R/tuk.out.R
 \name{tuk.out}
 \alias{tuk.out}
-\title{Performs Tukey's Honest Significant Difference test and back-transforms natural log and squareroot transformed predicted values.}
+\title{Tukey's Honest Significant Difference test}
 \usage{
 tuk.out(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE,
   offset = 0)
@@ -21,10 +21,10 @@ tuk.out(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE,
 \item{offset}{A numeric value used in the transformation.}
 }
 \value{
-A data frame with the predicted values of the Tuk
+A data frame with the predicted values and results of Tukey's test.
 }
 \description{
-Performs Tukey's Honest Significant Difference test and back-transforms natural log and squareroot transformed predicted values.
+Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.
 }
 \examples{
 \dontrun{dat.asr <- asreml(Yield ~ Variety, random = ~ Block,
@@ -37,4 +37,7 @@ pred.out <- tuk.out(model.obj = dat.asr, pred.obj = dat.pred,
                    data = dat, pred = "Variety", sig = 0.95)
 
 pred.out}
+}
+\references{
+\url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023}
 }

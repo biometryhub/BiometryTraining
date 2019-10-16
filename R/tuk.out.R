@@ -1,4 +1,6 @@
-#' Performs Tukey's Honest Significant Difference test and back-transforms natural log and squareroot transformed predicted values.
+#' Tukey's Honest Significant Difference test
+#'
+#' Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.
 #'
 #'
 #' @param pred.obj An ASReml-R prediction object.
@@ -8,7 +10,12 @@
 #' @param trans Choice of \code{log} or \code{sqrt} to back-transform predicted values and standard errors in the output.
 #' @param offset A numeric value used in the transformation.
 #'
-#' @return A data frame with the predicted values of the Tuk
+#' @return A data frame with the predicted values and results of Tukey's test.
+#'
+#' @importFrom stats qt qtukey
+#' @importFrom utils packageVersion
+#'
+#' @references \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023}
 #'
 #' @examples
 #' \dontrun{dat.asr <- asreml(Yield ~ Variety, random = ~ Block,

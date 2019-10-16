@@ -1,0 +1,31 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# BiometryTraining
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of BiometryTraining is to provide functions to aid in teaching Experimental Design and Analysis through easy access and documentation of helper functions.
+
+## Installation
+
+You can install the latest version of BiometryTraining from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("biometryhub/BiometryTraining")
+```
+

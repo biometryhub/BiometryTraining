@@ -2,7 +2,7 @@
 % Please edit documentation in R/tukey.rank.R
 \name{tukey.rank}
 \alias{tukey.rank}
-\title{Compares means pairwise using Tukey's Honest Significant Difference test}
+\title{Rank means using Tukey's HSD}
 \usage{
 tukey.rank(Mean, SED, Names = NULL, crit.val)
 }
@@ -21,10 +21,7 @@ A data frame with the predicted means, standard errors and Tukey's rankings.
 \description{
 Compares means pairwise using Tukey's Honest Significant Difference test
 }
-\examples{
-#This is not used by people, it forms part of tuk.out
-
-}
 \author{
 Remy van de Ven
 }
+\keyword{internal}

@@ -1,3 +1,5 @@
+#' Rank means using Tukey's HSD
+#'
 #' Compares means pairwise using Tukey's Honest Significant Difference test
 #'
 #' @param Mean The predicted mean from an \code{ASreml-R} \code{predict} function call.
@@ -6,10 +8,9 @@
 #' @param crit.val The confidence level required.
 #' @author Remy van de Ven
 #'
-#' @return A data frame with the predicted means, standard errors and Tukey's rankings.
+#' @keywords internal
 #'
-#' @examples
-#' #This is not used by people, it forms part of tuk.out
+#' @return A data frame with the predicted means, standard errors and Tukey's rankings.
 #'
 tukey.rank <- function(Mean, SED, Names = NULL, crit.val)
 {
