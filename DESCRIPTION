@@ -6,8 +6,11 @@ Authors@R: c(
     person("Sharon", "Nielsen", email = "biometrytraining@adelaide.edu.au", role = "aut"),
     person("Sam", "Rogers", email = "biometrytraining@adelaide.edu.au", role = "cre"))
 Imports: ggplot2, agricolae, RColorBrewer
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: This package was created to give users a simple way to install
+    and access documentation about the functions distributed as part of the 
+    SAGI-STH Biometrics Education Initiative.
+URL: https://biometryhub.github.io/BiometryTraining/
+BugReports: https://github.com/biometryhub/BiometryTraining/issues
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
