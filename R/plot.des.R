@@ -8,6 +8,9 @@
 #'
 #' @return Returns ggplot object of design layout.
 #' @importFrom grDevices colorRampPalette
+#' @importFrom RColorBrewer brewer.pal
+#'
+#' @importFrom ggplot2 ggplot geom_tile aes geom_text theme_bw scale_fill_manual
 #' @keywords internal
 #'
 plot.des <- function(design.obj, nrows, ncols, brows, bcols){
@@ -134,7 +137,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols){
 
 
     # create the colours for the graph
-    color_palette <- RColorBrewer::colorRampPalette(brewer.pal(11, "Spectral"))(ntrt)
+    color_palette <- grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(ntrt)
     # create the graph
     plt <- ggplot2::ggplot(des, ggplot2::aes(x = col, y = row, fill = trt)) + ggplot2::geom_tile(colour = "black") +
         ggplot2::geom_text(aes(label = trt)) +

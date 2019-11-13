@@ -28,6 +28,8 @@
 #'                    data = dat, pred = "Variety", sig = 0.95)
 #'
 #' pred.out}
+#'
+#' @export
 tuk.out <- function(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0){
 
     # Can we get the pred argument directly from the model.obj?

@@ -37,6 +37,7 @@ pred.out <- tuk.out(model.obj = dat.asr, pred.obj = dat.pred,
                    data = dat, pred = "Variety", sig = 0.95)
 
 pred.out}
+
 }
 \references{
 \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023}

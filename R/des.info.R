@@ -22,6 +22,7 @@
 #' des.out <- des.info(design.obj = outdesign, nrows = 11,
 #'                     ncols = 4, brows = 11, bcols = 1)
 #'
+#' @export
 des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA){
     plt <- plot.des(design.obj, nrows, ncols, brows, bcols)
     satab(design.obj)
