@@ -4,7 +4,8 @@
 \alias{des.info}
 \title{Produces graph of design layout, skeletal ANOVA table and data frame with complete design}
 \usage{
-des.info(design.obj, nrows, ncols, brows = NA, bcols = NA)
+des.info(design.obj, nrows, ncols, brows = NA, bcols = NA,
+  rotation = 0, size = 4, margin = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{design.obj}{An \code{agricolae} design object.}
@@ -16,9 +17,17 @@ des.info(design.obj, nrows, ncols, brows = NA, bcols = NA)
 \item{brows}{For RCBD only. The number of rows in a block.}
 
 \item{bcols}{For RCBD only. The number of columns in a block.}
+
+\item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels.}
+
+\item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
+
+\item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.}
+
+\item{quiet}{Logical (default FALSE). Return the objects without printing output.}
 }
 \value{
-A data frame with the complete design.
+A list containing a data frame with the complete design and a ggplot object with plot layout.
 }
 \description{
 Produces graph of design layout, skeletal ANOVA table and data frame with complete design

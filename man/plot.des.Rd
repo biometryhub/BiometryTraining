@@ -4,7 +4,8 @@
 \alias{plot.des}
 \title{Produces graph of design layout}
 \usage{
-\method{plot}{des}(design.obj, nrows, ncols, brows, bcols)
+\method{plot}{des}(design.obj, nrows, ncols, brows, bcols, rotation, size,
+  margin, quiet)
 }
 \arguments{
 \item{design.obj}{An \code{agricolae} design object.}
@@ -16,9 +17,17 @@
 \item{brows}{For RCBD only. The number of rows in a block.}
 
 \item{bcols}{For RCBD only. The number of columns in a block.}
+
+\item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels.}
+
+\item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
+
+\item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.}
+
+\item{quiet}{Logical (default FALSE). Return the objects without printing output.}
 }
 \value{
-Returns ggplot object of design layout.
+Returns dataframe of design and ggplot object of design layout.
 }
 \description{
 Produces graph of design layout

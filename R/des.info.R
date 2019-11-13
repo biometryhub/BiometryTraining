@@ -5,8 +5,12 @@
 #' @param ncols The number of columns in the design.
 #' @param brows For RCBD only. The number of rows in a block.
 #' @param bcols For RCBD only. The number of columns in a block.
+#' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels.
+#' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
+#' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.
+#' @param quiet Logical (default FALSE). Return the objects without printing output.
 #'
-#' @return A data frame with the complete design.
+#' @return A list containing a data frame with the complete design and a ggplot object with plot layout.
 #'
 #' @examples
 #' library(agricolae)
@@ -23,9 +27,11 @@
 #'                     ncols = 4, brows = 11, bcols = 1)
 #'
 #' @export
-des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA){
-    plt <- plot.des(design.obj, nrows, ncols, brows, bcols)
-    satab(design.obj)
+des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = TRUE, quiet = FALSE){
+    plt <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, quiet)
+    if(!quiet) {
+        satab(design.obj)
+    }
 
     return(plt)
 }

@@ -158,10 +158,10 @@ if(design == "factorial_lsd"){
 }
 
 
-
-Summary <- function(design.obj, nrows, ncols, brows = NA, bcols = NA){
-plt <- plot.des(design.obj, nrows, ncols, brows, bcols)
-satab(design.obj)
-
-return(plt)
-}
+#
+# Summary <- function(design.obj, nrows, ncols, brows = NA, bcols = NA){
+# plt <- plot.des(design.obj, nrows, ncols, brows, bcols)
+# satab(design.obj)
+#
+# return(plt)
+# }

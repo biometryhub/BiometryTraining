@@ -1,7 +1,7 @@
 Package: BiometryTraining
 Type: Package
 Title: Functions to Assist Teaching Design and Analysis of Agronomic Experiments
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Sharon", "Nielsen", email = "biometrytraining@adelaide.edu.au", role = "aut"),
     person("Sam", "Rogers", email = "biometrytraining@adelaide.edu.au", role = "cre"))
