@@ -27,7 +27,7 @@
 #'                     ncols = 4, brows = 11, bcols = 1)
 #'
 #' @export
-des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = TRUE, quiet = FALSE){
+des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = FALSE, quiet = FALSE){
     plt <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, quiet)
     if(!quiet) {
         satab(design.obj)
