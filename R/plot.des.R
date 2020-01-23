@@ -18,6 +18,13 @@
 #' @keywords internal
 #'
 plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, quiet){
+    # Asign NULL to variables that give a NOTE in package checks
+    # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
+    trt <- NULL
+    xmin <- NULL
+    xmax <- NULL
+    ymin <- NULL
+    ymax <- NULL
 
     nth_element <- function(vector, starting_position, n) {
         vector[seq(starting_position, length(vector), n)]

@@ -4,8 +4,17 @@
 \alias{des.info}
 \title{Produces graph of design layout, skeletal ANOVA table and data frame with complete design}
 \usage{
-des.info(design.obj, nrows, ncols, brows = NA, bcols = NA,
-  rotation = 0, size = 4, margin = TRUE, quiet = FALSE)
+des.info(
+  design.obj,
+  nrows,
+  ncols,
+  brows = NA,
+  bcols = NA,
+  rotation = 0,
+  size = 4,
+  margin = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{design.obj}{An \code{agricolae} design object.}

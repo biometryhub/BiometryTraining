@@ -4,8 +4,7 @@
 \alias{plot.des}
 \title{Produces graph of design layout}
 \usage{
-\method{plot}{des}(design.obj, nrows, ncols, brows, bcols, rotation, size,
-  margin, quiet)
+\method{plot}{des}(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, quiet)
 }
 \arguments{
 \item{design.obj}{An \code{agricolae} design object.}
@@ -18,7 +17,7 @@
 
 \item{bcols}{For RCBD only. The number of columns in a block.}
 
-\item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels.}
+\item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0}
 
 \item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
 

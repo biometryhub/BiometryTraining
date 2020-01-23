@@ -4,8 +4,7 @@
 \alias{tuk.out}
 \title{Tukey's Honest Significant Difference test}
 \usage{
-tuk.out(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE,
-  offset = 0)
+tuk.out(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0)
 }
 \arguments{
 \item{pred.obj}{An ASReml-R prediction object.}
