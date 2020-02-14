@@ -244,8 +244,8 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
 
     if(design == "split"){
         des <- design.obj$book
-#        plan <- expand.grid(row = 1:nrows, col = 1:ncols)
-#        des <- cbind(plan, design.obj$book)
+        plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+        des <- cbind(plan, design.obj$book)
 
         des$trt <- factor(paste(des[,6], des[,7], sep = "_"))
 
