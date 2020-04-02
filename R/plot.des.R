@@ -11,9 +11,9 @@
 #' @param quiet Logical (default FALSE). Return the objects without printing output.
 #'
 #' @return Returns dataframe of design and ggplot object of design layout.
+#'
 #' @importFrom grDevices colorRampPalette
 #' @importFrom RColorBrewer brewer.pal
-#'
 #' @importFrom ggplot2 ggplot geom_tile aes geom_text theme_bw scale_fill_manual scale_x_continuous scale_y_continuous
 #' @keywords internal
 #'
