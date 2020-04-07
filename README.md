@@ -13,9 +13,10 @@ of helper functions.
 
 ## Installation
 
-You can install the latest version of BiometryTraining from GitHub with:
+You can install the latest version of BiometryTraining from
+[GitHub](https://github.com/) with:
 
 ``` r
-if(!require("devtools")) install.packages("devtools") 
-devtools::install_github("biometryhub/BiometryTraining", upgrade = F)
+# install.packages("devtools")
+devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```

@@ -5,5 +5,7 @@
 - Update help file to list values for rotation
 - Option to output seed
 - Error in tuk.out function?
-- Include resplt function
 - Create a predict method?
+- Auto input bcols, brows = NA if not rcbd
+- Error checking of inputs
+- Print satab again at will

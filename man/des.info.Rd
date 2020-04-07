@@ -10,6 +10,7 @@ des.info(
   ncols,
   brows = NA,
   bcols = NA,
+  return.seed = TRUE,
   rotation = 0,
   size = 4,
   margin = FALSE,
@@ -26,6 +27,8 @@ des.info(
 \item{brows}{For RCBD only. The number of rows in a block.}
 
 \item{bcols}{For RCBD only. The number of columns in a block.}
+
+\item{return.seed}{Logical (default TRUE). Output the seed used in the design?}
 
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels.}
 
@@ -45,13 +48,13 @@ Produces graph of design layout, skeletal ANOVA table and data frame with comple
 library(agricolae)
 trt <- c(1,5,10,20)
 rep <- 5
-outdesign <- design.crd(trt = trt, r=rep)
+outdesign <- design.crd(trt = trt, r=rep, seed = 42)
 des.out <- des.info(design.obj = outdesign, nrows = 4,
                     ncols = 5, brows = NA, bcols = NA)
 
 trt <- LETTERS[1:11]
 rep <- 4
-outdesign <- design.rcbd(trt = trt, r = rep)
+outdesign <- design.rcbd(trt = trt, r = rep, seed = 42)
 des.out <- des.info(design.obj = outdesign, nrows = 11,
                     ncols = 4, brows = 11, bcols = 1)
 

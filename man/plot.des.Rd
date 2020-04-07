@@ -4,7 +4,18 @@
 \alias{plot.des}
 \title{Produces graph of design layout}
 \usage{
-\method{plot}{des}(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, quiet)
+\method{plot}{des}(
+  design.obj,
+  nrows,
+  ncols,
+  brows,
+  bcols,
+  rotation,
+  size,
+  margin,
+  quiet,
+  return.seed
+)
 }
 \arguments{
 \item{design.obj}{An \code{agricolae} design object.}
@@ -24,6 +35,8 @@
 \item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.}
 
 \item{quiet}{Logical (default FALSE). Return the objects without printing output.}
+
+\item{return.seed}{Logical (default TRUE). Output the seed used in the design?}
 }
 \value{
 Returns dataframe of design and ggplot object of design layout.
