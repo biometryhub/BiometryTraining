@@ -301,7 +301,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     }
 
     if(!margin) {
-        plt <- plt + ggplot2::scale_x_discrete(expand = c(0,0)) + ggplot2::scale_y_continuous(expand = c(0,0), trans = scales::reverse_trans())
+        plt <- plt + ggplot2::scale_x_continuous(expand = c(0,0)) + ggplot2::scale_y_continuous(expand = c(0,0), trans = scales::reverse_trans())
     }
     else {
         plt <- plt + ggplot2::scale_y_continuous(trans = scales::reverse_trans())
