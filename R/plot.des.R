@@ -144,7 +144,6 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     }
 
 
-
     if(design == "factorial_crd"){
         plan <- expand.grid(row = 1:nrows, col = 1:ncols)
         des <- cbind(plan, design.obj$book)
@@ -235,9 +234,6 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
         des <- cbind(plan, des)
     }
 
-
-
-
     if(design == "factorial_lsd"){
         des <- design.obj$book
         des$trt <- factor(paste("A", des$A, "_B", des$B, sep = ""))
@@ -246,10 +242,6 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
         des$col <- as.numeric(des$col)
 
     }
-
-
-
-
 
     if(design == "split"){
         des <- design.obj$book
@@ -301,10 +293,10 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     }
 
     if(!margin) {
-        plt <- plt + ggplot2::scale_x_continuous(expand = c(0,0)) + ggplot2::scale_y_continuous(expand = c(0,0), trans = scales::reverse_trans())
+        plt <- plt + ggplot2::scale_x_continuous(expand = c(0,0), breaks=seq(1,max(des$col),1)) + ggplot2::scale_y_continuous(expand = c(0,0), trans = scales::reverse_trans(), breaks=seq(1,max(des$row),1))
     }
     else {
-        plt <- plt + ggplot2::scale_y_continuous(trans = scales::reverse_trans())
+        plt <- plt + ggplot2::scale_y_continuous(trans = scales::reverse_trans(), breaks=seq(1,max(des$row),1)) + ggplot2::scale_x_continuous(breaks=seq(1,max(des$col),1))
     }
 
     if(!quiet) {
