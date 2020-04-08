@@ -17,6 +17,6 @@ You can install the latest version of BiometryTraining from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
+if(!require("devtools")) install.packages("devtools")
 devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
