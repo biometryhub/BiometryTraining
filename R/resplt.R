@@ -1,8 +1,8 @@
-#' Produces plots of residuals for assumption checking of an ANOVA model.
+#' Produces plots of residuals for assumption checking of an ANOVA or asremlR model.
 #'
-#' @param mod.obj An \code{aov} model.
+#' @param mod.obj An \code{aov} model or \code{asreml}.
 #'
-#' @return A list containing ggplot2 objects which are ANOVA diagnostic plots.
+#' @return A list containing ggplot2 objects which are diagnostic plots.
 #'
 #' @importFrom ggplot2 ggplot geom_histogram aes theme_bw stat_qq labs geom_abline geom_point
 #' @importFrom ggpubr ggarrange
@@ -21,8 +21,8 @@ resplt <- function(mod.obj){
     stdres <- NULL
     resids <- NULL
 
-    if(!"aov" %in% class(mod.obj)) {
-        stop("mod.obj must be an aov object")
+    if(!("aov" %in% class(mod.obj)|"asreml" %in% class(mod.obj))) {
+        stop("mod.obj must be an aov or asreml object")
     }
 
     aa <- data.frame(residuals = resid(mod.obj), fitted = fitted(mod.obj))
