@@ -10,11 +10,14 @@ des.info(
   ncols,
   brows = NA,
   bcols = NA,
-  return.seed = TRUE,
   rotation = 0,
   size = 4,
   margin = FALSE,
-  quiet = FALSE
+  save = FALSE,
+  savename = paste0(design.obj$parameters$design, "_design"),
+  return.seed = TRUE,
+  quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -28,15 +31,21 @@ des.info(
 
 \item{bcols}{For RCBD only. The number of columns in a block.}
 
-\item{return.seed}{Logical (default TRUE). Output the seed used in the design?}
-
-\item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels.}
+\item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.}
 
 \item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
 
-\item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.}
+\item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.}
+
+\item{save}{One of \code{FALSE} (default)/\code{"none"}, \code{TRUE}/\code{"both"}, \code{"plot"} or \code{"workbook"}. Specifies which output to save.}
+
+\item{savename}{A filename for the design to be saved to. Default is the type of the design combined with "_design".}
+
+\item{return.seed}{Logical (default TRUE). Output the seed used in the design?}
 
 \item{quiet}{Logical (default FALSE). Return the objects without printing output.}
+
+\item{...}{Additional parameters passed to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving the plot.}
 }
 \value{
 A list containing a data frame with the complete design and a ggplot object with plot layout.
@@ -44,18 +53,48 @@ A list containing a data frame with the complete design and a ggplot object with
 \description{
 Produces graph of design layout, skeletal ANOVA table and data frame with complete design
 }
+\details{
+If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be saved to the current working directory. If one of either \code{"plot"} or \code{"workbook"} is specified, only that output is saved. If \code{save = FALSE} (the default, or equivalently \code{"none"}), nothing will be output.
+
+\code{...} allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}.
+}
 \examples{
 library(agricolae)
+
+# Completely Randomised Design
 trt <- c(1,5,10,20)
 rep <- 5
 outdesign <- design.crd(trt = trt, r=rep, seed = 42)
-des.out <- des.info(design.obj = outdesign, nrows = 4,
-                    ncols = 5, brows = NA, bcols = NA)
+des.out <- des.info(design.obj = outdesign, nrows = 4, ncols = 5)
 
+# Randomised Complete Block Design
 trt <- LETTERS[1:11]
 rep <- 4
 outdesign <- design.rcbd(trt = trt, r = rep, seed = 42)
 des.out <- des.info(design.obj = outdesign, nrows = 11,
                     ncols = 4, brows = 11, bcols = 1)
+
+# Latin Square Design
+trt <- c("S1", "S2", "S3", "S4")
+outdesign <- design.lsd(trt)
+des.out <- des.info(design.obj = outdesign, nrows = 4, ncols = 4)
+
+# Factorial Design (Crossed, Completely Randomised)
+trt <- c(3, 2) # Factorial 3 x 2
+rep <- 3
+outdesign <- design.ab(trt, r = rep, design = "crd")
+des.out <- des.info(design.obj = outdesign, nrows = 6, ncols = 3)
+
+# Factorial Design (Nested, Latin Square)
+trt <- c("A1", "A2", "A3", "A4", "B1", "B2", "B3")
+outdesign <- design.lsd(trt)
+des.out <- des.info(design.obj = outdesign, nrows = 7, ncols = 7)
+
+# Split plot design
+trt1 <- c("A", "B")
+trt2 <- 1:4
+rep <- 4
+outdesign <- design.split(trt1, trt2, r = rep)
+des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4)
 
 }
