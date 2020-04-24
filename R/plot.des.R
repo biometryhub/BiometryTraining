@@ -1,6 +1,6 @@
 #' Produces graph of design layout
 #'
-#' @param design.obj An \code{agricolae} design object.
+#' @param design.obj An `agricolae` design object.
 #' @param nrows The number of rows in the design.
 #' @param ncols The number of columns in the design.
 #' @param brows For RCBD only. The number of rows in a block.

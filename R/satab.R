@@ -1,6 +1,6 @@
 #' Produces a skeletal ANOVA table
 #'
-#' @param design.obj An \code{agricolae} design object.
+#' @param design.obj An `agricolae` design object.
 #'
 #' @return Prints skeletal ANOVA table to console output.
 #'

@@ -7,7 +7,7 @@
 #' @param model.obj An ASReml-R model object.
 #' @param pred A character string of the main effect or interaction terms predicted from the model.
 #' @param sig The significance level to test at.
-#' @param trans Choice of \code{log} or \code{sqrt} to back-transform predicted values and standard errors in the output.
+#' @param trans Choice of `log` or `sqrt` to back-transform predicted values and standard errors in the output.
 #' @param offset A numeric value used in the transformation.
 #'
 #' @return A data frame with the predicted values and results of Tukey's test.
@@ -15,7 +15,7 @@
 #' @importFrom stats qt qtukey
 #' @importFrom utils packageVersion
 #'
-#' @references \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023}
+#' @references <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023>
 #'
 #' @examples
 #' \dontrun{dat.asr <- asreml(Yield ~ Variety, random = ~ Block,
