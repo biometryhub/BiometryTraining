@@ -2,18 +2,18 @@
 % Please edit documentation in R/resplt.R
 \name{resplt}
 \alias{resplt}
-\title{Produces plots of residuals for assumption checking of an ANOVA model.}
+\title{Produces plots of residuals for assumption checking of an ANOVA or asremlR model.}
 \usage{
 resplt(mod.obj)
 }
 \arguments{
-\item{mod.obj}{An \code{aov} model.}
+\item{mod.obj}{An \code{aov} model or \code{asreml}.}
 }
 \value{
-A list containing ggplot2 objects which are ANOVA diagnostic plots.
+A list containing ggplot2 objects which are diagnostic plots.
 }
 \description{
-Produces plots of residuals for assumption checking of an ANOVA model.
+Produces plots of residuals for assumption checking of an ANOVA or asremlR model.
 }
 \examples{
 dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)

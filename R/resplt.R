@@ -1,6 +1,6 @@
 #' Produces plots of residuals for assumption checking of an ANOVA or asremlR model.
 #'
-#' @param mod.obj An \code{aov} model or \code{asreml}.
+#' @param mod.obj An `aov` model or `asreml`.
 #'
 #' @return A list containing ggplot2 objects which are diagnostic plots.
 #'
