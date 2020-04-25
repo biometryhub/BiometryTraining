@@ -10,6 +10,7 @@
 #' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
 #' @param save One of `FALSE` (default)/`"none"`, `TRUE`/`"both"`, `"plot"` or `"workbook"`. Specifies which output to save.
 #' @param savename A filename for the design to be saved to. Default is the type of the design combined with "_design".
+#' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
 #' @param return.seed Logical (default TRUE). Output the seed used in the design?
 #' @param quiet Logical (default FALSE). Return the objects without printing output.
 #' @param ... Additional parameters passed to [ggplot2::ggsave()] for saving the plot.
@@ -62,7 +63,7 @@
 #' @importFrom graphics plot
 #' @importFrom ggplot2 ggsave
 #' @importFrom utils write.csv
-des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(design.obj$parameters$design, "_design"), return.seed = TRUE, quiet = FALSE, ...){
+des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(design.obj$parameters$design, "_design"), plottype = "pdf", return.seed = TRUE, quiet = FALSE, ...){
 
     #Error checking of inputs
     if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
@@ -76,7 +77,7 @@ des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation 
     }
 
     info <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, quiet, return.seed = return.seed)
-    info$satab <- satab(design.obj)
+    # info$satab <- satab(design.obj)
 
     if(!quiet) {
         satab(design.obj)
@@ -85,12 +86,21 @@ des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation 
 
     if(!is.logical(save)) {
         output <- match.arg(tolower(save), c("none", "both", "plot", "workbook"))
+        if(output == "plot") {
+            ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+        }
+        else if(output == "workbook") {
+            write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+        }
+        else if(output == "both") {
+            ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+            write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+        }
     }
     else if(save) {
-        ggplot2::ggsave(filename = savename, device = "pdf", ...)
-        write.csv(info$design, file = "")
+        ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+        write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
     }
-
 
     return(info)
 }

@@ -15,6 +15,7 @@ des.info(
   margin = FALSE,
   save = FALSE,
   savename = paste0(design.obj$parameters$design, "_design"),
+  plottype = "pdf",
   return.seed = TRUE,
   quiet = FALSE,
   ...
@@ -40,6 +41,8 @@ des.info(
 \item{save}{One of \code{FALSE} (default)/\code{"none"}, \code{TRUE}/\code{"both"}, \code{"plot"} or \code{"workbook"}. Specifies which output to save.}
 
 \item{savename}{A filename for the design to be saved to. Default is the type of the design combined with "_design".}
+
+\item{plottype}{The type of file to save the plot as. Usually one of \code{"pdf"}, \code{"png"}, or \code{"jpg"}. See \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for all possible options.}
 
 \item{return.seed}{Logical (default TRUE). Output the seed used in the design?}
 
