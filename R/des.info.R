@@ -76,11 +76,11 @@ des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation 
         }
     }
 
-    info <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, quiet, return.seed = return.seed)
-    # info$satab <- satab(design.obj)
+    info <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed = return.seed)
+    info$satab <- satab(design.obj)
 
     if(!quiet) {
-        satab(design.obj)
+        cat(satab(design.obj))
         plot(info$plot.des)
     }
 
