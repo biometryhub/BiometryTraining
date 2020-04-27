@@ -130,3 +130,8 @@ test_that("return.seed = T returns the seed of the design", {
                           ncols = 4, return.seed = T, quiet = T)$seed,
                  outdesign_crd_2$parameters$seed)
 })
+
+test_that("passing arguments to ggsave works", {
+    expect_message(des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, save = "plot", quiet = T, width = 8),
+                   "Saving 8 x 4.23 in image")
+})

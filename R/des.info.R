@@ -18,7 +18,7 @@
 #' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
 #' @details `...` allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  [ggplot2::ggsave()].
 #'
-#' @return A list containing a data frame with the complete design and a ggplot object with plot layout.
+#' @return A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if `return.seed = TRUE`), and the `satab` object, allowing repeat output of the `satab` table via `cat(output$satab)`.
 #'
 #' @examples
 #' library(agricolae)

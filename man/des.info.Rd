@@ -51,7 +51,7 @@ des.info(
 \item{...}{Additional parameters passed to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving the plot.}
 }
 \value{
-A list containing a data frame with the complete design and a ggplot object with plot layout.
+A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if \code{return.seed = TRUE}), and the \code{satab} object, allowing repeat output of the \code{satab} table via \code{cat(output$satab)}.
 }
 \description{
 Produces graph of design layout, skeletal ANOVA table and data frame with complete design
