@@ -19,7 +19,7 @@
 #' @importFrom scales reverse_trans
 #' @keywords internal
 #'
-plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, quiet, return.seed){
+plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed){
     # Asign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
     trt <- NULL
@@ -50,13 +50,13 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
         des <- cbind(plan, design.obj$book)
 
         names(des)[5] <- "trt"
-        ntrt <- nlevels(des$trt)
+        ntrt <- nlevels(as.factor(des$trt))
     }
 
     if(design == "rcbd"){
 
         names(design.obj$book)[3] <- "trt"
-        ntrt <- nlevels(design.obj$book$trt)
+        ntrt <- nlevels(as.factor(design.obj$book$trt))
 
         # Calculate direction of blocking
         xx <- c()
@@ -140,7 +140,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
         des$col <- as.numeric(des$col)
 
         names(des)[4] <- "trt"
-        ntrt <- nlevels(des$trt)
+        ntrt <- nlevels(as.factor(des$trt))
     }
 
 
@@ -149,14 +149,14 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
         des <- cbind(plan, design.obj$book)
 
         des$trt <- factor(paste("A", des$A, "B", des$B, sep = ""))
-        ntrt <- nlevels(des$trt)
+        ntrt <- nlevels(as.factor(des$trt))
     }
 
 
     if(design == "factorial_rcbd"){
 
         design.obj$book$trt <- factor(paste("A", design.obj$book$A, "B", design.obj$book$B, sep = ""))
-        ntrt <- nlevels(design.obj$book$trt)
+        ntrt <- nlevels(as.factor(design.obj$book$trt))
 
         # Calculate direction of blocking
         xx <- c()
@@ -237,7 +237,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     if(design == "factorial_lsd"){
         des <- design.obj$book
         des$trt <- factor(paste("A", des$A, "_B", des$B, sep = ""))
-        ntrt <- nlevels(des$trt)
+        ntrt <- nlevels(as.factor(des$trt))
         des$row <- as.numeric(des$row)
         des$col <- as.numeric(des$col)
 
@@ -251,7 +251,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
         des$trt <- factor(paste(des[,6], des[,7], sep = "_"))
 
         # Number of treatments
-        ntrt <- nlevels(des$trt)
+        ntrt <- nlevels(as.factor(des$trt))
     }
 
     # des <- dplyr::mutate(des, row = factor(row),
@@ -299,9 +299,9 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
         plt <- plt + ggplot2::scale_y_continuous(trans = scales::reverse_trans(), breaks=seq(1,max(des$row),1)) + ggplot2::scale_x_continuous(breaks=seq(1,max(des$col),1))
     }
 
-    if(!quiet) {
-        print(plt)
-    }
+    # if(!quiet) {
+    #     print(plt)
+    # }
 
     return(list(design = des, seed = des.seed, plot.des = plt))
 }
