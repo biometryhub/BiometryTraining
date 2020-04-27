@@ -8,6 +8,9 @@ test_that("unsupported design types give an error", {
     expect_error(des.info(design.obj = design.strip(trt1 = trt, trt2 = letters[1:3], r = rep),
                           nrows = 12, ncols = 7),
                  "Designs of type 'strip' are not supported.")
+
+    expect_output(cat(des.info(design.ab(c(3,2), r = 3, design = "crd"), nrows = 6, ncols = 3, quiet = T)$satab),
+                 "Source of Variation")
 })
 
 test_that("save works with all the options", {
