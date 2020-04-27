@@ -65,7 +65,14 @@
 #' @importFrom utils write.csv
 des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(design.obj$parameters$design, "_design"), plottype = "pdf", return.seed = TRUE, quiet = FALSE, ...){
 
-    #Error checking of inputs
+    # Error checking of inputs
+
+    # Check design type is supported
+    if(!design.obj$parameters$design %in% c("crd", "rcbd", "lsd", "factorial", "split")) {
+        stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
+    }
+
+    # Check brows and bcols supplied if necessary
     if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
         stop("Design has blocks so brows and bcols must be supplied.")
     }

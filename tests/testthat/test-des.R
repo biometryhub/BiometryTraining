@@ -4,6 +4,12 @@ test_that("missing bcols or brows gives an error", {
                  "Design has blocks so brows and bcols must be supplied.")
 })
 
+test_that("unsupported design types give an error", {
+    expect_error(des.info(design.obj = design.strip(trt1 = trt, trt2 = letters[1:3], r = rep),
+                          nrows = 12, ncols = 7),
+                 "Designs of type 'strip' are not supported.")
+})
+
 test_that("save works with all the options", {
     # 'none' produces nothing
     expect_file(des.info, list(design.obj = outdesign_crd,
@@ -133,5 +139,5 @@ test_that("return.seed = T returns the seed of the design", {
 
 test_that("passing arguments to ggsave works", {
     expect_message(des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, save = "plot", quiet = T, width = 8),
-                   "Saving 8 x 4.23 in image")
+                   "Saving 8 x 7 in image")
 })
