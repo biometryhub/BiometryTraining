@@ -14,6 +14,13 @@ test_that("unsupported design types give an error", {
 })
 
 test_that("save works with all the options", {
+    expect_error(des.info(design.obj = outdesign_crd,
+                                nrows = 11,
+                                ncols = 4,
+                                save = "abc",
+                                quiet = T),
+                 "save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
+
     # 'none' produces nothing
     expect_file(des.info, list(design.obj = outdesign_crd,
                                nrows = 11,

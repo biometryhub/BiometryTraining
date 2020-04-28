@@ -15,7 +15,7 @@
 #' @param quiet Logical (default FALSE). Return the objects without printing output.
 #' @param ... Additional parameters passed to [ggplot2::ggsave()] for saving the plot.
 #'
-#' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
+#' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory, with filename given by `savename`. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
 #' @details `...` allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  [ggplot2::ggsave()].
 #'
 #' @return A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if `return.seed = TRUE`), and the `satab` object, allowing repeat output of the `satab` table via `cat(output$satab)`.
@@ -92,7 +92,7 @@ des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation 
     }
 
     if(!is.logical(save)) {
-        output <- match.arg(tolower(save), c("none", "both", "plot", "workbook"))
+        output <- tolower(save)
         if(output == "plot") {
             ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
         }
@@ -102,6 +102,12 @@ des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation 
         else if(output == "both") {
             ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
             write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+        }
+        else if(output == "none") {
+            #Do nothing
+        }
+        else {
+            stop("save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
         }
     }
     else if(save) {
