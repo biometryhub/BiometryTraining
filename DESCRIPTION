@@ -1,23 +1,38 @@
-Package: BiometryTraining
 Type: Package
-Title: Functions to Assist Teaching Design and Analysis of Agronomic Experiments
+Package: BiometryTraining
+Title: Functions to Assist Teaching Design and Analysis of
+    Agronomic Experiments
 Version: 0.2.1
-Authors@R: c(
-    person("Sharon", "Nielsen", email = "biometrytraining@adelaide.edu.au", role = "aut"),
-    person("Sam", "Rogers", email = "biometrytraining@adelaide.edu.au", role = "cre"))
-Imports: ggplot2, agricolae, RColorBrewer, ggpubr, scales
-Description: This package was created to give users a simple way to install
-    and access documentation about the functions distributed as part of the 
-    SAGI-STH Biometrics Education Initiative.
-URL: https://biometryhub.github.io/BiometryTraining/
-BugReports: https://github.com/biometryhub/BiometryTraining/issues
+Authors@R: 
+    c(person(given = "Sharon",
+             family = "Nielsen",
+             role = "aut",
+             email = "biometrytraining@adelaide.edu.au"),
+      person(given = "Sam",
+             family = "Rogers",
+             role = "cre",
+             email = "biometrytraining@adelaide.edu.au"))
+Description: This package was created to give users a
+    simple way to install and access documentation about the functions
+    distributed as part of the SAGI-STH Biometrics Education
+    Initiative.
 License: file LICENSE
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.0
-Suggests: 
-    testthat,
-    covr
-Roxygen: list(markdown = TRUE)
+URL: https://biometryhub.github.io/BiometryTraining/
+BugReports: 
+    https://github.com/biometryhub/BiometryTraining/issues
 Depends: 
     R (>= 3.2)
+Imports: 
+    agricolae,
+    ggplot2,
+    patchwork,
+    RColorBrewer,
+    scales
+Suggests: 
+    covr,
+    testthat,
+    vdiffr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
