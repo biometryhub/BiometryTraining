@@ -162,6 +162,6 @@ test_that("quiet = F prints output and plot", {
     x <- des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, quiet = T)
 
     # skip_on_travis()
-    skip_if(getRversion() <= 3.4)
+    skip_if(getRversion() <= 3.5)
     vdiffr::expect_doppelganger("des_info output", x$plot.des)
 })
