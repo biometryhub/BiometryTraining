@@ -5,6 +5,7 @@ rep <- 4
 outdesign <- design.rcbd(trt = trt, r = rep, seed = 42)
 outdesign_crd <- design.crd(trt = trt, r = rep, seed = 42)
 outdesign_crd_2 <- design.crd(trt = trt, r = rep)
+outdesign_fac <- design.ab(c(3,2), r = rep, design = "rcbd")
 
 expect_file <- function(fn, args, file, missing = F) {
     x <- do.call(fn, args)
