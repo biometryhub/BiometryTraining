@@ -3,6 +3,8 @@ test_that("plotting works", {
 
     expect_error(resplt(1:10), "mod.obj must be an aov or asreml object")
 
-    vdiffr::expect_doppelganger(title = "Plots produced", resplt(dat.aov))
-    # vdiffr::manage_cases()
+    if(R.version.string >= 3.3) {
+        vdiffr::expect_doppelganger(title = "Plots produced", resplt(dat.aov))
+        # vdiffr::manage_cases()
+    }
 })

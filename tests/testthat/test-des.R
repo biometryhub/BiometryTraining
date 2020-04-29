@@ -14,15 +14,15 @@ test_that("unsupported design types give an error", {
                  "Designs of type 'strip' are not supported.")
 
     expect_output(cat(des.info(design.ab(c(3,2), r = 3, design = "crd"), nrows = 6, ncols = 3, quiet = T)$satab),
-                 "Source of Variation")
+                  "Source of Variation")
 })
 
 test_that("save works with all the options", {
     expect_error(des.info(design.obj = outdesign_crd,
-                                nrows = 11,
-                                ncols = 4,
-                                save = "abc",
-                                quiet = T),
+                          nrows = 11,
+                          ncols = 4,
+                          save = "abc",
+                          quiet = T),
                  "save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
 
     # 'none' produces nothing
@@ -158,9 +158,10 @@ test_that("passing arguments to ggsave works", {
 
 test_that("quiet = F prints output and plot", {
     expect_output(des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4),
-                   "Source of Variation                     df")
+                  "Source of Variation                     df")
     x <- des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, quiet = T)
 
-    skip_on_travis()
-    vdiffr::expect_doppelganger("des_info output", x$plot.des)
+    if(R.version.string >= 3.3) {
+        vdiffr::expect_doppelganger("des_info output", x$plot.des)
+    }
 })
