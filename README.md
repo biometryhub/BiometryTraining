@@ -5,6 +5,10 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.com/biometryhub/BiometryTraining.svg?branch=master)](https://travis-ci.com/biometryhub/BiometryTraining)
+[![Codecov test
+coverage](https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg)](https://codecov.io/gh/biometryhub/BiometryTraining?branch=master)
 <!-- badges: end -->
 
 The goal of BiometryTraining is to provide functions to aid in teaching
@@ -17,6 +21,6 @@ You can install the latest version of BiometryTraining from
 [GitHub](https://github.com/) with:
 
 ``` r
-if(!require("devtools")) install.packages("devtools")
+if(!require("devtools")) install.packages("devtools") 
 devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
