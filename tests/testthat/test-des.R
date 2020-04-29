@@ -160,5 +160,7 @@ test_that("quiet = F prints output and plot", {
     expect_output(des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4),
                    "Source of Variation                     df")
     x <- des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, quiet = T)
+
+    skip_if(R.version.string < 3.5, message = "Older versions seem to produce different plots")
     vdiffr::expect_doppelganger("des_info output", x$plot.des)
 })

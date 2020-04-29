@@ -87,7 +87,7 @@ des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation 
     info$satab <- satab(design.obj)
 
     if(!quiet) {
-        cat(satab(design.obj))
+        cat(info$satab)
         plot(info$plot.des)
     }
 
