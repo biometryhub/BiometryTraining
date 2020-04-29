@@ -5,8 +5,8 @@
 #' @return A list containing ggplot2 objects which are diagnostic plots.
 #'
 #' @importFrom ggplot2 ggplot geom_histogram aes theme_bw stat_qq labs geom_abline geom_point
-#' @importFrom ggpubr ggarrange
 #' @importFrom stats fitted qnorm quantile resid sd
+#' @importFrom patchwork wrap_plots plot_annotation
 #'
 #' @examples
 #' dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
@@ -55,7 +55,9 @@ resplt <- function(mod.obj){
         ggplot2::geom_point(colour = "black", fill = "aquamarine3", size = 2 , shape = 21) + ggplot2::theme_bw() +
         ggplot2::labs(y = "Standardised Residual", x = "Fitted Value")
 
-    output <- ggpubr::ggarrange(a,b,c, labels = c("A", "B", "C"),
-              nrow = 2, ncol = 2)
+    # output <- ggpubr::ggarrange(a,b,c, labels = c("A", "B", "C"),
+    # nrow = 2, ncol = 2)
+    output <- patchwork::wrap_plots(a, b, c, ncol = 2, nrow = 2, tag_level = "new") +
+        patchwork::plot_annotation(tag_levels = "A")
     return(output)
 }

@@ -57,7 +57,7 @@ A list containing a data frame with the complete design, a ggplot object with pl
 Produces graph of design layout, skeletal ANOVA table and data frame with complete design
 }
 \details{
-If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be saved to the current working directory. If one of either \code{"plot"} or \code{"workbook"} is specified, only that output is saved. If \code{save = FALSE} (the default, or equivalently \code{"none"}), nothing will be output.
+If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be saved to the current working directory, with filename given by \code{savename}. If one of either \code{"plot"} or \code{"workbook"} is specified, only that output is saved. If \code{save = FALSE} (the default, or equivalently \code{"none"}), nothing will be output.
 
 \code{...} allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}.
 }
