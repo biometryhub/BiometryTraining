@@ -161,7 +161,7 @@ test_that("quiet = F prints output and plot", {
                   "Source of Variation                     df")
     x <- des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, quiet = T)
 
-    if(R.version.string >= 3.3) {
+    if(R.version.string >= 3.5) {
         vdiffr::expect_doppelganger("des_info output", x$plot.des)
     }
 })
