@@ -155,3 +155,10 @@ test_that("passing arguments to ggsave works", {
     expect_message(des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, save = "plot", quiet = T, width = 8),
                    "Saving 8 x 7 in image")
 })
+
+test_that("quiet = F prints output and plot", {
+    expect_output(des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4),
+                   "Source of Variation                     df")
+    x <- des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, quiet = T)
+    vdiffr::expect_doppelganger("des_info output", x$plot.des)
+})

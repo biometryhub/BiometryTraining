@@ -6,3 +6,6 @@ if (file.exists("crd_design.png")) file.remove("crd_design.png")
 if (file.exists("crd_design.jpeg")) file.remove("crd_design.jpeg")
 if (file.exists("testfile.pdf")) file.remove("testfile.pdf")
 if (file.exists("testfile.csv")) file.remove("testfile.csv")
+
+dev.off()
+if (file.exists("Rplots.pdf")) file.remove("Rplots.pdf")
