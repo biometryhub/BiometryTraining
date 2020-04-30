@@ -64,6 +64,8 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+
+      - name: Update macOS for dev
         if: runner.os == 'macOS'
         env:
           PKG_CONFIG_PATH: /usr/local/opt/libffi/lib/pkgconfig
