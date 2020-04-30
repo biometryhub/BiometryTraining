@@ -2,7 +2,7 @@ Type: Package
 Package: BiometryTraining
 Title: Functions to Assist Teaching Design and Analysis of
     Agronomic Experiments
-Version: 0.2.2
+Version: 0.3.0
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -21,7 +21,7 @@ URL: https://biometryhub.github.io/BiometryTraining/
 BugReports: 
     https://github.com/biometryhub/BiometryTraining/issues
 Depends: 
-    R (>= 3.2)
+    R (>= 3.5.0)
 Imports: 
     agricolae,
     ggplot2,
