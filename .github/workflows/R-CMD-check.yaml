@@ -18,8 +18,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'devel'}
+          #- {os: macOS-latest,   r: 'devel'}
           - {os: macOS-latest,   r: 'release'}
+          - {os: macOS-latest,   r: '3.6'}
+          - {os: macOS-latest,   r: '3.5'}
           #- {os: windows-latest, r: 'devel'}
           - {os: windows-latest, r: 'release'}
           - {os: windows-latest, r: '3.6'}
@@ -64,11 +66,6 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-
-      - name: Update macOS for dev
-        if: runner.os == 'macOS'
-        env:
-          PKG_CONFIG_PATH: /usr/local/opt/libffi/lib/pkgconfig
 
       - name: Install dependencies
         run: |
