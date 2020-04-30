@@ -5,12 +5,11 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.com/biometryhub/BiometryTraining.svg?branch=master)](https://travis-ci.com/biometryhub/BiometryTraining)
 [![Codecov test
 coverage](https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg)](https://codecov.io/gh/biometryhub/BiometryTraining?branch=master)
 [![R build
 status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/BiometryTraining/actions)
+![pkgdown](https://github.com/biometryhub/BiometryTraining/workflows/pkgdown/badge.svg)
 <!-- badges: end -->
 
 The goal of BiometryTraining is to provide functions to aid in teaching

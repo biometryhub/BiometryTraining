@@ -27,7 +27,9 @@ Imports:
     ggplot2,
     patchwork,
     RColorBrewer,
-    scales
+    scales,
+    lucid,
+    asremlPlus
 Suggests: 
     covr,
     testthat,
