@@ -20,7 +20,7 @@ jobs:
         config:
           - {os: macOS-latest,   r: 'devel'}
           - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'devel'}
+          #- {os: windows-latest, r: 'devel'}
           - {os: windows-latest, r: 'release'}
           - {os: windows-latest, r: '3.6'}
           - {os: windows-latest, r: '3.5'}
@@ -64,6 +64,9 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+        if: runner.os == 'macOS'
+        env:
+          PKG_CONFIG_PATH: /usr/local/opt/libffi/lib/pkgconfig
 
       - name: Install dependencies
         run: |
