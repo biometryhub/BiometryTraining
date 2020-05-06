@@ -29,9 +29,9 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     ymax <- NULL
     Row <- NULL
 
-    nth_element <- function(vector, starting_position, n) {
-        vector[seq(starting_position, length(vector), n)]
-    }
+    # nth_element <- function(vector, starting_position, n) {
+    #     vector[seq(starting_position, length(vector), n)]
+    # }
 
     desfac <- design.obj$parameters$design
     if(return.seed) {
@@ -298,10 +298,6 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     else {
         plt <- plt + ggplot2::scale_y_continuous(trans = scales::reverse_trans(), breaks=seq(1,max(des$row),1)) + ggplot2::scale_x_continuous(breaks=seq(1,max(des$col),1))
     }
-
-    # if(!quiet) {
-    #     print(plt)
-    # }
 
     return(list(design = des, seed = des.seed, plot.des = plt))
 }
