@@ -30,21 +30,21 @@ test_that("Plots output", {
                      margin = F,
                      return.seed = T)
 
-    out4 <- plot.des(outdesign,
-                     nrows = 11,
-                     ncols = 4,
-                     brows = 11,
-                     bcols = 1,
+    out4 <- plot.des(outdesign_crossed_rcbd_plot,
+                     nrows = 6,
+                     ncols = 6,
+                     brows = 1,
+                     bcols = 6,
                      rotation = 0,
                      size = 4,
                      margin = F,
                      return.seed = T)
 
-    out5 <- plot.des(outdesign,
-                     nrows = 11,
+    out5 <- plot.des(outdesign_split_plot,
+                     nrows = 8,
                      ncols = 4,
-                     brows = 11,
-                     bcols = 1,
+                     brows = 1,
+                     bcols = 2,
                      rotation = 0,
                      size = 4,
                      margin = F,
@@ -65,4 +65,6 @@ test_that("Plots output", {
     vdiffr::expect_doppelganger(title = "RCBD plot produced", out1$plot.des)
     vdiffr::expect_doppelganger(title = "LSD plot produced", out2$plot.des)
     vdiffr::expect_doppelganger(title = "Factorial LSD plot produced", out3$plot.des)
+    vdiffr::expect_doppelganger(title = "Factorial RCBD plot produced", out4$plot.des)
+    vdiffr::expect_doppelganger(title = "Split plot produced", out5$plot.des)
 })
