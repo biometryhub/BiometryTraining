@@ -22,3 +22,19 @@ Log-likelihood test for comparing terms in ASreml-R models
 \details{
 Uses the \code{\link[asremlPlus:REMLRT]{asremlPlus::REMLRT()}} function to calculate the Likelihood ratio test for Asreml-R objects.
 }
+\examples{
+\dontrun{
+library(agridat)
+dat <- yates.oats
+dat$row <- factor(dat$row)
+dat$col <- factor(dat$col)
+dat$nitro <- factor(dat$nitro)
+dat$mplot <- factor(as.numeric(dat$gen))
+dat <- dat[order(dat$row, dat$col),]
+library(asreml)
+dat.asr <- asreml(yield ~ gen + nitro + gen:nitro, random = ~ block + block:mplot,
+                  residual = ~ ar1(row):id(col), data = dat)
+oats.logl <- logl.test(model.obj = dat.asr, rand.terms = c("block", "block:mplot"), resid.terms = c("ar1(row)"))
+oats.logl}
+
+}
