@@ -18,6 +18,10 @@
 #' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory, with filename given by `savename`. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
 #' @details `...` allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  [ggplot2::ggsave()].
 #'
+#' @importFrom graphics plot
+#' @importFrom ggplot2 ggsave
+#' @importFrom utils write.csv
+#'
 #' @return A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if `return.seed = TRUE`), and the `satab` object, allowing repeat output of the `satab` table via `cat(output$satab)`.
 #'
 #' @examples
@@ -60,9 +64,7 @@
 #' des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4)
 #'
 #' @export
-#' @importFrom graphics plot
-#' @importFrom ggplot2 ggsave
-#' @importFrom utils write.csv
+#'
 des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(design.obj$parameters$design, "_design"), plottype = "pdf", return.seed = TRUE, quiet = FALSE, ...){
 
     # Error checking of inputs

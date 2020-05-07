@@ -19,3 +19,6 @@ A dataframe containing the results of the test.
 \description{
 Log-likelihood test for comparing terms in ASreml-R models
 }
+\details{
+Uses the \code{\link[asremlPlus:REMLRT]{asremlPlus::REMLRT()}} function to calculate the Likelihood ratio test for Asreml-R objects.
+}
