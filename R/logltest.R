@@ -8,7 +8,7 @@
 #' @importFrom asremlPlus REMLRT
 #' @importFrom stats as.formula update
 #'
-#' @details Uses the [asremlPlus::REMLRT()] function to calculate the Likelihood ratio test for Asreml-R objects.
+#' @details Uses the [asremlPlus::REMLRT.asreml()] function to calculate the Likelihood ratio test for Asreml-R objects.
 #'
 #' @return A dataframe containing the results of the test.
 #' @export
