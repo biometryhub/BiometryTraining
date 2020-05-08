@@ -33,7 +33,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     #     vector[seq(starting_position, length(vector), n)]
     # }
 
-    desfac <- design.obj$parameters$design
+    # desfac <- design.obj$parameters$design
     if(return.seed) {
         des.seed <- design.obj$parameters$seed
     }
@@ -41,9 +41,9 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
         des.seed <- NULL
     }
 
-    ifelse(desfac == "factorial",
+    ifelse(design.obj$parameters$design == "factorial",
            design <- paste("factorial", design.obj$parameters$applied, sep = "_"),
-           design <- desfac)
+           design <- design.obj$parameters$design)
 
     if(design == "crd"){
         plan <- expand.grid(row = 1:nrows, col = 1:ncols)
@@ -155,7 +155,11 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
 
     if(design == "factorial_rcbd"){
 
-        design.obj$book$trt <- factor(paste("A", design.obj$book$A, "B", design.obj$book$B, sep = ""))
+        treatments <- NULL
+        for(i in 3:ncol(design.obj$book)) {
+            treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[,i], sep=""), sep=" ")
+        }
+        design.obj$book$trt <- factor(trimws(treatments))
         ntrt <- nlevels(as.factor(design.obj$book$trt))
 
         # Calculate direction of blocking
