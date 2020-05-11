@@ -72,6 +72,7 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           if(!require(vdiffr)) remotes::install_github("r-lib/vdiffr")
           if(!require(asremlPlus)) remotes::install_github("briencj/asremlPlus")
+          if(!require(pkgbuild)) remotes::install_github("rlib/pkgbuild")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 

@@ -32,14 +32,20 @@ min.r <- substr(description[,"Depends"], 7, 11)
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
 <!-- badges: end -->
 
-The goal of BiometryTraining is to provide functions to aid in teaching Experimental Design and Analysis through easy access and documentation of helper functions.
+The goal of BiometryTraining is to provide functions to aid in the Design and Analysis of Agronomic-style experiments through easy access to documentation and helper functions, especially while teaching these concepts.
 
 ## Installation
 
 You can install the latest version of BiometryTraining from [GitHub](https://github.com/) with:
 
-``` r
+```{r eval=F}
 if(!require("devtools")) install.packages("devtools") 
 devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+```
+
+Load the package and start using it with:
+
+```{r eval=F}
+library(BiometryTraining)
 ```
 
