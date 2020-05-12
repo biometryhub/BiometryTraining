@@ -52,16 +52,19 @@ If you have the latest version already installed, you will get a response like:
 
 - The following warning messages can usually be ignored:
 
+```html
 <span style="color: red;">WARNING: Rtools is required to build R packages, but is not currently installed.</span>
-
+```
+```html
 <span style="color: red;">Please download and install Rtools custom from http://cran.r-project.org/bin/windows/Rtools/.</span>
-
+```
+```html
 <span style="color: red;">Warning messages:<br>
 1: In untar2(tarfile, files, list, exdir) :<br>
   skipping pax global extended headers<br>
 2: In untar2(tarfile, files, list, exdir) :<br>
   skipping pax global extended headers</span>
-
+```
 
 - If you receive an error that the package could not install because `rlang` or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (`remove.packages("rlang")`). Then reinstall with `install.packages("rlang")` and then try installing `BiometryTraining` again.
 

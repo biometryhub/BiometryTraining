@@ -46,16 +46,23 @@ install.<br> Use `force = TRUE` to force installation</span>
 
   - The following warning messages can usually be ignored:
 
-<span style="color: red;">WARNING: Rtools is required to build R
-packages, but is not currently installed.</span>
+<!-- end list -->
 
-<span style="color: red;">Please download and install Rtools custom from
-<http://cran.r-project.org/bin/windows/Rtools/>.</span>
+``` html
+<span style="color: red;">WARNING: Rtools is required to build R packages, but is not currently installed.</span>
+```
 
-<span style="color: red;">Warning messages:<br> 1: In untar2(tarfile,
-files, list, exdir) :<br> skipping pax global extended headers<br> 2: In
-untar2(tarfile, files, list, exdir) :<br> skipping pax global extended
-headers</span>
+``` html
+<span style="color: red;">Please download and install Rtools custom from http://cran.r-project.org/bin/windows/Rtools/.</span>
+```
+
+``` html
+<span style="color: red;">Warning messages:<br>
+1: In untar2(tarfile, files, list, exdir) :<br>
+  skipping pax global extended headers<br>
+2: In untar2(tarfile, files, list, exdir) :<br>
+  skipping pax global extended headers</span>
+```
 
   - If you receive an error that the package could not install because
     `rlang` or another package could not be upgraded, the easiest way to
