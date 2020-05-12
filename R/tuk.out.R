@@ -25,7 +25,7 @@
 #'                     sed = TRUE)
 #'
 #' pred.out <- tuk.out(model.obj = dat.asr, pred.obj = dat.pred,
-#'                    data = dat, pred = "Variety", sig = 0.95)
+#'                    pred = "Variety", sig = 0.95)
 #'
 #' pred.out}
 #'
