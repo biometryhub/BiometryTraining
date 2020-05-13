@@ -1,17 +1,20 @@
 #' Multiple Comparison Tests
 #'
-#' @param model.obj
-#' @param pred.obj
-#' @param sig
-#' @param pred
-#' @param typeR
-#' @param trans
-#' @param offset
+#' A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 #'
-#' @return
+#' @param model.obj An `asreml` model object.
+#' @param pred.obj A `predict()` object with `sed=TRUE`.
+#' @param sig The confidence level, numeric between 0 and 1.
+#' @param pred Name of predictor variable as string.
+#' @param typeR Type of test as string.
+#' @param trans Transformation that was applied to the response variable before modelling, e.g. "log" or "sqrt". Default is NA.
+#' @param offset Numeric offset applied to response variable prior to transformation. Default is NA.
+#'
+#' @importFrom multcompView multcompLetters
+#'
+#' @return A list containing a data frame consisting of predicted means, confidence interval upper and lower bounds, and significant group allocations.
+#'
 #' @export
-#'
-#' @examples
 #'
 mct.out <- function(model.obj, pred.obj, sig, pred, typeR, trans = NA, offset = NA){
 
