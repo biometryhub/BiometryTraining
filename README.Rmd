@@ -76,3 +76,4 @@ Load the package and start using it with:
 library(BiometryTraining)
 ```
 
+Finished
