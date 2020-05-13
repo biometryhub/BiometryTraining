@@ -71,5 +71,3 @@ Load the package and start using it with:
 ``` r
 library(BiometryTraining)
 ```
-
-That’s all there is to it\!

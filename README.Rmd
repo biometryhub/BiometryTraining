@@ -75,5 +75,3 @@ Load the package and start using it with:
 ```{r eval=F}
 library(BiometryTraining)
 ```
-
-That's all there is to it!
