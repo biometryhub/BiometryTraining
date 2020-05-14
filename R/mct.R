@@ -3,19 +3,19 @@
 #' A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 #'
 #' @param model.obj An ASReml-R model object.
-#' @param pred.obj A ASReml-R prediction object with `sed=TRUE`.
-#' @param sig The confidence level, numeric between 0 and 1.
+#' @param pred.obj An ASReml-R prediction object with `sed=TRUE`.
+#' @param sig The confidence level, numeric between 0 and 1. Default is 0.95.
 #' @param pred Name of predictor variable as string.
 #' @param typeR Type of test as string.
-#' @param trans Transformation that was applied to the response variable before modelling, e.g. "log" or "sqrt". Default is NA.
-#' @param offset Numeric offset applied to response variable prior to transformation. Default is NA.
+#' @param trans Transformation that was applied to the response variable before modelling, e.g. `log` or `sqrt`. Default is `NA`.
+#' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
 #'
 #' @importFrom multcompView multcompLetters
 #'
 #' @return A list containing a data frame "pred.tab" consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
 #' @examples
-#' library(asreml)
+#' \dontrun{library(asreml)
 #' data(oats)
 #'
 #' #Fit ASreml Model
@@ -32,11 +32,11 @@
 #' #Determine ranking and groups according to Tukey's Test
 #' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95, pred = "Nitrogen", typeR = "tukey")
 #'
-#' tuk.rank
+#' tuk.rank}
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig, pred, typeR, trans = NA, offset = NA){
+mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, offset = NA){
 
   if(class(model.obj)[1] == "asreml"){
 
