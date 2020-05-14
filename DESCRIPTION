@@ -12,13 +12,14 @@ Authors@R:
              family = "Rogers",
              role = c("aut", "cre"),
              email = "biometrytraining@adelaide.edu.au"),
-     person(given = "Annie",
+      person(given = "Annie",
              family = "Conway",
              role = "ctb",
              email = "biometrytraining@adelaide.edu.au"))
-Description: BiometryTraining is a package created to give users a
-    simple way to install and access documentation about the functions used and
-    distributed as part of the SAGI-STH Biometrics Education Initiative.
+Description: BiometryTraining is a package created to give users
+    a simple way to install and access documentation about the functions
+    used and distributed as part of the SAGI-STH Biometrics Education
+    Initiative.
 License: MIT + file LICENSE
 URL: https://biometryhub.github.io/BiometryTraining/
 BugReports: 
@@ -27,12 +28,13 @@ Depends:
     R (>= 3.5.0)
 Imports: 
     agricolae,
+    asremlPlus,
     ggplot2,
+    lucid,
+    multcompView,
     patchwork,
     RColorBrewer,
-    scales,
-    lucid,
-    asremlPlus
+    scales
 Suggests: 
     covr,
     testthat,

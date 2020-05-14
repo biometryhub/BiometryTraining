@@ -31,16 +31,7 @@
 #'
 logl.test <- function(model.obj, rand.terms, resid.terms){
 
-    #load required packages
-    # if(!require(lucid)){
-    #     install.packages("lucid")
-    # }
-    #     library(lucid)
-
-    # if(!require(asremlPlus)){
-    #     install.packages("asremlPlus")
-    # }
-    #     library(asremlPlus)
+    dat.asr <- NULL
 
     # Find terms on the boundary
 

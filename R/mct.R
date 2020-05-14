@@ -11,6 +11,8 @@
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
 #'
 #' @importFrom multcompView multcompLetters
+#' @importFrom agricolae LSD.test HSD.test
+#' @importFrom stats predict
 #'
 #' @return A list containing a data frame "pred.tab" consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
@@ -30,7 +32,8 @@
 #' pred.asr <- predict(model.asr, classify="Nitrogen",sed = TRUE)
 #'
 #' #Determine ranking and groups according to Tukey's Test
-#' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95, pred = "Nitrogen", typeR = "tukey")
+#' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
+#'                     pred = "Nitrogen", typeR = "tukey")
 #'
 #' tuk.rank}
 #'
@@ -80,13 +83,13 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, of
 
     names(diffs) <- m
 
-    if(!require(multcompView)){
-      install.packages("multcompView")
-    }
-    library(multcompView)
+    # if(!require(multcompView)){
+    #   install.packages("multcompView")
+    # }
+    # library(multcompView)
 
 
-    ll <- multcompLetters(diffs, threshold = sig, compare = ">", reversed = TRUE)
+    ll <- multcompView::multcompLetters(diffs, threshold = sig, compare = ">", reversed = TRUE)
 
     rr <- data.frame(ll$Letters)
     rr$Names <- row.names(rr)
@@ -129,7 +132,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, of
 
     if(typeR == "LSD"){
 
-      lsd.out <- LSD.test(model.obj, trt = pred)
+      lsd.out <- agricolae::LSD.test(model.obj, trt = pred)
 
       hh <- lsd.out$groups
       hh[[pred]] <- row.names(hh)
@@ -155,7 +158,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, of
 
     if(typeR == "tukey"){
 
-      hsd.out <- HSD.test(model.obj, trt = pred)
+      hsd.out <- agricolae::HSD.test(model.obj, trt = pred)
 
       hh <- hsd.out$groups
       hh[[pred]] <- row.names(hh)
