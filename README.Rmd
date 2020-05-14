@@ -44,7 +44,6 @@ devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 
-
 ### Troubleshooting Installation
 
 - If you have the latest version already installed, you will get a response like:
@@ -64,9 +63,7 @@ devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 2: In untar2(tarfile, files, list, exdir) :<br>
   skipping pax global extended headers</span>
 
-
 - If you receive an error that the package could not install because `rlang` or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (`remove.packages("rlang")`). Then reinstall with `install.packages("rlang")` and then try installing `BiometryTraining` again.
-
 
 ## Using the package
 
