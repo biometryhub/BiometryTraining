@@ -2,7 +2,7 @@ Type: Package
 Package: BiometryTraining
 Title: Functions to Assist Teaching Design and Analysis of
     Agronomic Experiments
-Version: 0.3.1
+Version: 0.4.0
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -10,7 +10,11 @@ Authors@R:
              email = "biometrytraining@adelaide.edu.au"),
       person(given = "Sam",
              family = "Rogers",
-             role = "cre",
+             role = c("aut", "cre"),
+             email = "biometrytraining@adelaide.edu.au"),
+     person(given = "Annie",
+             family = "Conway",
+             role = "ctb",
              email = "biometrytraining@adelaide.edu.au"))
 Description: BiometryTraining is a package created to give users a
     simple way to install and access documentation about the functions used and
