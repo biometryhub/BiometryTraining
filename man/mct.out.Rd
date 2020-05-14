@@ -9,7 +9,7 @@ mct.out(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, offset = NA)
 \arguments{
 \item{model.obj}{An ASReml-R model object.}
 
-\item{pred.obj}{An ASReml-R prediction object with \code{sed=TRUE}.}
+\item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}.}
 
 \item{sig}{The confidence level, numeric between 0 and 1. Default is 0.95.}
 
@@ -22,20 +22,20 @@ mct.out(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, offset = NA)
 \item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}.}
 }
 \value{
-A list containing a data frame "pred.tab" consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
+A list containing a data frame \code{pred.tab} consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 }
 \description{
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 }
 \examples{
-\dontrun{library(asreml)
-data(oats)
+\dontrun{
+library(asreml)
 
 #Fit ASreml Model
 model.asr <- asreml(yield ~ Nitrogen*Variety,
                     random =~Blocks + Blocks:Wplots,
                     residual =~units,
-                    data=oats)
+                    data=asreml::oats)
 
 wald(model.asr) #Nitrogen main effect significant
 

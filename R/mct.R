@@ -3,7 +3,7 @@
 #' A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 #'
 #' @param model.obj An ASReml-R model object.
-#' @param pred.obj An ASReml-R prediction object with `sed=TRUE`.
+#' @param pred.obj An ASReml-R prediction object with `sed = TRUE`.
 #' @param sig The confidence level, numeric between 0 and 1. Default is 0.95.
 #' @param pred Name of predictor variable as string.
 #' @param typeR Type of test as string.
@@ -14,7 +14,7 @@
 #' @importFrom agricolae LSD.test HSD.test
 #' @importFrom stats predict
 #'
-#' @return A list containing a data frame "pred.tab" consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
+#' @return A list containing a data frame `pred.tab` consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
 #' @examples
 #' \dontrun{
@@ -197,6 +197,8 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, of
       pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - offset
     }
   }
+
+  #Does this need to be a list? Could just return data frame
   out.list <- list()
 
   out.list$pred.tab <- pp.tab
