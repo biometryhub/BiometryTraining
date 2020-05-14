@@ -17,14 +17,14 @@
 #' @return A list containing a data frame "pred.tab" consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
 #' @examples
-#' \dontrun{library(asreml)
-#' data(oats)
+#' \dontrun{
+#' library(asreml)
 #'
 #' #Fit ASreml Model
 #' model.asr <- asreml(yield ~ Nitrogen*Variety,
 #'                     random =~Blocks + Blocks:Wplots,
 #'                     residual =~units,
-#'                     data=oats)
+#'                     data=asreml::oats)
 #'
 #' wald(model.asr) #Nitrogen main effect significant
 #'
