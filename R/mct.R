@@ -1,23 +1,46 @@
 #' Multiple Comparison Tests
 #'
-#' @param model.obj
-#' @param pred.obj
-#' @param sig
-#' @param pred
-#' @param typeR
-#' @param trans
-#' @param offset
+#' A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 #'
-#' @return
-#' @export
+#' @param model.obj An ASReml-R model object.
+#' @param pred.obj An ASReml-R prediction object with `sed=TRUE`.
+#' @param sig The confidence level, numeric between 0 and 1. Default is 0.95.
+#' @param pred Name of predictor variable as string.
+#' @param typeR Type of test as string.
+#' @param trans Transformation that was applied to the response variable before modelling, e.g. `log` or `sqrt`. Default is `NA`.
+#' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
+#'
+#' @importFrom multcompView multcompLetters
+#'
+#' @return A list containing a data frame "pred.tab" consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
 #' @examples
+#' \dontrun{library(asreml)
+#' data(oats)
 #'
-mct.out <- function(model.obj, pred.obj, sig, pred, typeR, trans = NA, offset = NA){
+#' #Fit ASreml Model
+#' model.asr <- asreml(yield ~ Nitrogen*Variety,
+#'                     random =~Blocks + Blocks:Wplots,
+#'                     residual =~units,
+#'                     data=oats)
+#'
+#' wald(model.asr) #Nitrogen main effect significant
+#'
+#' #Calculate predicted means
+#' pred.asr <- predict(model.asr, classify="Nitrogen",sed = TRUE)
+#'
+#' #Determine ranking and groups according to Tukey's Test
+#' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95, pred = "Nitrogen", typeR = "tukey")
+#'
+#' tuk.rank}
+#'
+#' @export
+#'
+mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, offset = NA){
 
   if(class(model.obj)[1] == "asreml"){
 
-    avelsd <- qt(1-sig/2, model.obj$nedf) * dat.pred$avsed[names(dat.pred$avsed) == "mean"]
+    avelsd <- qt(1-sig/2, model.obj$nedf) * pred.obj$avsed[names(pred.obj$avsed) == "mean"]
 
     # Can we get the pred argument directly from the model.obj? - NO
 
