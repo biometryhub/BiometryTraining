@@ -128,7 +128,7 @@
     </tr>
     <tr>
       <th>pred.obj</th>
-      <td><p>An ASReml-R prediction object with <code>sed=TRUE</code>.</p></td>
+      <td><p>An ASReml-R prediction object with <code>sed = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>sig</th>
@@ -154,24 +154,28 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list containing a data frame "pred.tab" consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.</p>
+    <p>A list containing a data frame <code>pred.tab</code> consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>asreml</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>oats</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: data set ‘oats’ not found</span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>asreml</span>)
+
 <span class='co'>#Fit ASreml Model</span>
 <span class='no'>model.asr</span> <span class='kw'>&lt;-</span> <span class='fu'>asreml</span>(<span class='no'>yield</span> ~ <span class='no'>Nitrogen</span>*<span class='no'>Variety</span>,
                     <span class='kw'>random</span> <span class='kw'>=</span>~<span class='no'>Blocks</span> + <span class='no'>Blocks</span>:<span class='no'>Wplots</span>,
                     <span class='kw'>residual</span> <span class='kw'>=</span>~<span class='no'>units</span>,
-                    <span class='kw'>data</span><span class='kw'>=</span><span class='no'>oats</span>)</div><div class='output co'>#&gt; <span class='error'>Error in asreml(yield ~ Nitrogen * Variety, random = ~Blocks + Blocks:Wplots,     residual = ~units, data = oats): could not find function "asreml"</span></div><div class='input'>
-<span class='fu'>wald</span>(<span class='no'>model.asr</span>) <span class='co'>#Nitrogen main effect significant</span></div><div class='output co'>#&gt; <span class='error'>Error in wald(model.asr): could not find function "wald"</span></div><div class='input'>
+                    <span class='kw'>data</span><span class='kw'>=</span><span class='kw pkg'>asreml</span><span class='kw ns'>::</span><span class='no'>oats</span>)
+
+<span class='fu'>wald</span>(<span class='no'>model.asr</span>) <span class='co'>#Nitrogen main effect significant</span>
+
 <span class='co'>#Calculate predicted means</span>
-<span class='no'>pred.asr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>model.asr</span>, <span class='kw'>classify</span><span class='kw'>=</span><span class='st'>"Nitrogen"</span>,<span class='kw'>sed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(model.asr, classify = "Nitrogen", sed = TRUE): object 'model.asr' not found</span></div><div class='input'>
+<span class='no'>pred.asr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>model.asr</span>, <span class='kw'>classify</span><span class='kw'>=</span><span class='st'>"Nitrogen"</span>,<span class='kw'>sed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
 <span class='co'>#Determine ranking and groups according to Tukey's Test</span>
 <span class='no'>tuk.rank</span> <span class='kw'>&lt;-</span> <span class='fu'>mct.out</span>(<span class='kw'>model.obj</span> <span class='kw'>=</span> <span class='no'>model.asr</span>, <span class='kw'>pred.obj</span> <span class='kw'>=</span> <span class='no'>pred.asr</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-                    <span class='kw'>pred</span> <span class='kw'>=</span> <span class='st'>"Nitrogen"</span>, <span class='kw'>typeR</span> <span class='kw'>=</span> <span class='st'>"tukey"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,     pred = "Nitrogen", typeR = "tukey"): object 'model.asr' not found</span></div><div class='input'>
-<span class='no'>tuk.rank</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'tuk.rank' not found</span></div><div class='input'>
-</div></pre>
+                    <span class='kw'>pred</span> <span class='kw'>=</span> <span class='st'>"Nitrogen"</span>, <span class='kw'>typeR</span> <span class='kw'>=</span> <span class='st'>"tukey"</span>)
+
+<span class='no'>tuk.rank</span>}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
