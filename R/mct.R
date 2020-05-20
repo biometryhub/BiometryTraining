@@ -2,12 +2,11 @@
 #'
 #' A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 #'
-#' @param model.obj An ASReml-R model object.
+#' @param model.obj An ASReml-R or aov model object.
 #' @param pred.obj An ASReml-R prediction object with `sed = TRUE`.
 #' @param sig The confidence level, numeric between 0 and 1. Default is 0.95.
 #' @param pred Name of predictor variable as string.
-#' @param typeR Type of test as string.
-#' @param trans Transformation that was applied to the response variable before modelling, e.g. `log` or `sqrt`. Default is `NA`.
+#' @param trans Transformation that was applied to the response variable. One of `log`, `sqrt`, `logit` or `inverse`. Default is `NA`.
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
 #'
 #' @importFrom multcompView multcompLetters
@@ -33,19 +32,15 @@
 #'
 #' #Determine ranking and groups according to Tukey's Test
 #' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
-#'                     pred = "Nitrogen", typeR = "tukey")
+#'                     pred = "Nitrogen")
 #'
 #' tuk.rank}
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, offset = NA){
+mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = NA){
 
   if(class(model.obj)[1] == "asreml"){
-
-    avelsd <- qt(1-sig/2, model.obj$nedf) * pred.obj$avsed[names(pred.obj$avsed) == "mean"]
-
-    # Can we get the pred argument directly from the model.obj? - NO
 
     #For use with asreml 4+
     if(packageVersion("asreml") > 4) {
@@ -65,11 +60,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, of
     SED <- sed[zz,zz]
     Mean <- pp$predicted.value
     Names <-  as.character(pp$Names)
-    if(typeR == "tukey"){
-      crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), model.obj$nedf)*SED
-    } else
-    { crit.val <- qt((1-sig/2), model.obj$nedf)*SED
-    }
+    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), model.obj$nedf)*SED
 
 
     # Determine pairs that are significantly different
@@ -83,21 +74,12 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, of
 
     names(diffs) <- m
 
-    # if(!require(multcompView)){
-    #   install.packages("multcompView")
-    # }
-    # library(multcompView)
-
 
     ll <- multcompView::multcompLetters(diffs, threshold = sig, compare = ">", reversed = TRUE)
 
-    rr <- data.frame(ll$Letters)
+    rr <- data.frame(groups = ll$Letters)
     rr$Names <- row.names(rr)
-    names(rr)[1] <- paste("groups", typeR, sep = "_")
 
-    pp$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp$std.error
-    pp$low <- pp$predicted.value - pp$ci
-    pp$up <- pp$predicted.value + pp$ci
 
     pp.tab <- merge(pp,rr)
 
@@ -119,63 +101,54 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, of
         pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - offset
         pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - offset
       }
+
+
+      if(trans == "logit"){
+        pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
+        pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
+        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        pp.tab$ll <- pp.tab$predicted.value - pp.tab$ci
+        pp.tab$low <- exp(pp.tab$ll)/(1 + exp(pp.tab$ll))
+        pp.tab$uu <- pp.tab$predicted.value + pp.tab$ci
+        pp.tab$up <- exp(pp.tab$uu)/(1 + exp(pp.tab$uu))
+
+        pp.tab$ll <- NULL
+        pp.tab$uu <- NULL
+        pp.tab$transformed.value <- NULL
+        pp.tab$approx.se <- NULL
+
+      }
+
+      if(trans == "inverse"){
+        pp.tab$PredictedValue <- 1/pp.tab$predicted.value
+        pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue^2
+        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        pp.tab$low <- 1/(pp.tab$predicted.value - pp.tab$ci)
+        pp.tab$up <- 1/(pp.tab$predicted.value + pp.tab$ci)
+      }
     }
-
-    out.list <- list()
-
-    out.list$pred.tab <- pp.tab
-    out.list$ave.LSD <- avelsd
-
   }
-
   else {
 
-    if(typeR == "LSD"){
 
-      lsd.out <- agricolae::LSD.test(model.obj, trt = pred)
+    hsd.out <- agricolae::HSD.test(model.obj, trt = pred)
 
-      hh <- lsd.out$groups
-      hh[[pred]] <- row.names(hh)
-      hh[[model.obj$terms[[2]]]] <- NULL
+    hh <- hsd.out$groups
+    hh[[pred]] <- row.names(hh)
+    hh[[model.obj$terms[[2]]]] <- NULL
 
-      aa <- data.frame(X = model.obj$xlevels[[names(model.obj$xlevels)]])
-      names(aa) <- names(model.obj$xlevels)
-      pp.tab <- predict(model.obj, aa, se.fit = TRUE)
-      aa$predicted.value <- pp.tab$fit
-      aa$std.error <- pp.tab$se.fit
+    aa <- data.frame(X = model.obj$xlevels[[names(model.obj$xlevels)]])
+    names(aa) <- names(model.obj$xlevels)
+    pp.tab <- predict(model.obj, aa, se.fit = TRUE)
+    aa$predicted.value <- pp.tab$fit
+    aa$std.error <- pp.tab$se.fit
 
-      pp.tab <- merge(aa, hh)
+    pp.tab <- merge(aa, hh)
+    model.obj$nedf <-  model.obj$df.residual
+    pp.tab$ci <- qt(p = (1-sig/2), model.obj$df.residual) * pp.tab$std.error
+    pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
+    pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
 
-      model.obj$nedf <-  model.obj$df.residual
-      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
-      pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
-      pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
-
-
-
-
-    }
-
-    if(typeR == "tukey"){
-
-      hsd.out <- agricolae::HSD.test(model.obj, trt = pred)
-
-      hh <- hsd.out$groups
-      hh[[pred]] <- row.names(hh)
-      hh[[model.obj$terms[[2]]]] <- NULL
-
-      aa <- data.frame(X = model.obj$xlevels[[names(model.obj$xlevels)]])
-      names(aa) <- names(model.obj$xlevels)
-      pp.tab <- predict(model.obj, aa, se.fit = TRUE)
-      aa$predicted.value <- pp.tab$fit
-      aa$std.error <- pp.tab$se.fit
-
-      pp.tab <- merge(aa, hh)
-      model.obj$nedf <-  model.obj$df.residual
-      pp.tab$ci <- qt(p = (1-sig/2), model.obj$df.residual) * pp.tab$std.error
-      pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
-      pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
-    }
 
   }
 
@@ -196,13 +169,37 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, of
       pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - offset
       pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - offset
     }
+
+
+    if(trans == "logit"){
+      pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
+      pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
+      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      pp.tab$ll <- pp.tab$predicted.value - pp.tab$ci
+      pp.tab$low <- exp(pp.tab$ll)/(1 + exp(pp.tab$ll))
+      pp.tab$uu <- pp.tab$predicted.value + pp.tab$ci
+      pp.tab$up <- exp(pp.tab$uu)/(1 + exp(pp.tab$uu))
+
+      pp.tab$ll <- NULL
+      pp.tab$uu <- NULL
+      pp.tab$transformed.value <- NULL
+      pp.tab$approx.se <- NULL
+    }
+
+    if(trans == "inverse"){
+      pp.tab$PredictedValue <- 1/pp.tab$predicted.value
+      pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue^2
+      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      pp.tab$low <- 1/(pp.tab$predicted.value - pp.tab$ci)
+      pp.tab$up <- 1/(pp.tab$predicted.value + pp.tab$ci)
+    }
+
   }
 
-  #Does this need to be a list? Could just return data frame
-  out.list <- list()
+  pp.tab$Names <- NULL
 
-  out.list$pred.tab <- pp.tab
 
-  return(out.list)
+
+  return(pp.tab)
 
 }
