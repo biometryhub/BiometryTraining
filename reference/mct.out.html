@@ -117,14 +117,14 @@
     <p>A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mct.out</span>(<span class='no'>model.obj</span>, <span class='no'>pred.obj</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>pred</span>, <span class='no'>typeR</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+    <pre class="usage"><span class='fu'>mct.out</span>(<span class='no'>model.obj</span>, <span class='no'>pred.obj</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>pred</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model.obj</th>
-      <td><p>An ASReml-R model object.</p></td>
+      <td><p>An ASReml-R or aov model object.</p></td>
     </tr>
     <tr>
       <th>pred.obj</th>
@@ -139,12 +139,8 @@
       <td><p>Name of predictor variable as string.</p></td>
     </tr>
     <tr>
-      <th>typeR</th>
-      <td><p>Type of test as string.</p></td>
-    </tr>
-    <tr>
       <th>trans</th>
-      <td><p>Transformation that was applied to the response variable before modelling, e.g. <code>log</code> or <code>sqrt</code>. Default is <code>NA</code>.</p></td>
+      <td><p>Transformation that was applied to the response variable. One of <code>log</code>, <code>sqrt</code>, <code>logit</code> or <code>inverse</code>. Default is <code>NA</code>.</p></td>
     </tr>
     <tr>
       <th>offset</th>
@@ -173,7 +169,7 @@
 
 <span class='co'>#Determine ranking and groups according to Tukey's Test</span>
 <span class='no'>tuk.rank</span> <span class='kw'>&lt;-</span> <span class='fu'>mct.out</span>(<span class='kw'>model.obj</span> <span class='kw'>=</span> <span class='no'>model.asr</span>, <span class='kw'>pred.obj</span> <span class='kw'>=</span> <span class='no'>pred.asr</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-                    <span class='kw'>pred</span> <span class='kw'>=</span> <span class='st'>"Nitrogen"</span>, <span class='kw'>typeR</span> <span class='kw'>=</span> <span class='st'>"tukey"</span>)
+                    <span class='kw'>pred</span> <span class='kw'>=</span> <span class='st'>"Nitrogen"</span>)
 
 <span class='no'>tuk.rank</span>}</div></pre>
   </div>
