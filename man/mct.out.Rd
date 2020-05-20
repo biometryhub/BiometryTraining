@@ -4,10 +4,10 @@
 \alias{mct.out}
 \title{Multiple Comparison Tests}
 \usage{
-mct.out(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, offset = NA)
+mct.out(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = NA)
 }
 \arguments{
-\item{model.obj}{An ASReml-R model object.}
+\item{model.obj}{An ASReml-R or aov model object.}
 
 \item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}.}
 
@@ -15,9 +15,7 @@ mct.out(model.obj, pred.obj, sig = 0.95, pred, typeR, trans = NA, offset = NA)
 
 \item{pred}{Name of predictor variable as string.}
 
-\item{typeR}{Type of test as string.}
-
-\item{trans}{Transformation that was applied to the response variable before modelling, e.g. \code{log} or \code{sqrt}. Default is \code{NA}.}
+\item{trans}{Transformation that was applied to the response variable. One of \code{log}, \code{sqrt}, \code{logit} or \code{inverse}. Default is \code{NA}.}
 
 \item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}.}
 }
@@ -44,7 +42,7 @@ pred.asr <- predict(model.asr, classify="Nitrogen",sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
 tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
-                    pred = "Nitrogen", typeR = "tukey")
+                    pred = "Nitrogen")
 
 tuk.rank}
 
