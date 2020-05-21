@@ -126,6 +126,12 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
         pp.tab$low <- 1/(pp.tab$predicted.value - pp.tab$ci)
         pp.tab$up <- 1/(pp.tab$predicted.value + pp.tab$ci)
       }
+    } else {
+
+      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
+      pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
+
     }
   }
   else {
@@ -192,6 +198,12 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
       pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
       pp.tab$low <- 1/(pp.tab$predicted.value - pp.tab$ci)
       pp.tab$up <- 1/(pp.tab$predicted.value + pp.tab$ci)
+    }  else {
+
+      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
+      pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
+
     }
 
   }
