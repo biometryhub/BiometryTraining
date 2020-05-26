@@ -6,6 +6,7 @@
 #' @param pred.obj An ASReml-R prediction object with `sed = TRUE`.
 #' @param sig The confidence level, numeric between 0 and 1. Default is 0.95.
 #' @param pred Name of predictor variable as string.
+#' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
 #' @param trans Transformation that was applied to the response variable. One of `log`, `sqrt`, `logit` or `inverse`. Default is `NA`.
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
 #'
@@ -20,15 +21,15 @@
 #' library(asreml)
 #'
 #' #Fit ASreml Model
-#' model.asr <- asreml(yield ~ Nitrogen*Variety,
-#'                     random =~Blocks + Blocks:Wplots,
-#'                     residual =~units,
-#'                     data=asreml::oats)
+#' model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
+#'                     random = ~ Blocks + Blocks:Wplots,
+#'                     residual = ~ units,
+#'                     data = asreml::oats)
 #'
 #' wald(model.asr) #Nitrogen main effect significant
 #'
 #' #Calculate predicted means
-#' pred.asr <- predict(model.asr, classify="Nitrogen",sed = TRUE)
+#' pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #'
 #' #Determine ranking and groups according to Tukey's Test
 #' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
@@ -38,7 +39,7 @@
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = NA){
+mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, interval = "ci", trans = NA, offset = NA){
 
   if(class(model.obj)[1] == "asreml"){
 
@@ -89,7 +90,15 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
       if(trans == "log"){
         pp.tab$PredictedValue <- exp(pp.tab$predicted.value) - offset
         pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue
+        if(int.type == "ci"){
         pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        }
+        if(int.type == "1se"){
+          pp.tab$ci <- pp.tab$std.error
+        }
+        if(int.type == "2se"){
+          pp.tab$ci <- 2*pp.tab$std.error
+        }
         pp.tab$low <- exp(pp.tab$predicted.value - pp.tab$ci) - offset
         pp.tab$up <- exp(pp.tab$predicted.value + pp.tab$ci) - offset
       }
@@ -97,7 +106,15 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
       if(trans == "sqrt"){
         pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - offset
         pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*pp.tab$PredictedValue
-        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        if(int.type == "ci"){
+          pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        }
+        if(int.type == "1se"){
+          pp.tab$ci <- pp.tab$std.error
+        }
+        if(int.type == "2se"){
+          pp.tab$ci <- 2*pp.tab$std.error
+        }
         pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - offset
         pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - offset
       }
@@ -106,7 +123,15 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
       if(trans == "logit"){
         pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
         pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
-        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        if(int.type == "ci"){
+          pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        }
+        if(int.type == "1se"){
+          pp.tab$ci <- pp.tab$std.error
+        }
+        if(int.type == "2se"){
+          pp.tab$ci <- 2*pp.tab$std.error
+        }
         pp.tab$ll <- pp.tab$predicted.value - pp.tab$ci
         pp.tab$low <- exp(pp.tab$ll)/(1 + exp(pp.tab$ll))
         pp.tab$uu <- pp.tab$predicted.value + pp.tab$ci
@@ -122,13 +147,29 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
       if(trans == "inverse"){
         pp.tab$PredictedValue <- 1/pp.tab$predicted.value
         pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue^2
-        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        if(int.type == "ci"){
+          pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+        }
+        if(int.type == "1se"){
+          pp.tab$ci <- pp.tab$std.error
+        }
+        if(int.type == "2se"){
+          pp.tab$ci <- 2*pp.tab$std.error
+        }
         pp.tab$low <- 1/(pp.tab$predicted.value - pp.tab$ci)
         pp.tab$up <- 1/(pp.tab$predicted.value + pp.tab$ci)
       }
     } else {
 
-      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      if(int.type == "ci"){
+        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      }
+      if(int.type == "1se"){
+        pp.tab$ci <- pp.tab$std.error
+      }
+      if(int.type == "2se"){
+        pp.tab$ci <- 2*pp.tab$std.error
+      }
       pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
       pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
 
@@ -151,7 +192,15 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
 
     pp.tab <- merge(aa, hh)
     model.obj$nedf <-  model.obj$df.residual
-    pp.tab$ci <- qt(p = (1-sig/2), model.obj$df.residual) * pp.tab$std.error
+    if(int.type == "ci"){
+      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+    }
+    if(int.type == "1se"){
+      pp.tab$ci <- pp.tab$std.error
+    }
+    if(int.type == "2se"){
+      pp.tab$ci <- 2*pp.tab$std.error
+    }
     pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
     pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
 
@@ -163,7 +212,15 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
     if(trans == "log"){
       pp.tab$PredictedValue <- exp(pp.tab$predicted.value) - offset
       pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue
-      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      if(int.type == "ci"){
+        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      }
+      if(int.type == "1se"){
+        pp.tab$ci <- pp.tab$std.error
+      }
+      if(int.type == "2se"){
+        pp.tab$ci <- 2*pp.tab$std.error
+      }
       pp.tab$low <- exp(pp.tab$predicted.value - pp.tab$ci) - offset
       pp.tab$up <- exp(pp.tab$predicted.value + pp.tab$ci) - offset
     }
@@ -171,7 +228,15 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
     if(trans == "sqrt"){
       pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - offset
       pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*pp.tab$PredictedValue
-      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      if(int.type == "ci"){
+        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      }
+      if(int.type == "1se"){
+        pp.tab$ci <- pp.tab$std.error
+      }
+      if(int.type == "2se"){
+        pp.tab$ci <- 2*pp.tab$std.error
+      }
       pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - offset
       pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - offset
     }
@@ -180,7 +245,15 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
     if(trans == "logit"){
       pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
       pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
-      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      if(int.type == "ci"){
+        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      }
+      if(int.type == "1se"){
+        pp.tab$ci <- pp.tab$std.error
+      }
+      if(int.type == "2se"){
+        pp.tab$ci <- 2*pp.tab$std.error
+      }
       pp.tab$ll <- pp.tab$predicted.value - pp.tab$ci
       pp.tab$low <- exp(pp.tab$ll)/(1 + exp(pp.tab$ll))
       pp.tab$uu <- pp.tab$predicted.value + pp.tab$ci
@@ -195,16 +268,32 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = 
     if(trans == "inverse"){
       pp.tab$PredictedValue <- 1/pp.tab$predicted.value
       pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue^2
-      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      if(int.type == "ci"){
+        pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+      }
+      if(int.type == "1se"){
+        pp.tab$ci <- pp.tab$std.error
+      }
+      if(int.type == "2se"){
+        pp.tab$ci <- 2*pp.tab$std.error
+      }
       pp.tab$low <- 1/(pp.tab$predicted.value - pp.tab$ci)
       pp.tab$up <- 1/(pp.tab$predicted.value + pp.tab$ci)
-    }  else {
-
-      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
-      pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
-      pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
-
     }
+
+  } else {
+
+    if(int.type == "ci"){
+      pp.tab$ci <- qt(p = (1-sig/2), model.obj$nedf) * pp.tab$std.error
+    }
+    if(int.type == "1se"){
+      pp.tab$ci <- pp.tab$std.error
+    }
+    if(int.type == "2se"){
+      pp.tab$ci <- 2*pp.tab$std.error
+    }
+    pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
+    pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
 
   }
 
