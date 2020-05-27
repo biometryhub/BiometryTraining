@@ -33,13 +33,13 @@
 #'
 #' #Determine ranking and groups according to Tukey's Test
 #' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
-#'                     pred = "Nitrogen")
+#'                     int.type = "ci", pred = "Nitrogen")
 #'
 #' tuk.rank}
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, interval = "ci", trans = NA, offset = NA){
+mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, int.type = "ci", trans = NA, offset = NA){
 
   if(class(model.obj)[1] == "asreml"){
 
