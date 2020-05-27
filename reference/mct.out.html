@@ -117,7 +117,15 @@
     <p>A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mct.out</span>(<span class='no'>model.obj</span>, <span class='no'>pred.obj</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>pred</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+    <pre class="usage"><span class='fu'>mct.out</span>(
+  <span class='no'>model.obj</span>,
+  <span class='no'>pred.obj</span>,
+  <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='no'>pred</span>,
+  <span class='kw'>interval</span> <span class='kw'>=</span> <span class='st'>"ci"</span>,
+  <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>NA</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +154,10 @@
       <th>offset</th>
       <td><p>Numeric offset applied to response variable prior to transformation. Default is <code>NA</code>.</p></td>
     </tr>
+    <tr>
+      <th>int.type</th>
+      <td><p>The type of confidence interval to calculate. One of <code>ci</code>, <code>1se</code> or <code>2se</code>. Default is <code>ci</code>.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -157,15 +169,15 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>asreml</span>)
 
 <span class='co'>#Fit ASreml Model</span>
-<span class='no'>model.asr</span> <span class='kw'>&lt;-</span> <span class='fu'>asreml</span>(<span class='no'>yield</span> ~ <span class='no'>Nitrogen</span>*<span class='no'>Variety</span>,
-                    <span class='kw'>random</span> <span class='kw'>=</span>~<span class='no'>Blocks</span> + <span class='no'>Blocks</span>:<span class='no'>Wplots</span>,
-                    <span class='kw'>residual</span> <span class='kw'>=</span>~<span class='no'>units</span>,
-                    <span class='kw'>data</span><span class='kw'>=</span><span class='kw pkg'>asreml</span><span class='kw ns'>::</span><span class='no'>oats</span>)
+<span class='no'>model.asr</span> <span class='kw'>&lt;-</span> <span class='fu'>asreml</span>(<span class='no'>yield</span> ~ <span class='no'>Nitrogen</span> + <span class='no'>Variety</span> + <span class='no'>Nitrogen</span>:<span class='no'>Variety</span>,
+                    <span class='kw'>random</span> <span class='kw'>=</span> ~ <span class='no'>Blocks</span> + <span class='no'>Blocks</span>:<span class='no'>Wplots</span>,
+                    <span class='kw'>residual</span> <span class='kw'>=</span> ~ <span class='no'>units</span>,
+                    <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw pkg'>asreml</span><span class='kw ns'>::</span><span class='no'>oats</span>)
 
 <span class='fu'>wald</span>(<span class='no'>model.asr</span>) <span class='co'>#Nitrogen main effect significant</span>
 
 <span class='co'>#Calculate predicted means</span>
-<span class='no'>pred.asr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>model.asr</span>, <span class='kw'>classify</span><span class='kw'>=</span><span class='st'>"Nitrogen"</span>,<span class='kw'>sed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>pred.asr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>model.asr</span>, <span class='kw'>classify</span> <span class='kw'>=</span> <span class='st'>"Nitrogen"</span>, <span class='kw'>sed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>#Determine ranking and groups according to Tukey's Test</span>
 <span class='no'>tuk.rank</span> <span class='kw'>&lt;-</span> <span class='fu'>mct.out</span>(<span class='kw'>model.obj</span> <span class='kw'>=</span> <span class='no'>model.asr</span>, <span class='kw'>pred.obj</span> <span class='kw'>=</span> <span class='no'>pred.asr</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
