@@ -109,7 +109,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, int.type = "ci", tran
 
       if(trans == "sqrt"){
         pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
-        pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*pp.tab$PredictedValue
+        pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
         if(int.type == "ci"){
           pp.tab$ci <- qt(p = qtp, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
         }
@@ -231,7 +231,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, int.type = "ci", tran
 
     if(trans == "sqrt"){
       pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
-      pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*pp.tab$PredictedValue
+      pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
       if(int.type == "ci"){
         pp.tab$ci <- qt(p = qtp, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
       }
