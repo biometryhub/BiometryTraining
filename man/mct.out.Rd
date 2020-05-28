@@ -9,7 +9,7 @@ mct.out(
   pred.obj,
   sig = 0.95,
   pred,
-  interval = "ci",
+  int.type = "ci",
   trans = NA,
   offset = NA
 )
@@ -23,11 +23,11 @@ mct.out(
 
 \item{pred}{Name of predictor variable as string.}
 
+\item{int.type}{The type of confidence interval to calculate. One of \code{ci}, \verb{1se} or \verb{2se}. Default is \code{ci}.}
+
 \item{trans}{Transformation that was applied to the response variable. One of \code{log}, \code{sqrt}, \code{logit} or \code{inverse}. Default is \code{NA}.}
 
 \item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}.}
-
-\item{int.type}{The type of confidence interval to calculate. One of \code{ci}, \verb{1se} or \verb{2se}. Default is \code{ci}.}
 }
 \value{
 A list containing a data frame \code{pred.tab} consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
@@ -52,7 +52,7 @@ pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
 tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
-                    pred = "Nitrogen")
+                    int.type = "ci", pred = "Nitrogen")
 
 tuk.rank}
 
