@@ -69,7 +69,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE)
+          remotes::install_deps(dependencies = TRUE, type = "binary")
           if(!require(vdiffr)) remotes::install_github("r-lib/vdiffr")
           if(!require(asremlPlus)) remotes::install_github("briencj/asremlPlus")
           if(!require(pkgbuild)) remotes::install_github("r-lib/pkgbuild")
