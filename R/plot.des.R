@@ -249,17 +249,92 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
 
     if(design == "split"){
         des <- design.obj$book
-        plan <- expand.grid(row = 1:nrows, col = 1:ncols)
-        des <- cbind(plan, design.obj$book)
+        spfacs <- c("plots", "splots", "block")
 
-        des$trt <- factor(paste(des[,6], des[,7], sep = "_"))
+        trtNams <- names(des[!is.element(names(des), spfacs)])
+
+
+        des$trt <- factor(paste(des[,trtNams[1]], des[,trtNams[2]], sep = "_"))
 
         # Number of treatments
         ntrt <- nlevels(as.factor(des$trt))
+
+
+        # Calculate direction of blocking
+        xx <- c()
+        rr <- nrows/brows
+        cc <- ncols/bcols
+        # Blocking across rows: brows == ntrt in a single column
+        if(brows == ntrt){
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols) #2
+        }
+
+        # Blocking incomplete rows all columns
+        if(rr > 1 & cc == 1){
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows) #1
+        }
+
+
+        # Blocking incomplete rows and incomplete columns
+        if(rr > 1 & cc > 1){
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for(j in 1:rr){
+                for(k in 1:cc){
+                    plan$col[plan$block == i] <- pp$col + (k-1)*bcols
+                    plan$row[plan$block == i] <- pp$row + (brows*(j-1))
+                    k <- k + 1
+                    i <- i + 1
+                }
+                j <- j + 1
+            }
+            plan$block <- NULL
+        } #3
+
+
+        # Blocking across columns: bcols == ntrt in a single row
+        if(bcols == ntrt){
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows)
+        } #4
+
+
+        # Blocking incomplete columns all rows
+        if(cc > 1 & rr == 1){
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for(k in 1:cc){
+
+                plan$col[plan$block == i] <- pp$col + (k-1)*bcols
+                plan$row[plan$block == i] <- pp$row
+                k <- k + 1
+                i <- i + 1
+            }
+            plan$block <- NULL
+        } #5
+
+        des <- cbind(plan, des)
+
+
     }
 
     # des <- dplyr::mutate(des, row = factor(row),
-                         # row = factor(row, levels = rev(levels(row))))
+    # row = factor(row, levels = rev(levels(row))))
 
     # create the colours for the graph
     color_palette <- grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(ntrt)
