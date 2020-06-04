@@ -4,7 +4,7 @@
 #'
 #' @param model.obj An ASReml-R or aov model object.
 #' @param pred.obj An ASReml-R prediction object with `sed = TRUE`.
-#' @param sig The confidence level, numeric between 0 and 1. Default is 0.95.
+#' @param sig The significance level, numeric between 0 and 1. Default is 0.05.
 #' @param pred Name of predictor variable as string.
 #' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
 #' @param trans Transformation that was applied to the response variable. One of `log`, `sqrt`, `logit` or `inverse`. Default is `NA`.
@@ -32,14 +32,14 @@
 #' pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #'
 #' #Determine ranking and groups according to Tukey's Test
-#' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
+#' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
 #'                     int.type = "ci", pred = "Nitrogen")
 #'
 #' tuk.rank}
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig = 0.95, pred, int.type = "ci", trans = NA, offset = NA){
+mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", trans = NA, offset = NA){
 
   if(class(model.obj)[1] == "asreml"){
 
