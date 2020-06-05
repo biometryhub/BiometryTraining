@@ -7,7 +7,7 @@
 mct.out(
   model.obj,
   pred.obj,
-  sig = 0.95,
+  sig = 0.05,
   pred,
   int.type = "ci",
   trans = NA,
@@ -19,7 +19,7 @@ mct.out(
 
 \item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}.}
 
-\item{sig}{The confidence level, numeric between 0 and 1. Default is 0.95.}
+\item{sig}{The significance level, numeric between 0 and 1. Default is 0.05.}
 
 \item{pred}{Name of predictor variable as string.}
 
@@ -51,7 +51,7 @@ wald(model.asr) #Nitrogen main effect significant
 pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
-tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
+tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
                     int.type = "ci", pred = "Nitrogen")
 
 tuk.rank}
