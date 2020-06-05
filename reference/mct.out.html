@@ -120,7 +120,7 @@
     <pre class="usage"><span class='fu'>mct.out</span>(
   <span class='no'>model.obj</span>,
   <span class='no'>pred.obj</span>,
-  <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='no'>pred</span>,
   <span class='kw'>int.type</span> <span class='kw'>=</span> <span class='st'>"ci"</span>,
   <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
@@ -140,7 +140,7 @@
     </tr>
     <tr>
       <th>sig</th>
-      <td><p>The confidence level, numeric between 0 and 1. Default is 0.95.</p></td>
+      <td><p>The significance level, numeric between 0 and 1. Default is 0.05.</p></td>
     </tr>
     <tr>
       <th>pred</th>
@@ -180,7 +180,7 @@
 <span class='no'>pred.asr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>model.asr</span>, <span class='kw'>classify</span> <span class='kw'>=</span> <span class='st'>"Nitrogen"</span>, <span class='kw'>sed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>#Determine ranking and groups according to Tukey's Test</span>
-<span class='no'>tuk.rank</span> <span class='kw'>&lt;-</span> <span class='fu'>mct.out</span>(<span class='kw'>model.obj</span> <span class='kw'>=</span> <span class='no'>model.asr</span>, <span class='kw'>pred.obj</span> <span class='kw'>=</span> <span class='no'>pred.asr</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+<span class='no'>tuk.rank</span> <span class='kw'>&lt;-</span> <span class='fu'>mct.out</span>(<span class='kw'>model.obj</span> <span class='kw'>=</span> <span class='no'>model.asr</span>, <span class='kw'>pred.obj</span> <span class='kw'>=</span> <span class='no'>pred.asr</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
                     <span class='kw'>int.type</span> <span class='kw'>=</span> <span class='st'>"ci"</span>, <span class='kw'>pred</span> <span class='kw'>=</span> <span class='st'>"Nitrogen"</span>)
 
 <span class='no'>tuk.rank</span>}</div></pre>
