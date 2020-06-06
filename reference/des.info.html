@@ -268,7 +268,20 @@
 <span class='no'>trt2</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>4</span>
 <span class='no'>rep</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
 <span class='no'>outdesign</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.split.html'>design.split</a></span>(<span class='no'>trt1</span>, <span class='no'>trt2</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='no'>rep</span>)
-<span class='no'>des.out</span> <span class='kw'>&lt;-</span> <span class='fu'>des.info</span>(<span class='kw'>design.obj</span> <span class='kw'>=</span> <span class='no'>outdesign</span>, <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>ncols</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='error'>Error in if (brows == ntrt) {    plan &lt;- expand.grid(row = 1:nrows, col = 1:ncols)}: missing value where TRUE/FALSE needed</span></div><div class='input'>
+<span class='no'>des.out</span> <span class='kw'>&lt;-</span> <span class='fu'>des.info</span>(<span class='kw'>design.obj</span> <span class='kw'>=</span> <span class='no'>outdesign</span>, <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>ncols</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>brows</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>bcols</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Source of Variation                          df
+#&gt;  ==================================================
+#&gt;  Block stratum                                3
+#&gt;  --------------------------------------------------
+#&gt;  Whole plot stratum
+#&gt;           trt1                               1
+#&gt;  Whole plot Residual                          3
+#&gt;  ==================================================
+#&gt;  Subplot stratum
+#&gt;           trt2                               3
+#&gt;           trt1:trt2                          3
+#&gt;           Subplot Residual                   18
+#&gt;  ==================================================
+#&gt;  Total                                        31</div><div class='img'><img src='des.info-6.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
