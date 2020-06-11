@@ -29,10 +29,12 @@ Depends:
 Imports: 
     agricolae,
     asremlPlus,
+    curl,
     ggplot2,
     lucid,
     multcompView,
     patchwork,
+    predictmeans,
     RColorBrewer,
     scales
 Suggests: 

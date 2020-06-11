@@ -12,6 +12,7 @@
 #'
 #' @importFrom multcompView multcompLetters
 #' @importFrom agricolae LSD.test HSD.test
+#' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
 #'
 #' @return A list containing a data frame `pred.tab` consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
