@@ -4,6 +4,7 @@
 #' @param quiet Should package be installed quietly? Default is `TRUE`.
 #'
 #' @importFrom curl curl_download
+#' @importFrom utils installed.packages
 #'
 #' @return `TRUE` if asreml installed successfully or already present, `FALSE` otherwise. Also prints a confirmation message on success.
 #' @export
