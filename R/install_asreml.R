@@ -1,5 +1,6 @@
 #' Install Asreml package
 #'
+#' @param library Library location to install ASReml-R. Uses default library location by default.
 #' @param quiet Should package be installed quietly? Default is `TRUE`.
 #'
 #' @importFrom curl curl_download
@@ -9,15 +10,11 @@
 #'
 #' @keywords internal
 #'
-install_asreml <- function(quiet = TRUE) {
-
-    # silence <- function(x) {
-    #     sink(tempfile())
-    #     on.exit(sink())
-    #     invisible(force(x))
-    # }
-    # if(quiet)
-    if(!require(asreml)) {
+install_asreml <- function(library = .libPaths()[1], quiet = TRUE) {
+    if("asreml" %in% installed.packages()[,1]) {
+        return(TRUE)
+    }
+    else {
         opts <- c("", "mac_3.5", "linux_3.5", "win_3.6", "mac_3.6", "linux_3.6",
                   "win_4.0", "mac_4.0", "linux_4.0")
 
@@ -33,14 +30,11 @@ install_asreml <- function(quiet = TRUE) {
                        win_3.5 = {}
         )
 
-        curl::curl_download()
+        # curl::curl_download()
 
         return(ver)
 
 
         # Download and install appropriate version
-    }
-    else {
-        return(TRUE)
     }
 }
