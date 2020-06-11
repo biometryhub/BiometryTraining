@@ -29,7 +29,6 @@ Depends:
 Imports: 
     agricolae,
     asremlPlus,
-    curl,
     ggplot2,
     lucid,
     multcompView,
