@@ -2,19 +2,19 @@
 % Please edit documentation in R/install_asreml.R
 \name{install_asreml}
 \alias{install_asreml}
-\title{Install Asreml package}
+\title{Install ASreml-R package}
 \usage{
-install_asreml(library = .libPaths()[1], quiet = TRUE)
+install_asreml(library = .libPaths()[1], quiet = FALSE)
 }
 \arguments{
-\item{library}{Library location to install ASReml-R. Uses default library location by default.}
+\item{library}{Library location to install ASReml-R. Uses first option in \code{.libPaths()} by default.}
 
 \item{quiet}{Should package be installed quietly? Default is \code{TRUE}.}
 }
 \value{
-\code{TRUE} if asreml installed successfully or already present, \code{FALSE} otherwise. Also prints a confirmation message on success.
+Silently returns \code{TRUE} if asreml installed successfully or already present, \code{FALSE} otherwise. Also prints a confirmation message on success.
 }
 \description{
-Install Asreml package
+A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
 }
 \keyword{internal}
