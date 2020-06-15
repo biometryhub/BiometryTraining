@@ -25,7 +25,7 @@
 #' library(asreml)
 #' dat.asr <- asreml(yield ~ gen + nitro + gen:nitro, random = ~ block + block:mplot,
 #'                   residual = ~ ar1(row):id(col), data = dat)
-#' oats.logl <- logl.test(model.obj = dat.asrs, rand.terms = c("block", "block:mplot"),
+#' oats.logl <- logl.test(model.obj = dat.asr, rand.terms = c("block", "block:mplot"),
 #'                        resid.terms = c("ar1(row)"))
 #' oats.logl}
 #'
