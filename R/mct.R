@@ -63,7 +63,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     SED <- sed[zz,zz]
     Mean <- pp$predicted.value
     Names <-  as.character(pp$Names)
-    nedf <- nedf
+    nedf <- model.obj$nedf
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), nedf)*SED
   } else {
 
