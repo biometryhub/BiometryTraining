@@ -47,6 +47,12 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     #For use with asreml 4+
     if(packageVersion("asreml") > 4) {
       pp <- pred.obj$pvals
+
+      # Check that the prediction object was created with the sed matrix
+      if(is.null(pred.obj$sed)) {
+        stop("Prediction object must be created with argument sed = TRUE.")
+      }
+
       sed <- pred.obj$sed
     }
 
