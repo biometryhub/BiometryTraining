@@ -2,14 +2,14 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
-  schedule:
+  #pull_request:
+  #  branches:
+  #    - master
+  #schedule:
     # * is a special character in YAML so we have to quote this string
     # 3am Pacific = 11am UTC
     # https://crontab.guru is your friend
-    - cron:  '0 17 * * *'
+  #  - cron:  '0 17 * * *'
 
 name: test-coverage
 

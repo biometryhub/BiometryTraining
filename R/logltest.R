@@ -31,7 +31,7 @@
 #'
 logl.test <- function(model.obj, rand.terms, resid.terms){
 
-    dat.asr <- NULL
+    # dat.asr <- NULL
 
     # Find terms on the boundary
 
@@ -83,24 +83,24 @@ logl.test <- function(model.obj, rand.terms, resid.terms){
 
             if(grepl("ar", tt[i])){
                 tt.new <- paste("id", substring(tt[i],4), sep = "")
-                old.resid <- substring(toString(dat.asr$formulae$residual), 4)
+                old.resid <- substring(toString(model.obj$formulae$residual), 4)
                 new.resid <- gsub(tt[[i]], tt.new, old.resid, fixed = TRUE)
 
                 # Fit reduced model
-                dat.asr1 <- update(model.obj, residual = as.formula(paste("~", new.resid,sep = " ")))
+                model.obj1 <- update(model.obj, residual = as.formula(paste("~", new.resid,sep = " ")))
 
                 n <- 1
-                while(!dat.asr1$converge & n < 6){
-                    dat.asr1 <- update(dat.asr1)
+                while(!model.obj1$converge & n < 6){
+                    model.obj1 <- update(model.obj1)
                     n <- n + 1
                 }
 
-                while(any(dat.asr1$vparameters.pc > 1)){
-                    dat.asr1 <- update(dat.asr1)
+                while(any(model.obj1$vparameters.pc > 1)){
+                    model.obj1 <- update(model.obj1)
                 }
 
                 # Logl test
-                ll.test <- asremlPlus::REMLRT(h1.asreml.obj = model.obj, h0.asreml.obj = dat.asr1)$p
+                ll.test <- asremlPlus::REMLRT(h1.asreml.obj = model.obj, h0.asreml.obj = model.obj1)$p
 
                 result.df <- data.frame(Term = tt[i], LogLRT.pvalue = ll.test)
                 test.df <- rbind(test.df, result.df)
@@ -110,20 +110,20 @@ logl.test <- function(model.obj, rand.terms, resid.terms){
 
                 # Fit reduced model
                 tst.terms <- tt[grepl(tt[i], tt)]
-                dat.asr1 <- update(model.obj, random = as.formula(paste("~ . - ", paste(tst.terms, collapse = " - "), sep = " ")))
+                model.obj1 <- update(model.obj, random = as.formula(paste("~ . - ", paste(tst.terms, collapse = " - "), sep = " ")))
 
                 n <- 1
-                while(!dat.asr1$converge & n < 6){
-                    dat.asr1 <- update(dat.asr1)
+                while(!model.obj1$converge & n < 6){
+                    model.obj1 <- update(model.obj1)
                     n <- n + 1
                 }
 
-                while(any(dat.asr1$vparameters.pc > 1)){
-                    dat.asr1 <- update(dat.asr1)
+                while(any(model.obj1$vparameters.pc > 1)){
+                    model.obj1 <- update(model.obj1)
                 }
 
                 # Logl test
-                ll.test <- asremlPlus::REMLRT(h1.asreml.obj = model.obj, h0.asreml.obj = dat.asr1)$p
+                ll.test <- asremlPlus::REMLRT(h1.asreml.obj = model.obj, h0.asreml.obj = model.obj1)$p
 
                 result.df <- data.frame(Term = tt[i], LogLRT.pvalue = ll.test)
                 test.df <- rbind(test.df, result.df)

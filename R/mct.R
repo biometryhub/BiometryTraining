@@ -12,6 +12,7 @@
 #'
 #' @importFrom multcompView multcompLetters
 #' @importFrom agricolae LSD.test HSD.test
+#' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
 #'
 #' @return A list containing a data frame `pred.tab` consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
@@ -62,7 +63,30 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     SED <- sed[zz,zz]
     Mean <- pp$predicted.value
     Names <-  as.character(pp$Names)
-    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), model.obj$nedf)*SED
+    nedf <- nedf
+    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), nedf)*SED
+  } else {
+
+
+    pred.out <- predictmeans::predictmeans(model.obj, pred, mplot = FALSE)
+    sed <- pred.out$`Standard Error of Differences`[1]
+    pp <- pred.out$mean_table
+    names(pp)[names(pp) == "Predicted means"] <- "predicted.value"
+    names(pp)[names(pp) == "Standard error"] <- "std.error"
+
+    SED <- matrix(data = sed, nrow = nrow(pp), ncol = nrow(pp))
+    diag(SED) <- NA
+    Mean <- pp$predicted.value
+    ifelse(grepl(":", pred),
+           pp$Names <- apply(pp[,unlist(strsplit(pred, ":"))], 1, paste, collapse = "_"),
+           pp$Names <- pp[[pred]])
+
+    Names <-  as.character(pp$Names)
+    nedf <- pp$Df[1]
+    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), nedf)*SED
+
+  }
+
 
 
     # Determine pairs that are significantly different
@@ -92,7 +116,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
         pp.tab$PredictedValue <- exp(pp.tab$predicted.value) - ifelse(!is.na(offset), offset, 0)
         pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue
         if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
+        pp.tab$ci <- qt(p = sig, nedf, lower.tail = FALSE) * pp.tab$std.error
         }
         if(int.type == "1se"){
           pp.tab$ci <- pp.tab$std.error
@@ -108,7 +132,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
         pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
         pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
         if(int.type == "ci"){
-          pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
+          pp.tab$ci <- qt(p = sig, nedf, lower.tail = FALSE) * pp.tab$std.error
         }
         if(int.type == "1se"){
           pp.tab$ci <- pp.tab$std.error
@@ -125,7 +149,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
         pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
         pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
         if(int.type == "ci"){
-          pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
+          pp.tab$ci <- qt(p = sig, nedf, lower.tail = FALSE) * pp.tab$std.error
         }
         if(int.type == "1se"){
           pp.tab$ci <- pp.tab$std.error
@@ -149,7 +173,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
         pp.tab$PredictedValue <- 1/pp.tab$predicted.value
         pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue^2
         if(int.type == "ci"){
-          pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
+          pp.tab$ci <- qt(p = sig, nedf, lower.tail = FALSE) * pp.tab$std.error
         }
         if(int.type == "1se"){
           pp.tab$ci <- pp.tab$std.error
@@ -163,7 +187,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     } else {
 
       if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
+        pp.tab$ci <- qt(p = sig, nedf, lower.tail = FALSE) * pp.tab$std.error
       }
       if(int.type == "1se"){
         pp.tab$ci <- pp.tab$std.error
@@ -175,128 +199,6 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
       pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
 
     }
-  }
-  else {
-
-
-    hsd.out <- agricolae::HSD.test(model.obj, trt = pred)
-
-    hh <- hsd.out$groups
-    hh[[pred]] <- row.names(hh)
-    hh[[model.obj$terms[[2]]]] <- NULL
-
-    aa <- data.frame(X = model.obj$xlevels[[names(model.obj$xlevels)]])
-    names(aa) <- names(model.obj$xlevels)
-    pp.tab <- predict(model.obj, aa, se.fit = TRUE)
-    aa$predicted.value <- pp.tab$fit
-    aa$std.error <- pp.tab$se.fit
-
-    pp.tab <- merge(aa, hh)
-    model.obj$nedf <-  model.obj$df.residual
-    if(int.type == "ci"){
-      pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
-    }
-    if(int.type == "1se"){
-      pp.tab$ci <- pp.tab$std.error
-    }
-    if(int.type == "2se"){
-      pp.tab$ci <- 2*pp.tab$std.error
-    }
-    pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
-    pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
-
-
-  }
-
-  if(!is.na(trans)){
-
-    if(trans == "log"){
-      pp.tab$PredictedValue <- exp(pp.tab$predicted.value) - ifelse(!is.na(offset), offset, 0)
-      pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue
-      if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
-      }
-      if(int.type == "1se"){
-        pp.tab$ci <- pp.tab$std.error
-      }
-      if(int.type == "2se"){
-        pp.tab$ci <- 2*pp.tab$std.error
-      }
-      pp.tab$low <- exp(pp.tab$predicted.value - pp.tab$ci) - ifelse(!is.na(offset), offset, 0)
-      pp.tab$up <- exp(pp.tab$predicted.value + pp.tab$ci) - ifelse(!is.na(offset), offset, 0)
-    }
-
-    if(trans == "sqrt"){
-      pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
-      pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
-      if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
-      }
-      if(int.type == "1se"){
-        pp.tab$ci <- pp.tab$std.error
-      }
-      if(int.type == "2se"){
-        pp.tab$ci <- 2*pp.tab$std.error
-      }
-      pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
-      pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
-    }
-
-
-    if(trans == "logit"){
-      pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
-      pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
-      if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
-      }
-      if(int.type == "1se"){
-        pp.tab$ci <- pp.tab$std.error
-      }
-      if(int.type == "2se"){
-        pp.tab$ci <- 2*pp.tab$std.error
-      }
-      pp.tab$ll <- pp.tab$predicted.value - pp.tab$ci
-      pp.tab$low <- exp(pp.tab$ll)/(1 + exp(pp.tab$ll))
-      pp.tab$uu <- pp.tab$predicted.value + pp.tab$ci
-      pp.tab$up <- exp(pp.tab$uu)/(1 + exp(pp.tab$uu))
-
-      pp.tab$ll <- NULL
-      pp.tab$uu <- NULL
-      pp.tab$transformed.value <- NULL
-      pp.tab$approx.se <- NULL
-    }
-
-    if(trans == "inverse"){
-      pp.tab$PredictedValue <- 1/pp.tab$predicted.value
-      pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue^2
-      if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
-      }
-      if(int.type == "1se"){
-        pp.tab$ci <- pp.tab$std.error
-      }
-      if(int.type == "2se"){
-        pp.tab$ci <- 2*pp.tab$std.error
-      }
-      pp.tab$low <- 1/(pp.tab$predicted.value - pp.tab$ci)
-      pp.tab$up <- 1/(pp.tab$predicted.value + pp.tab$ci)
-    }
-
-  } else {
-
-    if(int.type == "ci"){
-      pp.tab$ci <- qt(p = sig, model.obj$nedf, lower.tail = FALSE) * pp.tab$std.error
-    }
-    if(int.type == "1se"){
-      pp.tab$ci <- pp.tab$std.error
-    }
-    if(int.type == "2se"){
-      pp.tab$ci <- 2*pp.tab$std.error
-    }
-    pp.tab$low <- pp.tab$predicted.value - pp.tab$ci
-    pp.tab$up <- pp.tab$predicted.value + pp.tab$ci
-
-  }
 
   pp.tab$Names <- NULL
 

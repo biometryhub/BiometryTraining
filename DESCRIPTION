@@ -33,6 +33,7 @@ Imports:
     lucid,
     multcompView,
     patchwork,
+    predictmeans,
     RColorBrewer,
     scales
 Suggests: 
