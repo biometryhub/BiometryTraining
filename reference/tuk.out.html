@@ -117,7 +117,7 @@
     <p>Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tuk.out</span>(<span class='no'>pred.obj</span>, <span class='no'>model.obj</span>, <span class='no'>pred</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/tuk.out.html'>tuk.out</a></span>(<span class='kw'>pred.obj</span>, <span class='kw'>model.obj</span>, <span class='kw'>pred</span>, sig = <span class='fl'>0.95</span>, trans = <span class='fl'>FALSE</span>, offset = <span class='fl'>0</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,15 +156,14 @@
     <p><a href='http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023'>http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) <span class='no'>dat.asr</span> <span class='kw'>&lt;-</span> <span class='fu'>asreml</span>(<span class='no'>Yield</span> ~ <span class='no'>Variety</span>, <span class='kw'>random</span> <span class='kw'>=</span> ~ <span class='no'>Block</span>,
-<span class='kw'>residual</span> <span class='kw'>=</span> ~ <span class='fu'>id</span>(<span class='no'>Plot</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>)
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) <span class='kw'>dat.asr</span> <span class='op'>&lt;-</span> <span class='fu'>asreml</span>(<span class='kw'>Yield</span> <span class='op'>~</span> <span class='kw'>Variety</span>, random = <span class='op'>~</span> <span class='kw'>Block</span>,
+residual = <span class='op'>~</span> <span class='fu'>id</span>(<span class='kw'>Plot</span>), data = <span class='kw'>dat</span>)
 
-<span class='no'>dat.pred</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>dat.asr</span>, <span class='kw'>classify</span> <span class='kw'>=</span> <span class='st'>"Variety"</span>,
-                    <span class='kw'>sed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(dat.asr, classify = "Variety", sed = TRUE): object 'dat.asr' not found</span></div><div class='input'>
-<span class='no'>pred.out</span> <span class='kw'>&lt;-</span> <span class='fu'>tuk.out</span>(<span class='kw'>model.obj</span> <span class='kw'>=</span> <span class='no'>dat.asr</span>, <span class='kw'>pred.obj</span> <span class='kw'>=</span> <span class='no'>dat.pred</span>,
-                   <span class='kw'>pred</span> <span class='kw'>=</span> <span class='st'>"Variety"</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</div><div class='output co'>#&gt; <span class='error'>Error in packageVersion("asreml"): there is no package called ‘asreml’</span></div><div class='input'>
-<span class='no'>pred.out</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'pred.out' not found</span></div><div class='input'>
-</div></pre>
+<span class='kw'>dat.pred</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='kw'>dat.asr</span>, classify = <span class='st'>"Variety"</span>,
+                    sed = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in predict(dat.asr, classify = "Variety", sed = TRUE): object 'dat.asr' not found</span></div><div class='input'>
+<span class='kw'>pred.out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/tuk.out.html'>tuk.out</a></span>(model.obj = <span class='kw'>dat.asr</span>, pred.obj = <span class='kw'>dat.pred</span>,
+                   pred = <span class='st'>"Variety"</span>, sig = <span class='fl'>0.95</span>)</div><div class='output co'>#&gt; <span class='error'>Error in packageVersion("asreml"): there is no package called ‘asreml’</span></div><div class='input'>
+<span class='kw'>pred.out</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'pred.out' not found</span></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

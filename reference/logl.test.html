@@ -117,7 +117,7 @@
     <p>Log-likelihood test for comparing terms in ASreml-R models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>logl.test</span>(<span class='no'>model.obj</span>, <span class='no'>rand.terms</span>, <span class='no'>resid.terms</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/logl.test.html'>logl.test</a></span>(<span class='kw'>model.obj</span>, <span class='kw'>rand.terms</span>, <span class='kw'>resid.terms</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,20 +144,21 @@
     <p>Uses the <code><a href='https://rdrr.io/pkg/asremlPlus/man/REMLRT.asreml.html'>asremlPlus::REMLRT.asreml()</a></code> function to calculate the Likelihood ratio test for Asreml-R objects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>agridat</span>)
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='no'>yates.oats</span>
-<span class='no'>dat</span>$<span class='no'>row</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>dat</span>$<span class='no'>row</span>)
-<span class='no'>dat</span>$<span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>dat</span>$<span class='no'>col</span>)
-<span class='no'>dat</span>$<span class='no'>nitro</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>dat</span>$<span class='no'>nitro</span>)
-<span class='no'>dat</span>$<span class='no'>mplot</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>dat</span>$<span class='no'>gen</span>))
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='no'>dat</span>[<span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='no'>dat</span>$<span class='no'>row</span>, <span class='no'>dat</span>$<span class='no'>col</span>),]
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>asreml</span>)
-<span class='no'>dat.asr</span> <span class='kw'>&lt;-</span> <span class='fu'>asreml</span>(<span class='no'>yield</span> ~ <span class='no'>gen</span> + <span class='no'>nitro</span> + <span class='no'>gen</span>:<span class='no'>nitro</span>, <span class='kw'>random</span> <span class='kw'>=</span> ~ <span class='no'>block</span> + <span class='no'>block</span>:<span class='no'>mplot</span>,
-                  <span class='kw'>residual</span> <span class='kw'>=</span> ~ <span class='fu'>ar1</span>(<span class='no'>row</span>):<span class='fu'>id</span>(<span class='no'>col</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>)
-<span class='no'>oats.logl</span> <span class='kw'>&lt;-</span> <span class='fu'>logl.test</span>(<span class='kw'>model.obj</span> <span class='kw'>=</span> <span class='no'>dat.asr</span>, <span class='kw'>rand.terms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"block"</span>, <span class='st'>"block:mplot"</span>),
-                       <span class='kw'>resid.terms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ar1(row)"</span>))
-<span class='no'>oats.logl</span>}</div></pre>
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>agridat</span>)
+<span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='kw'>yates.oats</span>
+<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>row</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>row</span>)
+<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>col</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>col</span>)
+<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>nitro</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>nitro</span>)
+<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>mplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>gen</span>))
+<span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='kw'>dat</span>[<span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='kw'>dat</span><span class='op'>$</span><span class='kw'>row</span>, <span class='kw'>dat</span><span class='op'>$</span><span class='kw'>col</span>),]
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>asreml</span>)
+<span class='kw'>dat.asr</span> <span class='op'>&lt;-</span> <span class='fu'>asreml</span>(<span class='kw'>yield</span> <span class='op'>~</span> <span class='kw'>gen</span> <span class='op'>+</span> <span class='kw'>nitro</span> <span class='op'>+</span> <span class='kw'>gen</span><span class='op'>:</span><span class='kw'>nitro</span>, random = <span class='op'>~</span> <span class='kw'>block</span> <span class='op'>+</span> <span class='kw'>block</span><span class='op'>:</span><span class='kw'>mplot</span>,
+                  residual = <span class='op'>~</span> <span class='fu'>ar1</span>(<span class='kw'>row</span>)<span class='op'>:</span><span class='fu'>id</span>(<span class='kw'>col</span>), data = <span class='kw'>dat</span>)
+<span class='kw'>oats.logl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/logl.test.html'>logl.test</a></span>(model.obj = <span class='kw'>dat.asr</span>, rand.terms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"block"</span>, <span class='st'>"block:mplot"</span>),
+                       resid.terms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ar1(row)"</span>))
+<span class='kw'>oats.logl</span>}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
