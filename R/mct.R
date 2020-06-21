@@ -75,6 +75,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
 
     pred.out <- predictmeans::predictmeans(model.obj, pred, mplot = FALSE)
+    pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
     pp <- pred.out$mean_table
     names(pp)[names(pp) == "Predicted means"] <- "predicted.value"
