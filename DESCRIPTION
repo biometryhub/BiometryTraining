@@ -29,13 +29,15 @@ Depends:
 Imports: 
     agricolae,
     asremlPlus,
+    dplyr (>= 1.0.0),
     ggplot2,
     lucid,
     multcompView,
     patchwork,
     predictmeans,
     RColorBrewer,
-    scales
+    scales,
+    tidyselect
 Suggests: 
     covr,
     testthat,
