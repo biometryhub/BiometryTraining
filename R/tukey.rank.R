@@ -12,8 +12,9 @@
 #'
 #' @return A data frame with the predicted means, standard errors and Tukey's rankings.
 #'
-tukey.rank <- function(Mean, SED, Names = NULL, crit.val)
-{
+tukey.rank <- function(Mean, SED, Names = NULL, crit.val) {
+    # .Deprecated(msg = "tuk.out has been replaced with mct.out and will be removed in a future version of this package.")
+
     # Label the means
     if (length(Names)==0)
         Names <- names(Mean)

@@ -51,9 +51,9 @@ wald(model.asr) #Nitrogen main effect significant
 pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
+
 tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
                     int.type = "ci", pred = "Nitrogen")
-
 tuk.rank}
 
 }

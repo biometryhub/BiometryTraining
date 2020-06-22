@@ -1,6 +1,6 @@
-#' Tukey's Honest Significant Difference test
+#' Tukey's Honest Significant Difference test (Deprecated)
 #'
-#' Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.
+#' This function has been replaced with [mct.out()] and will be removed in a future version of this package. Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.
 #'
 #'
 #' @param pred.obj An ASReml-R prediction object.
@@ -18,7 +18,8 @@
 #' @references <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023>
 #'
 #' @examples
-#' \dontrun{dat.asr <- asreml(Yield ~ Variety, random = ~ Block,
+#' \dontrun{
+#' dat.asr <- asreml(Yield ~ Variety, random = ~ Block,
 #' residual = ~ id(Plot), data = dat)
 #'
 #' dat.pred <- predict(dat.asr, classify = "Variety",
@@ -27,11 +28,22 @@
 #' pred.out <- tuk.out(model.obj = dat.asr, pred.obj = dat.pred,
 #'                    pred = "Variety", sig = 0.95)
 #'
-#' pred.out}
+#' pred.out
+#' }
+#'
+#' @name tuk.out-deprecated
+#' @usage tuk.out(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0)
+#' @seealso \code{\link{BiometryTraining-deprecated}}
+#' @keywords internal
+NULL
+
+#' @rdname BiometryTraining-deprecated
+#' @section `tuk.out`:
+#'  `tuk.out` has been superseded by [mct.out()].
 #'
 #' @export
 tuk.out <- function(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0){
-
+    .Deprecated(msg = "tuk.out has been replaced with mct.out and will be removed in a future version of this package.")
     # Can we get the pred argument directly from the model.obj?
 
     #For use with asreml 4+
