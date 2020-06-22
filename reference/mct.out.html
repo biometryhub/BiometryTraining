@@ -180,9 +180,9 @@
 <span class='kw'>pred.asr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='kw'>model.asr</span>, classify = <span class='st'>"Nitrogen"</span>, sed = <span class='fl'>TRUE</span>)
 
 <span class='co'>#Determine ranking and groups according to Tukey's Test</span>
-
 <span class='kw'>tuk.rank</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/mct.out.html'>mct.out</a></span>(model.obj = <span class='kw'>model.asr</span>, pred.obj = <span class='kw'>pred.asr</span>, sig = <span class='fl'>0.05</span>,
                     int.type = <span class='st'>"ci"</span>, pred = <span class='st'>"Nitrogen"</span>)
+
 <span class='kw'>tuk.rank</span>}
 </div></pre>
   </div>
