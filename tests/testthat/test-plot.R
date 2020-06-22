@@ -43,22 +43,22 @@ test_that("Plots output", {
     out5 <- plot.des(outdesign_split_plot,
                      nrows = 8,
                      ncols = 4,
-                     brows = 1,
-                     bcols = 2,
-                     rotation = 0,
-                     size = 4,
-                     margin = F,
-                     return.seed = T)
-
-    out6 <- plot.des(outdesign,
-                     nrows = 11,
-                     ncols = 4,
-                     brows = 11,
+                     brows = 8,
                      bcols = 1,
                      rotation = 0,
                      size = 4,
                      margin = F,
                      return.seed = T)
+
+    # out6 <- plot.des(outdesign,
+    #                  nrows = 11,
+    #                  ncols = 4,
+    #                  brows = 11,
+    #                  bcols = 1,
+    #                  rotation = 0,
+    #                  size = 4,
+    #                  margin = F,
+    #                  return.seed = T)
 
     # Run vdiffr::manage_cases() on the console
 

@@ -98,6 +98,6 @@ trt1 <- c("A", "B")
 trt2 <- 1:4
 rep <- 4
 outdesign <- design.split(trt1, trt2, r = rep)
-des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4)
+des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4, brows = 4, bcols = 2)
 
 }

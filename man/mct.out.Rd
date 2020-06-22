@@ -4,16 +4,26 @@
 \alias{mct.out}
 \title{Multiple Comparison Tests}
 \usage{
-mct.out(model.obj, pred.obj, sig = 0.95, pred, trans = NA, offset = NA)
+mct.out(
+  model.obj,
+  pred.obj,
+  sig = 0.05,
+  pred,
+  int.type = "ci",
+  trans = NA,
+  offset = NA
+)
 }
 \arguments{
 \item{model.obj}{An ASReml-R or aov model object.}
 
 \item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}.}
 
-\item{sig}{The confidence level, numeric between 0 and 1. Default is 0.95.}
+\item{sig}{The significance level, numeric between 0 and 1. Default is 0.05.}
 
 \item{pred}{Name of predictor variable as string.}
+
+\item{int.type}{The type of confidence interval to calculate. One of \code{ci}, \verb{1se} or \verb{2se}. Default is \code{ci}.}
 
 \item{trans}{Transformation that was applied to the response variable. One of \code{log}, \code{sqrt}, \code{logit} or \code{inverse}. Default is \code{NA}.}
 
@@ -30,20 +40,20 @@ A function for comparing and ranking predicted means with Tukey's Honest Signifi
 library(asreml)
 
 #Fit ASreml Model
-model.asr <- asreml(yield ~ Nitrogen*Variety,
-                    random =~Blocks + Blocks:Wplots,
-                    residual =~units,
-                    data=asreml::oats)
+model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
+                    random = ~ Blocks + Blocks:Wplots,
+                    residual = ~ units,
+                    data = asreml::oats)
 
 wald(model.asr) #Nitrogen main effect significant
 
 #Calculate predicted means
-pred.asr <- predict(model.asr, classify="Nitrogen",sed = TRUE)
+pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
-tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.95,
-                    pred = "Nitrogen")
 
+tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
+                    int.type = "ci", pred = "Nitrogen")
 tuk.rank}
 
 }
