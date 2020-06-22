@@ -69,6 +69,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          if(getRversion() < 3.6) remotes::install_version("pbkrtest", version = "0.4-7")
           remotes::install_deps(dependencies = TRUE)#, type = ifelse(Sys.info()['sysname']=="Windows", "binary", "source"))
           if(!require(vdiffr)) remotes::install_github("r-lib/vdiffr")
           if(!require(asremlPlus)) remotes::install_github("briencj/asremlPlus")
