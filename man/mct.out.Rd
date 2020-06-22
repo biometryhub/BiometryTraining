@@ -11,7 +11,8 @@ mct.out(
   pred,
   int.type = "ci",
   trans = NA,
-  offset = NA
+  offset = NA,
+  round = 2
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ mct.out(
 \item{trans}{Transformation that was applied to the response variable. One of \code{log}, \code{sqrt}, \code{logit} or \code{inverse}. Default is \code{NA}.}
 
 \item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}.}
+
+\item{round}{Controls rounding of decimal places in output. Default is 2 decimal places.}
 }
 \value{
 A list containing a data frame \code{pred.tab} consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
