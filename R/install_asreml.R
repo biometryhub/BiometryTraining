@@ -18,7 +18,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE) {
     }
     else {
         if(!quiet) {
-            message("\nNow installing ASreml-R. This may take some time, depending on internet speed...\n")
+            message("\nDownloading and installing ASreml-R. This may take some time, depending on internet speed...\n")
         }
         opts <- c("", "mac_3.5", "linux_3.5", "win_3.6", "mac_3.6", "linux_3.6",
                   "win_4.0", "mac_4.0", "linux_4.0")
@@ -51,6 +51,9 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE) {
         save_path <- paste0(tempdir(), "\\", filename)
 
         # Download the file
+        # pb <- progress::progress_bar$new(format = "Downloading ASreml-R: [:bar] :percent eta: :eta",
+        #                                  total = 100, clear = FALSE, width= 60)
+        # pb$tick(0)
         download.file(url, destfile = save_path, quiet = T)
 
         # Install asreml
