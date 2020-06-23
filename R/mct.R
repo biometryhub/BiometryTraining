@@ -9,11 +9,14 @@
 #' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
 #' @param trans Transformation that was applied to the response variable. One of `log`, `sqrt`, `logit` or `inverse`. Default is `NA`.
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
+#' @param round Controls rounding of decimal places in output. Default is 2 decimal places.
 #'
 #' @importFrom multcompView multcompLetters
 #' @importFrom agricolae LSD.test HSD.test
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
+#' @importFrom dplyr mutate across
+#' @importFrom tidyselect vars_select_helpers
 #'
 #' @return A list containing a data frame `pred.tab` consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
@@ -40,13 +43,19 @@
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", trans = NA, offset = NA){
+mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", trans = NA, offset = NA, round = 2){
 
   if(class(model.obj)[1] == "asreml"){
 
     #For use with asreml 4+
     if(packageVersion("asreml") > 4) {
       pp <- pred.obj$pvals
+
+      # Check that the prediction object was created with the sed matrix
+      if(is.null(pred.obj$sed)) {
+        stop("Prediction object (pred.obj) must be created with argument sed = TRUE.")
+      }
+
       sed <- pred.obj$sed
     }
 
@@ -69,6 +78,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
 
     pred.out <- predictmeans::predictmeans(model.obj, pred, mplot = FALSE)
+    pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
     pp <- pred.out$mean_table
     names(pp)[names(pp) == "Predicted means"] <- "predicted.value"
@@ -201,9 +211,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     }
 
   pp.tab$Names <- NULL
-
-
+  pp.tab <- dplyr::mutate(pp.tab, dplyr::across(tidyselect::vars_select_helpers$where(is.numeric), round, digits = round))
 
   return(pp.tab)
-
 }

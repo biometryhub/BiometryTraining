@@ -2,7 +2,7 @@ Type: Package
 Package: BiometryTraining
 Title: Functions to Assist Teaching Design and Analysis of
     Agronomic Experiments
-Version: 0.4.0
+Version: 0.5.0
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -29,13 +29,15 @@ Depends:
 Imports: 
     agricolae,
     asremlPlus,
+    dplyr (>= 1.0.0),
     ggplot2,
     lucid,
     multcompView,
     patchwork,
     predictmeans,
     RColorBrewer,
-    scales
+    scales,
+    tidyselect
 Suggests: 
     covr,
     testthat,
