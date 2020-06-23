@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -124,7 +124,8 @@
   <span class='kw'>pred</span>,
   int.type = <span class='st'>"ci"</span>,
   trans = <span class='fl'>NA</span>,
-  offset = <span class='fl'>NA</span>
+  offset = <span class='fl'>NA</span>,
+  round = <span class='fl'>2</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -157,6 +158,10 @@
     <tr>
       <th>offset</th>
       <td><p>Numeric offset applied to response variable prior to transformation. Default is <code>NA</code>.</p></td>
+    </tr>
+    <tr>
+      <th>round</th>
+      <td><p>Controls rounding of decimal places in output. Default is 2 decimal places.</p></td>
     </tr>
     </table>
 
