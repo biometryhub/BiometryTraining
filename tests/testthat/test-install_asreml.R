@@ -1,5 +1,6 @@
 test_that("Installation works", {
-  expect_equal(install_asreml(), TRUE)
+    skip_if(R.version$status == "devel")
+    expect_equal(install_asreml(), TRUE)
 })
 
 # test that
