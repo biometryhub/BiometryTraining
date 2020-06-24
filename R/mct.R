@@ -15,8 +15,6 @@
 #' @importFrom agricolae LSD.test HSD.test
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
-#' @importFrom dplyr mutate across
-#' @importFrom tidyselect vars_select_helpers
 #'
 #' @return A list containing a data frame `pred.tab` consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
@@ -211,7 +209,10 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     }
 
   pp.tab$Names <- NULL
-  pp.tab <- dplyr::mutate(pp.tab, dplyr::across(tidyselect::vars_select_helpers$where(is.numeric), round, digits = round))
+
+
+  # pp.tab <- dplyr::mutate(pp.tab, dplyr::across(where(is.numeric), base::round, digits = round))
+  pp.tab <- rapply(object = pp.tab, f = base::round, classes = "numeric", how = "replace", digits = round)
 
   return(pp.tab)
 }
