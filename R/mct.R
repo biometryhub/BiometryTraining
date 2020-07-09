@@ -3,7 +3,7 @@
 #' A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 #'
 #' @param model.obj An ASReml-R or aov model object.
-#' @param pred.obj An ASReml-R prediction object with `sed = TRUE`.
+#' @param pred.obj An ASReml-R prediction object with `sed = TRUE`. Not required for aov models, so set to `NA`.
 #' @param sig The significance level, numeric between 0 and 1. Default is 0.05.
 #' @param pred Name of predictor variable as string.
 #' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
