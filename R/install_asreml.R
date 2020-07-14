@@ -20,8 +20,6 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE) {
         if(!quiet) {
             message("\nDownloading and installing ASreml-R. This may take some time, depending on internet speed...\n")
         }
-        opts <- c("", "mac_3.5", "linux_3.5", "win_3.6", "mac_3.6", "linux_3.6",
-                  "win_4.0", "mac_4.0", "linux_4.0")
 
         os <- switch(Sys.info()[['sysname']],
                      Windows = "win",
@@ -35,6 +33,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE) {
                       win_3.5 = {"https://downloads.vsni.digital/56455950802590f3dff289abaffbbbac1633edb0/asreml_4.1.0.110.zip"},
                       win_3.6 = {"https://downloads.vsni.digital/4d3345fc4f8f72b379850da5ca56d39941bfec97/asreml_4.1.0.126.zip"},
                       win_4.0 = {"https://downloads.vsni.digital/a6e79b92e78e699132f22290fdd1bb3c2a32a2da/asreml_4.1.0.130.zip"},
+                      win_4.1 = {"https://downloads.vsni.digital/a6e79b92e78e699132f22290fdd1bb3c2a32a2da/asreml_4.1.0.130.zip"},
                       mac_3.5 = {"https://downloads.vsni.digital/359627667d5176fdd2a4b2a559527edde2c8cb5f/asreml_4.1.0.110.tar.gz"},
                       mac_3.6 = {"https://downloads.vsni.digital/ddc4fb9f1358683716ab699940848b3079bb87ef/asreml_4.1.0.126.tar.gz"},
                       mac_4.0 = {"https://downloads.vsni.digital/298da6f73fb86bca5bb0aab73b48bd63a975bd85/asreml-4.1.0.130-macOS-10.13.2-R4.0.tar.gz"},
