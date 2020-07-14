@@ -18,7 +18,7 @@ mct.out(
 \arguments{
 \item{model.obj}{An ASReml-R or aov model object.}
 
-\item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}.}
+\item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}. Not required for aov models, so set to \code{NA}.}
 
 \item{sig}{The significance level, numeric between 0 and 1. Default is 0.05.}
 

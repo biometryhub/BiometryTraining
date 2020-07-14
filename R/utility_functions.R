@@ -5,11 +5,9 @@
 #'
 #' @param x A function call with output to be suppressed.
 #'
-#' @return
+#' @return The invisible output of the function called.
 #'
 #' @keywords internal
-#'
-#' @examples
 #'
 quiet <- function(x) {
     sink(tempfile())
