@@ -16,10 +16,9 @@ Authors@R:
              family = "Conway",
              role = "ctb",
              email = "biometrytraining@adelaide.edu.au"))
-Description: BiometryTraining is a package created to give users
-    a simple way to install and access documentation about the functions
-    used and distributed as part of the SAGI-STH Biometrics Education
-    Initiative.
+Description: BiometryTraining gives users a simple way to install and 
+    access documentation about the functions used and distributed as 
+    part of the SAGI-STH Biometrics Education Initiative.
 License: MIT + file LICENSE
 URL: https://biometryhub.github.io/BiometryTraining/
 BugReports: 
