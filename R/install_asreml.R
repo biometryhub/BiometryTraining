@@ -1,24 +1,29 @@
 #' Install ASreml-R package
 #'
 #' @description A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
-#' @param library Library location to install ASReml-R. Uses first option in `.libPaths()` by default.
+#'
+#' @param library Library location to install ASreml-R. Uses first option in `.libPaths()` by default.
 #' @param quiet Should package be installed quietly? Default is `TRUE`.
+#' @param force Force ASreml-R to install, ignoring if it is already installed.
 #'
 #' @importFrom utils installed.packages install.packages download.file
+#' @importFrom httr GET write_disk progress
 #'
-#' @return Silently returns `TRUE` if asreml installed successfully or already present, `FALSE` otherwise. Also prints a confirmation message on success.
-#' @export
+#' @return Silently returns `TRUE` if `asreml` installed successfully or already present, `FALSE` otherwise. Also prints a confirmation message on success.
 #'
 #' @keywords internal
 #'
-install_asreml <- function(library = .libPaths()[1], quiet = FALSE) {
-    if("asreml" %in% installed.packages()[,1]) {
-        if(!quiet) message("ASreml-R already installed!")
+install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE) {
+    if("asreml" %in% installed.packages()[,1] & !force) {
+        if(!quiet) message("ASreml-R is already installed.")
         invisible(TRUE)
     }
     else {
         if(!quiet) {
             message("\nDownloading and installing ASreml-R. This may take some time, depending on internet speed...\n")
+        }
+        if(force & require(asreml, quietly = T)) {
+            detach(package:asreml, unload = T)
         }
 
         os <- switch(Sys.info()[['sysname']],
@@ -30,33 +35,40 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE) {
         ver <- paste(os, substr(getRversion(), 1, 3), sep = "_")
 
         url <- switch(ver,
-                      win_3.5 = {"https://downloads.vsni.digital/56455950802590f3dff289abaffbbbac1633edb0/asreml_4.1.0.110.zip"},
-                      win_3.6 = {"https://downloads.vsni.digital/4d3345fc4f8f72b379850da5ca56d39941bfec97/asreml_4.1.0.126.zip"},
-                      win_4.0 = {"https://downloads.vsni.digital/a6e79b92e78e699132f22290fdd1bb3c2a32a2da/asreml_4.1.0.130.zip"},
-                      win_4.1 = {"https://downloads.vsni.digital/a6e79b92e78e699132f22290fdd1bb3c2a32a2da/asreml_4.1.0.130.zip"},
-                      mac_3.5 = {"https://downloads.vsni.digital/359627667d5176fdd2a4b2a559527edde2c8cb5f/asreml_4.1.0.110.tar.gz"},
-                      mac_3.6 = {"https://downloads.vsni.digital/ddc4fb9f1358683716ab699940848b3079bb87ef/asreml_4.1.0.126.tar.gz"},
-                      mac_4.0 = {"https://downloads.vsni.digital/298da6f73fb86bca5bb0aab73b48bd63a975bd85/asreml-4.1.0.130-macOS-10.13.2-R4.0.tar.gz"},
-                      linux_3.5 = {"https://downloads.vsni.digital/ba605ae00be771c194a88d92f7bec9d6b4eeda72/asreml_Ubuntu-18_4.1.0.110.tar.gz"},
-                      linux_3.6 = {"https://downloads.vsni.digital/cb8170325391a0d7908e6055e80827b4e7ed13d3/asreml_Ubuntu-18_4.1.0.126.tar.gz"},
-                      linux_4.0 = {"https://downloads.vsni.digital/4749fd107b189d3d6ea52d39917eba660a3e542d/asreml-4.1.0.130-Ubuntu-18-R4.0.tar.gz"}
+                      win_3.5 = {"https://link.biometryhubwaite.com/win-35"},
+                      win_3.6 = {"https://link.biometryhubwaite.com/win-36"},
+                      win_4.0 = {"https://link.biometryhubwaite.com/win-40"},
+                      win_4.1 = {"https://link.biometryhubwaite.com/win-41"},
+                      mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
+                      mac_3.6 = {"https://link.biometryhubwaite.com/mac-36"},
+                      mac_4.0 = {"https://link.biometryhubwaite.com/mac-40"},
+                      linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
+                      linux_3.6 = {"https://link.biometryhubwaite.com/linux-36"},
+                      linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"}
         )
 
-        # Find position of the last / in the URL
-        pos <- regexpr("\\/[^\\/]*$", url)
+        #Create a temporary file to save the package
+        tmp_file <- tempfile("Asreml_")
+
+        # Use httr to GET the file which also gives the expanded URL
+        response <- httr::GET(url, httr::write_disk(tmp_file), if(!quiet){httr::progress()})
+
+        # Find position of the last / in the expanded URL
+        pos <- regexpr("\\/[^\\/]*$", response$url)
 
         # Extract everything after the last / as the filename
-        filename <- substr(url, pos+1, nchar(url))
-        save_path <- paste0(tempdir(), "\\", filename)
+        filename <- substr(response$url, pos+1, nchar(response$url))
+        new_file <- paste0(tempdir(), ifelse(os == "win", "\\", "/"), filename)
+        file.rename(tmp_file, new_file)
 
         # Download the file
         # pb <- progress::progress_bar$new(format = "Downloading ASreml-R: [:bar] :percent eta: :eta",
-        #                                  total = 100, clear = FALSE, width= 60)
-        # pb$tick(0)
-        download.file(url, destfile = save_path, quiet = T)
+        #                                 total = 100, clear = FALSE, width= 60)
+        # pb$tick()
+        # download.file(url, destfile = save_path, quiet = quiet)
 
         # Install asreml
-        install.packages(save_path, lib = library, repos = NULL, quiet = T)
+        install.packages(new_file, lib = library, repos = NULL, quiet = quiet)
 
         if("asreml" %in% installed.packages()[,1]) {
             if(!quiet) message("ASreml-R successfully installed!")
@@ -67,4 +79,8 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE) {
         }
         invisible(TRUE)
     }
+}
+
+update_asreml <- function(...) {
+  install_asreml(..., force=T)
 }
