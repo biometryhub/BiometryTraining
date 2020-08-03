@@ -9,6 +9,8 @@
 #' @importFrom utils installed.packages install.packages download.file
 #' @importFrom httr GET write_disk progress
 #'
+#' @export
+#'
 #' @return Silently returns `TRUE` if `asreml` installed successfully or already present, `FALSE` otherwise. Also prints a confirmation message on success.
 #'
 #' @keywords internal
@@ -22,8 +24,8 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     if(!quiet) {
       message("\nDownloading and installing ASreml-R. This may take some time, depending on internet speed...\n")
     }
-    if(force & require(asreml, quietly = T)) {
-      detach(package:asreml, unload = T)
+    if(force & "asreml" %in% (.packages())) {
+      detach("package:asreml", unload = TRUE)
     }
 
     os <- switch(Sys.info()[['sysname']],

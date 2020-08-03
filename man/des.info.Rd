@@ -65,17 +65,19 @@ If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be
 library(agricolae)
 
 # Completely Randomised Design
-trt <- c(1,5,10,20)
+trt <- c(1, 5, 10, 20)
 rep <- 5
-outdesign <- design.crd(trt = trt, r=rep, seed = 42)
+outdesign <- design.crd(trt = trt, r = rep, seed = 42)
 des.out <- des.info(design.obj = outdesign, nrows = 4, ncols = 5)
 
 # Randomised Complete Block Design
 trt <- LETTERS[1:11]
 rep <- 4
 outdesign <- design.rcbd(trt = trt, r = rep, seed = 42)
-des.out <- des.info(design.obj = outdesign, nrows = 11,
-                    ncols = 4, brows = 11, bcols = 1)
+des.out <- des.info(
+  design.obj = outdesign, nrows = 11,
+  ncols = 4, brows = 11, bcols = 1
+)
 
 # Latin Square Design
 trt <- c("S1", "S2", "S3", "S4")
@@ -99,5 +101,4 @@ trt2 <- 1:4
 rep <- 4
 outdesign <- design.split(trt1, trt2, r = rep)
 des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4, brows = 4, bcols = 2)
-
 }

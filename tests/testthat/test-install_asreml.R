@@ -7,3 +7,7 @@ test_that("Installation works", {
 #   it installs
 #   it returns TRUE when already installed
 #   quiet works
+#   force works if already installed
+#   force and quiet combinations work
+#   Installing to a different location works
+#   Update function works

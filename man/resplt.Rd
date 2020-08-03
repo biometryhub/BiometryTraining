@@ -18,5 +18,4 @@ Produces plots of residuals for assumption checking of an ANOVA or asremlR model
 \examples{
 dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
 resplt(dat.aov)
-
 }
