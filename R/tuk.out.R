@@ -19,14 +19,20 @@
 #'
 #' @examples
 #' \dontrun{
-#' dat.asr <- asreml(Yield ~ Variety, random = ~ Block,
-#' residual = ~ id(Plot), data = dat)
+#' dat.asr <- asreml(Yield ~ Variety,
+#'   random = ~Block,
+#'   residual = ~ id(Plot), data = dat
+#' )
 #'
-#' dat.pred <- predict(dat.asr, classify = "Variety",
-#'                     sed = TRUE)
+#' dat.pred <- predict(dat.asr,
+#'   classify = "Variety",
+#'   sed = TRUE
+#' )
 #'
-#' pred.out <- tuk.out(model.obj = dat.asr, pred.obj = dat.pred,
-#'                    pred = "Variety", sig = 0.95)
+#' pred.out <- tuk.out(
+#'   model.obj = dat.asr, pred.obj = dat.pred,
+#'   pred = "Variety", sig = 0.95
+#' )
 #'
 #' pred.out
 #' }
@@ -42,66 +48,67 @@ NULL
 #'  `tuk.out` has been superseded by [mct.out()].
 #'
 #' @export
-tuk.out <- function(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0){
-    .Deprecated(msg = "tuk.out has been replaced with mct.out and will be removed in a future version of this package.")
-    # Can we get the pred argument directly from the model.obj?
+tuk.out <- function(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0) {
+  .Deprecated(msg = "tuk.out has been replaced with mct.out and will be removed in a future version of this package.")
+  # Can we get the pred argument directly from the model.obj?
 
-    #For use with asreml 4+
-    if(packageVersion("asreml")>4) {
-        pp <- pred.obj$pvals
-        sed <- pred.obj$sed
-    }
-    #For use with asreml 3.0
-    else {
-        pp <- pred.obj$predictions$`pvals`
-        sed <- pred.obj$predictions$sed
-    }
+  # For use with asreml 4+
+  if (packageVersion("asreml") > 4) {
+    pp <- pred.obj$pvals
+    sed <- pred.obj$sed
+  }
+  # For use with asreml 3.0
+  else {
+    pp <- pred.obj$predictions$`pvals`
+    sed <- pred.obj$predictions$sed
+  }
 
-    pp <- pp[!is.na(pp$predicted.value),]
-    pp$status <- NULL
+  pp <- pp[!is.na(pp$predicted.value), ]
+  pp$status <- NULL
 
-    ifelse(grep(":", pred),
-           pp$Names <- apply(pp[,unlist(strsplit(pred, ":"))], 1, paste, collapse = "-"),
-           pp$Names <- pp[[pred]])
+  ifelse(grep(":", pred),
+    pp$Names <- apply(pp[, unlist(strsplit(pred, ":"))], 1, paste, collapse = "-"),
+    pp$Names <- pp[[pred]]
+  )
 
-    zz <- as.numeric(row.names(pp[!is.na(pp$predicted.value),]))
-    dat.tuk <- tukey.rank(
-        Mean = pp$predicted.value,
-        Names = as.character(pp$Names),
-        SED = sed[zz,zz],
-        crit.val = 1/sqrt(2)*qtukey(sig, nrow(pp), model.obj$nedf))
-    dat.tuk <- dat.tuk[order(dat.tuk$Names),]
-    ###### To strip the white spaces ########
-    dat.tuk$groups <- as.character(dat.tuk$groups)
-    for(j in 1:length(dat.tuk$groups)){
-        aa <- dat.tuk$groups[j]
-        bb <- gsub(" ","", aa, fixed=TRUE)
-        dat.tuk$groups[j] <- bb
-    }
-    names(dat.tuk)[2] <- "predicted.value"
-    pp <- merge(pp, dat.tuk)
-    pp$Names <- NULL
+  zz <- as.numeric(row.names(pp[!is.na(pp$predicted.value), ]))
+  dat.tuk <- tukey.rank(
+    Mean = pp$predicted.value,
+    Names = as.character(pp$Names),
+    SED = sed[zz, zz],
+    crit.val = 1 / sqrt(2) * qtukey(sig, nrow(pp), model.obj$nedf)
+  )
+  dat.tuk <- dat.tuk[order(dat.tuk$Names), ]
+  ###### To strip the white spaces ########
+  dat.tuk$groups <- as.character(dat.tuk$groups)
+  for (j in 1:length(dat.tuk$groups)) {
+    aa <- dat.tuk$groups[j]
+    bb <- gsub(" ", "", aa, fixed = TRUE)
+    dat.tuk$groups[j] <- bb
+  }
+  names(dat.tuk)[2] <- "predicted.value"
+  pp <- merge(pp, dat.tuk)
+  pp$Names <- NULL
 
-    pp$ci <- qt(p = 1-(1-sig)/2, model.obj$nedf) * pp$std.error
-    pp$low <- pp$predicted.value - pp$ci
-    pp$up <- pp$predicted.value + pp$ci
+  pp$ci <- qt(p = 1 - (1 - sig) / 2, model.obj$nedf) * pp$std.error
+  pp$low <- pp$predicted.value - pp$ci
+  pp$up <- pp$predicted.value + pp$ci
 
-    if(trans == "log"){
-        pp$PredictedValue <- exp(pp$predicted.value) - offset
-        pp$ApproxSE <- abs(pp$std.error)*pp$PredictedValue
-        pp$ci <- qt(p = 1-(1-sig)/2, model.obj$nedf) * pp$std.error
-        pp$low <- exp(pp$predicted.value - pp$ci) - offset
-        pp$up <- exp(pp$predicted.value + pp$ci) - offset
-    }
+  if (trans == "log") {
+    pp$PredictedValue <- exp(pp$predicted.value) - offset
+    pp$ApproxSE <- abs(pp$std.error) * pp$PredictedValue
+    pp$ci <- qt(p = 1 - (1 - sig) / 2, model.obj$nedf) * pp$std.error
+    pp$low <- exp(pp$predicted.value - pp$ci) - offset
+    pp$up <- exp(pp$predicted.value + pp$ci) - offset
+  }
 
-    if(trans == "sqrt"){
-        pp$PredictedValue <- (pp$predicted.value)^2 - offset
-        pp$ApproxSE <- 2*abs(pp$std.error)*pp$PredictedValue
-        pp$ci <- qt(p = 1-(1-sig)/2, model.obj$nedf) * pp$std.error
-        pp$low <- (pp$predicted.value - pp$ci)^2 - offset
-        pp$up <- (pp$predicted.value + pp$ci)^2 - offset
-    }
+  if (trans == "sqrt") {
+    pp$PredictedValue <- (pp$predicted.value)^2 - offset
+    pp$ApproxSE <- 2 * abs(pp$std.error) * pp$PredictedValue
+    pp$ci <- qt(p = 1 - (1 - sig) / 2, model.obj$nedf) * pp$std.error
+    pp$low <- (pp$predicted.value - pp$ci)^2 - offset
+    pp$up <- (pp$predicted.value + pp$ci)^2 - offset
+  }
 
-    return(pp)
+  return(pp)
 }
-
