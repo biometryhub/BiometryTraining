@@ -35,8 +35,7 @@ Imports:
     patchwork,
     predictmeans,
     RColorBrewer,
-    scales,
-    tidyselect
+    scales
 Suggests: 
     covr,
     testthat,
