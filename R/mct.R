@@ -109,7 +109,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     names(diffs) <- m
 
 
-    ll <- multcompView::multcompLetters3(x = diffs, z = pred, y = predicted.value, data = pp)
+    ll <- multcompView::multcompLetters3(pred, "predicted.value", diffs, pp)
 
     rr <- data.frame(groups = ll$Letters)
     rr$Names <- row.names(rr)
