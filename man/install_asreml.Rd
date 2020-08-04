@@ -4,7 +4,12 @@
 \alias{install_asreml}
 \title{Install ASreml-R package}
 \usage{
-install_asreml(library = .libPaths()[1], quiet = FALSE, force = FALSE)
+install_asreml(
+  library = .libPaths()[1],
+  quiet = FALSE,
+  force = FALSE,
+  keep_file = FALSE
+)
 }
 \arguments{
 \item{library}{Library location to install ASreml-R. Uses first option in \code{.libPaths()} by default.}
@@ -14,9 +19,8 @@ install_asreml(library = .libPaths()[1], quiet = FALSE, force = FALSE)
 \item{force}{Force ASreml-R to install, ignoring if it is already installed.}
 }
 \value{
-Silently returns \code{TRUE} if \code{asreml} installed successfully or already present, \code{FALSE} otherwise. Also prints a confirmation message on success.
+Silently returns \code{TRUE} if \code{asreml} installed successfully or already present, \code{FALSE} otherwise. Optionally prints a confirmation message on success.
 }
 \description{
 A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
 }
-\keyword{internal}

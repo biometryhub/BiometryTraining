@@ -3,19 +3,18 @@
 #' @description A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
 #'
 #' @param library Library location to install ASreml-R. Uses first option in `.libPaths()` by default.
-#' @param quiet Should package be installed quietly? Default is `TRUE`.
-#' @param force Force ASreml-R to install, ignoring if it is already installed.
+#' @param quiet Logical (default `FALSE`). Should package be installed quietly?
+#' @param force Logical (default `FALSE`). Force ASreml-R to install. Useful for upgrading if it is already installed.
+#' @param keep_file Should the downloaded asreml package file be kept? Default is `FALSE`. `TRUE` downloads to current directory. Can also provide a file path to save to another directory.
 #'
 #' @importFrom utils installed.packages install.packages download.file
 #' @importFrom httr GET write_disk progress
 #'
 #' @export
 #'
-#' @return Silently returns `TRUE` if `asreml` installed successfully or already present, `FALSE` otherwise. Also prints a confirmation message on success.
+#' @return Silently returns `TRUE` if `asreml` installed successfully or already present, `FALSE` otherwise. Optionally prints a confirmation message on success.
 #'
-#' @keywords internal
-#'
-install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE) {
+install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
   if("asreml" %in% installed.packages()[,1] & !force) {
     if(!quiet) message("ASreml-R is already installed.")
     invisible(TRUE)
@@ -49,28 +48,58 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
                   linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"}
     )
 
-    #Create a temporary file to save the package
-    tmp_file <- tempfile("Asreml_")
+    # if(!force) {
+    # first check if file already exists, both in the current directory and temp folder
+    temp_files <- list.files(tempdir())
+    dir_files <- list.files(recursive = T)
+    check_temp <- startsWith(temp_files, prefix = "asreml")
+    check_dir <- startsWith(dir_files, prefix = "asreml")
 
-    # Use httr to GET the file which also gives the expanded URL
-    response <- httr::GET(url, httr::write_disk(tmp_file), if(!quiet){httr::progress()})
+    if(any(check_temp)) {
+      filename <- temp_files[which(check_temp)]
+    }
+    else if(any(startsWith(dir_files, prefix = "asreml"))) {
+      filename <- dir_files[which(check_dir)]
+    }
+    # }
+    else { # Force download file
+      #Create a temporary file to save the package
+      save_file <- tempfile("asreml_")
 
-    # Find position of the last / in the expanded URL
-    pos <- regexpr("\\/[^\\/]*$", response$url)
+      # Use httr to GET the file which also gives the expanded URL
+      response <- httr::GET(url = url, httr::write_disk(save_file), if(!quiet){httr::progress()})
 
-    # Extract everything after the last / as the filename
-    filename <- substr(response$url, pos+1, nchar(response$url))
-    new_file <- paste0(tempdir(), ifelse(os == "win", "\\", "/"), filename)
-    file.rename(tmp_file, new_file)
+      # Find position of the last / in the expanded URL
+      pos <- regexpr("\\/[^\\/]*$", response$url)
 
-    # Download the file
-    # pb <- progress::progress_bar$new(format = "Downloading ASreml-R: [:bar] :percent eta: :eta",
-    #                                 total = 100, clear = FALSE, width= 60)
-    # pb$tick()
-    # download.file(url, destfile = save_path, quiet = quiet)
+      # Extract everything after the last / as the filename
+      filename <- substr(response$url, pos+1, nchar(response$url))
+    }
+
+    # If keep_file is true, copy asreml to current directory
+    if(keep_file) {
+      install_file <- filename
+      file.copy(save_file, filename)
+    }
+    else if(!keep_file) {
+      install_file <- paste0(tempdir(), "/", filename)
+      file.rename(save_file, install_file)
+    }
+    else { # Assume keep_file is a path
+      if(!dir.exists(keep_file)) {
+        stop("Directory provided in keep_path does not exist. Please provide a path in the keep_file argument to save the package to.")
+      }
+      install_file <- paste0(keep_file, "/", filename)
+      file.copy(save_file, install_file)
+    }
+
+    # If forcing installation, remove old version to prevent errors on installation
+    if("asreml" %in% installed.packages()[,1] & force) {
+      suppressMessages(remove.packages("asreml"))
+    }
 
     # Install asreml
-    install.packages(new_file, lib = library, repos = NULL, quiet = quiet)
+    install.packages(install_file, repos = NULL, quiet = quiet)
 
     if("asreml" %in% installed.packages()[,1]) {
       if(!quiet) message("ASreml-R successfully installed!")
@@ -83,6 +112,11 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
   }
 }
 
+#' Update asreml package
+#'
+#' @param ... other arguments passed to [BiometryTraining::install_asreml()]
+#'
+#' @export
 update_asreml <- function(...) {
-  install_asreml(..., force=T)
+  install_asreml(force = T, ...)
 }
