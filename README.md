@@ -64,6 +64,24 @@ headers</span>
     `install.packages("rlang")` and then try installing
     `BiometryTraining` again.
 
+  - If you are trying to install this on R 3.5.x, you should note three
+    things:
+    
+    1.  It *is* possible to install this package on R 3.5.x as of 4
+        August 2020, but…
+    2.  You should upgrade to a newer version of R as soon as possible,
+        as it is no longer tested.
+    3.  This package won’t install properly until you have *downgraded*
+        a dependency that requires R 3.6+. To do that, use the following
+        code:
+
+<!-- end list -->
+
+``` r
+remotes::install_version("pbkrtest", version = "0.4-7")
+devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+```
+
 ## Using the package
 
 Load the package and start using it with:
