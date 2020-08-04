@@ -14,9 +14,11 @@ install_asreml(
 \arguments{
 \item{library}{Library location to install ASreml-R. Uses first option in \code{.libPaths()} by default.}
 
-\item{quiet}{Should package be installed quietly? Default is \code{TRUE}.}
+\item{quiet}{Logical (default \code{FALSE}). Should package be installed quietly?}
 
-\item{force}{Force ASreml-R to install, ignoring if it is already installed.}
+\item{force}{Logical (default \code{FALSE}). Force ASreml-R to install. Useful for upgrading if it is already installed.}
+
+\item{keep_file}{Should the downloaded asreml package file be kept? Default is \code{FALSE}. \code{TRUE} downloads to current directory. Can also provide a file path to save to another directory.}
 }
 \value{
 Silently returns \code{TRUE} if \code{asreml} installed successfully or already present, \code{FALSE} otherwise. Optionally prints a confirmation message on success.

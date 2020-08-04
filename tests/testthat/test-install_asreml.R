@@ -27,9 +27,18 @@ test_that("force argument makes package install", {
   expect_message(install_asreml(force = T), "ASreml-R successfully installed!")
 })
 
+
+# install_asreml(force = T, keep_file = T) # Doesn't exist
+# install_asreml(force = T, keep_file = T) # Exists in tempdir
+# install_asreml(force = T, keep_file = T) # Exists in current dir, not in temp
+# install_asreml(force = T, keep_file = "path") # Exists in temp dir, copy to path
+# install_asreml(force = T, keep_file = "path") # Exists in current dir, copy to path
+
+
 # test that
 #   force and quiet combinations work
 #   Installing to a different location works
 #   Keep file works - current folder and alternative
+#   Keep file works if file already exists in temp and current
 #   Providing a non-existant directory fails
 #   Update function works
