@@ -27,6 +27,11 @@ test_that("force argument makes package install", {
   expect_message(install_asreml(force = T), "ASreml-R successfully installed!")
 })
 
+test_that("force argument makes package install", {
+  skip_if(R.version$status == "devel")
+  expect_message(install_asreml(force = T, keep_file = T), "ASreml-R successfully installed!")
+  expect_file(install_asreml(force = T, keep_file = T))
+})
 
 # install_asreml(force = T, keep_file = T) # Doesn't exist
 # install_asreml(force = T, keep_file = T) # Exists in tempdir

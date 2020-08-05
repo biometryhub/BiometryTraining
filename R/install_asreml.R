@@ -58,10 +58,10 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
     # if(!force) {
     # first check if file already exists, both in the current directory and temp folder
-    temp_files <- list.files(tempdir())
-    dir_files <- list.files()
-    check_temp <- startsWith(temp_files, prefix = "asreml")
-    check_dir <- startsWith(dir_files, prefix = "asreml")
+    temp_files <- list.files(tempdir(), pattern = "asreml")
+    dir_files <- list.files(pattern = "asreml")
+    # check_temp <- startsWith(temp_files, prefix = "asreml")
+    # check_dir <- startsWith(dir_files, prefix = "asreml")
 
     if(any(check_temp)) {
       filename <- temp_files[which(check_temp)]
