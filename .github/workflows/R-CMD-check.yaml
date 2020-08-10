@@ -41,7 +41,7 @@ jobs:
 
       - name: Install data.table dependencies
         if: runner.os == 'Linux'
-        run: sudo -s apt install zliblg-dev pkg-config
+        run: sudo -s apt-get install zlib1g-dev pkg-config
 
       - uses: r-lib/actions/setup-r@master
         with:
