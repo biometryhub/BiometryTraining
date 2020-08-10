@@ -39,10 +39,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install data.table dependencies
-        if: runner.os == 'Linux'
-        run: sudo -s apt-get install zlib1g-dev pkg-config
-
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
