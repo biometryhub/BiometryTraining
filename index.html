@@ -99,15 +99,27 @@
 <p><span style="color: red;">Please download and install Rtools custom from <a href="http://cran.r-project.org/bin/windows/Rtools/" class="uri">http://cran.r-project.org/bin/windows/Rtools/</a>.</span></p>
 <p><span style="color: red;">Warning messages:<br> 1: In untar2(tarfile, files, list, exdir) :<br> skipping pax global extended headers<br> 2: In untar2(tarfile, files, list, exdir) :<br> skipping pax global extended headers</span></p>
 <ul>
-<li>If you receive an error that the package could not install because <code>rlang</code> or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (<code><a href="https://rdrr.io/r/utils/remove.packages.html">remove.packages("rlang")</a></code>). Then reinstall with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("rlang")</a></code> and then try installing <code>BiometryTraining</code> again.</li>
+<li><p>If you receive an error that the package could not install because <code>rlang</code> or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (<code><a href="https://rdrr.io/r/utils/remove.packages.html">remove.packages("rlang")</a></code>). Then reinstall with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("rlang")</a></code> and then try installing <code>BiometryTraining</code> again.</p></li>
+<li>
+<p>If you are trying to install this on R 3.5.x, you should note three things:</p>
+<ol>
+<li>It <em>is</em> possible to install this package on R 3.5.x as of 4 August 2020, but…</li>
+<li>You should upgrade to a newer version of R as soon as possible, as it is no longer tested.</li>
+<li>This package won’t install properly until you have <em>downgraded</em> a dependency that requires R 3.6+. To do that, use the following code:</li>
+</ol>
+</li>
 </ul>
+<!-- end list --><div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html">install_version</a></span>(<span class="st">"pbkrtest"</span>, version = <span class="st">"0.4-7"</span>)
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"biometryhub/BiometryTraining"</span>, upgrade = <span class="fl">FALSE</span>)
+</pre></div>
 </div>
 </div>
 <div id="using-the-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-the-package" class="anchor"></a>Using the package</h2>
 <p>Load the package and start using it with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
+<div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://biometryhub.github.io/BiometryTraining">BiometryTraining</a></span>)
 </pre></div>
 </div>
@@ -149,8 +161,8 @@
 <li><a href="https://codecov.io/gh/biometryhub/BiometryTraining?branch=master"><img src="https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://github.com/biometryhub/BiometryTraining/actions"><img src="https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://cran.r-project.org/"><img src="https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg" alt="minimal R version"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/Package%20version-0.4.0-orange.svg?style=flat-square" alt="packageversion"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2020--05--14-yellowgreen.svg" alt="Last-changedate"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/Package%20version-0.5.2-orange.svg?style=flat-square" alt="packageversion"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2020--08--04-yellowgreen.svg" alt="Last-changedate"></a></li>
 <li><a href="http://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="Licence"></a></li>
 </ul>
 </div>
