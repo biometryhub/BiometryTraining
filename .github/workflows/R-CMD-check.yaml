@@ -67,6 +67,7 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+          sudo -s apt install zliblg-dev pkg-config
 
       - name: Install dependencies
         run: |
