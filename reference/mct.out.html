@@ -117,7 +117,7 @@
     <p>A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/mct.out.html'>mct.out</a></span>(
+    <pre class="usage"><span class='fu'>mct.out</span>(
   <span class='kw'>model.obj</span>,
   <span class='kw'>pred.obj</span>,
   sig = <span class='fl'>0.05</span>,
@@ -125,7 +125,8 @@
   int.type = <span class='st'>"ci"</span>,
   trans = <span class='fl'>NA</span>,
   offset = <span class='fl'>NA</span>,
-  round = <span class='fl'>2</span>
+  round = <span class='fl'>2</span>,
+  order = <span class='st'>"ascending"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -163,6 +164,10 @@
       <th>round</th>
       <td><p>Controls rounding of decimal places in output. Default is 2 decimal places.</p></td>
     </tr>
+    <tr>
+      <th>order</th>
+      <td><p>Order the output. Options are <code>'ascending'</code> (the default), or <code>'descending'</code>. Alternative options that are accepted are <code>increasing</code> and <code>decreasing</code>. Partial matching of text is performed, allowing entry of <code>'desc'</code> for example.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -185,7 +190,7 @@
 <span class='kw'>pred.asr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='kw'>model.asr</span>, classify = <span class='st'>"Nitrogen"</span>, sed = <span class='fl'>TRUE</span>)
 
 <span class='co'>#Determine ranking and groups according to Tukey's Test</span>
-<span class='kw'>tuk.rank</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/mct.out.html'>mct.out</a></span>(model.obj = <span class='kw'>model.asr</span>, pred.obj = <span class='kw'>pred.asr</span>, sig = <span class='fl'>0.05</span>,
+<span class='kw'>tuk.rank</span> <span class='op'>&lt;-</span> <span class='fu'>mct.out</span>(model.obj = <span class='kw'>model.asr</span>, pred.obj = <span class='kw'>pred.asr</span>, sig = <span class='fl'>0.05</span>,
                     int.type = <span class='st'>"ci"</span>, pred = <span class='st'>"Nitrogen"</span>)
 
 <span class='kw'>tuk.rank</span>}

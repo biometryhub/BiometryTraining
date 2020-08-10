@@ -114,10 +114,10 @@
     </div>
 
     <div class="ref-description">
-    <p>This function has been replaced with <code><a href='https://rdrr.io/pkg/BiometryTraining/man/mct.out.html'>mct.out()</a></code> and will be removed in a future version of this package. Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.</p>
+    <p>This function has been replaced with <code><a href='mct.out.html'>mct.out()</a></code> and will be removed in a future version of this package. Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/BiometryTraining-deprecated.html'>tuk.out</a></span>(<span class='kw'>pred.obj</span>, <span class='kw'>model.obj</span>, <span class='kw'>pred</span>, sig = <span class='fl'>0.95</span>, trans = <span class='fl'>FALSE</span>, offset = <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='BiometryTraining-deprecated.html'>tuk.out</a></span>(<span class='kw'>pred.obj</span>, <span class='kw'>model.obj</span>, <span class='kw'>pred</span>, sig = <span class='fl'>0.95</span>, trans = <span class='fl'>FALSE</span>, offset = <span class='fl'>0</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,7 +156,7 @@
     <p><a href='http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023'>http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/BiometryTraining/man/BiometryTraining-deprecated.html'>BiometryTraining-deprecated</a></code></p></div>
+    <div class='dont-index'><p><code><a href='BiometryTraining-deprecated.html'>BiometryTraining-deprecated</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
@@ -166,7 +166,7 @@ residual = <span class='op'>~</span> <span class='fu'>id</span>(<span class='kw'
 <span class='kw'>dat.pred</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='kw'>dat.asr</span>, classify = <span class='st'>"Variety"</span>,
                     sed = <span class='fl'>TRUE</span>)
 
-<span class='kw'>pred.out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/BiometryTraining-deprecated.html'>tuk.out</a></span>(model.obj = <span class='kw'>dat.asr</span>, pred.obj = <span class='kw'>dat.pred</span>,
+<span class='kw'>pred.out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='BiometryTraining-deprecated.html'>tuk.out</a></span>(model.obj = <span class='kw'>dat.asr</span>, pred.obj = <span class='kw'>dat.pred</span>,
                    pred = <span class='st'>"Variety"</span>, sig = <span class='fl'>0.95</span>)
 
 <span class='kw'>pred.out</span>

@@ -117,7 +117,7 @@
     <p>Log-likelihood test for comparing terms in ASreml-R models</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/logl.test.html'>logl.test</a></span>(<span class='kw'>model.obj</span>, <span class='kw'>rand.terms</span>, <span class='kw'>resid.terms</span>)</pre>
+    <pre class="usage"><span class='fu'>logl.test</span>(<span class='kw'>model.obj</span>, <span class='kw'>rand.terms</span>, <span class='kw'>resid.terms</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,7 +155,7 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>asreml</span>)
 <span class='kw'>dat.asr</span> <span class='op'>&lt;-</span> <span class='fu'>asreml</span>(<span class='kw'>yield</span> <span class='op'>~</span> <span class='kw'>gen</span> <span class='op'>+</span> <span class='kw'>nitro</span> <span class='op'>+</span> <span class='kw'>gen</span><span class='op'>:</span><span class='kw'>nitro</span>, random = <span class='op'>~</span> <span class='kw'>block</span> <span class='op'>+</span> <span class='kw'>block</span><span class='op'>:</span><span class='kw'>mplot</span>,
                   residual = <span class='op'>~</span> <span class='fu'>ar1</span>(<span class='kw'>row</span>)<span class='op'>:</span><span class='fu'>id</span>(<span class='kw'>col</span>), data = <span class='kw'>dat</span>)
-<span class='kw'>oats.logl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/BiometryTraining/man/logl.test.html'>logl.test</a></span>(model.obj = <span class='kw'>dat.asr</span>, rand.terms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"block"</span>, <span class='st'>"block:mplot"</span>),
+<span class='kw'>oats.logl</span> <span class='op'>&lt;-</span> <span class='fu'>logl.test</span>(model.obj = <span class='kw'>dat.asr</span>, rand.terms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"block"</span>, <span class='st'>"block:mplot"</span>),
                        resid.terms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ar1(row)"</span>))
 <span class='kw'>oats.logl</span>}
 </div></pre>
