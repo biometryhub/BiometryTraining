@@ -18,11 +18,14 @@ install_asreml(
 
 \item{force}{Logical (default \code{FALSE}). Force ASreml-R to install. Useful for upgrading if it is already installed.}
 
-\item{keep_file}{Should the downloaded asreml package file be kept? Default is \code{FALSE}. \code{TRUE} downloads to current directory. Can also provide a file path to save to another directory.}
+\item{keep_file}{Should the downloaded asreml package file be kept? Default is \code{FALSE}. \code{TRUE} downloads to current directory. A file path can also be provided to save to another directory. See \code{Details} for more information.}
 }
 \value{
 Silently returns \code{TRUE} if \code{asreml} installed successfully or already present, \code{FALSE} otherwise. Optionally prints a confirmation message on success.
 }
 \description{
 A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
+}
+\details{
+The package file is downloaded from a shortlink, and if \code{keep_file} is \code{TRUE}, the package archive file will be saved in the current directory. If a valid path is provided in \code{keep_file}, the file will be saved to that path, but no directory will be created. If keep_file does not specify an existing, valid path, an error will be shown.
 }

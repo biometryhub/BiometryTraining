@@ -5,7 +5,9 @@
 #' @param library Library location to install ASreml-R. Uses first option in `.libPaths()` by default.
 #' @param quiet Logical (default `FALSE`). Should package be installed quietly?
 #' @param force Logical (default `FALSE`). Force ASreml-R to install. Useful for upgrading if it is already installed.
-#' @param keep_file Should the downloaded asreml package file be kept? Default is `FALSE`. `TRUE` downloads to current directory. Can also provide a file path to save to another directory.
+#' @param keep_file Should the downloaded asreml package file be kept? Default is `FALSE`. `TRUE` downloads to current directory. A file path can also be provided to save to another directory. See `Details` for more information.
+#'
+#' @details The package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but no directory will be created. If keep_file does not specify an existing, valid path, an error will be shown.
 #'
 #' @importFrom utils installed.packages install.packages download.file remove.packages
 #' @importFrom httr GET write_disk progress
@@ -49,26 +51,24 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     )
 
     # Cases:
-    # File exists temp
+    # File exists in temp
     #   Keep file -> move to dir if true, path if char, nothing if false
-    # File exists dir
+    # File exists in wd
     #   Keep file -> move to path if char, otherwise nothing
     # File doesn't exist
     #   Download to temp, rename. copy to dir if keep = T, path if keep = path, rename otherwise
 
-    # if(!force) {
     # first check if file already exists, both in the current directory and temp folder
     temp_files <- list.files(tempdir(), pattern = "asreml")
     dir_files <- list.files(pattern = "asreml")
-    # check_temp <- startsWith(temp_files, prefix = "asreml")
-    # check_dir <- startsWith(dir_files, prefix = "asreml")
 
-    if(any(check_temp)) {
-      filename <- temp_files[which(check_temp)]
+    if(length(temp_files) > 0) {
+      filename <- temp_files
       save_file <- paste0(tempdir(), "/", filename)
 
       if(keep_file == TRUE) {
         install_file <- filename
+        # Copy to current working directory
         file.copy(save_file, filename)
       }
 
@@ -78,6 +78,8 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         }
         else {
           install_file <- paste0(keep_file, "/", filename)
+          # If path has a trailing slash remove it
+          install_file <- gsub("//", "/", install_file)
           file.copy(save_file, install_file)
         }
       }
@@ -85,8 +87,8 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         install_file <- save_file
       }
     }
-    else if(any(startsWith(dir_files, prefix = "asreml"))) {
-      filename <- dir_files[which(check_dir)]
+    else if(length(dir_files) > 0) {
+      filename <- dir_files
       save_file <- filename
 
       if(is.character(keep_file)) {
@@ -94,10 +96,9 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
           stop("Directory provided in keep_path does not exist. Please provide a path in the keep_file argument to save the package to.")
         }
         else {
-          # Check if there's a trailing slash or not
-            install_file <- paste0(keep_file,
-                                   ifelse(substr(keep_file, nchar(keep_file), nchar(keep_file)) == "/", "", "/"),
-                                   filename)
+          install_file <- paste0(keep_file, "/", filename)
+          # If path had a trailing slash remove it
+          install_file <- gsub("//", "/", install_file)
           file.copy(save_file, install_file)
           file.remove(save_file)
         }
@@ -106,7 +107,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         install_file <- filename
       }
     }
-
+    # Can't find file, download
     else {
       #Create a temporary file to save the package
       save_file <- tempfile("asreml_")
@@ -140,13 +141,13 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
       }
     }
 
-    # If forcing installation, remove old version to avoid errors on installation
+    # If forcing installation, remove existing version to avoid errors on installation
     if("asreml" %in% installed.packages()[,1] & force) {
       suppressMessages(remove.packages("asreml"))
     }
 
     # Install asreml
-    install.packages(install_file, repos = NULL, quiet = quiet)
+    install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "Linux", "source", "binary"))
 
     if("asreml" %in% installed.packages()[,1]) {
       if(!quiet) message("ASreml-R successfully installed!")
