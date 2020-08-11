@@ -10,6 +10,7 @@
 #' @param trans Transformation that was applied to the response variable. One of `log`, `sqrt`, `logit` or `inverse`. Default is `NA`.
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
 #' @param round Controls rounding of decimal places in output. Default is 2 decimal places.
+#' @param order Order the output. Options are `'ascending'` (the default), or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
 #'
 #' @importFrom multcompView multcompLetters
 #' @importFrom agricolae LSD.test HSD.test
@@ -41,7 +42,7 @@
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", trans = NA, offset = NA, round = 2){
+mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", trans = NA, offset = NA, round = 2, order = "ascending"){
 
   if(class(model.obj)[1] == "asreml"){
 
@@ -210,6 +211,22 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
   pp.tab$Names <- NULL
 
+  ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing'))
+
+  if(ordering == "ascending" | ordering == "increasing") {
+    # Set ordering to FALSE to set decreasing = F in order function
+    ordering <- FALSE
+  }
+  else if(ordering == "descending" | ordering == "decreasing") {
+    # Set ordering to TRUE to set decreasing = T in order function
+    ordering <- TRUE
+  }
+  else {
+    stop("order must be one of ascending, descending, increasing or decreasing")
+  }
+
+  pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = ordering),]
+  pp.tab$groups <- pp.tab$groups[order(pp.tab$groups)]
 
   # pp.tab <- dplyr::mutate(pp.tab, dplyr::across(where(is.numeric), base::round, digits = round))
   pp.tab <- rapply(object = pp.tab, f = base::round, classes = "numeric", how = "replace", digits = round)

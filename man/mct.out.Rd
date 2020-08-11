@@ -12,7 +12,8 @@ mct.out(
   int.type = "ci",
   trans = NA,
   offset = NA,
-  round = 2
+  round = 2,
+  order = "ascending"
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ mct.out(
 \item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}.}
 
 \item{round}{Controls rounding of decimal places in output. Default is 2 decimal places.}
+
+\item{order}{Order the output. Options are \code{'ascending'} (the default), or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
 }
 \value{
 A list containing a data frame \code{pred.tab} consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
