@@ -40,6 +40,10 @@ logl.test <- function(model.obj, rand.terms, resid.terms) {
 
   # Find terms on the boundary
 
+  # Supress ASreml output
+  sink(tempfile())
+  on.exit(sink())
+
   bnd <- names(lucid::vc(model.obj)$bound[lucid::vc(model.obj)$bound == "B"])
 
   if (any(grepl("!cor", bnd))) {
