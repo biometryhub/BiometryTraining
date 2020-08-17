@@ -44,7 +44,7 @@ logl.test <- function(model.obj, rand.terms, resid.terms) {
   sink(tempfile())
   on.exit(sink())
 
-  bnd <- names(lucid::vc(model.obj)$bound[lucid::vc(model.obj)$bound == "B"])
+  bnd <- lucid::vc(model.obj)$effect[(lucid::vc(model.obj)$bound)== "B"]
 
   if (any(grepl("!cor", bnd))) {
     trm <- substring(
