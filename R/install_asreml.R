@@ -79,7 +79,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         else {
           install_file <- paste0(keep_file, "/", filename)
           # If path has a trailing slash remove it
-          install_file <- gsub("//", "/", install_file)
+          # install_file <- gsub("//", "/", install_file)
           file.copy(save_file, install_file)
         }
       }
@@ -98,7 +98,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         else {
           install_file <- paste0(keep_file, "/", filename)
           # If path had a trailing slash remove it
-          install_file <- gsub("//", "/", install_file)
+          # install_file <- gsub("//", "/", install_file)
           file.copy(save_file, install_file)
           file.remove(save_file)
         }
