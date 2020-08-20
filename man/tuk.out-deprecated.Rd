@@ -27,14 +27,20 @@ This function has been replaced with \code{\link[=mct.out]{mct.out()}} and will 
 }
 \examples{
 \dontrun{
-dat.asr <- asreml(Yield ~ Variety, random = ~ Block,
-residual = ~ id(Plot), data = dat)
+dat.asr <- asreml(Yield ~ Variety,
+  random = ~Block,
+  residual = ~ id(Plot), data = dat
+)
 
-dat.pred <- predict(dat.asr, classify = "Variety",
-                    sed = TRUE)
+dat.pred <- predict(dat.asr,
+  classify = "Variety",
+  sed = TRUE
+)
 
-pred.out <- tuk.out(model.obj = dat.asr, pred.obj = dat.pred,
-                   pred = "Variety", sig = 0.95)
+pred.out <- tuk.out(
+  model.obj = dat.asr, pred.obj = dat.pred,
+  pred = "Variety", sig = 0.95
+)
 
 pred.out
 }

@@ -2,7 +2,7 @@ Type: Package
 Package: BiometryTraining
 Title: Functions to Assist Teaching Design and Analysis of
     Agronomic Experiments
-Version: 0.5.1
+Version: 0.5.2
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -16,10 +16,9 @@ Authors@R:
              family = "Conway",
              role = "ctb",
              email = "biometrytraining@adelaide.edu.au"))
-Description: BiometryTraining is a package created to give users
-    a simple way to install and access documentation about the functions
-    used and distributed as part of the SAGI-STH Biometrics Education
-    Initiative.
+Description: BiometryTraining gives users a simple way to install and 
+    access documentation about the functions used and distributed as 
+    part of the SAGI-STH Biometrics Education Initiative.
 License: MIT + file LICENSE
 URL: https://biometryhub.github.io/BiometryTraining/
 BugReports: 
@@ -30,13 +29,13 @@ Imports:
     agricolae,
     asremlPlus,
     ggplot2,
+    httr,
     lucid,
     multcompView,
     patchwork,
     predictmeans,
     RColorBrewer,
-    scales,
-    tidyselect
+    scales
 Suggests: 
     covr,
     testthat,

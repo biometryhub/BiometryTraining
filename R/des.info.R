@@ -28,17 +28,19 @@
 #' library(agricolae)
 #'
 #' # Completely Randomised Design
-#' trt <- c(1,5,10,20)
+#' trt <- c(1, 5, 10, 20)
 #' rep <- 5
-#' outdesign <- design.crd(trt = trt, r=rep, seed = 42)
+#' outdesign <- design.crd(trt = trt, r = rep, seed = 42)
 #' des.out <- des.info(design.obj = outdesign, nrows = 4, ncols = 5)
 #'
 #' # Randomised Complete Block Design
 #' trt <- LETTERS[1:11]
 #' rep <- 4
 #' outdesign <- design.rcbd(trt = trt, r = rep, seed = 42)
-#' des.out <- des.info(design.obj = outdesign, nrows = 11,
-#'                     ncols = 4, brows = 11, bcols = 1)
+#' des.out <- des.info(
+#'   design.obj = outdesign, nrows = 11,
+#'   ncols = 4, brows = 11, bcols = 1
+#' )
 #'
 #' # Latin Square Design
 #' trt <- c("S1", "S2", "S3", "S4")
@@ -62,60 +64,59 @@
 #' rep <- 4
 #' outdesign <- design.split(trt1, trt2, r = rep)
 #' des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4, brows = 4, bcols = 2)
-#'
 #' @export
 #'
-des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(design.obj$parameters$design, "_design"), plottype = "pdf", return.seed = TRUE, quiet = FALSE, ...){
+des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(design.obj$parameters$design, "_design"), plottype = "pdf", return.seed = TRUE, quiet = FALSE, ...) {
 
-    # Error checking of inputs
+  # Error checking of inputs
 
-    # Check design type is supported
-    if(!design.obj$parameters$design %in% c("crd", "rcbd", "lsd", "factorial", "split")) {
-        stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
+  # Check design type is supported
+  if (!design.obj$parameters$design %in% c("crd", "rcbd", "lsd", "factorial", "split")) {
+    stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
+  }
+
+  # Check brows and bcols supplied if necessary
+  if (design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
+    stop("Design has blocks so brows and bcols must be supplied.")
+  }
+  else if (design.obj$parameters$design == "factorial") {
+    if (design.obj$parameters$applied == "rcbd" &
+      anyNA(c(brows, bcols))) {
+      stop("Design has blocks so brows and bcols must be supplied.")
     }
+  }
 
-    # Check brows and bcols supplied if necessary
-    if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
-        stop("Design has blocks so brows and bcols must be supplied.")
-    }
-    else if(design.obj$parameters$design == "factorial") {
-        if(design.obj$parameters$applied == "rcbd" &
-           anyNA(c(brows, bcols))) {
-            stop("Design has blocks so brows and bcols must be supplied.")
-        }
-    }
+  info <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed = return.seed)
+  info$satab <- satab(design.obj)
 
-    info <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed = return.seed)
-    info$satab <- satab(design.obj)
+  if (!quiet) {
+    cat(info$satab)
+    plot(info$plot.des)
+  }
 
-    if(!quiet) {
-        cat(info$satab)
-        plot(info$plot.des)
+  if (!is.logical(save)) {
+    output <- tolower(save)
+    if (output == "plot") {
+      ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
     }
+    else if (output == "workbook") {
+      write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+    }
+    else if (output == "both") {
+      ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+      write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+    }
+    else if (output == "none") {
+      # Do nothing
+    }
+    else {
+      stop("save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
+    }
+  }
+  else if (save) {
+    ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+    write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+  }
 
-    if(!is.logical(save)) {
-        output <- tolower(save)
-        if(output == "plot") {
-            ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-        }
-        else if(output == "workbook") {
-            write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
-        }
-        else if(output == "both") {
-            ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-            write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
-        }
-        else if(output == "none") {
-            #Do nothing
-        }
-        else {
-            stop("save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
-        }
-    }
-    else if(save) {
-        ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-        write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
-    }
-
-    return(info)
+  return(info)
 }

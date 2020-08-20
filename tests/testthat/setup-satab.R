@@ -1,8 +1,8 @@
 library(agricolae)
 # Completely Randomised Design
-trt <- c(1,5,10,20)
+trt <- c(1, 5, 10, 20)
 rep <- 5
-outdesign_crd_satab <- design.crd(trt = trt, r=rep, seed = 42)
+outdesign_crd_satab <- design.crd(trt = trt, r = rep, seed = 42)
 
 # Randomised Complete Block Design
 trt <- LETTERS[1:11]
