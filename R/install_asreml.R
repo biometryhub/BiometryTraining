@@ -140,7 +140,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     }
 
     # Install asreml
-    install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "Linux", "source", "binary"))
+    install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
 
     if("asreml" %in% installed.packages()[,1]) {
       if(!quiet) message("ASreml-R successfully installed!")
