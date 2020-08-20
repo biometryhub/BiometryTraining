@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
       </span>
     </div>
 
@@ -160,14 +160,20 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>dat.asr</span> <span class='op'>&lt;-</span> <span class='fu'>asreml</span>(<span class='kw'>Yield</span> <span class='op'>~</span> <span class='kw'>Variety</span>, random = <span class='op'>~</span> <span class='kw'>Block</span>,
-residual = <span class='op'>~</span> <span class='fu'>id</span>(<span class='kw'>Plot</span>), data = <span class='kw'>dat</span>)
+<span class='kw'>dat.asr</span> <span class='op'>&lt;-</span> <span class='fu'>asreml</span>(<span class='kw'>Yield</span> <span class='op'>~</span> <span class='kw'>Variety</span>,
+  random = <span class='op'>~</span><span class='kw'>Block</span>,
+  residual = <span class='op'>~</span> <span class='fu'>id</span>(<span class='kw'>Plot</span>), data = <span class='kw'>dat</span>
+)
 
-<span class='kw'>dat.pred</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='kw'>dat.asr</span>, classify = <span class='st'>"Variety"</span>,
-                    sed = <span class='fl'>TRUE</span>)
+<span class='kw'>dat.pred</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='kw'>dat.asr</span>,
+  classify = <span class='st'>"Variety"</span>,
+  sed = <span class='fl'>TRUE</span>
+)
 
-<span class='kw'>pred.out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='BiometryTraining-deprecated.html'>tuk.out</a></span>(model.obj = <span class='kw'>dat.asr</span>, pred.obj = <span class='kw'>dat.pred</span>,
-                   pred = <span class='st'>"Variety"</span>, sig = <span class='fl'>0.95</span>)
+<span class='kw'>pred.out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='BiometryTraining-deprecated.html'>tuk.out</a></span>(
+  model.obj = <span class='kw'>dat.asr</span>, pred.obj = <span class='kw'>dat.pred</span>,
+  pred = <span class='st'>"Variety"</span>, sig = <span class='fl'>0.95</span>
+)
 
 <span class='kw'>pred.out</span>
 }

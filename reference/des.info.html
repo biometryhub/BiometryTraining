@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
       </span>
     </div>
 
@@ -207,9 +207,9 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tarwi.lamolina.edu.pe/~fmendiburu'>agricolae</a></span>)
 
 <span class='co'># Completely Randomised Design</span>
-<span class='kw'>trt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>5</span>,<span class='fl'>10</span>,<span class='fl'>20</span>)
+<span class='kw'>trt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>20</span>)
 <span class='kw'>rep</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
-<span class='kw'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.crd.html'>design.crd</a></span>(trt = <span class='kw'>trt</span>, r=<span class='kw'>rep</span>, seed = <span class='fl'>42</span>)
+<span class='kw'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.crd.html'>design.crd</a></span>(trt = <span class='kw'>trt</span>, r = <span class='kw'>rep</span>, seed = <span class='fl'>42</span>)
 <span class='kw'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span>(design.obj = <span class='kw'>outdesign</span>, nrows = <span class='fl'>4</span>, ncols = <span class='fl'>5</span>)</div><div class='output co'>#&gt; Source of Variation                     df
 #&gt;  =============================================
 #&gt;  trt                                     3
@@ -220,8 +220,10 @@
 <span class='kw'>trt</span> <span class='op'>&lt;-</span> <span class='kw'>LETTERS</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>11</span>]
 <span class='kw'>rep</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
 <span class='kw'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.rcbd.html'>design.rcbd</a></span>(trt = <span class='kw'>trt</span>, r = <span class='kw'>rep</span>, seed = <span class='fl'>42</span>)
-<span class='kw'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span>(design.obj = <span class='kw'>outdesign</span>, nrows = <span class='fl'>11</span>,
-                    ncols = <span class='fl'>4</span>, brows = <span class='fl'>11</span>, bcols = <span class='fl'>1</span>)</div><div class='output co'>#&gt; Source of Variation                     df
+<span class='kw'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span>(
+  design.obj = <span class='kw'>outdesign</span>, nrows = <span class='fl'>11</span>,
+  ncols = <span class='fl'>4</span>, brows = <span class='fl'>11</span>, bcols = <span class='fl'>1</span>
+)</div><div class='output co'>#&gt; Source of Variation                     df
 #&gt;  =============================================
 #&gt;  Block stratum                           3
 #&gt;  ---------------------------------------------
@@ -281,7 +283,7 @@
 #&gt;           trt1:trt2                          3
 #&gt;           Subplot Residual                   18
 #&gt;  ==================================================
-#&gt;  Total                                        31</div><div class='img'><img src='des.info-6.png' alt='' width='700' height='433' /></div><div class='input'></div></pre>
+#&gt;  Total                                        31</div><div class='img'><img src='des.info-6.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
