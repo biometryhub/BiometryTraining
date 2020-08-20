@@ -139,6 +139,19 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
       suppressMessages(remove.packages("asreml"))
     }
 
+    # Check dependencies are installed first
+
+    deps <- c("data.table", "ggplot2", "grid", "methods", "jsonlite")
+    for(i in seq_along(deps)) {
+      if(deps[i] %!in% installed.packages()[,1]) {
+        install.packages(deps[i])
+      }
+    }
+
+    if("asreml" %in% installed.packages()[,1] & force) {
+      suppressMessages(remove.packages("asreml"))
+    }
+
     # Install asreml
     install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
 
