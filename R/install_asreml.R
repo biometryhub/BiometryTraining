@@ -50,17 +50,10 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
                   linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"}
     )
 
-    # Cases:
-    # File exists in temp
-    #   Keep file -> move to dir if true, path if char, nothing if false
-    # File exists in wd
-    #   Keep file -> move to path if char, otherwise nothing
-    # File doesn't exist
-    #   Download to temp, rename. copy to dir if keep = T, path if keep = path, rename otherwise
-
-    # first check if file already exists, both in the current directory and temp folder
-    temp_files <- list.files(tempdir(), pattern = "asreml")
-    dir_files <- list.files(pattern = "asreml")
+    # First check if file already exists, both in the current directory and temp folder
+    # Need to create a regex to check it's the correct file extension, so tests ignore .R files
+    temp_files <- list.files(tempdir(), pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
+    dir_files <- list.files(pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
 
     if(length(temp_files) > 0) {
       filename <- temp_files
