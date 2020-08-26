@@ -79,10 +79,12 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the latest version of BiometryTraining from <a href="https://github.com/">GitHub</a> with:</p>
+<p>We previously recommended installing the package from GitHub, but it is now easier to use the Biometry Hub <a href="https://biometryhub.github.io/drat/">drat repository</a>. Use the following code to install this package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co">if</span>(<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st"><a href="https://devtools.r-lib.org">"devtools"</a></span>)) <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>) 
-<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"biometryhub/BiometryTraining"</span>, upgrade = <span class="fl">FALSE</span>)
+<span class="co">if</span>(<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"drat"</span>)) <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"drat"</span>) 
+<span class="kw">drat</span>::<span class="fu">addRepo</span>(<span class="st">"biometryhub"</span>)
+<span class="co"># Install as normal</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiometryTraining"</span>)
 </pre></div>
 <div id="troubleshooting-installation" class="section level3">
 <h3 class="hasAnchor">
@@ -100,9 +102,9 @@
 <ul>
 <li><p>If you receive an error that the package could not install because <code>rlang</code> or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (<code><a href="https://rdrr.io/r/utils/remove.packages.html">remove.packages("rlang")</a></code>). Then reinstall with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("rlang")</a></code> and then try installing <code>BiometryTraining</code> again.</p></li>
 <li>
-<p>If you are trying to install this on R 3.5.x, you should note three things:</p>
+<p>If you are trying to install this on R version 3.5.x (or earlier), you should note three things:</p>
 <ol>
-<li>It <em>is</em> possible to install this package on R 3.5.x as of 4 August 2020, but…</li>
+<li>It <em>is</em> possible to install this package on R 3.5.x (and possibly earlier versions) as of 4 August 2020, but…</li>
 <li>You should upgrade to a newer version of R as soon as possible, as it is no longer tested.</li>
 <li>This package won’t install properly until you have <em>downgraded</em> a dependency that requires R 3.6+. To do that, use the following code:</li>
 </ol>
@@ -161,7 +163,7 @@
 <li><a href="https://github.com/biometryhub/BiometryTraining/actions"><img src="https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://cran.r-project.org/"><img src="https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg" alt="minimal R version"></a></li>
 <li><a href="/commits/master"><img src="https://img.shields.io/badge/Package%20version-0.5.2-orange.svg?style=flat-square" alt="packageversion"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2020--08--20-yellowgreen.svg" alt="Last-changedate"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2020--08--26-yellowgreen.svg" alt="Last-changedate"></a></li>
 <li><a href="http://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="Licence"></a></li>
 </ul>
 </div>
