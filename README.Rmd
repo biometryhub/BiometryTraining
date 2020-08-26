@@ -36,11 +36,13 @@ The goal of BiometryTraining is to provide functions to aid in the Design and An
 
 ## Installation
 
-You can install the latest version of BiometryTraining from [GitHub](https://github.com/) with:
+We previously recommended installing the package from GitHub, but it is now easier to use the Biometry Hub [drat repository](https://biometryhub.github.io/drat/). Use the following code to install this package:
 
 ```{r eval=F}
-if(!require("devtools")) install.packages("devtools") 
-devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+if(!require("drat")) install.packages("drat") 
+drat::addRepo("biometryhub")
+# Install as normal
+install.packages("BiometryTraining")
 ```
 
 
@@ -65,8 +67,8 @@ devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 
 - If you receive an error that the package could not install because `rlang` or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (`remove.packages("rlang")`). Then reinstall with `install.packages("rlang")` and then try installing `BiometryTraining` again.
 
-- If you are trying to install this on R 3.5.x, you should note three things:
-  1. It *is* possible to install this package on R 3.5.x as of 4 August 2020, but...
+- If you are trying to install this on R version 3.5.x (or earlier), you should note three things:
+  1. It *is* possible to install this package on R 3.5.x (and possibly earlier versions) as of 4 August 2020, but...
   1. You should upgrade to a newer version of R as soon as possible, as it is no longer tested.
   2. This package won't install properly until you have _downgraded_ a dependency that requires R 3.6+. To do that, use the following code:
   
