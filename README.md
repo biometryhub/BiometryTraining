@@ -16,7 +16,7 @@ status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/ba
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
 [![packageversion](https://img.shields.io/badge/Package%20version-0.5.2-orange.svg?style=flat-square)](/commits/master)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2020--08--20-yellowgreen.svg)](/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2020--08--26-yellowgreen.svg)](/commits/master)
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
 <!-- badges: end -->
 
@@ -27,12 +27,16 @@ concepts.
 
 ## Installation
 
-You can install the latest version of BiometryTraining from
-[GitHub](https://github.com/) with:
+We previously recommended installing the package from GitHub, but it is
+now easier to use the Biometry Hub [drat
+repository](https://biometryhub.github.io/drat/). Use the following code
+to install this package:
 
 ``` r
-if(!require("devtools")) install.packages("devtools") 
-devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+if(!require("drat")) install.packages("drat") 
+drat::addRepo("biometryhub")
+# Install as normal
+install.packages("BiometryTraining")
 ```
 
 ### Troubleshooting Installation
@@ -64,11 +68,11 @@ headers</span>
     `install.packages("rlang")` and then try installing
     `BiometryTraining` again.
 
-  - If you are trying to install this on R 3.5.x, you should note three
-    things:
+  - If you are trying to install this on R version 3.5.x (or earlier),
+    you should note three things:
     
-    1.  It *is* possible to install this package on R 3.5.x as of 4
-        August 2020, but…
+    1.  It *is* possible to install this package on R 3.5.x (and
+        possibly earlier versions) as of 4 August 2020, but…
     2.  You should upgrade to a newer version of R as soon as possible,
         as it is no longer tested.
     3.  This package won’t install properly until you have *downgraded*
