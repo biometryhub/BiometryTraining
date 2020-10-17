@@ -1,8 +1,8 @@
 #' Log-likelihood test for comparing terms in ASreml-R models
 #'
 #' @param model.obj An ASreml-R model object
-#' @param rand.terms Random terms from the model
-#' @param resid.terms Residual terms from the model
+#' @param rand.terms Random terms from the model. Default is NULL.
+#' @param resid.terms Residual terms from the model. Default is NULL.
 #'
 #' @importFrom lucid vc
 #' @importFrom asremlPlus REMLRT
@@ -34,7 +34,7 @@
 #' oats.logl
 #' }
 #'
-logl.test <- function(model.obj, rand.terms, resid.terms) {
+logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
 
   # dat.asr <- NULL
 
