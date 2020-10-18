@@ -4,14 +4,14 @@
 \alias{logl.test}
 \title{Log-likelihood test for comparing terms in ASreml-R models}
 \usage{
-logl.test(model.obj, rand.terms, resid.terms)
+logl.test(model.obj, rand.terms = NULL, resid.terms = NULL)
 }
 \arguments{
 \item{model.obj}{An ASreml-R model object}
 
-\item{rand.terms}{Random terms from the model}
+\item{rand.terms}{Random terms from the model. Default is NULL.}
 
-\item{resid.terms}{Residual terms from the model}
+\item{resid.terms}{Residual terms from the model. Default is NULL.}
 }
 \value{
 A dataframe containing the results of the test.
