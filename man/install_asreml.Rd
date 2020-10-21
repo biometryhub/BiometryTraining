@@ -29,3 +29,13 @@ A helper function for installing the ASreml-R package, intended to reduce the di
 \details{
 The package file is downloaded from a shortlink, and if \code{keep_file} is \code{TRUE}, the package archive file will be saved in the current directory. If a valid path is provided in \code{keep_file}, the file will be saved to that path, but no directory will be created. If keep_file does not specify an existing, valid path, an error will be shown.
 }
+\examples{
+\dontrun{
+# Example 1: download and install asreml
+install_asreml()
+
+# Example 2: install asreml and save file for later
+install_asreml(keep_file = TRUE)
+}
+
+}

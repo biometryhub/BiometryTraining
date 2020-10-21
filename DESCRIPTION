@@ -29,6 +29,7 @@ Imports:
     agricolae,
     asremlPlus,
     drat,
+    forcats,
     ggplot2,
     httr,
     lucid,
@@ -41,6 +42,7 @@ Suggests:
     covr,
     testthat,
     vdiffr
+Enhances: asreml
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

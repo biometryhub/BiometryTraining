@@ -16,8 +16,9 @@
 #' @importFrom agricolae LSD.test HSD.test
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
+#' @importFrom forcats fct_inorder
 #'
-#' @return A list containing a data frame `pred.tab` consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
+#' @return A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
 #' @examples
 #' \dontrun{
@@ -253,7 +254,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
   i <- 1
   for(i in 1:trtindex){
-  pp.tab[[trtnam[i]]] <- forcats::fct_inorder(pp.tab[[trtnam[i]]])
+    pp.tab[[trtnam[i]]] <- forcats::fct_inorder(pp.tab[[trtnam[i]]])
   }
 
   # rounding to the correct number of decimal places

@@ -36,7 +36,7 @@ mct.out(
 \item{order}{Order of the letters in the groups output. Options are \code{'ascending'} (the default), or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
 }
 \value{
-A list containing a data frame \code{pred.tab} consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
+A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 }
 \description{
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
