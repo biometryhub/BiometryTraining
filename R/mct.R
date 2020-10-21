@@ -75,7 +75,7 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     SED <- sed[zz,zz]
     Mean <- pp$predicted.value
     Names <-  as.character(pp$Names)
-    ndf <- dendf$denDF[grep(pred, dendf$Source) & nchar(pred) == nchar(dendf$Source)]
+    ndf <- dendf$denDF[grepl(pred, dendf$Source) & nchar(pred) == nchar(dendf$Source)]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
   } else {
 
