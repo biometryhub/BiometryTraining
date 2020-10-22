@@ -9,9 +9,9 @@ persist(..., cran = "https://cloud.r-project.org/", profile_location = NULL)
 \arguments{
 \item{...}{Other repositories to add. These can be listed using \code{name = URL} syntax, including drat repositories.}
 
-\item{profile_location}{A path to a .Rprofile file specified by the user.}
+\item{cran}{Default CRAN repository to add. A complete list of CRAN repositories can be found at \url{https://cran.r-project.org/mirrors.html}.}
 
-\item{CRAN}{Default CRAN repository to add. A complete list of CRAN repositories can be found at \url{https://cran.r-project.org/mirrors.html}.}
+\item{profile_location}{A path to a .Rprofile file specified by the user.}
 }
 \description{
 Add the drat repository for the Biometry Hub packages to .Rprofile to enable easy update and installation even after restating R.

@@ -2,7 +2,7 @@
 #'
 #' Add the drat repository for the Biometry Hub packages to .Rprofile to enable easy update and installation even after restating R.
 #'
-#' @param CRAN Default CRAN repository to add. A complete list of CRAN repositories can be found at [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html).
+#' @param cran Default CRAN repository to add. A complete list of CRAN repositories can be found at [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html).
 #' @param ... Other repositories to add. These can be listed using `name = URL` syntax, including drat repositories.
 #' @param profile_location A path to a .Rprofile file specified by the user.
 #'
