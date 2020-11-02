@@ -42,11 +42,10 @@ persist <- function(..., cran = "https://cloud.r-project.org/", profile_location
         # Rstudio has set CRAN, overwrite
         r["CRAN"] <- repos["CRAN"]
         attributes(r)$RStudio <- NULL
-
     }
 
     # Check if drat biometry hub repo already added
-    if(!any(grepl('^(?!#)+\\s*drat::addRepo\\(\"biometryhub\"\\)', readLines(rps[1]), perl = T))) {
+    if(!any(grepl('^(?!#)+\\s*drat::addRepo\\(\"biometryhub\"\\)', readLines(rps[1]), perl = T)) & is.na(r["biometryhub"])) {
         r["biometryhub"] <- "https://biometryhub.github.io/drat/"
     }
 
