@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Produces a skeletal ANOVA table — satab • BiometryTraining</title>
+<title>Persist the Biometry Hub drat repo across sessions — persist • BiometryTraining</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Produces a skeletal ANOVA table — satab" />
-<meta property="og:description" content="Produces a skeletal ANOVA table" />
+<meta property="og:title" content="Persist the Biometry Hub drat repo across sessions — persist" />
+<meta property="og:description" content="Add the drat repository for the Biometry Hub packages to .Rprofile to enable easy update and installation even after restating R." />
 
 
 
@@ -102,29 +102,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Produces a skeletal ANOVA table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/biometryhub/BiometryTraining/blob/master/R/satab.R'><code>R/satab.R</code></a></small>
-    <div class="hidden name"><code>satab.Rd</code></div>
+    <h1>Persist the Biometry Hub drat repo across sessions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/biometryhub/BiometryTraining/blob/master/R/persist.R'><code>R/persist.R</code></a></small>
+    <div class="hidden name"><code>persist.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Produces a skeletal ANOVA table</p>
+    <p>Add the drat repository for the Biometry Hub packages to .Rprofile to enable easy update and installation even after restating R.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>satab</span><span class='op'>(</span><span class='va'>design.obj</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>persist</span><span class='op'>(</span><span class='va'>...</span>, cran <span class='op'>=</span> <span class='st'>"https://cloud.r-project.org/"</span>, profile_location <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>design.obj</th>
-      <td><p>An <code>agricolae</code> design object.</p></td>
+      <th>...</th>
+      <td><p>Other repositories to add. These can be listed using <code>name = URL</code> syntax, including drat repositories.</p></td>
+    </tr>
+    <tr>
+      <th>cran</th>
+      <td><p>Default CRAN repository to add. A complete list of CRAN repositories can be found at <a href='https://cran.r-project.org/mirrors.html'>https://cran.r-project.org/mirrors.html</a>.</p></td>
+    </tr>
+    <tr>
+      <th>profile_location</th>
+      <td><p>A path to a .Rprofile file specified by the user.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Prints skeletal ANOVA table to console output.</p>
+    <p>The standard locations of .Rprofile files are searched (see <code><a href='https://rdrr.io/r/base/Startup.html'>base::Startup()</a></code>) (mostly).</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

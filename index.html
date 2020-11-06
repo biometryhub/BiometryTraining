@@ -35,18 +35,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -80,12 +74,11 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>We previously recommended installing the package from GitHub, but it is now easier to use the Biometry Hub <a href="https://biometryhub.github.io/drat/">drat repository</a>. Use the following code to install this package:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co">if</span>(<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"drat"</span>)) <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"drat"</span>) 
-<span class="kw">drat</span>::<span class="fu">addRepo</span>(<span class="st">"biometryhub"</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://dirk.eddelbuettel.com/code/drat.html">"drat"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"drat"</span><span class="op">)</span> 
+<span class="fu">drat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/drat/man/addRepo.html">addRepo</a></span><span class="op">(</span><span class="st">"biometryhub"</span><span class="op">)</span>
 <span class="co"># Install as normal</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiometryTraining"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiometryTraining"</span><span class="op">)</span></code></pre></div>
 <div id="troubleshooting-installation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#troubleshooting-installation" class="anchor"></a>Troubleshooting Installation</h3>
@@ -110,19 +103,17 @@
 </ol>
 </li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html">install_version</a></span>(<span class="st">"pbkrtest"</span>, version = <span class="st">"0.4-7"</span>)
-<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"biometryhub/BiometryTraining"</span>, upgrade = <span class="fl">FALSE</span>)
-</pre></div>
+<!-- end list --><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html">install_version</a></span><span class="op">(</span><span class="st">"pbkrtest"</span>, version <span class="op">=</span> <span class="st">"0.4-7"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/BiometryTraining"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="using-the-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-the-package" class="anchor"></a>Using the package</h2>
 <p>Load the package and start using it with:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://biometryhub.github.io/BiometryTraining">BiometryTraining</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://biometryhub.github.io/BiometryTraining/">BiometryTraining</a></span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -176,7 +167,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

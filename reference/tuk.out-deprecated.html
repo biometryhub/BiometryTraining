@@ -72,19 +72,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -117,7 +111,7 @@
     <p>This function has been replaced with <code><a href='mct.out.html'>mct.out()</a></code> and will be removed in a future version of this package. Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='BiometryTraining-deprecated.html'>tuk.out</a></span>(<span class='kw'>pred.obj</span>, <span class='kw'>model.obj</span>, <span class='kw'>pred</span>, sig = <span class='fl'>0.95</span>, trans = <span class='fl'>FALSE</span>, offset = <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='BiometryTraining-deprecated.html'>tuk.out</a></span><span class='op'>(</span><span class='va'>pred.obj</span>, <span class='va'>model.obj</span>, <span class='va'>pred</span>, sig <span class='op'>=</span> <span class='fl'>0.95</span>, trans <span class='op'>=</span> <span class='cn'>FALSE</span>, offset <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,24 +153,25 @@
     <div class='dont-index'><p><code><a href='BiometryTraining-deprecated.html'>BiometryTraining-deprecated</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>dat.asr</span> <span class='op'>&lt;-</span> <span class='fu'>asreml</span>(<span class='kw'>Yield</span> <span class='op'>~</span> <span class='kw'>Variety</span>,
-  random = <span class='op'>~</span><span class='kw'>Block</span>,
-  residual = <span class='op'>~</span> <span class='fu'>id</span>(<span class='kw'>Plot</span>), data = <span class='kw'>dat</span>
-)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>dat.asr</span> <span class='op'>&lt;-</span> <span class='fu'>asreml</span><span class='op'>(</span><span class='va'>Yield</span> <span class='op'>~</span> <span class='va'>Variety</span>,
+  random <span class='op'>=</span> <span class='op'>~</span><span class='va'>Block</span>,
+  residual <span class='op'>=</span> <span class='op'>~</span> <span class='fu'>id</span><span class='op'>(</span><span class='va'>Plot</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>dat</span>
+<span class='op'>)</span>
 
-<span class='kw'>dat.pred</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='kw'>dat.asr</span>,
-  classify = <span class='st'>"Variety"</span>,
-  sed = <span class='fl'>TRUE</span>
-)
+<span class='va'>dat.pred</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>dat.asr</span>,
+  classify <span class='op'>=</span> <span class='st'>"Variety"</span>,
+  sed <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='kw'>pred.out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='BiometryTraining-deprecated.html'>tuk.out</a></span>(
-  model.obj = <span class='kw'>dat.asr</span>, pred.obj = <span class='kw'>dat.pred</span>,
-  pred = <span class='st'>"Variety"</span>, sig = <span class='fl'>0.95</span>
-)
+<span class='va'>pred.out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='BiometryTraining-deprecated.html'>tuk.out</a></span><span class='op'>(</span>
+  model.obj <span class='op'>=</span> <span class='va'>dat.asr</span>, pred.obj <span class='op'>=</span> <span class='va'>dat.pred</span>,
+  pred <span class='op'>=</span> <span class='st'>"Variety"</span>, sig <span class='op'>=</span> <span class='fl'>0.95</span>
+<span class='op'>)</span>
 
-<span class='kw'>pred.out</span>
-}
+<span class='va'>pred.out</span>
+<span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -193,7 +188,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
