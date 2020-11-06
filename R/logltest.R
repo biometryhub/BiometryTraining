@@ -134,14 +134,12 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
         # Logl test
         ll.test <- asremlPlus::REMLRT(h1.asreml.obj = model.obj, h0.asreml.obj = model.obj1)$p
 
-        result.df <- data.frame(Term = tt[i], LogLRT.pvalue = ll.test)
+        result.df <- data.frame(Term = tt[i], LogLRT.pvalue = round(ll.test,3))
 
         test.df <- rbind(test.df, result.df)
       }
     }
   }
-
-  test.df$LogLRT.pvalue <- round(test.df$LogLRT.pvalue, 3)
-
+  
     return(test.df)
 }
