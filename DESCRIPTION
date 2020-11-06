@@ -2,7 +2,7 @@ Type: Package
 Package: BiometryTraining
 Title: Functions to Assist Teaching Design and Analysis of
     Agronomic Experiments
-Version: 0.5.2
+Version: 0.5.3
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -28,6 +28,8 @@ Depends:
 Imports: 
     agricolae,
     asremlPlus,
+    drat,
+    forcats,
     ggplot2,
     httr,
     lucid,
@@ -40,6 +42,7 @@ Suggests:
     covr,
     testthat,
     vdiffr
+Enhances: asreml
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

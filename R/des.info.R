@@ -66,7 +66,20 @@
 #' des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4, brows = 4, bcols = 2)
 #' @export
 #'
-des.info <- function(design.obj, nrows, ncols, brows = NA, bcols = NA, rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(design.obj$parameters$design, "_design"), plottype = "pdf", return.seed = TRUE, quiet = FALSE, ...) {
+des.info <- function(design.obj,
+                     nrows,
+                     ncols,
+                     brows = NA,
+                     bcols = NA,
+                     rotation = 0,
+                     size = 4,
+                     margin = FALSE,
+                     save = FALSE,
+                     savename = paste0(design.obj$parameters$design, "_design"),
+                     plottype = "pdf",
+                     return.seed = TRUE,
+                     quiet = FALSE,
+                     ...) {
 
   # Error checking of inputs
 

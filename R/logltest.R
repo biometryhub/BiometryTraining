@@ -1,8 +1,8 @@
 #' Log-likelihood test for comparing terms in ASreml-R models
 #'
 #' @param model.obj An ASreml-R model object
-#' @param rand.terms Random terms from the model
-#' @param resid.terms Residual terms from the model
+#' @param rand.terms Random terms from the model. Default is NULL.
+#' @param resid.terms Residual terms from the model. Default is NULL.
 #'
 #' @importFrom lucid vc
 #' @importFrom asremlPlus REMLRT
@@ -34,7 +34,7 @@
 #' oats.logl
 #' }
 #'
-logl.test <- function(model.obj, rand.terms, resid.terms) {
+logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
 
   # dat.asr <- NULL
 
@@ -134,12 +134,14 @@ logl.test <- function(model.obj, rand.terms, resid.terms) {
         # Logl test
         ll.test <- asremlPlus::REMLRT(h1.asreml.obj = model.obj, h0.asreml.obj = model.obj1)$p
 
-        result.df <- data.frame(Term = tt[i], LogLRT.pvalue = round(ll.test,3))
+        result.df <- data.frame(Term = tt[i], LogLRT.pvalue = ll.test)
 
         test.df <- rbind(test.df, result.df)
       }
     }
   }
 
-  return(test.df)
+  test.df$LogLRT.pvalue <- round(test.df$LogLRT.pvalue, 3)
+
+    return(test.df)
 }

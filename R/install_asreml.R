@@ -16,6 +16,15 @@
 #'
 #' @return Silently returns `TRUE` if `asreml` installed successfully or already present, `FALSE` otherwise. Optionally prints a confirmation message on success.
 #'
+#' @examples
+#' \dontrun{
+#' # Example 1: download and install asreml
+#' install_asreml()
+#'
+#' # Example 2: install asreml and save file for later
+#' install_asreml(keep_file = TRUE)
+#' }
+#'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
   if("asreml" %in% installed.packages()[,1] & !force) {
     if(!quiet) message("ASreml-R is already installed.")
