@@ -10,7 +10,7 @@
 #'
 #' @importFrom drat addRepo
 #'
-#' @export
+#' @keywords internal
 persist <- function(..., cran = "https://cloud.r-project.org/", profile_location = NULL) {
 
     repos = c(CRAN = cran, unlist(list(...)))

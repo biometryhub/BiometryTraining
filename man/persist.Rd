@@ -19,3 +19,4 @@ Add the drat repository for the Biometry Hub packages to .Rprofile to enable eas
 \details{
 The standard locations of .Rprofile files are searched (see \code{\link[base:Startup]{base::Startup()}}) (mostly).
 }
+\keyword{internal}
