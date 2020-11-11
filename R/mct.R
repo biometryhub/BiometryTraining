@@ -248,7 +248,11 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
   pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = ordering),]
 
-  trtindex <- grep("groups", names(pp.tab))-3
+
+  if(class(model.obj)[1] == "asreml"){
+  trtindex <- grep("groups", names(pp.tab)) - 3
+  } else
+  {trtindex <- grep("groups", names(pp.tab)) - 4}
 
   trtnam <- names(pp.tab)[1:trtindex]
 
