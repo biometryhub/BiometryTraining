@@ -7,8 +7,8 @@
 mct.out(
   model.obj,
   pred.obj,
-  sig = 0.05,
   classify,
+  sig = 0.05,
   int.type = "ci",
   trans = NA,
   offset = 0,
@@ -24,9 +24,9 @@ mct.out(
 
 \item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}. Not required for aov models, so set to \code{NA}.}
 
-\item{sig}{The significance level, numeric between 0 and 1. Default is 0.05.}
-
 \item{classify}{Name of predictor variable as string.}
+
+\item{sig}{The significance level, numeric between 0 and 1. Default is 0.05.}
 
 \item{int.type}{The type of confidence interval to calculate. One of \code{ci}, \verb{1se} or \verb{2se}. Default is \code{ci}.}
 

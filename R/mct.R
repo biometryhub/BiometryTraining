@@ -4,8 +4,8 @@
 #'
 #' @param model.obj An ASReml-R or aov model object.
 #' @param pred.obj An ASReml-R prediction object with `sed = TRUE`. Not required for aov models, so set to `NA`.
-#' @param sig The significance level, numeric between 0 and 1. Default is 0.05.
 #' @param classify Name of predictor variable as string.
+#' @param sig The significance level, numeric between 0 and 1. Default is 0.05.
 #' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
 #' @param trans Transformation that was applied to the response variable. One of `log`, `sqrt`, `logit` or `inverse`. Default is `NA`.
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
@@ -46,7 +46,7 @@
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig = 0.05, classify, int.type = "ci", trans = NA, offset = 0, decimals = 2, order = "ascending", save = FALSE, savename = "predicted_values", pred){
+mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", trans = NA, offset = 0, decimals = 2, order = "ascending", save = FALSE, savename = "predicted_values", pred){
 
   if(!missing(pred)) {
     warning("Argument pred has been deprecated and will be removed in a future version. Please use classify instead.")
