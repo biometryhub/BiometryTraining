@@ -8,12 +8,15 @@ mct.out(
   model.obj,
   pred.obj,
   sig = 0.05,
-  pred,
+  classify,
   int.type = "ci",
   trans = NA,
   offset = 0,
   decimals = 2,
-  order = "ascending"
+  order = "ascending",
+  save = FALSE,
+  savename = "predicted_values",
+  pred
 )
 }
 \arguments{
@@ -23,7 +26,7 @@ mct.out(
 
 \item{sig}{The significance level, numeric between 0 and 1. Default is 0.05.}
 
-\item{pred}{Name of predictor variable as string.}
+\item{classify}{Name of predictor variable as string.}
 
 \item{int.type}{The type of confidence interval to calculate. One of \code{ci}, \verb{1se} or \verb{2se}. Default is \code{ci}.}
 
@@ -33,7 +36,13 @@ mct.out(
 
 \item{decimals}{Controls rounding of decimal places in output. Default is 2 decimal places.}
 
-\item{order}{Order of the letters in the groups output. Options are \code{'ascending'} (the default), or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
+\item{order}{Order of the letters in the groups output. Options are \code{'default'}, \code{'ascending'} or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
+
+\item{save}{Logical (default \code{FALSE}). Save the predicted values to a csv file?}
+
+\item{savename}{A filename for the predicted values to be saved to. Default is \code{predicted_values}.}
+
+\item{pred}{Deprecated. Use \code{classify} instead.}
 }
 \value{
 A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
@@ -57,9 +66,9 @@ wald(model.asr) #Nitrogen main effect significant
 pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
-tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
-                    int.type = "ci", pred = "Nitrogen", order = "descending", decimals = 5)
+pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
+                    int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
 
-tuk.rank}
+pred.out}
 
 }
