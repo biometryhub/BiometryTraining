@@ -13,7 +13,7 @@ mct.out(
   trans = NA,
   offset = 0,
   decimals = 2,
-  order = "ascending",
+  order = "default",
   save = FALSE,
   savename = "predicted_values",
   pred

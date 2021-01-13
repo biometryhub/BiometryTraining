@@ -46,7 +46,7 @@
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", trans = NA, offset = 0, decimals = 2, order = "ascending", save = FALSE, savename = "predicted_values", pred){
+mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", trans = NA, offset = 0, decimals = 2, order = "default", save = FALSE, savename = "predicted_values", pred){
 
   if(!missing(pred)) {
     warning("Argument pred has been deprecated and will be removed in a future version. Please use classify instead.")
@@ -139,7 +139,7 @@ mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", 
   }
 
   else if(ordering == "default") {
-
+    ordering <- FALSE
   }
 
   else {
