@@ -48,7 +48,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/biometryhub/BiometryTraining/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -73,12 +73,10 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>We previously recommended installing the package from GitHub, but it is now easier to use the Biometry Hub <a href="https://biometryhub.github.io/drat/">drat repository</a>. Use the following code to install this package:</p>
+<p>Use the following code to install this package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://dirk.eddelbuettel.com/code/drat.html">"drat"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"drat"</span><span class="op">)</span> 
-<span class="fu">drat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/drat/man/addRepo.html">addRepo</a></span><span class="op">(</span><span class="st">"biometryhub"</span><span class="op">)</span>
-<span class="co"># Install as normal</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiometryTraining"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/">"devtools"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span> 
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/BiometryTraining"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <div id="troubleshooting-installation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#troubleshooting-installation" class="anchor"></a>Troubleshooting Installation</h3>
@@ -154,7 +152,7 @@
 <li><a href="https://github.com/biometryhub/BiometryTraining/actions"><img src="https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://cran.r-project.org/"><img src="https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg" alt="minimal R version"></a></li>
 <li><a href="/commits/master"><img src="https://img.shields.io/badge/Package%20version-0.5.3-orange.svg?style=flat-square" alt="packageversion"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2020--11--06-yellowgreen.svg" alt="Last-changedate"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2021--01--13-yellowgreen.svg" alt="Last-changedate"></a></li>
 <li><a href="http://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="Licence"></a></li>
 </ul>
 </div>
