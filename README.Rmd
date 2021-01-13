@@ -36,13 +36,11 @@ The goal of BiometryTraining is to provide functions to aid in the Design and An
 
 ## Installation
 
-We previously recommended installing the package from GitHub, but it is now easier to use the Biometry Hub [drat repository](https://biometryhub.github.io/drat/). Use the following code to install this package:
+Use the following code to install this package:
 
 ```{r eval=F}
-if(!require("drat")) install.packages("drat") 
-drat::addRepo("biometryhub")
-# Install as normal
-install.packages("BiometryTraining")
+if(!require("devtools")) install.packages("devtools") 
+devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 
