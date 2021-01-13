@@ -28,7 +28,6 @@ Depends:
 Imports: 
     agricolae,
     asremlPlus,
-    drat,
     forcats,
     ggplot2,
     httr,
