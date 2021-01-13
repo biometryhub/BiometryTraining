@@ -30,8 +30,8 @@ concepts.
 Use the following code to install this package:
 
 ``` r
-if(!require("devtools")) install.packages("devtools") 
-devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+if(!require("remotes")) install.packages("remotes") 
+remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 ### Troubleshooting Installation
@@ -78,7 +78,7 @@ headers</span>
 
 ``` r
 remotes::install_version("pbkrtest", version = "0.4-7")
-devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 ## Using the package

@@ -39,8 +39,8 @@ The goal of BiometryTraining is to provide functions to aid in the Design and An
 Use the following code to install this package:
 
 ```{r eval=F}
-if(!require("devtools")) install.packages("devtools") 
-devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+if(!require("remotes")) install.packages("remotes") 
+remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 
@@ -72,7 +72,7 @@ devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
   
 ```{r eval=F}
 remotes::install_version("pbkrtest", version = "0.4-7")
-devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 
