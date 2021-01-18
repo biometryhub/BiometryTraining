@@ -130,20 +130,20 @@ mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", 
 
   if(ordering == "ascending" | ordering == "increasing") {
     # Set ordering to FALSE to set decreasing = F in order function
-    ordering <- FALSE
+    ordering <- TRUE
   }
 
   else if(ordering == "descending" | ordering == "decreasing") {
     # Set ordering to TRUE to set decreasing = T in order function
-    ordering <- TRUE
-  }
-
-  else if(ordering == "default") {
     ordering <- FALSE
   }
 
+  else if(ordering == "default") {
+    ordering <- TRUE
+  }
+
   else {
-    stop("order must be ascending, descending or default")
+    stop("order must be 'ascending', 'descending' or 'default'")
   }
 
   ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
@@ -153,6 +153,21 @@ mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", 
 
 
   pp.tab <- merge(pp,rr)
+
+  # Sorting cases
+  # 1. Treatments have an intrinsic order (e.g. numeric year, rate, etc)
+  #   a. Increasing
+  #   b. Decreasing
+  #   c. Default (numeric)
+  #   c. User provided
+  #   d. None
+  # 2. Treatments don't have an intrinsic order
+  #   a. Increasing
+  #   b. Decreasing
+  #   c. Default (alphabetical)
+  #   c. User provided
+  #   d. None
+
 
 
   if(!is.na(trans)){
@@ -266,7 +281,7 @@ mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", 
   #   stop("order must be ascending or descending")
   # }
 
-  pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = ordering),]
+  pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = !ordering),]
 
 
   if(class(model.obj)[1] == "asreml"){
