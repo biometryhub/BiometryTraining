@@ -14,7 +14,7 @@ Authors@R:
              email = "biometrytraining@adelaide.edu.au"),
       person(given = "Annie",
              family = "Conway",
-             role = "ctb",
+             role = "aut",
              email = "biometrytraining@adelaide.edu.au"))
 Description: BiometryTraining gives users a simple way to install and 
     access documentation about the functions used and distributed as 
