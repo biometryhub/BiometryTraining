@@ -20,10 +20,11 @@
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
 #' @importFrom forcats fct_inorder
+#' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw lab
 #'
 #' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
-#' @return A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
+#' @return A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
 #'
 #' @examples
 #' \dontrun{
@@ -59,6 +60,7 @@ mct.out <- function(model.obj,
                     order = "default",
                     save = FALSE,
                     savename = "predicted_values",
+                    plottype = "pdf",
                     pred){
 
   if(!missing(pred)) {
@@ -322,5 +324,20 @@ mct.out <- function(model.obj,
     write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = F)
   }
 
-  return(pp.tab)
+  if(is.na(trans)) {
+    plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
+      ggplot2::geom_errorbar(ggplot2::aes(ymin = low, ymax = up), width = 0.2) +
+      ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*0.5) +
+      ggplot2::geom_point(ggplot2::aes(y = predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
+      ggplot2::labs(x = "", y = "Predicted Value")
+  }
+  else {
+    plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
+      ggplot2::geom_errorbar(aes(ymin = low, ymax = up), width = 0.2) +
+      ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*0.5) +
+      ggplot2::geom_point(ggplot2::aes(y = PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
+      ggplot2::labs(x = "", y = "Predicted Value")
+  }
+
+  return(list(predicted_values = pp.tab, predicted_plot = plot))
 }

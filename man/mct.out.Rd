@@ -16,6 +16,7 @@ mct.out(
   order = "default",
   save = FALSE,
   savename = "predicted_values",
+  plottype = "pdf",
   pred
 )
 }
@@ -45,7 +46,7 @@ mct.out(
 \item{pred}{Deprecated. Use \code{classify} instead.}
 }
 \value{
-A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
+A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
 }
 \description{
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
@@ -71,6 +72,7 @@ pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #Determine ranking and groups according to Tukey's Test
 pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
                     int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
+
 pred.out}
 
 }
