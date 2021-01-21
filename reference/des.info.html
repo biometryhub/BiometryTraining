@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
       </span>
     </div>
 
@@ -127,6 +127,7 @@
   plottype <span class='op'>=</span> <span class='st'>"pdf"</span>,
   return.seed <span class='op'>=</span> <span class='cn'>TRUE</span>,
   quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  fac_names <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -186,6 +187,10 @@
       <td><p>Logical (default FALSE). Return the objects without printing output.</p></td>
     </tr>
     <tr>
+      <th>fac_names</th>
+      <td><p>Allows renaming of the <code>A</code> level of factorial designs (i.e. those using <code><a href='https://rdrr.io/pkg/agricolae/man/design.ab.html'>agricolae::design.ab()</a></code>) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Additional parameters passed to <code><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggplot2::ggsave()</a></code> for saving the plot.</p></td>
     </tr>
@@ -197,6 +202,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>If <code>save = TRUE</code> (or <code>"both"</code>), both the plot and the workbook will be saved to the current working directory, with filename given by <code>savename</code>. If one of either <code>"plot"</code> or <code>"workbook"</code> is specified, only that output is saved. If <code>save = FALSE</code> (the default, or equivalently <code>"none"</code>), nothing will be output.</p>
+<p><code>fac_names</code> can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example <code>fac_names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))</code>. This will result a design output with a column named <code>A_names</code> with levels <code>a, b, c</code> and another named <code>B_names</code> with levels <code>x, y, z</code>. Only the first two elements of the list will be used.</p>
 <p><code>...</code> allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  <code><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggplot2::ggsave()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -250,10 +256,24 @@
 #&gt;  =============================================
 #&gt;  A                                       2
 #&gt;  B                                       1
-#&gt;  AB                                      2
+#&gt;  A:B                                     2
 #&gt;  Residual                                12
 #&gt;  =============================================
 #&gt;  Total                                   17</div><div class='img'><img src='des.info-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Factorial Design (Crossed, Completely Randomised), renaming factors</span>
+<span class='va'>trt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Factorial 3 x 2</span>
+<span class='va'>rep</span> <span class='op'>&lt;-</span> <span class='fl'>3</span>
+<span class='va'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.ab.html'>design.ab</a></span><span class='op'>(</span><span class='va'>trt</span>, r <span class='op'>=</span> <span class='va'>rep</span>, design <span class='op'>=</span> <span class='st'>"crd"</span><span class='op'>)</span>
+<span class='va'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span><span class='op'>(</span>design.obj <span class='op'>=</span> <span class='va'>outdesign</span>, nrows <span class='op'>=</span> <span class='fl'>6</span>, ncols <span class='op'>=</span> <span class='fl'>3</span>,
+fac_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>N <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>150</span><span class='op'>)</span>, Water <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Irrigated"</span>, <span class='st'>"Rain-fed"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Source of Variation                     df
+#&gt;  =============================================
+#&gt;  N                                       2
+#&gt;  Water                                   1
+#&gt;  N:Water                                 2
+#&gt;  Residual                                12
+#&gt;  =============================================
+#&gt;  Total                                   17</div><div class='img'><img src='des.info-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Factorial Design (Nested, Latin Square)</span>
 <span class='va'>trt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>, <span class='st'>"A4"</span>, <span class='st'>"B1"</span>, <span class='st'>"B2"</span>, <span class='st'>"B3"</span><span class='op'>)</span>
 <span class='va'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.lsd.html'>design.lsd</a></span><span class='op'>(</span><span class='va'>trt</span><span class='op'>)</span>
@@ -265,7 +285,7 @@
 #&gt;  trt                                     6
 #&gt;  Residual                                30
 #&gt;  =============================================
-#&gt;  Total                                   48</div><div class='img'><img src='des.info-5.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt;  Total                                   48</div><div class='img'><img src='des.info-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Split plot design</span>
 <span class='va'>trt1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>
 <span class='va'>trt2</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>
@@ -285,7 +305,7 @@
 #&gt;           trt1:trt2                          3
 #&gt;           Subplot Residual                   18
 #&gt;  ==================================================
-#&gt;  Total                                        31</div><div class='img'><img src='des.info-6.png' alt='' width='700' height='433' /></div></pre>
+#&gt;  Total                                        31</div><div class='img'><img src='des.info-7.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -297,7 +317,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Sharon Nielsen, Sam Rogers.</p>
+  <p>Developed by Sharon Nielsen, Sam Rogers, Annie Conway.</p>
 </div>
 
 <div class="pkgdown">
