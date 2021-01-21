@@ -11,7 +11,7 @@ mct.out(
   sig = 0.05,
   int.type = "ci",
   trans = NA,
-  offset = 0,
+  offset = NA,
   decimals = 2,
   order = "default",
   save = FALSE,
@@ -32,7 +32,7 @@ mct.out(
 
 \item{trans}{Transformation that was applied to the response variable. One of \code{log}, \code{sqrt}, \code{logit} or \code{inverse}. Default is \code{NA}.}
 
-\item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}.}
+\item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}. Use 0 if no offset was applied to the transformed data. See Details for more information.}
 
 \item{decimals}{Controls rounding of decimal places in output. Default is 2 decimal places.}
 
@@ -49,6 +49,9 @@ A data frame consisting of predicted means, standard errors, confidence interval
 }
 \description{
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
+}
+\details{
+Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
 }
 \examples{
 \dontrun{

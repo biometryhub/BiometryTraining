@@ -8,7 +8,7 @@
 #' @param sig The significance level, numeric between 0 and 1. Default is 0.05.
 #' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
 #' @param trans Transformation that was applied to the response variable. One of `log`, `sqrt`, `logit` or `inverse`. Default is `NA`.
-#' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
+#' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`. Use 0 if no offset was applied to the transformed data. See Details for more information.
 #' @param decimals Controls rounding of decimal places in output. Default is 2 decimal places.
 #' @param order Order of the letters in the groups output. Options are `'default'`, `'ascending'` or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
 #' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
@@ -20,6 +20,8 @@
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
 #' @importFrom forcats fct_inorder
+#'
+#' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
 #' @return A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
@@ -46,7 +48,18 @@
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", trans = NA, offset = 0, decimals = 2, order = "default", save = FALSE, savename = "predicted_values", pred){
+mct.out <- function(model.obj,
+                    pred.obj,
+                    classify,
+                    sig = 0.05,
+                    int.type = "ci",
+                    trans = NA,
+                    offset = NA,
+                    decimals = 2,
+                    order = "default",
+                    save = FALSE,
+                    savename = "predicted_values",
+                    pred){
 
   if(!missing(pred)) {
     warning("Argument pred has been deprecated and will be removed in a future version. Please use classify instead.")
@@ -172,7 +185,9 @@ mct.out <- function(model.obj, pred.obj, classify, sig = 0.05, int.type = "ci", 
 
   if(!is.na(trans)){
 
-    warning(paste("The offset value for the transformation is ", offset, ". \n", "  If this is not correct change the offset value in the function call.", sep = ""))
+    if(is.na(offset)) {
+      stop("Please supply an offset value for the transformation using the 'offset' argument. If an offset was not applied, use a value of 0 for the offset argument.")
+    }
 
 
     if(trans == "log"){
