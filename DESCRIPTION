@@ -2,7 +2,7 @@ Type: Package
 Package: BiometryTraining
 Title: Functions to Assist Teaching Design and Analysis of
     Agronomic Experiments
-Version: 0.5.3
+Version: 0.5.4
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -14,7 +14,7 @@ Authors@R:
              email = "biometrytraining@adelaide.edu.au"),
       person(given = "Annie",
              family = "Conway",
-             role = "ctb",
+             role = "aut",
              email = "biometrytraining@adelaide.edu.au"))
 Description: BiometryTraining gives users a simple way to install and 
     access documentation about the functions used and distributed as 
@@ -28,7 +28,6 @@ Depends:
 Imports: 
     agricolae,
     asremlPlus,
-    drat,
     forcats,
     ggplot2,
     httr,

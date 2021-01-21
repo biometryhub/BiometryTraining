@@ -4,19 +4,24 @@
 #'
 #' @param model.obj An ASReml-R or aov model object.
 #' @param pred.obj An ASReml-R prediction object with `sed = TRUE`. Not required for aov models, so set to `NA`.
+#' @param classify Name of predictor variable as string.
 #' @param sig The significance level, numeric between 0 and 1. Default is 0.05.
-#' @param pred Name of predictor variable as string.
 #' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
 #' @param trans Transformation that was applied to the response variable. One of `log`, `sqrt`, `logit` or `inverse`. Default is `NA`.
-#' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`.
+#' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`. Use 0 if no offset was applied to the transformed data. See Details for more information.
 #' @param decimals Controls rounding of decimal places in output. Default is 2 decimal places.
-#' @param order Order of the letters in the groups output. Options are `'ascending'` (the default), or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
+#' @param order Order of the letters in the groups output. Options are `'default'`, `'ascending'` or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
+#' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
+#' @param savename A filename for the predicted values to be saved to. Default is `predicted_values`.
+#' @param pred Deprecated. Use `classify` instead.
 #'
 #' @importFrom multcompView multcompLetters
 #' @importFrom agricolae LSD.test HSD.test
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
 #' @importFrom forcats fct_inorder
+#'
+#' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
 #' @return A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 #'
@@ -36,16 +41,36 @@
 #' pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #'
 #' #Determine ranking and groups according to Tukey's Test
-#' tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
-#'                     int.type = "ci", pred = "Nitrogen", order = "descending", decimals = 5)
+#' pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
+#'                     int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
 #'
-#' tuk.rank}
+#' pred.out}
 #'
 #' @export
 #'
-mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", trans = NA, offset = 0, decimals = 2, order = "ascending"){
+mct.out <- function(model.obj,
+                    pred.obj,
+                    classify,
+                    sig = 0.05,
+                    int.type = "ci",
+                    trans = NA,
+                    offset = NA,
+                    decimals = 2,
+                    order = "default",
+                    save = FALSE,
+                    savename = "predicted_values",
+                    pred){
+
+  if(!missing(pred)) {
+    warning("Argument pred has been deprecated and will be removed in a future version. Please use classify instead.")
+    classify <- pred
+  }
 
   if(class(model.obj)[1] == "asreml"){
+
+    if(missing(pred.obj)) {
+      stop("You must provide a prediction object in pred.obj")
+    }
 
     #For use with asreml 4+
     if(packageVersion("asreml") > 4) {
@@ -67,21 +92,22 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
     dendf <- data.frame(Source = row.names(dat.ww), denDF = dat.ww$denDF)
 
-    ifelse(grepl(":", pred),
-           pp$Names <- apply(pp[,unlist(strsplit(pred, ":"))], 1, paste, collapse = "_"),
-           pp$Names <- pp[[pred]])
+    ifelse(grepl(":", classify),
+           pp$Names <- apply(pp[,unlist(strsplit(classify, ":"))], 1, paste, collapse = "_"),
+           pp$Names <- pp[[classify]])
 
     zz <- as.numeric(row.names(pp[!is.na(pp$predicted.value),]))
 
     SED <- sed[zz,zz]
     Mean <- pp$predicted.value
     Names <-  as.character(pp$Names)
-    ndf <- dendf$denDF[grepl(pred, dendf$Source) & nchar(pred) == nchar(dendf$Source)]
+    ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(dendf$Source)]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
-  } else {
+  }
 
+  else {
 
-    pred.out <- predictmeans::predictmeans(model.obj, pred, mplot = FALSE)
+    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE)
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
     pp <- pred.out$mean_table
@@ -91,17 +117,15 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
     SED <- matrix(data = sed, nrow = nrow(pp), ncol = nrow(pp))
     diag(SED) <- NA
     Mean <- pp$predicted.value
-    ifelse(grepl(":", pred),
-           pp$Names <- apply(pp[,unlist(strsplit(pred, ":"))], 1, paste, collapse = "_"),
-           pp$Names <- pp[[pred]])
+    ifelse(grepl(":", classify),
+           pp$Names <- apply(pp[,unlist(strsplit(classify, ":"))], 1, paste, collapse = "_"),
+           pp$Names <- pp[[classify]])
 
     Names <-  as.character(pp$Names)
     ndf <- pp$Df[1]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
 
   }
-
-
 
   # Determine pairs that are significantly different
   diffs <- abs(outer(Mean, Mean,"-")) > crit.val
@@ -111,21 +135,28 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
   m <- outer(pp$Names, pp$Names, paste, sep="-")
   m <- m[lower.tri(m)]
 
-
   names(diffs) <- m
 
   # Check ordering of output
   # Refactor with switch cases?
-  ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing'))
+  ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing', "default"))
 
   if(ordering == "ascending" | ordering == "increasing") {
     # Set ordering to FALSE to set decreasing = F in order function
-    ordering <- FALSE
-  }else if(ordering == "descending" | ordering == "decreasing") {
-    # Set ordering to TRUE to set decreasing = T in order function
     ordering <- TRUE
-  }else {
-    stop("order must be ascending or descending")
+  }
+
+  else if(ordering == "descending" | ordering == "decreasing") {
+    # Set ordering to TRUE to set decreasing = T in order function
+    ordering <- FALSE
+  }
+
+  else if(ordering == "default") {
+    ordering <- TRUE
+  }
+
+  else {
+    stop("order must be 'ascending', 'descending' or 'default'")
   }
 
   ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
@@ -136,11 +167,41 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
   pp.tab <- merge(pp,rr)
 
+  # Sorting cases
+  # 1. Treatments have an intrinsic order (e.g. numeric year, rate, etc)
+  #   a. Increasing
+  #   b. Decreasing
+  #   c. Default (numeric)
+  #   c. User provided
+  #   d. None
+  # 2. Treatments don't have an intrinsic order
+  #   a. Increasing
+  #   b. Decreasing
+  #   c. Default (alphabetical)
+  #   c. User provided
+  #   d. None
 
   if(!is.na(trans)){
 
-    warning(paste("The offset value for the transformation is ", offset, ". \n", "  If this is not correct change the offset value in the function call.", sep = ""))
+    if(is.na(offset)) {
+      stop("Please supply an offset value for the transformation using the 'offset' argument. If an offset was not applied, use a value of 0 for the offset argument.")
+    }
 
+    if(trans == "sqrt"){
+      pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
+      pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
+      if(int.type == "ci"){
+        pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
+      }
+      if(int.type == "1se"){
+        pp.tab$ci <- pp.tab$std.error
+      }
+      if(int.type == "2se"){
+        pp.tab$ci <- 2*pp.tab$std.error
+      }
+      pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
+      pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
+    }
 
     if(trans == "log"){
       pp.tab$PredictedValue <- exp(pp.tab$predicted.value) - ifelse(!is.na(offset), offset, 0)
@@ -214,7 +275,9 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
       pp.tab$low <- 1/(pp.tab$predicted.value - pp.tab$ci)
       pp.tab$up <- 1/(pp.tab$predicted.value + pp.tab$ci)
     }
-  } else {
+  }
+
+  else {
 
     if(int.type == "ci"){
       pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
@@ -232,27 +295,16 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
   pp.tab$Names <- NULL
 
-  ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing'))
-
-  if(ordering == "ascending" | ordering == "increasing") {
-    # Set ordering to FALSE to set decreasing = F in order function
-    ordering <- FALSE
-  }
-  else if(ordering == "descending" | ordering == "decreasing") {
-    # Set ordering to TRUE to set decreasing = T in order function
-    ordering <- TRUE
-  }
-  else {
-    stop("order must be ascending or descending")
-  }
-
-  pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = ordering),]
+  pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = !ordering),]
 
 
   if(class(model.obj)[1] == "asreml"){
-  trtindex <- grep("groups", names(pp.tab)) - 3
-  } else
-  {trtindex <- grep("groups", names(pp.tab)) - 4}
+    trtindex <- grep("groups", names(pp.tab)) - 3
+  }
+
+  else {
+    trtindex <- grep("groups", names(pp.tab)) - 4
+  }
 
   trtnam <- names(pp.tab)[1:trtindex]
 
@@ -265,6 +317,10 @@ mct.out <- function(model.obj, pred.obj, sig = 0.05, pred, int.type = "ci", tran
 
   pp.tab[[grep("groups", names(pp.tab))-2]] <- round(pp.tab[[grep("groups", names(pp.tab))-2]], decimals)
   pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
+
+  if(save) {
+    write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = F)
+  }
 
   return(pp.tab)
 }

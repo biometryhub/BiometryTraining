@@ -7,13 +7,16 @@
 mct.out(
   model.obj,
   pred.obj,
+  classify,
   sig = 0.05,
-  pred,
   int.type = "ci",
   trans = NA,
-  offset = 0,
+  offset = NA,
   decimals = 2,
-  order = "ascending"
+  order = "default",
+  save = FALSE,
+  savename = "predicted_values",
+  pred
 )
 }
 \arguments{
@@ -21,25 +24,34 @@ mct.out(
 
 \item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}. Not required for aov models, so set to \code{NA}.}
 
-\item{sig}{The significance level, numeric between 0 and 1. Default is 0.05.}
+\item{classify}{Name of predictor variable as string.}
 
-\item{pred}{Name of predictor variable as string.}
+\item{sig}{The significance level, numeric between 0 and 1. Default is 0.05.}
 
 \item{int.type}{The type of confidence interval to calculate. One of \code{ci}, \verb{1se} or \verb{2se}. Default is \code{ci}.}
 
 \item{trans}{Transformation that was applied to the response variable. One of \code{log}, \code{sqrt}, \code{logit} or \code{inverse}. Default is \code{NA}.}
 
-\item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}.}
+\item{offset}{Numeric offset applied to response variable prior to transformation. Default is \code{NA}. Use 0 if no offset was applied to the transformed data. See Details for more information.}
 
 \item{decimals}{Controls rounding of decimal places in output. Default is 2 decimal places.}
 
-\item{order}{Order of the letters in the groups output. Options are \code{'ascending'} (the default), or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
+\item{order}{Order of the letters in the groups output. Options are \code{'default'}, \code{'ascending'} or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
+
+\item{save}{Logical (default \code{FALSE}). Save the predicted values to a csv file?}
+
+\item{savename}{A filename for the predicted values to be saved to. Default is \code{predicted_values}.}
+
+\item{pred}{Deprecated. Use \code{classify} instead.}
 }
 \value{
 A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
 }
 \description{
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
+}
+\details{
+Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
 }
 \examples{
 \dontrun{
@@ -57,9 +69,8 @@ wald(model.asr) #Nitrogen main effect significant
 pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
-tuk.rank <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
-                    int.type = "ci", pred = "Nitrogen", order = "descending", decimals = 5)
-
-tuk.rank}
+pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
+                    int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
+pred.out}
 
 }
