@@ -71,7 +71,6 @@ pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #Determine ranking and groups according to Tukey's Test
 pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
                     int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
-
 pred.out}
 
 }

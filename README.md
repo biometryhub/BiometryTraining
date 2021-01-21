@@ -15,8 +15,8 @@ status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/ba
 ![pkgdown](https://github.com/biometryhub/BiometryTraining/workflows/pkgdown/badge.svg)
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.5.2-orange.svg?style=flat-square)](/commits/master)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2020--08--26-yellowgreen.svg)](/commits/master)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.5.3-orange.svg?style=flat-square)](/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2021--01--13-yellowgreen.svg)](/commits/master)
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
 <!-- badges: end -->
 
@@ -27,16 +27,11 @@ concepts.
 
 ## Installation
 
-We previously recommended installing the package from GitHub, but it is
-now easier to use the Biometry Hub [drat
-repository](https://biometryhub.github.io/drat/). Use the following code
-to install this package:
+Use the following code to install this package:
 
 ``` r
-if(!require("drat")) install.packages("drat") 
-drat::addRepo("biometryhub")
-# Install as normal
-install.packages("BiometryTraining")
+if(!require("remotes")) install.packages("remotes") 
+remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 ### Troubleshooting Installation
@@ -83,7 +78,7 @@ headers</span>
 
 ``` r
 remotes::install_version("pbkrtest", version = "0.4-7")
-devtools::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 ## Using the package

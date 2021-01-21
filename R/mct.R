@@ -181,14 +181,27 @@ mct.out <- function(model.obj,
   #   c. User provided
   #   d. None
 
-
-
   if(!is.na(trans)){
 
     if(is.na(offset)) {
       stop("Please supply an offset value for the transformation using the 'offset' argument. If an offset was not applied, use a value of 0 for the offset argument.")
     }
 
+    if(trans == "sqrt"){
+      pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
+      pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
+      if(int.type == "ci"){
+        pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
+      }
+      if(int.type == "1se"){
+        pp.tab$ci <- pp.tab$std.error
+      }
+      if(int.type == "2se"){
+        pp.tab$ci <- 2*pp.tab$std.error
+      }
+      pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
+      pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
+    }
 
     if(trans == "log"){
       pp.tab$PredictedValue <- exp(pp.tab$predicted.value) - ifelse(!is.na(offset), offset, 0)
@@ -282,20 +295,6 @@ mct.out <- function(model.obj,
 
   pp.tab$Names <- NULL
 
-  # ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing'))
-  #
-  # if(ordering == "ascending" | ordering == "increasing") {
-  #   # Set ordering to FALSE to set decreasing = F in order function
-  #   ordering <- FALSE
-  # }
-  # else if(ordering == "descending" | ordering == "decreasing") {
-  #   # Set ordering to TRUE to set decreasing = T in order function
-  #   ordering <- TRUE
-  # }
-  # else {
-  #   stop("order must be ascending or descending")
-  # }
-
   pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = !ordering),]
 
 
@@ -303,8 +302,9 @@ mct.out <- function(model.obj,
     trtindex <- grep("groups", names(pp.tab)) - 3
   }
 
-  else
-  {trtindex <- grep("groups", names(pp.tab)) - 4}
+  else {
+    trtindex <- grep("groups", names(pp.tab)) - 4
+  }
 
   trtnam <- names(pp.tab)[1:trtindex]
 
