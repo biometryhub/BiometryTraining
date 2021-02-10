@@ -43,6 +43,8 @@ mct.out(
 
 \item{savename}{A filename for the predicted values to be saved to. Default is \code{predicted_values}.}
 
+\item{plottype}{The type of file to save the plot as. Usually one of \code{"pdf"}, \code{"png"}, or \code{"jpg"}. See \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for all possible options.}
+
 \item{pred}{Deprecated. Use \code{classify} instead.}
 }
 \value{
