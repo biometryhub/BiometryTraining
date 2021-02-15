@@ -23,9 +23,11 @@
 #' @importFrom forcats fct_inorder
 #' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs
 #'
-#' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
+#' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
 #' @return A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
+#'
+#' @references Jørgensen, E. & Pedersen, A. R. How to Obtain Those Nasty Standard Errors From Transformed Data - and Why They Should Not Be Used. [http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023)
 #'
 #' @examples
 #' \dontrun{
@@ -327,16 +329,16 @@ mct.out <- function(model.obj,
 
   if(is.na(trans)) {
     plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
-      ggplot2::geom_errorbar(ggplot2::aes(ymin = pp.tab$low, ymax = pp.tab$up), width = 0.2) +
+      ggplot2::geom_errorbar(ggplot2::aes(ymin = low, ymax = up), width = 0.2) +
       ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*0.5) +
-      ggplot2::geom_point(ggplot2::aes(y = pp.tab$predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
+      ggplot2::geom_point(ggplot2::aes(y = predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
       ggplot2::labs(x = "", y = "Predicted Value")
   }
   else {
     plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
-      ggplot2::geom_errorbar(aes(ymin = pp.tab$low, ymax = pp.tab$up), width = 0.2) +
+      ggplot2::geom_errorbar(aes(ymin = low, ymax = up), width = 0.2) +
       ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*0.5) +
-      ggplot2::geom_point(ggplot2::aes(y = pp.tab$PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
+      ggplot2::geom_point(ggplot2::aes(y = PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
       ggplot2::labs(x = "", y = "Predicted Value")
   }
 
