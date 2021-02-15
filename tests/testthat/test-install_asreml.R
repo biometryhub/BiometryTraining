@@ -4,6 +4,11 @@ test_that("Installation works", {
   expect_equal(install_asreml(), TRUE)
 })
 
+test_that("Update function works", {
+  # skip_if(R.version$status == "Under development (unstable)")
+  expect_message(update_asreml(), "ASreml-R successfully installed!")
+})
+
 test_that("Installation provides output on success", {
   # skip_if(R.version$status == "Under development (unstable)")
   if("asreml" %in% installed.packages()[,1]){remove.packages("asreml")}
@@ -29,8 +34,9 @@ test_that("Quiet returns no output", {
 
 test_that("Force argument makes package install", {
   # skip_if(R.version$status == "Under development (unstable)")
-  expect_equal(install_asreml(force = T), TRUE)
-  expect_message(install_asreml(force = T), "ASreml-R successfully installed!")
+  install_asreml(force = T)
+  expect_equal(require(asreml), TRUE)
+  expect_message(install_asreml(force = T), NULL)
 })
 
 test_that("keep_file = F doesn't keep file", {
@@ -63,7 +69,4 @@ test_that("Providing a non-existant directory fails", {
   expect_error(install_asreml(force = T, keep_file = "abc"))
 })
 
-test_that("Update function works", {
-  # skip_if(R.version$status == "Under development (unstable)")
-  expect_message(update_asreml(), "ASreml-R successfully installed!")
-})
+
