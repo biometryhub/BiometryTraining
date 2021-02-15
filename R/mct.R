@@ -112,7 +112,7 @@ mct.out <- function(model.obj,
 
   else {
 
-    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE)
+    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
     pp <- pred.out$mean_table
@@ -319,9 +319,9 @@ mct.out <- function(model.obj,
   }
 
   # rounding to the correct number of decimal places
-
-  pp.tab[[grep("groups", names(pp.tab))-2]] <- round(pp.tab[[grep("groups", names(pp.tab))-2]], decimals)
-  pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
+  pp.tab <- rapply(object = pp.tab, f = round, classes = "numeric", how = "replace", digits = decimals)
+  # pp.tab[[grep("groups", names(pp.tab))-2]] <- round(pp.tab[[grep("groups", names(pp.tab))-2]], decimals)
+  # pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
 
   if(save) {
     write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = F)
