@@ -12,7 +12,8 @@
 #' @param decimals Controls rounding of decimal places in output. Default is 2 decimal places.
 #' @param order Order of the letters in the groups output. Options are `'default'`, `'ascending'` or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
 #' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
-#' @param savename A filename for the predicted values to be saved to. Default is `predicted_values`.
+#' @param savename A file name for the predicted values to be saved to. Default is `predicted_values`.
+#' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
 #' @param pred Deprecated. Use `classify` instead.
 #'
 #' @importFrom multcompView multcompLetters
@@ -20,7 +21,7 @@
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
 #' @importFrom forcats fct_inorder
-#' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw lab
+#' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs
 #'
 #' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
@@ -326,16 +327,16 @@ mct.out <- function(model.obj,
 
   if(is.na(trans)) {
     plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
-      ggplot2::geom_errorbar(ggplot2::aes(ymin = low, ymax = up), width = 0.2) +
+      ggplot2::geom_errorbar(ggplot2::aes(ymin = pp.tab$low, ymax = pp.tab$up), width = 0.2) +
       ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*0.5) +
-      ggplot2::geom_point(ggplot2::aes(y = predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
+      ggplot2::geom_point(ggplot2::aes(y = pp.tab$predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
       ggplot2::labs(x = "", y = "Predicted Value")
   }
   else {
     plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
-      ggplot2::geom_errorbar(aes(ymin = low, ymax = up), width = 0.2) +
+      ggplot2::geom_errorbar(aes(ymin = pp.tab$low, ymax = pp.tab$up), width = 0.2) +
       ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*0.5) +
-      ggplot2::geom_point(ggplot2::aes(y = PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
+      ggplot2::geom_point(ggplot2::aes(y = pp.tab$PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
       ggplot2::labs(x = "", y = "Predicted Value")
   }
 
