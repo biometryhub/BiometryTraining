@@ -12,7 +12,7 @@
 #' @param decimals Controls rounding of decimal places in output. Default is 2 decimal places.
 #' @param order Order of the letters in the groups output. Options are `'default'`, `'ascending'` or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
 #' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
-#' @param savename A filename for the predicted values to be saved to. Default is `predicted_values`.
+#' @param savename A file name for the predicted values to be saved to. Default is `predicted_values`.
 #' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
 #' @param pred Deprecated. Use `classify` instead.
 #'
@@ -23,9 +23,11 @@
 #' @importFrom forcats fct_inorder
 #' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs
 #'
-#' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
+#' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
 #' @return A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
+#'
+#' @references Jørgensen, E. & Pedersen, A. R. How to Obtain Those Nasty Standard Errors From Transformed Data - and Why They Should Not Be Used. [http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023)
 #'
 #' @examples
 #' \dontrun{
@@ -110,7 +112,7 @@ mct.out <- function(model.obj,
 
   else {
 
-    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE)
+    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
     pp <- pred.out$mean_table
@@ -317,9 +319,9 @@ mct.out <- function(model.obj,
   }
 
   # rounding to the correct number of decimal places
-
-  pp.tab[[grep("groups", names(pp.tab))-2]] <- round(pp.tab[[grep("groups", names(pp.tab))-2]], decimals)
-  pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
+  pp.tab <- rapply(object = pp.tab, f = round, classes = "numeric", how = "replace", digits = decimals)
+  # pp.tab[[grep("groups", names(pp.tab))-2]] <- round(pp.tab[[grep("groups", names(pp.tab))-2]], decimals)
+  # pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
 
   if(save) {
     write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = F)

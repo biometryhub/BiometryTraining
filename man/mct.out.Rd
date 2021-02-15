@@ -41,7 +41,7 @@ mct.out(
 
 \item{save}{Logical (default \code{FALSE}). Save the predicted values to a csv file?}
 
-\item{savename}{A filename for the predicted values to be saved to. Default is \code{predicted_values}.}
+\item{savename}{A file name for the predicted values to be saved to. Default is \code{predicted_values}.}
 
 \item{plottype}{The type of file to save the plot as. Usually one of \code{"pdf"}, \code{"png"}, or \code{"jpg"}. See \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for all possible options.}
 
@@ -54,7 +54,7 @@ A list containing a data frame with predicted means, standard errors, confidence
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 }
 \details{
-Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
+Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
 }
 \examples{
 \dontrun{
@@ -77,4 +77,7 @@ pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
 
 pred.out}
 
+}
+\references{
+Jørgensen, E. & Pedersen, A. R. How to Obtain Those Nasty Standard Errors From Transformed Data - and Why They Should Not Be Used. \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023}
 }
