@@ -327,8 +327,12 @@ mct.out <- function(model.obj,
   }
 
   if(grepl(":", classify)) {
-    classify2 <- unlist(strsplit(classify, ":"))[2]
-    classify <- unlist(strsplit(classify, ":"))[1]
+    split_classify <- unlist(strsplit(classify, ":"))
+    if(length(split_classify)>2) {
+      classify3 <- split_classify[3]
+    }
+    classify2 <- split_classify[2]
+    classify <- split_classify[1]
   }
 
   if(is.na(trans)) {
@@ -348,7 +352,10 @@ mct.out <- function(model.obj,
       ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
   }
 
-  if(exists("classify2")) {
+  if(exists("classify3")) {
+    plot <- plot + ggplot2::facet_wrap(as.formula(paste("~", classify2, "+", classify3)))
+  }
+  else if(exists("classify2")) {
     plot <- plot + ggplot2::facet_wrap(as.formula(paste("~", classify2)))
   }
 
