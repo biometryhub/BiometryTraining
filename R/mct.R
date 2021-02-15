@@ -11,6 +11,8 @@
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`. Use 0 if no offset was applied to the transformed data. See Details for more information.
 #' @param decimals Controls rounding of decimal places in output. Default is 2 decimal places.
 #' @param order Order of the letters in the groups output. Options are `'default'`, `'ascending'` or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
+#' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.5 (50%) of the difference between upper and lower error bars above the top error bar.
+#' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
 #' @param savename A file name for the predicted values to be saved to. Default is `predicted_values`.
 #' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
@@ -21,7 +23,7 @@
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
 #' @importFrom forcats fct_inorder
-#' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs
+#' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #'
 #' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
@@ -61,6 +63,8 @@ mct.out <- function(model.obj,
                     offset = NA,
                     decimals = 2,
                     order = "default",
+                    label_height = 0.5,
+                    rotation = 0,
                     save = FALSE,
                     savename = "predicted_values",
                     plottype = "pdf",
@@ -108,6 +112,9 @@ mct.out <- function(model.obj,
     Names <-  as.character(pp$Names)
     ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(dendf$Source)]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
+
+    # Grab the response from the formula to create plot Y label
+    ylab <- model.obj$formulae$fixed[[2]]
   }
 
   else {
@@ -130,6 +137,8 @@ mct.out <- function(model.obj,
     ndf <- pp$Df[1]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
 
+    # Grab the response from the formula to create plot Y label
+    ylab <- model.obj$terms[[2]]
   }
 
   # Determine pairs that are significantly different
@@ -169,22 +178,7 @@ mct.out <- function(model.obj,
   rr <- data.frame(groups = ll$Letters)
   rr$Names <- row.names(rr)
 
-
   pp.tab <- merge(pp,rr)
-
-  # Sorting cases
-  # 1. Treatments have an intrinsic order (e.g. numeric year, rate, etc)
-  #   a. Increasing
-  #   b. Decreasing
-  #   c. Default (numeric)
-  #   c. User provided
-  #   d. None
-  # 2. Treatments don't have an intrinsic order
-  #   a. Increasing
-  #   b. Decreasing
-  #   c. Default (alphabetical)
-  #   c. User provided
-  #   d. None
 
   if(!is.na(trans)){
 
@@ -327,19 +321,35 @@ mct.out <- function(model.obj,
     write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = F)
   }
 
+  # If there are brackets in the label, grab the text from inside
+  if(is.call(ylab)) {
+    ylab <- as.character(ylab)[2]
+  }
+
+  if(grepl(":", classify)) {
+    classify2 <- unlist(strsplit(classify, ":"))[2]
+    classify <- unlist(strsplit(classify, ":"))[1]
+  }
+
   if(is.na(trans)) {
     plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
       ggplot2::geom_errorbar(ggplot2::aes(ymin = low, ymax = up), width = 0.2) +
-      ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*0.5) +
+      ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*label_height) +
       ggplot2::geom_point(ggplot2::aes(y = predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
-      ggplot2::labs(x = "", y = "Predicted Value")
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
+      ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
   }
   else {
     plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
       ggplot2::geom_errorbar(aes(ymin = low, ymax = up), width = 0.2) +
-      ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*0.5) +
+      ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*label_height) +
       ggplot2::geom_point(ggplot2::aes(y = PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
-      ggplot2::labs(x = "", y = "Predicted Value")
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
+      ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
+  }
+
+  if(exists("classify2")) {
+    plot <- plot + ggplot2::facet_wrap(as.formula(paste("~", classify2)))
   }
 
   return(list(predicted_values = pp.tab, predicted_plot = plot))

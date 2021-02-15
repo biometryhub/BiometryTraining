@@ -14,6 +14,8 @@ mct.out(
   offset = NA,
   decimals = 2,
   order = "default",
+  label_height = 0.5,
+  rotation = 0,
   save = FALSE,
   savename = "predicted_values",
   plottype = "pdf",
@@ -38,6 +40,10 @@ mct.out(
 \item{decimals}{Controls rounding of decimal places in output. Default is 2 decimal places.}
 
 \item{order}{Order of the letters in the groups output. Options are \code{'default'}, \code{'ascending'} or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
+
+\item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.5 (50\%) of the difference between upper and lower error bars above the top error bar.}
+
+\item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0}
 
 \item{save}{Logical (default \code{FALSE}). Save the predicted values to a csv file?}
 
