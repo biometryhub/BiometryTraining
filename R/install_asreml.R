@@ -35,7 +35,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
       message("\nDownloading and installing ASreml-R. This may take some time, depending on internet speed...\n")
     }
     if(force & "asreml" %in% (.packages())) {
-      detach("package:asreml", unload = TRUE, force = TRUE)
+      detach("package:asreml", unload = TRUE)
     }
 
     os <- switch(Sys.info()[['sysname']],

@@ -15,6 +15,18 @@
 # savename
 # pred
 
+
+
+
+test_that("mct produces output", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    output <- mct.out(dat.aov, classify = "Species")
+    expect_identical(output$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+
+    vdiffr::expect_doppelganger("mct output", output$predicted_plot, )
+})
+
+
 # skip if not local/asreml installed
 # model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
 #                     random = ~ Blocks + Blocks:Wplots,
@@ -33,13 +45,7 @@
 # pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #
 # mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen", trans = "log", offset = 0, label_height = 0.1)
-#
-#
-#
-# dat.aov <- aov(Petal.Width ~ Species, data = iris)
-# mct.out(dat.aov, classify = "Species")
 
 
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
+
+
