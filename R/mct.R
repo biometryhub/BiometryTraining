@@ -184,7 +184,7 @@ mct.out <- function(model.obj,
     stop("order must be 'ascending', 'descending' or 'default'")
   }
 
-  ll <- multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
+  ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
 
   rr <- data.frame(groups = ll$Letters)
   rr$Names <- row.names(rr)

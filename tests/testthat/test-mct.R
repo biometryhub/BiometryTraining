@@ -28,14 +28,14 @@ test_that("mct produces output", {
 
 
 # skip if not local/asreml installed
-model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
-                    random = ~ Blocks + Blocks:Wplots,
-                    residual = ~ units,
-                    data = asreml::oats)
-
-pred.asr <- predict(model.asr, classify = "Nitrogen:Variety", sed = TRUE)
-
-mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen:Variety", label_height = 0.1)
+# model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
+#                     random = ~ Blocks + Blocks:Wplots,
+#                     residual = ~ units,
+#                     data = asreml::oats)
+#
+# pred.asr <- predict(model.asr, classify = "Nitrogen:Variety", sed = TRUE)
+#
+# mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen:Variety", label_height = 0.1)
 #
 # model.asr <- asreml(log(yield) ~ Nitrogen + Variety + Nitrogen:Variety,
 #                     random = ~ Blocks + Blocks:Wplots,
