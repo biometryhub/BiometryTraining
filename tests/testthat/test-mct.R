@@ -20,7 +20,7 @@
 
 test_that("mct produces output", {
     dat.aov <- aov(Petal.Width ~ Species, data = iris)
-    mct.out(dat.aov, classify = "Species")
+    output <- mct.out(dat.aov, classify = "Species")
     expect_identical(output$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
 
     vdiffr::expect_doppelganger("mct output", output$predicted_plot, )
