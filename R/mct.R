@@ -81,6 +81,17 @@ mct.out <- function(model.obj,
       stop("You must provide a prediction object in pred.obj")
     }
 
+    # Check if any treatments are aliased, and remove them and print a warning
+    if(anyNA(pred.obj$pvals$predicted.value)) {
+      aliased <- which(is.na(pred.obj$pvals$predicted.value))
+      aliased_name <- as.character(pred.obj$pvals[[1]][aliased])
+      pred.obj$pvals <- pred.obj$pvals[!is.na(pred.obj$pvals$predicted.value),]
+      pred.obj$pvals$GenotypeID <- droplevels(pred.obj$pvals$GenotypeID)
+      pred.obj$sed <- pred.obj$sed[-aliased, -aliased]
+      warning(paste0("Some levels of ", classify, " are aliased. They have been removed from predicted output.\n  Aliased levels are: ", paste(aliased_name), ".\n  These levels are saved in the output object."))
+    }
+
+
     #For use with asreml 4+
     if(packageVersion("asreml") > 4) {
       pp <- pred.obj$pvals
@@ -173,7 +184,7 @@ mct.out <- function(model.obj,
     stop("order must be 'ascending', 'descending' or 'default'")
   }
 
-  ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
+  ll <- multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
 
   rr <- data.frame(groups = ll$Letters)
   rr$Names <- row.names(rr)
@@ -359,5 +370,10 @@ mct.out <- function(model.obj,
     plot <- plot + ggplot2::facet_wrap(as.formula(paste("~", classify2)))
   }
 
-  return(list(predicted_values = pp.tab, predicted_plot = plot))
+  output <- list(predicted_values = pp.tab, predicted_plot = plot)
+  if(exists("aliased_name")) {
+    output$aliased <- aliased_name
+  }
+
+  return(output)
 }

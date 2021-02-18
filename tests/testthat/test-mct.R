@@ -20,7 +20,7 @@
 
 test_that("mct produces output", {
     dat.aov <- aov(Petal.Width ~ Species, data = iris)
-    output <- mct.out(dat.aov, classify = "Species")
+    mct.out(dat.aov, classify = "Species")
     expect_identical(output$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
 
     vdiffr::expect_doppelganger("mct output", output$predicted_plot, )
@@ -28,14 +28,14 @@ test_that("mct produces output", {
 
 
 # skip if not local/asreml installed
-# model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
-#                     random = ~ Blocks + Blocks:Wplots,
-#                     residual = ~ units,
-#                     data = asreml::oats)
-#
-# pred.asr <- predict(model.asr, classify = "Nitrogen:Variety", sed = TRUE)
-#
-# mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen:Variety", label_height = 0.1)
+model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
+                    random = ~ Blocks + Blocks:Wplots,
+                    residual = ~ units,
+                    data = asreml::oats)
+
+pred.asr <- predict(model.asr, classify = "Nitrogen:Variety", sed = TRUE)
+
+mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen:Variety", label_height = 0.1)
 #
 # model.asr <- asreml(log(yield) ~ Nitrogen + Variety + Nitrogen:Variety,
 #                     random = ~ Blocks + Blocks:Wplots,
