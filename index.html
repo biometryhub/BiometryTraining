@@ -23,6 +23,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -75,8 +77,8 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Use the following code to install this package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span> 
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/BiometryTraining"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span> 
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/BiometryTraining"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <div id="troubleshooting-installation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#troubleshooting-installation" class="anchor"></a>Troubleshooting Installation</h3>
@@ -88,22 +90,22 @@
 <li>The following warning messages can usually be ignored:</li>
 </ul>
 <p><span style="color: red;">WARNING: Rtools is required to build R packages, but is not currently installed.</span></p>
-<p><span style="color: red;">Please download and install Rtools custom from <a href="http://cran.r-project.org/bin/windows/Rtools/" class="uri">http://cran.r-project.org/bin/windows/Rtools/</a>.</span></p>
+<p><span style="color: red;">Please download and install Rtools custom from <a href="http://cran.r-project.org/bin/windows/Rtools/" class="external-link">http://cran.r-project.org/bin/windows/Rtools/</a>.</span></p>
 <p><span style="color: red;">Warning messages:<br> 1: In untar2(tarfile, files, list, exdir) :<br> skipping pax global extended headers<br> 2: In untar2(tarfile, files, list, exdir) :<br> skipping pax global extended headers</span></p>
 <ul>
-<li><p>If you receive an error that the package could not install because <code>rlang</code> or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (<code><a href="https://rdrr.io/r/utils/remove.packages.html">remove.packages("rlang")</a></code>). Then reinstall with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("rlang")</a></code> and then try installing <code>BiometryTraining</code> again.</p></li>
+<li><p>If you receive an error that the package could not install because <code>rlang</code> or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (<code><a href="https://rdrr.io/r/utils/remove.packages.html" class="external-link">remove.packages("rlang")</a></code>). Then reinstall with <code><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages("rlang")</a></code> and then try installing <code>BiometryTraining</code> again.</p></li>
 <li>
 <p>If you are trying to install this on R version 3.5.x (or earlier), you should note three things:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>It <em>is</em> possible to install this package on R 3.5.x (and possibly earlier versions) as of 4 August 2020, but…</li>
 <li>You should upgrade to a newer version of R as soon as possible, as it is no longer tested.</li>
 <li>This package won’t install properly until you have <em>downgraded</em> a dependency that requires R 3.6+. To do that, use the following code:</li>
 </ol>
 </li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html">install_version</a></span><span class="op">(</span><span class="st">"pbkrtest"</span>, version <span class="op">=</span> <span class="st">"0.4-7"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/BiometryTraining"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html" class="external-link">install_version</a></span><span class="op">(</span><span class="st">"pbkrtest"</span>, version <span class="op">=</span> <span class="st">"0.4-7"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/BiometryTraining"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="using-the-package" class="section level2">
@@ -111,14 +113,14 @@
 <a href="#using-the-package" class="anchor"></a>Using the package</h2>
 <p>Load the package and start using it with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://biometryhub.github.io/BiometryTraining/">BiometryTraining</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://biometryhub.github.io/BiometryTraining/" class="external-link">BiometryTraining</a></span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/biometryhub/BiometryTraining/">https://​github.com/​biometryhub/​BiometryTraining/​</a>
 </li>
@@ -127,16 +129,19 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
 <a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Sharon Nielsen <br><small class="roles"> Author </small>  </li>
 <li>Sam Rogers <br><small class="roles"> Author, maintainer </small>  </li>
@@ -144,28 +149,31 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active: The project has reached a stable, usable state and is being actively developed."></a></li>
-<li><a href="https://codecov.io/gh/biometryhub/BiometryTraining?branch=master"><img src="https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/biometryhub/BiometryTraining/actions"><img src="https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://cran.r-project.org/"><img src="https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg" alt="minimal R version"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/Package%20version-0.5.3-orange.svg?style=flat-square" alt="packageversion"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2021--01--13-yellowgreen.svg" alt="Last-changedate"></a></li>
-<li><a href="http://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="Licence"></a></li>
+<li><a href="http://www.repostatus.org/#active" class="external-link"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active: The project has reached a stable, usable state and is being actively developed."></a></li>
+<li><a href="https://codecov.io/gh/biometryhub/BiometryTraining?branch=master" class="external-link"><img src="https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/biometryhub/BiometryTraining/actions" class="external-link"><img src="https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://cran.r-project.org/" class="external-link"><img src="https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg" alt="minimal R version"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/Package%20version-0.5.4-orange.svg?style=flat-square" alt="packageversion"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2021--02--20-yellowgreen.svg" alt="Last-changedate"></a></li>
+<li><a href="http://choosealicense.com/licenses/mit/" class="external-link"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="Licence"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Sharon Nielsen, Sam Rogers, Annie Conway.</p>
+  <p></p>
+<p>Developed by Sharon Nielsen, Sam Rogers, Annie Conway.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
@@ -173,6 +181,8 @@
 
   
 
+
+  
 
   </body>
 </html>
