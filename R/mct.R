@@ -75,6 +75,9 @@ mct.out <- function(model.obj,
     classify <- pred
   }
 
+  # The classifiation
+  # if(which(as.character(model.obj$call$formula) == classify)-1 )
+
   if(class(model.obj)[1] == "asreml"){
 
     if(missing(pred.obj)) {
@@ -84,11 +87,23 @@ mct.out <- function(model.obj,
     # Check if any treatments are aliased, and remove them and print a warning
     if(anyNA(pred.obj$pvals$predicted.value)) {
       aliased <- which(is.na(pred.obj$pvals$predicted.value))
-      aliased_name <- as.character(pred.obj$pvals[[1]][aliased])
+      # Get the level values of the aliased treatments
+      # If only one treatment (classify does not contain :) all levels printed separated with ,
+      # If multiple treatments, first need to concatenate columns, then collapse rows
+      aliased_names <- pred.obj$pvals[aliased, !names(pred.obj$pvals) %in% c("predicted.value", "std.error", "status")]
+
+      if(grepl(":", classify)) {
+        # aliased_names <- as.data.frame(aliased_names)
+        aliased_names <- paste(apply(aliased_names, 1, paste, collapse = ":"), collapse = ", ")
+      }
+      else {
+        aliased_names <- paste(aliased_names, collapse = ", ")
+      }
+
       pred.obj$pvals <- pred.obj$pvals[!is.na(pred.obj$pvals$predicted.value),]
-      pred.obj$pvals$GenotypeID <- droplevels(pred.obj$pvals$GenotypeID)
+      pred.obj$pvals <- droplevels(pred.obj$pvals)
       pred.obj$sed <- pred.obj$sed[-aliased, -aliased]
-      warning(paste0("Some levels of ", classify, " are aliased. They have been removed from predicted output.\n  Aliased levels are: ", paste(aliased_name), ".\n  These levels are saved in the output object."))
+      warning(paste0("Some levels of ", classify, " are aliased. They have been removed from predicted output.\n  Aliased levels are: ", aliased_names, "\n  These levels are saved in the output object."))
     }
 
 
@@ -119,8 +134,8 @@ mct.out <- function(model.obj,
     zz <- as.numeric(row.names(pp[!is.na(pp$predicted.value),]))
 
     SED <- sed[zz,zz]
-    Mean <- pp$predicted.value
-    Names <-  as.character(pp$Names)
+    # Mean <- pp$predicted.value
+    # Names <-  as.character(pp$Names)
     ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(dendf$Source)]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
 
@@ -130,7 +145,7 @@ mct.out <- function(model.obj,
 
   else {
 
-    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
+    pred.out <- predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals, )
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
     pp <- pred.out$mean_table
@@ -139,12 +154,12 @@ mct.out <- function(model.obj,
 
     SED <- matrix(data = sed, nrow = nrow(pp), ncol = nrow(pp))
     diag(SED) <- NA
-    Mean <- pp$predicted.value
+    # Mean <- pp$predicted.value
     ifelse(grepl(":", classify),
            pp$Names <- apply(pp[,unlist(strsplit(classify, ":"))], 1, paste, collapse = "_"),
            pp$Names <- pp[[classify]])
 
-    Names <-  as.character(pp$Names)
+    # Names <-  as.character(pp$Names)
     ndf <- pp$Df[1]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
 
@@ -152,8 +167,23 @@ mct.out <- function(model.obj,
     ylab <- model.obj$terms[[2]]
   }
 
+  # Check that the predicted levels don't contain a dash -, if they do replace and display warning
+  if(any(grepl("-", pp[,1]))) {
+    levs <- grep("-", pp[,1], value = T)
+    if(length(levs)>1) {
+      warning("The treatment levels ", paste(levs, collapse = ", "), "contained '-', which has been replaced in the final output with '_'")
+    }
+    else {
+      warning("The treatment level ", levs, " contained '-', which has been replaced in the final output with '_'")
+    }
+    pp[,1] <- gsub(pattern = "-", replacement = "_", pp[,1])
+    pp$Names <- gsub(pattern = "-", replacement = "_", pp$Names)
+  }
+
+  Names <-  as.character(pp$Names)
+
   # Determine pairs that are significantly different
-  diffs <- abs(outer(Mean, Mean,"-")) > crit.val
+  diffs <- abs(outer(pp$predicted.value, pp$predicted.value, "-")) > crit.val
   diffs <- diffs[lower.tri(diffs)]
 
   # Create a vector of treatment comparison names
@@ -184,7 +214,7 @@ mct.out <- function(model.obj,
     stop("order must be 'ascending', 'descending' or 'default'")
   }
 
-  ll <- multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
+  ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
 
   rr <- data.frame(groups = ll$Letters)
   rr$Names <- row.names(rr)
@@ -371,8 +401,8 @@ mct.out <- function(model.obj,
   }
 
   output <- list(predicted_values = pp.tab, predicted_plot = plot)
-  if(exists("aliased_name")) {
-    output$aliased <- aliased_name
+  if(exists("aliased_names")) {
+    output$aliased <- aliased_names
   }
 
   return(output)
