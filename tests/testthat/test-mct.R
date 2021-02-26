@@ -34,6 +34,19 @@ test_that("mct produces output", {
     vdiffr::expect_doppelganger("mct output", output$predicted_plot)
 })
 
+test_that("dashes are handled", {
+    iris2 <- iris
+    iris2$Species <- as.factor(gsub("to", "-", iris2$Species))
+    dat.aov2 <- aov(Petal.Width ~ Species, data = iris2)
+    output2 <- suppressWarnings(mct.out(dat.aov2, classify = "Species"))
+    expect_warning(mct.out(dat.aov2, classify = "Species"),
+                   "The treatment level se-sa contained '-', which has been replaced in the final output with '_'")
+    expect_identical(output2$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+
+    skip_if(interactive())
+    vdiffr::expect_doppelganger("mct dashes output", output2$predicted_plot)
+})
+
 
 
 # expect_snapshot_plot <- function(name, code) {
@@ -60,8 +73,19 @@ test_that("mct produces output", {
 # dat.aov <- aov(Petal.Width ~ Species, data = iris2)
 # mct.out(dat.aov, classify = "Species")
 
+test_that("mct removes aliased treatments in aov", {
+    iris1 <- iris
+    iris1$Petal.Length[1:50] <- NA
+    dat.aov1 <- aov(Petal.Length ~ Species, data = iris1)
+    output1 <- mct.out(dat.aov1, classify = "Species")
+    expect_identical(output1$predicted_values$predicted.value, c(4.26, 5.55))
+    skip_if(interactive())
+    vdiffr::expect_doppelganger("aov aliased output", output1$predicted_plot)
+})
 
-test_that("mct handles aliased results properly", {
+
+
+test_that("mct handles aliased results in asreml with a warning", {
     skip_if_not_installed("asreml")
     library(asreml)
     load("../asreml_oats.Rdata")
