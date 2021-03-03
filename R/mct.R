@@ -75,9 +75,6 @@ mct.out <- function(model.obj,
     classify <- pred
   }
 
-  # The classifiation
-  # if(which(as.character(model.obj$call$formula) == classify)-1 )
-
   if(class(model.obj)[1] == "asreml"){
 
     if(missing(pred.obj)) {
@@ -106,7 +103,6 @@ mct.out <- function(model.obj,
       warning(paste0("Some levels of ", classify, " are aliased. They have been removed from predicted output.\n  Aliased levels are: ", aliased_names, "\n  These levels are saved in the output object."))
     }
 
-
     #For use with asreml 4+
     if(packageVersion("asreml") > 4) {
       pp <- pred.obj$pvals
@@ -134,6 +130,7 @@ mct.out <- function(model.obj,
     zz <- as.numeric(row.names(pp[!is.na(pp$predicted.value),]))
 
     SED <- sed[zz,zz]
+
     # Mean <- pp$predicted.value
     # Names <-  as.character(pp$Names)
     ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(dendf$Source)]
@@ -146,6 +143,7 @@ mct.out <- function(model.obj,
   else {
 
     pred.out <- predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals, )
+
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
     pp <- pred.out$mean_table
