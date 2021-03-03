@@ -70,12 +70,13 @@ jobs:
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
-          if(!require(vdiffr)) remotes::install_github("r-lib/vdiffr")
+          #if(!require(vdiffr)) remotes::install_github("r-lib/vdiffr")
+          install.packages("stringi", deps = T)
           if(!require(asremlPlus)) remotes::install_github("briencj/asremlPlus")
-          if(!require(pkgbuild)) remotes::install_github("r-lib/pkgbuild")
-          if(!require(questionr)) remotes::install_cran("questionr")
-          if(!require(vctrs) | packageVersion("vctrs") < 0.3) remotes::install_github("r-lib/vctrs")
-          install.packages("data.table")
+          #if(!require(pkgbuild)) remotes::install_github("r-lib/pkgbuild")
+          #if(!require(questionr)) remotes::install_cran("questionr")
+          #if(!require(vctrs) | packageVersion("vctrs") < 0.3) remotes::install_github("r-lib/vctrs")
+          #install.packages("data.table")
           #if(getRversion() < 3.6) remotes::install_version("pbkrtest", version = "0.4-7")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
