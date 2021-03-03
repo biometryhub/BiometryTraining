@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Install ASreml-R package — install_asreml • BiometryTraining</title>
+<title>BiometryTraining: Functions to Assist Teaching Design and Analysis of
+    Agronomic Experiments — BiometryTraining • BiometryTraining</title>
 
 
 <!-- jquery -->
@@ -39,8 +40,11 @@
 
 
 
-<meta property="og:title" content="Install ASreml-R package — install_asreml" />
-<meta property="og:description" content="A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version." />
+<meta property="og:title" content="BiometryTraining: Functions to Assist Teaching Design and Analysis of
+    Agronomic Experiments — BiometryTraining" />
+<meta property="og:description" content="BiometryTraining gives users a simple way to install and 
+    access documentation about the functions used and distributed as 
+    part of the SAGI-STH Biometrics Education Initiative." />
 
 
 
@@ -110,60 +114,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Install ASreml-R package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/biometryhub/BiometryTraining/blob/master/R/install_asreml.R'><code>R/install_asreml.R</code></a></small>
-    <div class="hidden name"><code>install_asreml.Rd</code></div>
+    <h1>BiometryTraining: Functions to Assist Teaching Design and Analysis of
+    Agronomic Experiments</h1>
+    <small class="dont-index">Source: <a href='https://github.com/biometryhub/BiometryTraining/blob/master/R/BiometryTraining-package.R'><code>R/BiometryTraining-package.R</code></a></small>
+    <div class="hidden name"><code>BiometryTraining.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.</p>
+    <p>BiometryTraining gives users a simple way to install and 
+    access documentation about the functions used and distributed as 
+    part of the SAGI-STH Biometrics Education Initiative.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>install_asreml</span><span class='op'>(</span>
-  library <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
-  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  force <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  keep_file <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>library</th>
-      <td><p>Library location to install ASreml-R. Uses first option in <code><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths()</a></code> by default.</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p>Logical (default <code>FALSE</code>). Should package be installed quietly?</p></td>
-    </tr>
-    <tr>
-      <th>force</th>
-      <td><p>Logical (default <code>FALSE</code>). Force ASreml-R to install. Useful for upgrading if it is already installed.</p></td>
-    </tr>
-    <tr>
-      <th>keep_file</th>
-      <td><p>Should the downloaded asreml package file be kept? Default is <code>FALSE</code>. <code>TRUE</code> downloads to current directory. A file path can also be provided to save to another directory. See <code>Details</code> for more information.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Silently returns <code>TRUE</code> if <code>asreml</code> installed successfully or already present, <code>FALSE</code> otherwise. Optionally prints a confirmation message on success.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <div class='dont-index'><p>Useful links:</p><ul>
+<li><p><a href='https://biometryhub.github.io/BiometryTraining/'>https://biometryhub.github.io/BiometryTraining/</a></p></li>
+<li><p>Report bugs at <a href='https://github.com/biometryhub/BiometryTraining/issues'>https://github.com/biometryhub/BiometryTraining/issues</a></p></li>
+</ul>
 
-    <p>The package file is downloaded from a shortlink, and if <code>keep_file</code> is <code>TRUE</code>, the package archive file will be saved in the current directory. If a valid path is provided in <code>keep_file</code>, the file will be saved to that path, but no directory will be created. If keep_file does not specify an existing, valid path, an error will be shown.</p>
+</div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># Example 1: download and install asreml</span>
-<span class='fu'>install_asreml</span><span class='op'>(</span><span class='op'>)</span>
+    <p><strong>Maintainer</strong>: Sam Rogers <a href='mailto:biometrytraining@adelaide.edu.au'>biometrytraining@adelaide.edu.au</a></p>
+<p>Authors:</p><ul>
+<li><p>Sharon Nielsen <a href='mailto:biometrytraining@adelaide.edu.au'>biometrytraining@adelaide.edu.au</a></p></li>
+<li><p>Annie Conway <a href='mailto:biometrytraining@adelaide.edu.au'>biometrytraining@adelaide.edu.au</a></p></li>
+</ul>
 
-<span class='co'># Example 2: install asreml and save file for later</span>
-<span class='fu'>install_asreml</span><span class='op'>(</span>keep_file <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>}</span>
 
-</div></pre>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

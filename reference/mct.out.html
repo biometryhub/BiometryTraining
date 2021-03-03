@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -129,8 +129,11 @@
   offset <span class='op'>=</span> <span class='cn'>NA</span>,
   decimals <span class='op'>=</span> <span class='fl'>2</span>,
   order <span class='op'>=</span> <span class='st'>"default"</span>,
+  label_height <span class='op'>=</span> <span class='fl'>0.5</span>,
+  rotation <span class='op'>=</span> <span class='fl'>0</span>,
   save <span class='op'>=</span> <span class='cn'>FALSE</span>,
   savename <span class='op'>=</span> <span class='st'>"predicted_values"</span>,
+  plottype <span class='op'>=</span> <span class='st'>"pdf"</span>,
   <span class='va'>pred</span>
 <span class='op'>)</span></pre>
 
@@ -174,12 +177,24 @@
       <td><p>Order of the letters in the groups output. Options are <code>'default'</code>, <code>'ascending'</code> or <code>'descending'</code>. Alternative options that are accepted are <code>increasing</code> and <code>decreasing</code>. Partial matching of text is performed, allowing entry of <code>'desc'</code> for example.</p></td>
     </tr>
     <tr>
+      <th>label_height</th>
+      <td><p>Height of the text labels above the upper error bar on the plot. Default is 0.5 (50%) of the difference between upper and lower error bars above the top error bar.</p></td>
+    </tr>
+    <tr>
+      <th>rotation</th>
+      <td><p>Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0</p></td>
+    </tr>
+    <tr>
       <th>save</th>
       <td><p>Logical (default <code>FALSE</code>). Save the predicted values to a csv file?</p></td>
     </tr>
     <tr>
       <th>savename</th>
-      <td><p>A filename for the predicted values to be saved to. Default is <code>predicted_values</code>.</p></td>
+      <td><p>A file name for the predicted values to be saved to. Default is <code>predicted_values</code>.</p></td>
+    </tr>
+    <tr>
+      <th>plottype</th>
+      <td><p>The type of file to save the plot as. Usually one of <code>"pdf"</code>, <code>"png"</code>, or <code>"jpg"</code>. See <code><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggplot2::ggsave()</a></code> for all possible options.</p></td>
     </tr>
     <tr>
       <th>pred</th>
@@ -189,10 +204,13 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.</p>
+    <p>A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the <code>trans</code> argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the <code>offset</code> argument.</p>
+    <p>Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the <code>trans</code> argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the <code>offset</code> argument.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Jørgensen, E. &amp; Pedersen, A. R. How to Obtain Those Nasty Standard Errors From Transformed Data - and Why They Should Not Be Used. <a href='http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023'>http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
