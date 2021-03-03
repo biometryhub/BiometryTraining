@@ -19,18 +19,13 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          #- {os: macOS-latest,   r: 'devel'}
           - {os: macOS-latest,   r: 'release'}
-          #- {os: macOS-latest,   r: '3.6'}
-          #- {os: macOS-latest,   r: '3.5'}
           - {os: windows-latest, r: 'devel'}
           - {os: windows-latest, r: 'release'}
           - {os: windows-latest, r: 'oldrel'}
-          #- {os: windows-latest, r: '3.5'}
-          #- {os: ubuntu-latest,   r: 'devel', rspm: "https://demo.rstudiopm.com/all/__linux__/bionic/latest"}
-          - {os: ubuntu-latest,   r: 'release', rspm: "https://demo.rstudiopm.com/all/__linux__/bionic/latest"}
-          - {os: ubuntu-latest,   r: 'oldrel', rspm: "https://demo.rstudiopm.com/all/__linux__/bionic/latest"}
-          #- {os: ubuntu-latest,   r: '3.5', rspm: "https://demo.rstudiopm.com/all/__linux__/bionic/latest"}
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-20.04,   r: 'oldrel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -75,12 +70,13 @@ jobs:
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
-          if(!require(vdiffr)) remotes::install_github("r-lib/vdiffr")
+          #if(!require(vdiffr)) remotes::install_github("r-lib/vdiffr")
+          install.packages("stringi", deps = T)
           if(!require(asremlPlus)) remotes::install_github("briencj/asremlPlus")
-          if(!require(pkgbuild)) remotes::install_github("r-lib/pkgbuild")
-          if(!require(questionr)) remotes::install_cran("questionr")
-          if(!require(vctrs) | packageVersion("vctrs") < 0.3) remotes::install_github("r-lib/vctrs")
-          install.packages("data.table")
+          #if(!require(pkgbuild)) remotes::install_github("r-lib/pkgbuild")
+          #if(!require(questionr)) remotes::install_cran("questionr")
+          #if(!require(vctrs) | packageVersion("vctrs") < 0.3) remotes::install_github("r-lib/vctrs")
+          #install.packages("data.table")
           #if(getRversion() < 3.6) remotes::install_version("pbkrtest", version = "0.4-7")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}

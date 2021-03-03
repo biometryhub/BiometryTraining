@@ -14,8 +14,11 @@ mct.out(
   offset = NA,
   decimals = 2,
   order = "default",
+  label_height = 0.5,
+  rotation = 0,
   save = FALSE,
   savename = "predicted_values",
+  plottype = "pdf",
   pred
 )
 }
@@ -38,20 +41,26 @@ mct.out(
 
 \item{order}{Order of the letters in the groups output. Options are \code{'default'}, \code{'ascending'} or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
 
+\item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.5 (50\%) of the difference between upper and lower error bars above the top error bar.}
+
+\item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0}
+
 \item{save}{Logical (default \code{FALSE}). Save the predicted values to a csv file?}
 
-\item{savename}{A filename for the predicted values to be saved to. Default is \code{predicted_values}.}
+\item{savename}{A file name for the predicted values to be saved to. Default is \code{predicted_values}.}
+
+\item{plottype}{The type of file to save the plot as. Usually one of \code{"pdf"}, \code{"png"}, or \code{"jpg"}. See \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for all possible options.}
 
 \item{pred}{Deprecated. Use \code{classify} instead.}
 }
 \value{
-A data frame consisting of predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations.
+A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
 }
 \description{
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 }
 \details{
-Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if a the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
+Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
 }
 \examples{
 \dontrun{
@@ -74,4 +83,7 @@ pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
 
 pred.out}
 
+}
+\references{
+Jørgensen, E. & Pedersen, A. R. How to Obtain Those Nasty Standard Errors From Transformed Data - and Why They Should Not Be Used. \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023}
 }
