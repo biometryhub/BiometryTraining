@@ -5,7 +5,7 @@
 #' @param resid.terms Residual terms from the model. Default is NULL.
 #'
 #' @importFrom lucid vc
-#' @importFrom stats as.formula update
+#' @importFrom stats as.formula update pchisq
 #'
 #'
 #' @return A dataframe containing the results of the test.
