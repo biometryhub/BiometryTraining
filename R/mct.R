@@ -19,7 +19,7 @@
 #' @param pred Deprecated. Use `classify` instead.
 #'
 #' @importFrom multcompView multcompLetters
-#' @importFrom agricolae LSD.test HSD.test
+#' @importFrom agricolae HSD.test
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
 #' @importFrom forcats fct_inorder
@@ -127,14 +127,14 @@ mct.out <- function(model.obj,
            pp$Names <- apply(pp[,unlist(strsplit(classify, ":"))], 1, paste, collapse = "_"),
            pp$Names <- pp[[classify]])
 
-    zz <- as.numeric(row.names(pp[!is.na(pp$predicted.value),]))
+    # zz <- as.numeric(1:nrow(pp))
 
-    SED <- sed[zz,zz]
+    # SED <- sed[1:nrow(pp),1:nrow(pp)]
 
     # Mean <- pp$predicted.value
     # Names <-  as.character(pp$Names)
     ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(dendf$Source)]
-    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
+    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*sed
 
     # Grab the response from the formula to create plot Y label
     ylab <- model.obj$formulae$fixed[[2]]
