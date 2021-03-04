@@ -61,7 +61,7 @@ satab <- function(design.obj) {
     for (i in 1:length(trt)) {
       output <- c(output, paste0(format(trt[i], width = 40), trtdf[i], "\n"))
     }
-    output <- c(output, paste0(format("AB", width = 40), trtABdf, "\n"))
+    output <- c(output, paste0(format(paste0(names(design.obj)[3:length(names(design.obj))], collapse = ":"), width = 40), trtABdf, "\n"))
     output <- c(output, paste0(format("Residual", width = 40), errdf, "\n"))
     output <- c(output, paste0("=============================================\n"))
     output <- c(output, paste0(format("Total", width = 40), totdf, "\n"))
@@ -84,7 +84,7 @@ satab <- function(design.obj) {
     for (i in 1:length(trt)) {
       output <- c(output, paste0(format(trt[i], width = 40), trtdf[i], "\n"))
     }
-    output <- c(output, paste0(format("AB", width = 40), trtABdf, "\n"))
+    output <- c(output, paste0(format(paste0(names(design.obj)[3:length(names(design.obj))], collapse = ":"), width = 40), trtABdf, "\n"))
     output <- c(output, paste0(format("Residual", width = 40), errdf, "\n"))
     output <- c(output, paste0("=============================================\n"))
     output <- c(output, paste0(format("Total", width = 40), totdf, "\n"))
@@ -140,16 +140,16 @@ satab <- function(design.obj) {
     rowdf <- length(unique(design.obj$row)) - 1
     coldf <- length(unique(design.obj$col)) - 1
     totdf <- nrow(design.obj) - 1
-    trtAdf <- length(unique(design.obj$A)) - 1
-    trtBdf <- length(unique(design.obj$B)) - 1
+    trtAdf <- length(unique(design.obj[,4])) - 1
+    trtBdf <- length(unique(design.obj[,5])) - 1
     trtABdf <- trtAdf * trtBdf
     errdf <- totdf - trtAdf - trtBdf - trtABdf - rowdf - coldf
 
     output <- c(output, paste0(format("Row", width = 40), rowdf, "\n"))
     output <- c(output, paste0(format("Column", width = 40), coldf, "\n"))
-    output <- c(output, paste0(format("A", width = 40), trtAdf, "\n"))
-    output <- c(output, paste0(format("B", width = 40), trtBdf, "\n"))
-    output <- c(output, paste0(format("AB", width = 40), trtABdf, "\n"))
+    output <- c(output, paste0(format(names(design.obj)[4], width = 40), trtAdf, "\n"))
+    output <- c(output, paste0(format(names(design.obj)[5], width = 40), trtBdf, "\n"))
+    output <- c(output, paste0(format(paste0(names(design.obj)[4:length(names(design.obj))], collapse = ":"), width = 40), trtABdf, "\n"))
     output <- c(output, paste0(format("Residual", width = 40), errdf, "\n"))
     output <- c(output, paste0("=============================================\n"))
     output <- c(output, paste0(format("Total", width = 40), totdf, "\n"))

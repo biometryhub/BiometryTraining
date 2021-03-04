@@ -147,7 +147,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     plan <- expand.grid(row = 1:nrows, col = 1:ncols)
     des <- cbind(plan, design.obj$book)
 
-    des$trt <- factor(paste("A", des$A, "B", des$B, sep = ""))
+    des$trt <- factor(paste(names(design.obj$book)[3], design.obj$book[,3], names(design.obj$book)[4], design.obj$book[,4], sep = "_"))
     ntrt <- nlevels(as.factor(des$trt))
   }
 
