@@ -5,10 +5,8 @@
 #' @param resid.terms Residual terms from the model. Default is NULL.
 #'
 #' @importFrom lucid vc
-#' @importFrom asremlPlus REMLRT
 #' @importFrom stats as.formula update
 #'
-#' @details Uses the [asremlPlus::REMLRT.asreml()] function to calculate the Likelihood ratio test for Asreml-R objects.
 #'
 #' @return A dataframe containing the results of the test.
 #' @export
@@ -110,7 +108,15 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
         }
 
         # Logl test
-        ll.test <- asremlPlus::REMLRT(h1.asreml.obj = model.obj, h0.asreml.obj = model.obj1)$p
+
+        p <- (length(model.obj$vparameters) +
+                length(model.obj$coefficients$fixed))-
+                (length(model.obj1$vparameters) +
+                length(model.obj1$coefficients$fixed))
+
+        logl <- 2*(model.obj$loglik-model.obj1$loglik)
+
+        ll.test <- round(1-pchisq(logl, p),3)
 
         result.df <- data.frame(Term = tt[i], LogLRT.pvalue = ll.test)
         test.df <- rbind(test.df, result.df)
@@ -132,7 +138,13 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
         }
 
         # Logl test
-        ll.test <- asremlPlus::REMLRT(h1.asreml.obj = model.obj, h0.asreml.obj = model.obj1)$p
+        p <- (length(model.obj$vparameters) +
+                length(model.obj$coefficients$fixed))-
+          (length(model.obj1$vparameters) +
+             length(model.obj1$coefficients$fixed))
+        logl <- -2*(model.obj1$loglik-model.obj$loglik)
+
+        ll.test <- round(1-pchisq(abs(logl), p),3)
 
         result.df <- data.frame(Term = tt[i], LogLRT.pvalue = ll.test)
 
@@ -142,6 +154,9 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
   }
 
   test.df$LogLRT.pvalue <- round(test.df$LogLRT.pvalue, 3)
+
+  all.terms <- c(rand.terms, resid.terms)
+  test.df <- test.df[is.element(test.df$Term, all.terms),]
 
     return(test.df)
 }
