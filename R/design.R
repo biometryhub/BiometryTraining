@@ -1,12 +1,13 @@
 #' Produces an experimental design with graph of design layout and skeletal ANOVA table
 #'
 #' @param type The type of design. Supported design types are `crd`, `rcbd`, `lsd`, `split` and `crossed:<type>` where `<type>` is one of the previous types. See Details for more informtaion.
-#' @param trt A vector containing the treatment names or labels.
+#' @param treatments A vector containing the treatment names or labels.
 #' @param reps The number of replicates. Not required for Latin Squared Designs.
 #' @param nrows The number of rows in the design.
 #' @param ncols The number of columns in the design.
 #' @param brows For RCBD only. The number of rows in a block.
 #' @param bcols For RCBD only. The number of columns in a block.
+#' @param sub_treatments A vector of treatments for subplots in a split plot design.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
 #' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
@@ -81,12 +82,12 @@
 #'
 design <- function(type,
                    treatments,
-                   treatments2,
                    reps,
                    nrows,
                    ncols,
                    brows = NA,
                    bcols = NA,
+                   sub_treatments = NULL,
                    rotation = 0,
                    size = 4,
                    margin = FALSE,
@@ -104,28 +105,31 @@ design <- function(type,
     if(tolower(type) == "crd") {
         outdesign <- agricolae::design.crd(trt = treatments,
                                            r = reps,
-                                           seed = ifelse(is.numeric(seed), seed, NULL))
+                                           seed = ifelse(is.numeric(seed), seed, 0))
     }
 
     else if(tolower(type) == "rcbd") {
         outdesign <- agricolae::design.rcbd(trt = treatments,
                                             r = reps,
-                                            seed = ifelse(is.numeric(seed), seed, NULL))
+                                            seed = ifelse(is.numeric(seed), seed, 0))
     }
 
     else if(tolower(type) == "lsd") {
-        outdesign <- agricolae::design.lsd(trt = treatments,
-                                           seed = ifelse(is.numeric(seed), seed, NULL))
         message("Number of replicates is not required for Latin Square designs.")
+        outdesign <- agricolae::design.lsd(trt = treatments,
+                                           seed = ifelse(is.numeric(seed), seed, 0))
     }
 
     else if(tolower(type) == "split") {
+        if(is.null(sub_treatments)) {
+            stop("sub_treatments are required for a split plot design")
+        }
         outdesign <- agricolae::design.crd(trt = treatments,
                                            r = reps,
-                                           seed = ifelse(is.numeric(seed), seed, NULL))
+                                           seed = ifelse(is.numeric(seed), seed, 0))
     }
 
-    else if(unlist(strsplit(tolower(type), ":"))[1] == "crossed") {
+    else if(substr(tolower(type), 1, 7) == "crossed") {
         type_split <- unlist(strsplit(tolower(type), ":"))
 
         if(type_split[2] %!in% c("crd", "rcbd", "lsd")) {
@@ -135,7 +139,12 @@ design <- function(type,
         outdesign <- agricolae::design.ab(trt = treatments,
                                           r = reps,
                                           design = type_split[2],
-                                          seed = ifelse(is.numeric(seed), seed, NULL))
+                                          seed = ifelse(is.numeric(seed), seed, 0))
     }
 
+    else {
+        stop("Designs of type ", type, " are not supported")
+    }
+
+    return(outdesign)
 }
