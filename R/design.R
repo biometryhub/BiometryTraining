@@ -146,5 +146,7 @@ design <- function(type,
         stop("Designs of type ", type, " are not supported")
     }
 
-    return(outdesign)
+    output <- des.info(outdesign, nrows, ncols, brows, bcols, rotation, size, margin,
+                       save, savename, plottype, seed, quiet, fac_names, ...)
+    return(output)
 }
