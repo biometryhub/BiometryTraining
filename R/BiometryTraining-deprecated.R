@@ -5,5 +5,4 @@
 #'   functionality are also mentioned. Help pages for deprecated functions are
 #'   available at `help("<function>-deprecated")`.
 #' @name BiometryTraining-deprecated
-#' @keywords internal
 NULL

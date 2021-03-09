@@ -16,6 +16,15 @@
 # pred
 
 
+# save_png <- function(code, width = 400, height = 400) {
+#     path <- tempfile(fileext = ".png")
+#     png(path, width = width, height = height)
+#     on.exit(dev.off())
+#     # code
+#
+#     path
+# }
+
 test_that("mct produces output", {
     dat.aov <- aov(Petal.Width ~ Species, data = iris)
     output <- mct.out(dat.aov, classify = "Species")
@@ -117,3 +126,8 @@ test_that("mct handles aliased results in asreml with a warning", {
 # pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #
 # mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen", trans = "log", offset = 0, label_height = 0.1)
+
+
+
+
+

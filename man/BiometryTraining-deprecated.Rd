@@ -18,4 +18,3 @@ available at \code{help("<function>-deprecated")}.
 \code{tuk.out} has been superseded by \code{\link[=mct.out]{mct.out()}}.
 }
 
-\keyword{internal}
