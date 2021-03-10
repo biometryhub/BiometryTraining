@@ -84,29 +84,29 @@ des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
 
 # Randomised Complete Block Design
 des.out <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
-                  nrows = 11, ncols = 4, brows = 11, bcols = 1)
+                  nrows = 11, ncols = 4, brows = 11, bcols = 1, seed = 42)
 
 # Latin Square Design
 # Doesn't require reps argument
 des.out <- design(type = "lsd", c("S1", "S2", "S3", "S4"),
-                  nrows = 4, ncols = 4)
+                  nrows = 4, ncols = 4, seed = 42)
 
 # Factorial Design (Crossed, Completely Randomised)
 des.out <- design(type = "crossed:crd", treatments = c(3, 2),
-                  reps = 3, nrows = 6, ncols = 3)
+                  reps = 3, nrows = 6, ncols = 3, seed = 42)
 
 # Factorial Design (Crossed, Completely Randomised), renaming factors
 des.out <- design(type = "crossed:crd", treatments = c(3, 2),
-                  reps = 3, nrows = 6, ncols = 3,
+                  reps = 3, nrows = 6, ncols = 3, seed = 42,
                   fac_names = list(N = c(50, 100, 150),
                                    Water = c("Irrigated", "Rain-fed")))
 
 # Factorial Design (Nested, Latin Square)
 des.out <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),
-                  nrows = 7, ncols = 7)
+                  nrows = 7, ncols = 7, seed = 42)
 
 # Split plot design
 des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
-                  reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2)
+                  reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2, seed = 42)
 
 }
