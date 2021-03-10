@@ -3,6 +3,7 @@
 \docType{package}
 \name{BiometryTraining}
 \alias{BiometryTraining}
+\alias{_PACKAGE}
 \alias{BiometryTraining-package}
 \title{BiometryTraining: Functions to Assist Teaching Design and Analysis of
     Agronomic Experiments}
@@ -29,3 +30,4 @@ Authors:
 }
 
 }
+\keyword{internal}
