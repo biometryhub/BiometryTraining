@@ -39,30 +39,30 @@
 #'
 #' # Randomised Complete Block Design
 #' des.out <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
-#'                   nrows = 11, ncols = 4, brows = 11, bcols = 1)
+#'                   nrows = 11, ncols = 4, brows = 11, bcols = 1, seed = 42)
 #'
 #' # Latin Square Design
 #' # Doesn't require reps argument
 #' des.out <- design(type = "lsd", c("S1", "S2", "S3", "S4"),
-#'                   nrows = 4, ncols = 4)
+#'                   nrows = 4, ncols = 4, seed = 42)
 #'
 #' # Factorial Design (Crossed, Completely Randomised)
 #' des.out <- design(type = "crossed:crd", treatments = c(3, 2),
-#'                   reps = 3, nrows = 6, ncols = 3)
+#'                   reps = 3, nrows = 6, ncols = 3, seed = 42)
 #'
 #' # Factorial Design (Crossed, Completely Randomised), renaming factors
 #' des.out <- design(type = "crossed:crd", treatments = c(3, 2),
-#'                   reps = 3, nrows = 6, ncols = 3,
+#'                   reps = 3, nrows = 6, ncols = 3, seed = 42,
 #'                   fac_names = list(N = c(50, 100, 150),
 #'                                    Water = c("Irrigated", "Rain-fed")))
 #'
 #' # Factorial Design (Nested, Latin Square)
 #' des.out <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),
-#'                   nrows = 7, ncols = 7)
+#'                   nrows = 7, ncols = 7, seed = 42)
 #'
 #' # Split plot design
 #' des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
-#'                   reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2)
+#'                   reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2, seed = 42)
 #'
 design <- function(type,
                    treatments,
@@ -100,26 +100,27 @@ design <- function(type,
 
     else if(tolower(type) == "lsd") {
         if(!missing(reps)) {
-            message("Number of replicates is not required for Latin Square designs.")
+            message("Number of replicates is not required for Latin Square designs")
         }
         outdesign <- agricolae::design.lsd(trt = treatments,
                                            seed = ifelse(is.numeric(seed), seed, 0))
     }
 
     else if(tolower(type) == "split") {
-        if(is.null(sub_treatments) | is.na(sub_treatments)) {
+        if(is.null(sub_treatments) | anyNA(sub_treatments)) {
             stop("sub_treatments are required for a split plot design")
         }
-        outdesign <- agricolae::design.crd(trt = treatments,
-                                           r = reps,
-                                           seed = ifelse(is.numeric(seed), seed, 0))
+        outdesign <- agricolae::design.split(trt1 = treatments,
+                                             trt2 = sub_treatments,
+                                             r = reps,
+                                             seed = ifelse(is.numeric(seed), seed, 0))
     }
 
     else if(substr(tolower(type), 1, 7) == "crossed") {
         type_split <- unlist(strsplit(tolower(type), ":"))
 
         if(type_split[2] %!in% c("crd", "rcbd", "lsd")) {
-            stop(paste("Crossed designs of type", type_split[2], "are not supported."))
+            stop("Crossed designs of type '", type_split[2], "' are not supported")
         }
 
         outdesign <- agricolae::design.ab(trt = treatments,
@@ -129,7 +130,7 @@ design <- function(type,
     }
 
     else {
-        stop("Designs of type ", type, " are not supported")
+        stop("Designs of type '", type, "' are not supported")
     }
 
     output <- des.info(outdesign, nrows, ncols, brows, bcols, rotation, size, margin,
