@@ -19,7 +19,7 @@
 #' @param fac_names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
 #' @param ... Additional parameters passed to [ggplot2::ggsave()] for saving the plot.
 #'
-#' @details The designs currently supported by `type` are Completely Randomised designs (`crd`), Randomised Complete Block designs (`rcbd`), Latin Square Designs (`lsd`), Split Plot designs (`split`) and Factorial with crossed structure (`crossed:<type>` where `<type>` is one of the previous types (e.g. `crossed:crd`). Nested factorial designs are supported through manual setup, see Examples.
+#' @details The designs currently supported by `type` are Completely Randomised designs (`crd`), Randomised Complete Block designs (`rcbd`), Latin Square Designs (`lsd`), Factorial with crossed structure (use `crossed:<type>` where `<type>` is one of the previous types e.g. `crossed:crd`) and Split Plot designs (`split`). Nested factorial designs are supported through manual setup, see Examples.
 #' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory, with filename given by `savename`. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
 #' @details `fac_names` can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example `fac_names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))`. This will result a design output with a column named `A_names` with levels `a, b, c` and another named `B_names` with levels `x, y, z`. Only the first two elements of the list will be used.
 #' @details `...` allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  [ggplot2::ggsave()].
@@ -35,46 +35,34 @@
 #' @examples
 #' # Completely Randomised Design
 #' des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
-#' reps = 5, nrows = 4, ncols = 5, seed = 42)
+#'                   reps = 5, nrows = 4, ncols = 5, seed = 42)
 #'
 #' # Randomised Complete Block Design
-#' trt <- LETTERS[1:11]
-#' rep <- 4
-#' outdesign <- design.rcbd(trt = trt, r = rep, seed = 42)
-#' des.out <- des.info(
-#'   design.obj = outdesign, nrows = 11,
-#'   ncols = 4, brows = 11, bcols = 1
-#' )
+#' des.out <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+#'                   nrows = 11, ncols = 4, brows = 11, bcols = 1)
 #'
 #' # Latin Square Design
-#' trt <- c("S1", "S2", "S3", "S4")
-#' outdesign <- design.lsd(trt)
-#' des.out <- des.info(design.obj = outdesign, nrows = 4, ncols = 4)
+#' # Doesn't require reps argument
+#' des.out <- design(type = "lsd", c("S1", "S2", "S3", "S4"),
+#'                   nrows = 4, ncols = 4)
 #'
 #' # Factorial Design (Crossed, Completely Randomised)
-#' trt <- c(3, 2) # Factorial 3 x 2
-#' rep <- 3
-#' outdesign <- design.ab(trt, r = rep, design = "crd")
-#' des.out <- des.info(design.obj = outdesign, nrows = 6, ncols = 3)
+#' des.out <- design(type = "crossed:crd", treatments = c(3, 2),
+#'                   reps = 3, nrows = 6, ncols = 3)
 #'
 #' # Factorial Design (Crossed, Completely Randomised), renaming factors
-#' trt <- c(3, 2) # Factorial 3 x 2
-#' rep <- 3
-#' outdesign <- design.ab(trt, r = rep, design = "crd")
-#' des.out <- des.info(design.obj = outdesign, nrows = 6, ncols = 3,
-#' fac_names = list(N = c(50, 100, 150), Water = c("Irrigated", "Rain-fed")))
+#' des.out <- design(type = "crossed:crd", treatments = c(3, 2),
+#'                   reps = 3, nrows = 6, ncols = 3,
+#'                   fac_names = list(N = c(50, 100, 150),
+#'                                    Water = c("Irrigated", "Rain-fed")))
 #'
 #' # Factorial Design (Nested, Latin Square)
-#' trt <- c("A1", "A2", "A3", "A4", "B1", "B2", "B3")
-#' outdesign <- design.lsd(trt)
-#' des.out <- des.info(design.obj = outdesign, nrows = 7, ncols = 7)
+#' des.out <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),
+#'                   nrows = 7, ncols = 7)
 #'
 #' # Split plot design
-#' trt1 <- c("A", "B")
-#' trt2 <- 1:4
-#' rep <- 4
-#' outdesign <- design.split(trt1, trt2, r = rep)
-#' des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4, brows = 4, bcols = 2)
+#' des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
+#'                   reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2)
 #'
 design <- function(type,
                    treatments,

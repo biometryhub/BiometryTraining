@@ -17,7 +17,7 @@ design(
   size = 4,
   margin = FALSE,
   save = FALSE,
-  savename = paste0(design.obj$parameters$design, "_design"),
+  savename = paste0(type, "_design"),
   plottype = "pdf",
   seed = TRUE,
   quiet = FALSE,
@@ -69,7 +69,7 @@ A list containing a data frame with the complete design, a ggplot object with pl
 Produces an experimental design with graph of design layout and skeletal ANOVA table
 }
 \details{
-The designs currently supported by \code{type} are Completely Randomised designs (\code{crd}), Randomised Complete Block designs (\code{rcbd}), Latin Square Designs (\code{lsd}), Split Plot designs (\code{split}) and Factorial with crossed structure (\verb{crossed:<type>} where \verb{<type>} is one of the previous types (e.g. \code{crossed:crd}). Nested factorial designs are supported through manual setup, see Examples.
+The designs currently supported by \code{type} are Completely Randomised designs (\code{crd}), Randomised Complete Block designs (\code{rcbd}), Latin Square Designs (\code{lsd}), Factorial with crossed structure (use \verb{crossed:<type>} where \verb{<type>} is one of the previous types e.g. \code{crossed:crd}) and Split Plot designs (\code{split}). Nested factorial designs are supported through manual setup, see Examples.
 
 If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be saved to the current working directory, with filename given by \code{savename}. If one of either \code{"plot"} or \code{"workbook"} is specified, only that output is saved. If \code{save = FALSE} (the default, or equivalently \code{"none"}), nothing will be output.
 
@@ -79,49 +79,34 @@ If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be
 }
 \examples{
 # Completely Randomised Design
-trt <- c(1, 5, 10, 20)
-rep <- 5
-outdesign <- design.crd(trt = trt, r = rep, seed = 42)
 des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
-reps = 5, nrows = 4, ncols = 5)
+                  reps = 5, nrows = 4, ncols = 5, seed = 42)
 
 # Randomised Complete Block Design
-trt <- LETTERS[1:11]
-rep <- 4
-outdesign <- design.rcbd(trt = trt, r = rep, seed = 42)
-des.out <- des.info(
-  design.obj = outdesign, nrows = 11,
-  ncols = 4, brows = 11, bcols = 1
-)
+des.out <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                  nrows = 11, ncols = 4, brows = 11, bcols = 1)
 
 # Latin Square Design
-trt <- c("S1", "S2", "S3", "S4")
-outdesign <- design.lsd(trt)
-des.out <- des.info(design.obj = outdesign, nrows = 4, ncols = 4)
+# Doesn't require reps argument
+des.out <- design(type = "lsd", c("S1", "S2", "S3", "S4"),
+                  nrows = 4, ncols = 4)
 
 # Factorial Design (Crossed, Completely Randomised)
-trt <- c(3, 2) # Factorial 3 x 2
-rep <- 3
-outdesign <- design.ab(trt, r = rep, design = "crd")
-des.out <- des.info(design.obj = outdesign, nrows = 6, ncols = 3)
+des.out <- design(type = "crossed:crd", treatments = c(3, 2),
+                  reps = 3, nrows = 6, ncols = 3)
 
 # Factorial Design (Crossed, Completely Randomised), renaming factors
-trt <- c(3, 2) # Factorial 3 x 2
-rep <- 3
-outdesign <- design.ab(trt, r = rep, design = "crd")
-des.out <- des.info(design.obj = outdesign, nrows = 6, ncols = 3,
-fac_names = list(N = c(50, 100, 150), Water = c("Irrigated", "Rain-fed")))
+des.out <- design(type = "crossed:crd", treatments = c(3, 2),
+                  reps = 3, nrows = 6, ncols = 3,
+                  fac_names = list(N = c(50, 100, 150),
+                                   Water = c("Irrigated", "Rain-fed")))
 
 # Factorial Design (Nested, Latin Square)
-trt <- c("A1", "A2", "A3", "A4", "B1", "B2", "B3")
-outdesign <- design.lsd(trt)
-des.out <- des.info(design.obj = outdesign, nrows = 7, ncols = 7)
+des.out <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),
+                  nrows = 7, ncols = 7)
 
 # Split plot design
-trt1 <- c("A", "B")
-trt2 <- 1:4
-rep <- 4
-outdesign <- design.split(trt1, trt2, r = rep)
-des.out <- des.info(design.obj = outdesign, nrows = 8, ncols = 4, brows = 4, bcols = 2)
+des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
+                  reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2)
 
 }
