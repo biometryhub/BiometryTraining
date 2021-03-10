@@ -33,13 +33,9 @@
 #' @return A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if `return.seed = TRUE`), and the `satab` object, allowing repeat output of the `satab` table via `cat(output$satab)`.
 #'
 #' @examples
-#' library(agricolae)
-#'
 #' # Completely Randomised Design
-#' trt <- c(1, 5, 10, 20)
-#' rep <- 5
-#' outdesign <- design.crd(trt = trt, r = rep, seed = 42)
-#' des.out <- des.info(design.obj = outdesign, nrows = 4, ncols = 5)
+#' des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
+#' reps = 5, nrows = 4, ncols = 5, seed = 42)
 #'
 #' # Randomised Complete Block Design
 #' trt <- LETTERS[1:11]
@@ -92,7 +88,7 @@ design <- function(type,
                    size = 4,
                    margin = FALSE,
                    save = FALSE,
-                   savename = paste0(design.obj$parameters$design, "_design"),
+                   savename = paste0(type, "_design"),
                    plottype = "pdf",
                    seed = TRUE,
                    quiet = FALSE,
@@ -115,13 +111,15 @@ design <- function(type,
     }
 
     else if(tolower(type) == "lsd") {
-        message("Number of replicates is not required for Latin Square designs.")
+        if(!missing(reps)) {
+            message("Number of replicates is not required for Latin Square designs.")
+        }
         outdesign <- agricolae::design.lsd(trt = treatments,
                                            seed = ifelse(is.numeric(seed), seed, 0))
     }
 
     else if(tolower(type) == "split") {
-        if(is.null(sub_treatments)) {
+        if(is.null(sub_treatments) | is.na(sub_treatments)) {
             stop("sub_treatments are required for a split plot design")
         }
         outdesign <- agricolae::design.crd(trt = treatments,
