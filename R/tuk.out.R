@@ -47,7 +47,7 @@ NULL
 #' @section `tuk.out`:
 #'  `tuk.out` has been superseded by [mct.out()].
 #'
-#' @export
+#' @keywords internal
 tuk.out <- function(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0) {
   .Deprecated(msg = "tuk.out has been replaced with mct.out and will be removed in a future version of this package.")
   # Can we get the pred argument directly from the model.obj?
