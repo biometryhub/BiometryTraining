@@ -15,7 +15,11 @@ Authors@R:
       person(given = "Annie",
              family = "Conway",
              role = "aut",
-             email = "biometrytraining@adelaide.edu.au"))
+             email = "biometrytraining@adelaide.edu.au"),
+      person(given = "University of Adelaide",
+             role = "cph"),
+      person(given = "GRDC",
+             role = "fnd"))
 Description: BiometryTraining gives users a simple way to install and 
     access documentation about the functions used and distributed as 
     part of the SAGI-STH Biometrics Education Initiative.
@@ -45,5 +49,6 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Date: 2021-03-10
 Config/testthat/parallel: true
 Config/testthat/edition: 3
