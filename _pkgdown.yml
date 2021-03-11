@@ -1,1 +1,23 @@
+url: https://biometryhub.github.io/BiometryTraining/
+
 destination: docs
+
+template:
+  params:
+    ganalytics: G-3DTR7EJN4Q
+
+reference:
+- title: Design
+  desc: Functions to help with the design of experiments
+- contents:
+  - starts_with("des")
+- title: Analysis
+  desc: Functions to help with the analysis of experiments
+- contents:
+  - logl.test
+  - mct.out
+  - resplt
+- title: Utilities
+  desc: Other helper Functions
+- contents:
+  - ends_with("asreml")
