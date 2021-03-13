@@ -17,9 +17,9 @@ Authors@R:
              role = "aut",
              email = "biometrytraining@adelaide.edu.au"),
       person(given = "University of Adelaide",
-             role = "cph"),
+             role = c("cph", "fnd")),
       person(given = "GRDC",
-             role = "fnd"))
+             role = c("cph", "fnd")))
 Description: BiometryTraining gives users a simple way to install and 
     access documentation about the functions used and distributed as 
     part of the SAGI-STH Biometrics Education Initiative.
