@@ -29,5 +29,11 @@ Authors:
   \item Annie Conway \email{biometrytraining@adelaide.edu.au}
 }
 
+Other contributors:
+\itemize{
+  \item University of Adelaide [copyright holder, funder]
+  \item GRDC [copyright holder, funder]
+}
+
 }
 \keyword{internal}

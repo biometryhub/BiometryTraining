@@ -59,8 +59,16 @@ test_that("unsupported design types give an error", {
     )
 })
 
+test_that("split plot requires sub_treatments", {
+    expect_error(design(type = "split", treatments = c("A", "B"),
+                         sub_treatments = NULL, reps = 4, nrows = 8,
+                         ncols = 4, brows = 4, bcols = 2, seed = 42),
+                  "sub_treatments are required for a split plot design")
+})
 
-# type, treatments, reps, nrows, ncols, brows = NA, bcols = NA, sub_treatments = NULL,
+
+
+# type, treatments, reps, nrows, ncols, brows = NA, bcols = NA,
 # rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(type, "_design"),
 # plottype = "pdf", seed = TRUE, quiet = FALSE, fac_names = NULL, ...
 
