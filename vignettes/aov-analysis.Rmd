@@ -1,0 +1,55 @@
+---
+title: "Analysis example using aov"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analysis example using aov}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=4, 
+  fig.asp=1, 
+  fig.align='center'
+)
+```
+
+# Analysis of the `iris` data set using `aov`.
+
+First we will load the packages we need, in this case only `BiometryTraining`.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(dplyr)
+library(BiometryTraining)
+```
+
+Now we can create a linear model using the `aov` function:
+
+```{r analysis}
+dat.aov <- aov(Petal.Length ~ Species, data = iris)
+```
+
+It's really important to check the residual plots of the model before proceeding with the analysis to ensure that the assumptions of the ANOVA analysis are met.
+
+```{r resplt}
+resplt(dat.aov)
+```
+
+The plots in A and B show a reasonable normal shape, so the assumption of _normality of residuals_ appears valid. Plot C shows 
+
+```{r}
+anova(dat.aov) %>% 
+  knitr::kable()
+```
+This shows a significant difference between treatments (Species) in the response (Petal Length). We can conduct a multiple comparison test to check which treatments are different from each other, and get predicted means for each Species.
+
+```{r, }
+pred.out <- mct.out(dat.aov, classify = "Species")
+pred.out
+```
+
+
+
