@@ -13,7 +13,8 @@
   rotation,
   size,
   margin,
-  return.seed
+  return.seed,
+  fac.sep
 )
 }
 \arguments{
@@ -34,6 +35,8 @@
 \item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.}
 
 \item{return.seed}{Logical (default TRUE). Output the seed used in the design?}
+
+\item{fac.sep}{Character to separate factorial treatments.}
 
 \item{quiet}{Logical (default FALSE). Return the objects without printing output.}
 }

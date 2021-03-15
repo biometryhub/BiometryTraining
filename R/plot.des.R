@@ -10,6 +10,7 @@
 #' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.
 #' @param quiet Logical (default FALSE). Return the objects without printing output.
 #' @param return.seed Logical (default TRUE). Output the seed used in the design?
+#' @param fac.sep Character to separate factorial treatments.
 #'
 #' @return Returns dataframe of design and ggplot object of design layout.
 #'
@@ -19,7 +20,7 @@
 #' @importFrom scales reverse_trans
 #' @keywords internal
 #'
-plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed) {
+plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed, fac.sep) {
   # Asign NULL to variables that give a NOTE in package checks
   # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
   trt <- NULL
@@ -42,8 +43,8 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
   }
 
   ifelse(design.obj$parameters$design == "factorial",
-    design <- paste("factorial", design.obj$parameters$applied, sep = "_"),
-    design <- design.obj$parameters$design
+         design <- paste("factorial", design.obj$parameters$applied, sep = "_"),
+         design <- design.obj$parameters$design
   )
 
   if (design == "crd") {
@@ -144,20 +145,38 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
 
 
   if (design == "factorial_crd") {
+    treatments <- NULL
     plan <- expand.grid(row = 1:nrows, col = 1:ncols)
     des <- cbind(plan, design.obj$book)
 
-    des$trt <- factor(paste(names(design.obj$book)[3], design.obj$book[,3], names(design.obj$book)[4], design.obj$book[,4], sep = "_"))
+    if(length(fac.sep) == 1) {
+      for (i in 3:ncol(design.obj$book)) {
+        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep), sep = fac.sep)
+      }
+    }
+    else if(length(fac.sep) == 2) {
+      for (i in 3:ncol(design.obj$book)) {
+        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+      }
+    }
+    des$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
     ntrt <- nlevels(as.factor(des$trt))
   }
 
 
   if (design == "factorial_rcbd") {
     treatments <- NULL
-    for (i in 3:ncol(design.obj$book)) {
-      treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = ""), sep = " ")
+    if(length(fac.sep) == 1) {
+      for (i in 3:ncol(design.obj$book)) {
+        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep), sep = fac.sep)
+      }
     }
-    design.obj$book$trt <- factor(trimws(treatments))
+    else if(length(fac.sep) == 2) {
+      for (i in 3:ncol(design.obj$book)) {
+        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+      }
+    }
+    design.obj$book$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
     ntrt <- nlevels(as.factor(design.obj$book$trt))
 
     # Calculate direction of blocking
@@ -236,8 +255,20 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
   }
 
   if (design == "factorial_lsd") {
+    treatments <- NULL
     des <- design.obj$book
-    des$trt <- factor(paste("A", des$A, "_B", des$B, sep = ""))
+
+    if(length(fac.sep) == 1) {
+      for (i in 3:ncol(design.obj$book)) {
+        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep), sep = fac.sep)
+      }
+    }
+    else if(length(fac.sep) == 2) {
+      for (i in 4:ncol(design.obj$book)) {
+        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+      }
+    }
+    des$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
     ntrt <- nlevels(as.factor(des$trt))
     des$row <- as.numeric(des$row)
     des$col <- as.numeric(des$col)

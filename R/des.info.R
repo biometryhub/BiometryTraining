@@ -13,11 +13,13 @@
 #' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
 #' @param return.seed Logical (default TRUE). Output the seed used in the design?
 #' @param quiet Logical (default FALSE). Return the objects without printing output.
-#' @param fac_names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
+#' @param fac.names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
+#' @param fac.sep The separator used by `fac.names`. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.
 #' @param ... Additional parameters passed to [ggplot2::ggsave()] for saving the plot.
 #'
 #' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory, with filename given by `savename`. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
-#' @details `fac_names` can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example `fac_names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))`. This will result a design output with a column named `A_names` with levels `a, b, c` and another named `B_names` with levels `x, y, z`. Only the first two elements of the list will be used.
+#' @details `fac.names` can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example `fac.names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))`. This will result a design output with a column named `A_names` with levels `a, b, c` and another named `B_names` with levels `x, y, z`. Only the first two elements of the list will be used.
+#' @details If `fac.sep` is a single element (e.g. "_"), this is used to separate all factor labels (e.g. A_1_B_1). If it is two elements (e.g. c("", "_")), the first element separates the factor names and their levels, and the second level separates the two factors (e.g. A1_B1).
 #' @details `...` allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  [ggplot2::ggsave()].
 #'
 #' @importFrom graphics plot
@@ -60,7 +62,8 @@
 #' rep <- 3
 #' outdesign <- design.ab(trt, r = rep, design = "crd")
 #' des.out <- des.info(design.obj = outdesign, nrows = 6, ncols = 3,
-#' fac_names = list(N = c(50, 100, 150), Water = c("Irrigated", "Rain-fed")))
+#'                     fac.names = list(N = c(50, 100, 150),
+#'                                      Water = c("Irrigated", "Rain-fed")))
 #'
 #' # Factorial Design (Nested, Latin Square)
 #' trt <- c("A1", "A2", "A3", "A4", "B1", "B2", "B3")
@@ -88,7 +91,8 @@ des.info <- function(design.obj,
                      plottype = "pdf",
                      return.seed = TRUE,
                      quiet = FALSE,
-                     fac_names = NULL,
+                     fac.names = NULL,
+                     fac.sep = c("", " "),
                      ...) {
 
   # Error checking of inputs
@@ -108,15 +112,15 @@ des.info <- function(design.obj,
     }
 
     # If factorial design, and names are supplied, use them
-    if(!is.null(fac_names)) {
-      design.obj$book$A <- factor(design.obj$book$A, labels = fac_names[[1]])
-      design.obj$book$B <- factor(design.obj$book$B, labels = fac_names[[2]])
-      colnames(design.obj$book)[3:4] <- names(fac_names)[1:2]
+    if(!is.null(fac.names)) {
+      design.obj$book$A <- factor(design.obj$book$A, labels = fac.names[[1]])
+      design.obj$book$B <- factor(design.obj$book$B, labels = fac.names[[2]])
+      colnames(design.obj$book)[3:4] <- names(fac.names)[1:2]
     }
   }
 
 
-  info <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed = return.seed)
+  info <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
   info$satab <- satab(design.obj)
 
   if (!quiet) {
