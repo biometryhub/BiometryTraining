@@ -19,7 +19,7 @@ des.info(
   return.seed = TRUE,
   quiet = FALSE,
   fac.names = NULL,
-  fac.sep = c("", "_"),
+  fac.sep = c("", " "),
   ...
 )
 }

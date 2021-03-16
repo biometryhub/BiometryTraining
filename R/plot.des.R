@@ -30,11 +30,10 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
   ymax <- NULL
   Row <- NULL
 
-  # nth_element <- function(vector, starting_position, n) {
-  #     vector[seq(starting_position, length(vector), n)]
-  # }
+  if(!missing(fac.sep) && length(fac.sep) == 1) {
+    fac.sep <- rep(fac.sep, times = 2)
+  }
 
-  # desfac <- design.obj$parameters$design
   if (return.seed) {
     des.seed <- design.obj$parameters$seed
   }
@@ -149,34 +148,33 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     plan <- expand.grid(row = 1:nrows, col = 1:ncols)
     des <- cbind(plan, design.obj$book)
 
-    if(length(fac.sep) == 1) {
-      for (i in 3:ncol(design.obj$book)) {
-        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep), sep = fac.sep)
-      }
+    for (i in 3:ncol(design.obj$book)) {
+      treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
     }
-    else if(length(fac.sep) == 2) {
-      for (i in 3:ncol(design.obj$book)) {
-        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
-      }
+
+    if(fac.sep[2] == "") {
+      des$trt <- factor(trimws(treatments))
     }
-    des$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+    else {
+      des$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+    }
     ntrt <- nlevels(as.factor(des$trt))
   }
 
 
   if (design == "factorial_rcbd") {
     treatments <- NULL
-    if(length(fac.sep) == 1) {
-      for (i in 3:ncol(design.obj$book)) {
-        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep), sep = fac.sep)
-      }
+
+    for (i in 3:ncol(design.obj$book)) {
+      treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
     }
-    else if(length(fac.sep) == 2) {
-      for (i in 3:ncol(design.obj$book)) {
-        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
-      }
+
+    if(fac.sep[2] == "") {
+      design.obj$book$trt <- factor(trimws(treatments))
     }
-    design.obj$book$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+    else {
+      design.obj$book$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+    }
     ntrt <- nlevels(as.factor(design.obj$book$trt))
 
     # Calculate direction of blocking
@@ -258,17 +256,17 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     treatments <- NULL
     des <- design.obj$book
 
-    if(length(fac.sep) == 1) {
-      for (i in 3:ncol(design.obj$book)) {
-        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep), sep = fac.sep)
-      }
+    for (i in 4:ncol(design.obj$book)) {
+      treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
     }
-    else if(length(fac.sep) == 2) {
-      for (i in 4:ncol(design.obj$book)) {
-        treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
-      }
+
+    if(fac.sep[2] == "") {
+      des$trt <- factor(trimws(treatments))
     }
-    des$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+    else {
+      des$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+    }
+
     ntrt <- nlevels(as.factor(des$trt))
     des$row <- as.numeric(des$row)
     des$col <- as.numeric(des$col)
