@@ -14,9 +14,9 @@ coverage](https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph
 status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/BiometryTraining/actions)
 ![pkgdown](https://github.com/biometryhub/BiometryTraining/workflows/pkgdown/badge.svg)
 [![minimal R
-version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.6.0-orange.svg?style=flat-square)](/commits/master)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2021--02--15-yellowgreen.svg)](/commits/master)
+version](https://img.shields.io/badge/R%3E%3D-3.6.0-6666ff.svg)](https://cran.r-project.org/)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.7.0-orange.svg?style=flat-square)](/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2021--03--18-yellowgreen.svg)](/commits/master)
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
 <!-- badges: end -->
 
@@ -34,7 +34,18 @@ if(!require("remotes")) install.packages("remotes")
 remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
-### Troubleshooting Installation
+## Using the package
+
+Load the package and start using it with:
+
+``` r
+library(BiometryTraining)
+```
+
+If you find this pacakge useful, please cite it! Type
+`citation("BiometryTraining")` on the R console to find out how.
+
+## Troubleshooting Installation
 
 -   If you have the latest version already installed, you will get a
     response like:
@@ -62,27 +73,3 @@ headers</span>
     updated (`remove.packages("rlang")`). Then reinstall with
     `install.packages("rlang")` and then try installing
     `BiometryTraining` again.
-
--   If you are trying to install this on R version 3.5.x (or earlier),
-    you should note three things:
-
-    1.  It *is* possible to install this package on R 3.5.x (and
-        possibly earlier versions) as of 4 August 2020, but…
-    2.  You should upgrade to a newer version of R as soon as possible,
-        as it is no longer tested.
-    3.  This package won’t install properly until you have *downgraded*
-        a dependency that requires R 3.6+. To do that, use the following
-        code:
-
-``` r
-remotes::install_version("pbkrtest", version = "0.4-7")
-remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
-```
-
-## Using the package
-
-Load the package and start using it with:
-
-``` r
-library(BiometryTraining)
-```
