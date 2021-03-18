@@ -34,7 +34,17 @@ test_that("Plots output", {
     fac.sep = "_"
   )
 
-  out3.1 <- plot.des(outdesign_crossed_lsd_plot,
+  out4 <- plot.des(outdesign_crossed_plot,
+    nrows = 6,
+    ncols = 6,
+    rotation = 0,
+    size = 4,
+    margin = F,
+    return.seed = T,
+    fac.sep = c("", "")
+  )
+
+  out4.1 <- plot.des(outdesign_crossed_lsd_plot,
     nrows = 6,
     ncols = 6,
     brows = NA,
@@ -46,7 +56,19 @@ test_that("Plots output", {
     fac.sep = c("", "_")
   )
 
-  out4 <- plot.des(outdesign_crossed_rcbd_plot,
+  out4.2 <- plot.des(outdesign_crossed_lsd_plot,
+    nrows = 6,
+    ncols = 6,
+    brows = NA,
+    bcols = NA,
+    rotation = 0,
+    size = 4,
+    margin = F,
+    return.seed = T,
+    fac.sep = c("", "")
+  )
+
+  out5 <- plot.des(outdesign_crossed_rcbd_plot,
     nrows = 6,
     ncols = 6,
     brows = 1,
@@ -58,11 +80,34 @@ test_that("Plots output", {
     fac.sep = c("", " ")
   )
 
-  out5 <- plot.des(outdesign_split_plot,
+  out5 <- plot.des(outdesign_crossed_rcbd_plot_2,
+    nrows = 6,
+    ncols = 6,
+    brows = 1,
+    bcols = 6,
+    rotation = 0,
+    size = 4,
+    margin = F,
+    return.seed = T,
+    fac.sep = c(":", "")
+  )
+
+  out6 <- plot.des(outdesign_split_plot,
     nrows = 8,
     ncols = 4,
     brows = 8,
     bcols = 1,
+    rotation = 0,
+    size = 4,
+    margin = F,
+    return.seed = T,
+  )
+
+  out7 <- plot.des(outdesign_split_plot,
+    nrows = 8,
+    ncols = 4,
+    brows = 1,
+    bcols = 2,
     rotation = 0,
     size = 4,
     margin = F,

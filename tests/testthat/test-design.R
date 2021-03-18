@@ -24,6 +24,13 @@ test_that("designs are produced for supported types", {
                          reps = 3, nrows = 6, ncols = 3),
                   "A:B                                     2\n")
 
+    # Crossed, CRD with renaming
+    expect_output(design(type = "crossed:crd", treatments = c(3, 2),
+                         reps = 3, nrows = 6, ncols = 3,
+                         fac.names = list(N = c(50, 100, 150),
+                                          Water = c("Irrigated", "Rain-fed"))),
+                  "N:Water                                 2\n")
+
     # Crossed, RCBD
     expect_output(design(type = "crossed:rcbd", treatments = c(3, 2),
                          reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1),
@@ -61,9 +68,9 @@ test_that("unsupported design types give an error", {
 
 test_that("split plot requires sub_treatments", {
     expect_error(design(type = "split", treatments = c("A", "B"),
-                         sub_treatments = NULL, reps = 4, nrows = 8,
-                         ncols = 4, brows = 4, bcols = 2, seed = 42),
-                  "sub_treatments are required for a split plot design")
+                        sub_treatments = NULL, reps = 4, nrows = 8,
+                        ncols = 4, brows = 4, bcols = 2, seed = 42),
+                 "sub_treatments are required for a split plot design")
 })
 
 

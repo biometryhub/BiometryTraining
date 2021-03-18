@@ -20,6 +20,10 @@ outdesign_crossed_rcbd_plot <- design.ab(trt, r = rep, design = "rcbd")
 
 trt <- c(3, 2) # Factorial 3 x 2
 rep <- 3
+outdesign_crossed_rcbd_plot_2 <- design.ab(trt, r = rep, design = "rcbd")
+
+trt <- c(3, 2) # Factorial 3 x 2
+rep <- 3
 outdesign_crossed_lsd_plot <- design.ab(trt, r = rep, design = "lsd")
 
 # Factorial Design (Nested, Latin Square)
