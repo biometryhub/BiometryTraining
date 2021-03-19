@@ -21,7 +21,8 @@ design(
   plottype = "pdf",
   seed = TRUE,
   quiet = FALSE,
-  fac_names = NULL,
+  fac.names = NULL,
+  fac.sep = c("", " "),
   ...
 )
 }
@@ -58,7 +59,9 @@ design(
 
 \item{quiet}{Logical (default FALSE). Return the objects without printing output.}
 
-\item{fac_names}{Allows renaming of the \code{A} level of factorial designs (i.e. those using \code{\link[agricolae:design.ab]{agricolae::design.ab()}}) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.}
+\item{fac.names}{Allows renaming of the \code{A} level of factorial designs (i.e. those using \code{\link[agricolae:design.ab]{agricolae::design.ab()}}) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.}
+
+\item{fac.sep}{The separator used by \code{fac.names}. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.}
 
 \item{...}{Additional parameters passed to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving the plot.}
 }
@@ -73,7 +76,7 @@ The designs currently supported by \code{type} are Completely Randomised designs
 
 If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be saved to the current working directory, with filename given by \code{savename}. If one of either \code{"plot"} or \code{"workbook"} is specified, only that output is saved. If \code{save = FALSE} (the default, or equivalently \code{"none"}), nothing will be output.
 
-\code{fac_names} can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example \code{fac_names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))}. This will result a design output with a column named \code{A_names} with levels \verb{a, b, c} and another named \code{B_names} with levels \verb{x, y, z}. Only the first two elements of the list will be used.
+\code{fac.names} can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example \code{fac.names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))}. This will result a design output with a column named \code{A_names} with levels \verb{a, b, c} and another named \code{B_names} with levels \verb{x, y, z}. Only the first two elements of the list will be used.
 
 \code{...} allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}.
 }
@@ -98,7 +101,7 @@ des.out <- design(type = "crossed:crd", treatments = c(3, 2),
 # Factorial Design (Crossed, Completely Randomised), renaming factors
 des.out <- design(type = "crossed:crd", treatments = c(3, 2),
                   reps = 3, nrows = 6, ncols = 3, seed = 42,
-                  fac_names = list(N = c(50, 100, 150),
+                  fac.names = list(N = c(50, 100, 150),
                                    Water = c("Irrigated", "Rain-fed")))
 
 # Factorial Design (Nested, Latin Square)
