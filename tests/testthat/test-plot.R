@@ -171,6 +171,17 @@ test_that("Plots output", {
                      return.seed = T,
   )
 
+  out6.2 <- plot.des(outdesign_split_plot,
+                     nrows = 4,
+                     ncols = 8,
+                     brows = 1,
+                     bcols = 8,
+                     rotation = 0,
+                     size = 4,
+                     margin = F,
+                     return.seed = T,
+  )
+
   # Run vdiffr::manage_cases() on the console
 
   vdiffr::expect_doppelganger(title = "RCBD plot produced", out1$plot.des)
@@ -188,4 +199,5 @@ test_that("Plots output", {
   vdiffr::expect_doppelganger(title = "Factorial RCBD plot square blocks", out5.2$plot.des)
   vdiffr::expect_doppelganger(title = "Split plot produced", out6$plot.des)
   vdiffr::expect_doppelganger(title = "Split plot double row blocks", out6.1$plot.des)
+  vdiffr::expect_doppelganger(title = "Split plot ntrt == bcol", out6.2$plot.des)
 })
