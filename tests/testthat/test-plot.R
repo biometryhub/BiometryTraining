@@ -1,117 +1,129 @@
 test_that("Plots output", {
   skip_if(getRversion() < 3.6)
   out1 <- plot.des(outdesign_rcbd_plot,
-    nrows = 11,
-    ncols = 4,
-    brows = 11,
-    bcols = 1,
-    rotation = 0,
-    size = 4,
-    margin = T,
-    return.seed = T
+                   nrows = 11,
+                   ncols = 4,
+                   brows = 11,
+                   bcols = 1,
+                   rotation = 0,
+                   size = 4,
+                   margin = T,
+                   return.seed = T
   )
 
   out2 <- plot.des(outdesign_lsd_plot,
-    nrows = 4,
-    ncols = 4,
-    brows = NA,
-    bcols = NA,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T
+                   nrows = 4,
+                   ncols = 4,
+                   brows = NA,
+                   bcols = NA,
+                   rotation = 0,
+                   size = 4,
+                   margin = F,
+                   return.seed = T
   )
 
   out3 <- plot.des(outdesign_crossed_lsd_plot,
-    nrows = 6,
-    ncols = 6,
-    brows = NA,
-    bcols = NA,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T,
-    fac.sep = "_"
+                   nrows = 6,
+                   ncols = 6,
+                   brows = NA,
+                   bcols = NA,
+                   rotation = 0,
+                   size = 4,
+                   margin = F,
+                   return.seed = T,
+                   fac.sep = "_"
   )
 
   out4 <- plot.des(outdesign_crossed_plot,
-    nrows = 6,
-    ncols = 6,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T,
-    fac.sep = c("", "")
+                   nrows = 3,
+                   ncols = 6,
+                   rotation = 0,
+                   size = 4,
+                   margin = F,
+                   return.seed = T,
+                   fac.sep = c("", "")
   )
 
   out4.1 <- plot.des(outdesign_crossed_lsd_plot,
-    nrows = 6,
-    ncols = 6,
-    brows = NA,
-    bcols = NA,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T,
-    fac.sep = c("", "_")
+                     nrows = 6,
+                     ncols = 6,
+                     brows = NA,
+                     bcols = NA,
+                     rotation = 0,
+                     size = 4,
+                     margin = F,
+                     return.seed = T,
+                     fac.sep = c("", "_")
   )
 
   out4.2 <- plot.des(outdesign_crossed_lsd_plot,
-    nrows = 6,
-    ncols = 6,
-    brows = NA,
-    bcols = NA,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T,
-    fac.sep = c("", "")
+                     nrows = 6,
+                     ncols = 6,
+                     brows = NA,
+                     bcols = NA,
+                     rotation = 0,
+                     size = 4,
+                     margin = F,
+                     return.seed = T,
+                     fac.sep = c("", "")
   )
 
   out5 <- plot.des(outdesign_crossed_rcbd_plot,
-    nrows = 6,
-    ncols = 6,
-    brows = 1,
-    bcols = 6,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T,
-    fac.sep = c("", " ")
+                   nrows = 6,
+                   ncols = 3,
+                   brows = 6,
+                   bcols = 1,
+                   rotation = 0,
+                   size = 4,
+                   margin = F,
+                   return.seed = T,
+                   fac.sep = c("", " ")
   )
 
-  out5 <- plot.des(outdesign_crossed_rcbd_plot_2,
-    nrows = 6,
-    ncols = 6,
-    brows = 1,
-    bcols = 6,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T,
-    fac.sep = c(":", "")
+  out5.1 <- plot.des(outdesign_crossed_rcbd_plot_2,
+                     nrows = 3,
+                     ncols = 6,
+                     brows = 1,
+                     bcols = 6,
+                     rotation = 0,
+                     size = 4,
+                     margin = F,
+                     return.seed = T,
+                     fac.sep = c(":", "")
+  )
+
+  out5.2 <- plot.des(outdesign_crossed_rcbd_plot_2,
+                     nrows = 6,
+                     ncols = 3,
+                     brows = 1,
+                     bcols = 3,
+                     rotation = 0,
+                     size = 4,
+                     margin = F,
+                     return.seed = T,
+                     fac.sep = c(":", "")
   )
 
   out6 <- plot.des(outdesign_split_plot,
-    nrows = 8,
-    ncols = 4,
-    brows = 8,
-    bcols = 1,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T,
+                   nrows = 8,
+                   ncols = 4,
+                   brows = 8,
+                   bcols = 1,
+                   rotation = 0,
+                   size = 4,
+                   margin = F,
+                   return.seed = T,
   )
 
-  out7 <- plot.des(outdesign_split_plot,
-    nrows = 8,
-    ncols = 4,
-    brows = 1,
-    bcols = 2,
-    rotation = 0,
-    size = 4,
-    margin = F,
-    return.seed = T,
+  out6.1 <- plot.des(outdesign_split_plot,
+                     nrows = 8,
+                     ncols = 4,
+                     brows = 1,
+                     bcols = 4,
+                     rotation = 0,
+                     size = 4,
+                     margin = F,
+                     return.seed = T,
   )
 
   # out6 <- plot.des(outdesign,
@@ -128,7 +140,13 @@ test_that("Plots output", {
 
   vdiffr::expect_doppelganger(title = "RCBD plot produced", out1$plot.des)
   vdiffr::expect_doppelganger(title = "LSD plot produced", out2$plot.des)
-  vdiffr::expect_doppelganger(title = "Factorial LSD plot produced", out3$plot.des)
-  vdiffr::expect_doppelganger(title = "Factorial RCBD plot produced", out4$plot.des)
-  vdiffr::expect_doppelganger(title = "Split plot produced", out5$plot.des)
+  vdiffr::expect_doppelganger(title = "Factorial LSD plot with sep", out3$plot.des)
+  vdiffr::expect_doppelganger(title = "Factorial CRD plot no space sep", out4$plot.des)
+  vdiffr::expect_doppelganger(title = "Factorial LSD plot underscore", out4.1$plot.des)
+  vdiffr::expect_doppelganger(title = "Factorial LSD plot no space", out4.2$plot.des)
+  vdiffr::expect_doppelganger(title = "Factorial RCBD plot produced", out5$plot.des)
+  vdiffr::expect_doppelganger(title = "Factorial RCBD plot row blocks", out5.1$plot.des)
+  vdiffr::expect_doppelganger(title = "Factorial RCBD plot double row blocks", out5.2$plot.des)
+  vdiffr::expect_doppelganger(title = "Split plot produced", out6$plot.des)
+  vdiffr::expect_doppelganger(title = "Split plot double row blocks", out6.1$plot.des)
 })

@@ -146,7 +146,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
   if (design == "factorial_crd") {
     treatments <- NULL
     plan <- expand.grid(row = 1:nrows, col = 1:ncols)
-    des <- cbind(plan, design.obj$book)
+    des <- cbind(plan, design.obj$book, row.names = NULL)
 
     for (i in 3:ncol(design.obj$book)) {
       treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
