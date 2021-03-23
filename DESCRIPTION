@@ -44,6 +44,8 @@ Imports:
     scales
 Suggests: 
     covr,
+    crayon,
+    png,
     testthat,
     vdiffr
 Enhances: 
