@@ -10,7 +10,7 @@
 #' @details The package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but no directory will be created. If keep_file does not specify an existing, valid path, an error will be shown.
 #'
 #' @importFrom utils installed.packages install.packages download.file remove.packages
-#' @importFrom httr GET write_disk progress
+#' @importFrom curl curl_fetch_disk
 #'
 #' @export
 #'
@@ -115,7 +115,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
       save_file <- tempfile("asreml_")
 
       # Use httr to GET the file which also gives the expanded URL
-      response <- httr::GET(url = url, httr::write_disk(save_file), if(!quiet){httr::progress()})
+      response <- curl::curl_fetch_disk(url = url, save_file)
 
       # Find position of the last / in the expanded URL
       pos <- regexpr("\\/[^\\/]*$", response$url)
@@ -157,9 +157,9 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
       }
     }
 
-    if("asreml" %in% installed.packages()[,1] & force) {
-      suppressMessages(remove.packages("asreml"))
-    }
+    # if("asreml" %in% installed.packages()[,1] & force) {
+    #   suppressMessages(remove.packages("asreml"))
+    # }
 
     # Install asreml
     install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))

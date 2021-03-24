@@ -31,11 +31,11 @@ Depends:
     R (>= 3.6.0)
 Imports: 
     agricolae,
+    curl,
     forcats,
     ggplot2,
     grid,
     gridtext,
-    httr,
     lucid,
     multcompView,
     patchwork,
