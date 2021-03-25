@@ -51,7 +51,7 @@ resplt <- function(mod.obj, shapiro = T){
         }
     }
 
-    aa <- data.frame(residuals = resid(mod.obj), fitted = fitted(mod.obj), lvl = rep(1:facet,each=k))
+    aa <- data.frame(residuals = resid(mod.obj), fitted = fitted(mod.obj), lvl = rep(1:facet, k))
 
     output <- list()
 
