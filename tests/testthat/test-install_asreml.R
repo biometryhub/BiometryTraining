@@ -14,7 +14,7 @@ test_that("Update function works", {
 test_that("Installation provides output on success", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_if(.Platform$OS.type == "windows")
-    if("asreml" %in% installed.packages()[,1]){remove.packages("asreml")}
+    if(requireNamespace("asreml", quietly = TRUE)){remove.packages("asreml")}
     expect_message(install_asreml(), "ASreml-R successfully installed!")
 })
 

@@ -39,7 +39,7 @@ quiet <- function(x) {
     "    |  Type 'citation('BiometryTraining')' for the citation details.    |",
     "    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n", sep = "\n")
 
-    if("crayon" %in% rownames(installed.packages())) {
+    if(requireNamespace("crayon", quietly = TRUE)) {
       packageStartupMessage(crayon::green(output), appendLF=TRUE)
     }
     else {
@@ -67,7 +67,7 @@ quiet <- function(x) {
       "    https://github.com/biometryhub/BiometryTraining. To install type:",
       "    remotes::install_github('biometryhub/BiometryTraining')", sep = "\n")
 
-      if("crayon" %in% rownames(installed.packages())) {
+      if(requireNamespace("crayon", quietly = TRUE)) {
         packageStartupMessage(crayon::green(output2),appendLF=TRUE)
       }
       else {

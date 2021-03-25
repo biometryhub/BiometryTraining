@@ -26,7 +26,7 @@
 #' }
 #'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
-  if("asreml" %in% installed.packages()[,1] & !force) {
+  if(requireNamespace("asreml", quietly = TRUE) & !force) {
     if(!quiet) message("ASreml-R is already installed.")
     invisible(TRUE)
   }
@@ -144,7 +144,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     }
 
     # If forcing installation, remove existing version to avoid errors on installation
-    if("asreml" %in% installed.packages()[,1] & force) {
+    if(requireNamespace("asreml", quietly = TRUE) & force) {
       suppressMessages(remove.packages("asreml"))
     }
 
@@ -152,7 +152,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
     deps <- c("data.table", "ggplot2", "grid", "methods", "jsonlite")
     for(i in seq_along(deps)) {
-      if(deps[i] %!in% installed.packages()[,1]) {
+      if(!requireNamespace(deps[i], quietly = TRUE)) {
         install.packages(deps[i], repos = "https://cloud.r-project.org")
       }
     }
@@ -164,7 +164,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     # Install asreml
     install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
 
-    if("asreml" %in% installed.packages()[,1]) {
+    if(requireNamespace("asreml", quietly = TRUE)) {
       if(!quiet) message("ASreml-R successfully installed!")
     }
     else {
