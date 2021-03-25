@@ -92,8 +92,11 @@ resplt <- function(mod.obj, shapiro = T){
 
     if(facet>1) {
         names(output) <- facet_name
+        return(output)
     }
-    return(output)
+    else {
+        return(output[[1]])
+    }
 }
 
 #' @rdname resplt
