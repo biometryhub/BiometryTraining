@@ -22,7 +22,6 @@
 #' @importFrom agricolae HSD.test
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
-#' @importFrom forcats fct_inorder
 #' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #'
 #' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
@@ -348,7 +347,7 @@ mct.out <- function(model.obj,
 
   i <- 1
   for(i in 1:trtindex){
-    pp.tab[[trtnam[i]]] <- forcats::fct_inorder(pp.tab[[trtnam[i]]])
+    pp.tab[[trtnam[i]]] <- factor(pp.tab[[trtnam[i]]], levels = unique(pp.tab[[trtnam[i]]]))
   }
 
   # rounding to the correct number of decimal places
