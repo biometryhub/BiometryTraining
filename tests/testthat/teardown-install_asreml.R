@@ -9,6 +9,6 @@ if(length(list.files(pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)
 #     }
 # }
 
-if(dir.exists("data")) {
-    unlink("data", recursive = T)
-}
+# if(dir.exists("data")) {
+#     unlink("data", recursive = T)
+# }
