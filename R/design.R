@@ -5,8 +5,8 @@
 #' @param reps The number of replicates. Not required for Latin Squared Designs.
 #' @param nrows The number of rows in the design.
 #' @param ncols The number of columns in the design.
-#' @param brows For RCBD only. The number of rows in a block.
-#' @param bcols For RCBD only. The number of columns in a block.
+#' @param brows For RCBD and Split Plot designs. The number of rows in a block.
+#' @param bcols For RCBD and Split Plot designs. The number of columns in a block.
 #' @param sub_treatments A vector of treatments for subplots in a split plot design.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
@@ -116,6 +116,8 @@ design <- function(type,
                                              trt2 = sub_treatments,
                                              r = reps,
                                              seed = ifelse(is.numeric(seed), seed, 0))
+        colnames(outdesign$book)[colnames(outdesign$book)=="treatments"] <- deparse(substitute(treatments))
+        colnames(outdesign$book)[colnames(outdesign$book)=="sub_treatments"] <- deparse(substitute(sub_treatments))
     }
 
     else if(substr(tolower(type), 1, 7) == "crossed") {
