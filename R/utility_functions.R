@@ -15,6 +15,7 @@ quiet <- function(x) {
   invisible(force(x))
 }
 
+# .btenv <- new.env(parent=emptyenv())
 
 
 ######################################################
@@ -25,22 +26,24 @@ quiet <- function(x) {
 #' @importFrom utils available.packages
 .onAttach <- function(library, pkg)
 {
-  #Create a hidden variable to only print this output every 8 hours
-  if(!exists(".btenv", where = globalenv(), mode = "environment")) {
-    .btenv <- new.env(parent=globalenv())
-    assign("last_load", Sys.time(), envir=.btenv)
-    last_load <- .btenv$last_load
-  }
-  else {
-    last_load <- .btenv$last_load
-  }
+  # Create a hidden variable to only print this output every 8 hours
+  # if(!exists(".btenv", where = .GlobalEnv, mode = "environment")) {
+  #   .btenv <- new.env(parent=.GlobalEnv)
+  #   assign("last_load", Sys.time(), envir=.btenv)
+  #   last_load <- .btenv$last_load
+  # }
+  # else {
+  #   last_load <- .btenv$last_load
+  # }
+  # print(last_load)
+  # print(.btenv)
 
   # current_version <- "0.7.0"
   installed_version <- packageVersion('BiometryTraining')
 
-  if(interactive() && Sys.time() > (last_load + 1)) {
+  if(interactive()) {# && Sys.time() > (last_load + 1)) {
     output <- paste("    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-                    paste("    |  ", pkg, "version ", installed_version, "                                   |",sep=""),
+                    paste("    |  ", pkg, " version ", installed_version, "                                   |",sep=""),
                     "    |  Authors: Sharon Nielsen, Sam Rogers, Annie Conway                |",
                     "    |  Developed at the University of Adelaide with funding provided    |",
                     "    |  by the Australian Grains Research and Development Corporation.   |",

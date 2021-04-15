@@ -10,3 +10,4 @@ todo.md
 ^pkgdown$
 ^\.github$
 certify
+variogram_2d.R
