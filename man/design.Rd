@@ -37,9 +37,9 @@ design(
 
 \item{ncols}{The number of columns in the design.}
 
-\item{brows}{For RCBD only. The number of rows in a block.}
+\item{brows}{For RCBD and Split Plot designs. The number of rows in a block.}
 
-\item{bcols}{For RCBD only. The number of columns in a block.}
+\item{bcols}{For RCBD and Split Plot designs. The number of columns in a block.}
 
 \item{sub_treatments}{A vector of treatments for subplots in a split plot design.}
 
