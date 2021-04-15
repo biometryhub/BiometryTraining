@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Install ASreml-R package — install_asreml • BiometryTraining</title>
+<title>Install or Update the ASreml-R package — install_asreml • BiometryTraining</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Install ASreml-R package — install_asreml" />
-<meta property="og:description" content="A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version." />
+<meta property="og:title" content="Install or Update the ASreml-R package — install_asreml" />
+<meta property="og:description" content="Helper functions for installing or updating the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version." />
 
 
 
@@ -56,6 +56,19 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3DTR7EJN4Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3DTR7EJN4Q');
+</script>
+
+
+<!-- dependencies from examples -->
 
 
   
@@ -80,7 +93,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -88,6 +101,9 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -110,13 +126,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Install ASreml-R package</h1>
+    <h1>Install or Update the ASreml-R package</h1>
     <small class="dont-index">Source: <a href='https://github.com/biometryhub/BiometryTraining/blob/master/R/install_asreml.R'><code>R/install_asreml.R</code></a></small>
     <div class="hidden name"><code>install_asreml.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.</p>
+    <p>Helper functions for installing or updating the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.</p>
     </div>
 
     <pre class="usage"><span class='fu'>install_asreml</span><span class='op'>(</span>
@@ -124,7 +140,9 @@
   quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
   force <span class='op'>=</span> <span class='cn'>FALSE</span>,
   keep_file <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span>
+
+<span class='fu'>update_asreml</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,6 +163,10 @@
       <th>keep_file</th>
       <td><p>Should the downloaded asreml package file be kept? Default is <code>FALSE</code>. <code>TRUE</code> downloads to current directory. A file path can also be provided to save to another directory. See <code>Details</code> for more information.</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other arguments passed to <code>install_asreml()</code></p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -152,7 +174,7 @@
     <p>Silently returns <code>TRUE</code> if <code>asreml</code> installed successfully or already present, <code>FALSE</code> otherwise. Optionally prints a confirmation message on success.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The package file is downloaded from a shortlink, and if <code>keep_file</code> is <code>TRUE</code>, the package archive file will be saved in the current directory. If a valid path is provided in <code>keep_file</code>, the file will be saved to that path, but no directory will be created. If keep_file does not specify an existing, valid path, an error will be shown.</p>
+    <p>The ASreml-R package file is downloaded from a shortlink, and if <code>keep_file</code> is <code>TRUE</code>, the package archive file will be saved in the current directory. If a valid path is provided in <code>keep_file</code>, the file will be saved to that path, but directory is assumed to exist and will not be created. If <code>keep_file</code> does not specify an existing, valid path, an error will be shown.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
@@ -175,11 +197,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Sharon Nielsen, Sam Rogers, Annie Conway.</p></p>
+  <p><p>Developed by Sharon Nielsen, Sam Rogers, Annie Conway, University of Adelaide, GRDC.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
