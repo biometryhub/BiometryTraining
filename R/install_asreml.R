@@ -1,16 +1,16 @@
-#' Install ASreml-R package
+#' Install or Update the ASreml-R package
 #'
-#' @description A helper function for installing the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
+#' @description Helper functions for installing or updating the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
 #'
 #' @param library Library location to install ASreml-R. Uses first option in `.libPaths()` by default.
 #' @param quiet Logical (default `FALSE`). Should package be installed quietly?
 #' @param force Logical (default `FALSE`). Force ASreml-R to install. Useful for upgrading if it is already installed.
 #' @param keep_file Should the downloaded asreml package file be kept? Default is `FALSE`. `TRUE` downloads to current directory. A file path can also be provided to save to another directory. See `Details` for more information.
 #'
-#' @details The package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but no directory will be created. If keep_file does not specify an existing, valid path, an error will be shown.
+#' @details The ASreml-R package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but directory is assumed to exist and will not be created. If `keep_file` does not specify an existing, valid path, an error will be shown.
 #'
-#' @importFrom utils installed.packages install.packages download.file remove.packages
-#' @importFrom httr GET write_disk progress
+#' @importFrom utils install.packages download.file remove.packages
+#' @importFrom curl curl_fetch_disk
 #'
 #' @export
 #'
@@ -26,7 +26,7 @@
 #' }
 #'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
-  if("asreml" %in% installed.packages()[,1] & !force) {
+  if(requireNamespace("asreml", quietly = TRUE) & !force) {
     if(!quiet) message("ASreml-R is already installed.")
     invisible(TRUE)
   }
@@ -34,8 +34,8 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     if(!quiet) {
       message("\nDownloading and installing ASreml-R. This may take some time, depending on internet speed...\n")
     }
-    if(force & "asreml" %in% (.packages())) {
-      detach("package:asreml", unload = TRUE)
+    if(force && isNamespaceLoaded("asreml")) {
+      unloadNamespace("asreml")
     }
 
     os <- switch(Sys.info()[['sysname']],
@@ -115,7 +115,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
       save_file <- tempfile("asreml_")
 
       # Use httr to GET the file which also gives the expanded URL
-      response <- httr::GET(url = url, httr::write_disk(save_file), if(!quiet){httr::progress()})
+      response <- curl::curl_fetch_disk(url = url, save_file)
 
       # Find position of the last / in the expanded URL
       pos <- regexpr("\\/[^\\/]*$", response$url)
@@ -144,7 +144,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     }
 
     # If forcing installation, remove existing version to avoid errors on installation
-    if("asreml" %in% installed.packages()[,1] & force) {
+    if(force && requireNamespace("asreml", quietly = TRUE)) {
       suppressMessages(remove.packages("asreml"))
     }
 
@@ -152,19 +152,15 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
     deps <- c("data.table", "ggplot2", "grid", "methods", "jsonlite")
     for(i in seq_along(deps)) {
-      if(deps[i] %!in% installed.packages()[,1]) {
+      if(!requireNamespace(deps[i], quietly = TRUE)) {
         install.packages(deps[i], repos = "https://cloud.r-project.org")
       }
-    }
-
-    if("asreml" %in% installed.packages()[,1] & force) {
-      suppressMessages(remove.packages("asreml"))
     }
 
     # Install asreml
     install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
 
-    if("asreml" %in% installed.packages()[,1]) {
+    if(requireNamespace("asreml", quietly = TRUE)) {
       if(!quiet) message("ASreml-R successfully installed!")
     }
     else {
@@ -175,9 +171,8 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
   }
 }
 
-#' Update asreml package
-#'
-#' @param ... other arguments passed to [BiometryTraining::install_asreml()]
+#' @rdname install_asreml
+#' @param ... other arguments passed to `install_asreml()`
 #'
 #' @export
 update_asreml <- function(...) {

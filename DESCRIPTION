@@ -1,8 +1,9 @@
 Type: Package
 Package: BiometryTraining
-Title: Functions to Assist Teaching Design and Analysis of
-    Agronomic Experiments
-Version: 0.6.0
+Title: Functions to Assist Teaching Design and Analysis of Agronomic
+    Experiments
+Version: 0.7.0
+Date: 2021-03-10
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -15,22 +16,25 @@ Authors@R:
       person(given = "Annie",
              family = "Conway",
              role = "aut",
-             email = "biometrytraining@adelaide.edu.au"))
-Description: BiometryTraining gives users a simple way to install and 
-    access documentation about the functions used and distributed as 
-    part of the SAGI-STH Biometrics Education Initiative.
+             email = "biometrytraining@adelaide.edu.au"),
+      person(given = "University of Adelaide",
+             role = c("cph", "fnd")),
+      person(given = "GRDC",
+             role = c("cph", "fnd")))
+Description: BiometryTraining gives users a simple way to install and
+    access documentation about the functions used and distributed as part
+    of the SAGI-STH Biometrics Education Initiative.
 License: MIT + file LICENSE
 URL: https://biometryhub.github.io/BiometryTraining/
-BugReports: 
-    https://github.com/biometryhub/BiometryTraining/issues
+BugReports: https://github.com/biometryhub/BiometryTraining/issues
 Depends: 
-    R (>= 3.5.0)
+    R (>= 3.6.0)
 Imports: 
     agricolae,
-    asremlPlus,
-    forcats,
+    curl,
     ggplot2,
-    httr,
+    grid,
+    gridtext,
     lucid,
     multcompView,
     patchwork,
@@ -39,9 +43,14 @@ Imports:
     scales
 Suggests: 
     covr,
+    crayon,
+    png,
     testthat,
     vdiffr
-Enhances: asreml
+Enhances: 
+    asreml
+Config/testthat/edition: 3
+Config/testthat/parallel: true
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

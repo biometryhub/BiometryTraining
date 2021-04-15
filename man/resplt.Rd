@@ -2,12 +2,17 @@
 % Please edit documentation in R/resplt.R
 \name{resplt}
 \alias{resplt}
-\title{Produces plots of residuals for assumption checking of an ANOVA or asremlR model.}
+\alias{resplot}
+\title{Residual plots of aov or ASreml-R models.}
 \usage{
-resplt(mod.obj)
+resplt(mod.obj, shapiro = T)
+
+resplot(mod.obj, shapiro = T)
 }
 \arguments{
-\item{mod.obj}{An \code{aov} model or \code{asreml}.}
+\item{mod.obj}{An \code{aov} or \code{asreml} model object.}
+
+\item{shapiro}{(Logical) Display the Shapiro-Wilks test of normality on the plot?}
 }
 \value{
 A list containing ggplot2 objects which are diagnostic plots.

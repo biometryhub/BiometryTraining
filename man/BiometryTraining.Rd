@@ -3,13 +3,14 @@
 \docType{package}
 \name{BiometryTraining}
 \alias{BiometryTraining}
+\alias{_PACKAGE}
 \alias{BiometryTraining-package}
-\title{BiometryTraining: Functions to Assist Teaching Design and Analysis of
-    Agronomic Experiments}
+\title{BiometryTraining: Functions to Assist Teaching Design and Analysis of Agronomic
+    Experiments}
 \description{
-BiometryTraining gives users a simple way to install and 
-    access documentation about the functions used and distributed as 
-    part of the SAGI-STH Biometrics Education Initiative.
+BiometryTraining gives users a simple way to install and
+    access documentation about the functions used and distributed as part
+    of the SAGI-STH Biometrics Education Initiative.
 }
 \seealso{
 Useful links:
@@ -28,4 +29,11 @@ Authors:
   \item Annie Conway \email{biometrytraining@adelaide.edu.au}
 }
 
+Other contributors:
+\itemize{
+  \item University of Adelaide [copyright holder, funder]
+  \item GRDC [copyright holder, funder]
 }
+
+}
+\keyword{internal}

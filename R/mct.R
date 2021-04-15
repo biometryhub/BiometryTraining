@@ -19,10 +19,9 @@
 #' @param pred Deprecated. Use `classify` instead.
 #'
 #' @importFrom multcompView multcompLetters
-#' @importFrom agricolae LSD.test HSD.test
+#' @importFrom agricolae HSD.test
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict
-#' @importFrom forcats fct_inorder
 #' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #'
 #' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
@@ -127,14 +126,14 @@ mct.out <- function(model.obj,
            pp$Names <- apply(pp[,unlist(strsplit(classify, ":"))], 1, paste, collapse = "_"),
            pp$Names <- pp[[classify]])
 
-    zz <- as.numeric(row.names(pp[!is.na(pp$predicted.value),]))
+    # zz <- as.numeric(1:nrow(pp))
 
-    SED <- sed[zz,zz]
+    # SED <- sed[1:nrow(pp),1:nrow(pp)]
 
     # Mean <- pp$predicted.value
     # Names <-  as.character(pp$Names)
     ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(dendf$Source)]
-    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
+    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*sed
 
     # Grab the response from the formula to create plot Y label
     ylab <- model.obj$formulae$fixed[[2]]
@@ -142,7 +141,7 @@ mct.out <- function(model.obj,
 
   else {
 
-    pred.out <- predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals, )
+    pred.out <- predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
 
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
@@ -348,7 +347,7 @@ mct.out <- function(model.obj,
 
   i <- 1
   for(i in 1:trtindex){
-    pp.tab[[trtnam[i]]] <- forcats::fct_inorder(pp.tab[[trtnam[i]]])
+    pp.tab[[trtnam[i]]] <- factor(pp.tab[[trtnam[i]]], levels = unique(pp.tab[[trtnam[i]]]))
   }
 
   # rounding to the correct number of decimal places

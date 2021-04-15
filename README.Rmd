@@ -44,7 +44,17 @@ remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
 
-### Troubleshooting Installation
+## Using the package
+
+Load the package and start using it with:
+
+```{r eval=F}
+library(BiometryTraining)
+```
+
+If you find this pacakge useful, please cite it! Type `citation("BiometryTraining")` on the R console to find out how.
+
+## Troubleshooting Installation
 
 - If you have the latest version already installed, you will get a response like:
 
@@ -65,21 +75,3 @@ remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 
 - If you receive an error that the package could not install because `rlang` or another package could not be upgraded, the easiest way to deal with this is to uninstall the package(s) that could not be updated (`remove.packages("rlang")`). Then reinstall with `install.packages("rlang")` and then try installing `BiometryTraining` again.
 
-- If you are trying to install this on R version 3.5.x (or earlier), you should note three things:
-  1. It *is* possible to install this package on R 3.5.x (and possibly earlier versions) as of 4 August 2020, but...
-  1. You should upgrade to a newer version of R as soon as possible, as it is no longer tested.
-  2. This package won't install properly until you have _downgraded_ a dependency that requires R 3.6+. To do that, use the following code:
-  
-```{r eval=F}
-remotes::install_version("pbkrtest", version = "0.4-7")
-remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
-```
-
-
-## Using the package
-
-Load the package and start using it with:
-
-```{r eval=F}
-library(BiometryTraining)
-```
