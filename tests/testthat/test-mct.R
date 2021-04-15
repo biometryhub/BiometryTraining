@@ -127,7 +127,3 @@ test_that("mct handles aliased results in asreml with a warning", {
 #
 # mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen", trans = "log", offset = 0, label_height = 0.1)
 
-
-
-
-
