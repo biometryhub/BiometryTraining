@@ -37,7 +37,7 @@ Imports:
     gridtext,
     lucid,
     multcompView,
-    patchwork (>=1.1.0),
+    patchwork (>= 1.1.0),
     predictmeans,
     RColorBrewer,
     scales

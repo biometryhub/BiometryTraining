@@ -9,5 +9,6 @@ todo.md
 ^docs$
 ^pkgdown$
 ^\.github$
-certify
 variogram_2d.R
+^.pdf
+check_rhub.R
