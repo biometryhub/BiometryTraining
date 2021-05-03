@@ -1,8 +1,8 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1.9001
-pkgdown_sha: 3dd1a1ad7740977491241c89eee15d9b58e75866
+pkgdown_sha: 112157502b4c3344354594f89ead4fb54073e73f
 articles: {}
-last_built: 2021-04-15T10:56Z
+last_built: 2021-05-03T10:51Z
 urls:
   reference: https://biometryhub.github.io/BiometryTraining/reference
   article: https://biometryhub.github.io/BiometryTraining/articles

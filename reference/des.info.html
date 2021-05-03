@@ -93,7 +93,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -225,7 +225,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if <code>return.seed = TRUE</code>), and the <code>satab</code> object, allowing repeat output of the <code>satab</code> table via <code><a href='https://rdrr.io/r/base/cat.html'>cat(output$satab)</a></code>.</p>
+    <p>A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if <code>return.seed = TRUE</code>), and the <code>satab</code> object, allowing repeat output of the <code>satab</code> table via <code>cat(output$satab)</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>If <code>save = TRUE</code> (or <code>"both"</code>), both the plot and the workbook will be saved to the current working directory, with filename given by <code>savename</code>. If one of either <code>"plot"</code> or <code>"workbook"</code> is specified, only that output is saved. If <code>save = FALSE</code> (the default, or equivalently <code>"none"</code>), nothing will be output.</p>
@@ -241,7 +241,7 @@
 <span class='va'>rep</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
 <span class='va'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.crd.html'>design.crd</a></span><span class='op'>(</span>trt <span class='op'>=</span> <span class='va'>trt</span>, r <span class='op'>=</span> <span class='va'>rep</span>, seed <span class='op'>=</span> <span class='fl'>42</span><span class='op'>)</span>
 <span class='va'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span><span class='op'>(</span>design.obj <span class='op'>=</span> <span class='va'>outdesign</span>, nrows <span class='op'>=</span> <span class='fl'>4</span>, ncols <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Source of Variation                     df
+</div><div class='co'>#&gt; Source of Variation                     df
 #&gt;  =============================================
 #&gt;  trt                                     3
 #&gt;  Residual                                16
@@ -255,7 +255,7 @@
   design.obj <span class='op'>=</span> <span class='va'>outdesign</span>, nrows <span class='op'>=</span> <span class='fl'>11</span>,
   ncols <span class='op'>=</span> <span class='fl'>4</span>, brows <span class='op'>=</span> <span class='fl'>11</span>, bcols <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; Source of Variation                     df
+</div><div class='co'>#&gt; Source of Variation                     df
 #&gt;  =============================================
 #&gt;  Block stratum                           3
 #&gt;  ---------------------------------------------
@@ -267,7 +267,7 @@
 <span class='va'>trt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"S1"</span>, <span class='st'>"S2"</span>, <span class='st'>"S3"</span>, <span class='st'>"S4"</span><span class='op'>)</span>
 <span class='va'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.lsd.html'>design.lsd</a></span><span class='op'>(</span><span class='va'>trt</span><span class='op'>)</span>
 <span class='va'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span><span class='op'>(</span>design.obj <span class='op'>=</span> <span class='va'>outdesign</span>, nrows <span class='op'>=</span> <span class='fl'>4</span>, ncols <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Source of Variation                     df
+</div><div class='co'>#&gt; Source of Variation                     df
 #&gt;  =============================================
 #&gt;  Row                                     3
 #&gt;  Column                                  3
@@ -280,7 +280,7 @@
 <span class='va'>rep</span> <span class='op'>&lt;-</span> <span class='fl'>3</span>
 <span class='va'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.ab.html'>design.ab</a></span><span class='op'>(</span><span class='va'>trt</span>, r <span class='op'>=</span> <span class='va'>rep</span>, design <span class='op'>=</span> <span class='st'>"crd"</span><span class='op'>)</span>
 <span class='va'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span><span class='op'>(</span>design.obj <span class='op'>=</span> <span class='va'>outdesign</span>, nrows <span class='op'>=</span> <span class='fl'>6</span>, ncols <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Source of Variation                     df
+</div><div class='co'>#&gt; Source of Variation                     df
 #&gt;  =============================================
 #&gt;  A                                       2
 #&gt;  B                                       1
@@ -295,7 +295,7 @@
 <span class='va'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span><span class='op'>(</span>design.obj <span class='op'>=</span> <span class='va'>outdesign</span>, nrows <span class='op'>=</span> <span class='fl'>6</span>, ncols <span class='op'>=</span> <span class='fl'>3</span>,
                     fac.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>N <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>150</span><span class='op'>)</span>,
                                      Water <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Irrigated"</span>, <span class='st'>"Rain-fed"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Source of Variation                     df
+</div><div class='co'>#&gt; Source of Variation                     df
 #&gt;  =============================================
 #&gt;  N                                       2
 #&gt;  Water                                   1
@@ -307,7 +307,7 @@
 <span class='va'>trt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>, <span class='st'>"A4"</span>, <span class='st'>"B1"</span>, <span class='st'>"B2"</span>, <span class='st'>"B3"</span><span class='op'>)</span>
 <span class='va'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.lsd.html'>design.lsd</a></span><span class='op'>(</span><span class='va'>trt</span><span class='op'>)</span>
 <span class='va'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span><span class='op'>(</span>design.obj <span class='op'>=</span> <span class='va'>outdesign</span>, nrows <span class='op'>=</span> <span class='fl'>7</span>, ncols <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Source of Variation                     df
+</div><div class='co'>#&gt; Source of Variation                     df
 #&gt;  =============================================
 #&gt;  Row                                     6
 #&gt;  Column                                  6
@@ -321,7 +321,7 @@
 <span class='va'>rep</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
 <span class='va'>outdesign</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/agricolae/man/design.split.html'>design.split</a></span><span class='op'>(</span><span class='va'>trt1</span>, <span class='va'>trt2</span>, r <span class='op'>=</span> <span class='va'>rep</span><span class='op'>)</span>
 <span class='va'>des.out</span> <span class='op'>&lt;-</span> <span class='fu'>des.info</span><span class='op'>(</span>design.obj <span class='op'>=</span> <span class='va'>outdesign</span>, nrows <span class='op'>=</span> <span class='fl'>8</span>, ncols <span class='op'>=</span> <span class='fl'>4</span>, brows <span class='op'>=</span> <span class='fl'>4</span>, bcols <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Source of Variation                          df
+</div><div class='co'>#&gt; Source of Variation                          df
 #&gt;  ==================================================
 #&gt;  Block stratum                                3
 #&gt;  --------------------------------------------------
