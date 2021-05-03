@@ -1,5 +1,9 @@
 # Check on Rhub platforms
 
-rhub::check(platform = c("macos-highsierra-release-cran", "ubuntu-gcc-release"))
+# Build for Mac OS
+rhub::check(platform = "macos-highsierra-release-cran")
+
+# Build on Ubuntu
+rhub::check(platform = "ubuntu-gcc-release")
 
 rhub::check_for_cran()
