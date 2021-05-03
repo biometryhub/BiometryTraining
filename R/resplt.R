@@ -86,7 +86,7 @@ resplt <- function(mod.obj, shapiro = T){
         }
         else{
             output[[i]] <- patchwork::wrap_plots(A = a, B = b, C = c, design = "AB\nCC", tag_level = "new") +
-                patchwork::plot_annotation(tag_levels = "A",title = facet_name[i])
+                patchwork::plot_annotation(tag_levels = "A", title = facet_name[i])
         }
     }
 
