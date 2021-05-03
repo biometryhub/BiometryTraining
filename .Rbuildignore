@@ -10,5 +10,6 @@ todo.md
 ^pkgdown$
 ^\.github$
 variogram_2d.R
-^.pdf
+^.*pdf$
+^.*csv$
 check_rhub.R
