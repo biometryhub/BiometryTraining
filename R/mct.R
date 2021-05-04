@@ -15,7 +15,6 @@
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
 #' @param savename A file name for the predicted values to be saved to. Default is `predicted_values`.
-#' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
 #' @param pred Deprecated. Use `classify` instead.
 #'
 #' @importFrom multcompView multcompLetters
@@ -26,7 +25,7 @@
 #'
 #' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
-#' @return A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
+#' @return A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations (named `predicted_values`), as well as a plot visually displaying the predicted values (named `predicted_plot`). If some of the predicted values are aliased, a warning is printed, and the aliased treatment levels are returned in the output (named `aliased`).
 #'
 #' @references Jørgensen, E. & Pedersen, A. R. How to Obtain Those Nasty Standard Errors From Transformed Data - and Why They Should Not Be Used. [http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023)
 #'
@@ -66,7 +65,6 @@ mct.out <- function(model.obj,
                     rotation = 0,
                     save = FALSE,
                     savename = "predicted_values",
-                    plottype = "pdf",
                     pred){
 
   if(!missing(pred)) {

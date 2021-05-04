@@ -18,7 +18,6 @@ mct.out(
   rotation = 0,
   save = FALSE,
   savename = "predicted_values",
-  plottype = "pdf",
   pred
 )
 }
@@ -49,12 +48,10 @@ mct.out(
 
 \item{savename}{A file name for the predicted values to be saved to. Default is \code{predicted_values}.}
 
-\item{plottype}{The type of file to save the plot as. Usually one of \code{"pdf"}, \code{"png"}, or \code{"jpg"}. See \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for all possible options.}
-
 \item{pred}{Deprecated. Use \code{classify} instead.}
 }
 \value{
-A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
+A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations (named \code{predicted_values}), as well as a plot visually displaying the predicted values (named \code{predicted_plot}). If some of the predicted values are aliased, a warning is printed, and the aliased treatment levels are returned in the output (named \code{aliased}).
 }
 \description{
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
