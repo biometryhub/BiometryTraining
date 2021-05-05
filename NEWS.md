@@ -1,5 +1,7 @@
 # BiometryTraining 0.7.2
 
+First release for CRAN.
+
 ## Minor changes
 
 - Updates to the documentation of `mct.out()`.
