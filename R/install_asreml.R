@@ -1,13 +1,13 @@
-#' Install or Update the ASreml-R package
+#' Install or Update the ASReml-R package
 #'
-#' @description Helper functions for installing or updating the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
+#' @description Helper functions for installing or updating the ASReml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
 #'
-#' @param library Library location to install ASreml-R. Uses first option in `.libPaths()` by default.
+#' @param library Library location to install ASReml-R. Uses first option in `.libPaths()` by default.
 #' @param quiet Logical (default `FALSE`). Should package be installed quietly?
-#' @param force Logical (default `FALSE`). Force ASreml-R to install. Useful for upgrading if it is already installed.
+#' @param force Logical (default `FALSE`). Force ASReml-R to install. Useful for upgrading if it is already installed.
 #' @param keep_file Should the downloaded asreml package file be kept? Default is `FALSE`. `TRUE` downloads to current directory. A file path can also be provided to save to another directory. See `Details` for more information.
 #'
-#' @details The ASreml-R package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but directory is assumed to exist and will not be created. If `keep_file` does not specify an existing, valid path, an error will be shown.
+#' @details The ASReml-R package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but directory is assumed to exist and will not be created. If `keep_file` does not specify an existing, valid path, an error will be shown.
 #'
 #' @importFrom utils install.packages download.file remove.packages
 #' @importFrom curl curl_fetch_disk
@@ -27,12 +27,12 @@
 #'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
   if(requireNamespace("asreml", quietly = TRUE) & !force) {
-    if(!quiet) message("ASreml-R is already installed.")
+    if(!quiet) message("ASReml-R is already installed.")
     invisible(TRUE)
   }
   else {
     if(!quiet) {
-      message("\nDownloading and installing ASreml-R. This may take some time, depending on internet speed...\n")
+      message("\nDownloading and installing ASReml-R. This may take some time, depending on internet speed...\n")
     }
     if(force && isNamespaceLoaded("asreml")) {
       unloadNamespace("asreml")
@@ -161,10 +161,10 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
 
     if(requireNamespace("asreml", quietly = TRUE)) {
-      if(!quiet) message("ASreml-R successfully installed!")
+      if(!quiet) message("ASReml-R successfully installed!")
     }
     else {
-      if(!quiet) warning("There was a problem with installation and ASreml-R was not successfully installed.")
+      if(!quiet) warning("There was a problem with installation and ASReml-R was not successfully installed.")
       invisible(FALSE)
     }
     invisible(TRUE)

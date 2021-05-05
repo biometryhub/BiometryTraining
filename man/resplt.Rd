@@ -3,7 +3,7 @@
 \name{resplt}
 \alias{resplt}
 \alias{resplot}
-\title{Residual plots of aov or ASreml-R models.}
+\title{Residual plots of aov or asreml models.}
 \usage{
 resplt(mod.obj, shapiro = T)
 

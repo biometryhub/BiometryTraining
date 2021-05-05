@@ -1,6 +1,6 @@
 #' Produces an experimental design with graph of design layout and skeletal ANOVA table
 #'
-#' @param type The type of design. Supported design types are `crd`, `rcbd`, `lsd`, `split` and `crossed:<type>` where `<type>` is one of the previous types. See Details for more informtaion.
+#' @param type The type of design. Supported design types are `crd`, `rcbd`, `lsd`, `split` and `crossed:<type>` where `<type>` is one of the previous types. See Details for more information.
 #' @param treatments A vector containing the treatment names or labels.
 #' @param reps The number of replicates. Not required for Latin Squared Designs.
 #' @param nrows The number of rows in the design.

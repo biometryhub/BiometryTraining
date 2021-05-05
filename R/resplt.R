@@ -1,4 +1,4 @@
-#' Residual plots of aov or ASreml-R models.
+#' Residual plots of aov or asreml models.
 #'
 #' Produces plots of residuals for assumption checking of an ANOVA or asremlR model.
 #'

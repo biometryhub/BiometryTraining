@@ -1,7 +1,7 @@
 `%notin%` <- `%!in%` <- Negate(`%in%`)
 
 # quiet
-#' Function to suppress output if desired, especially useful for ASreml output
+#' Function to suppress output if desired, especially useful for ASReml output
 #'
 #' @param x A function call with output to be suppressed.
 #'

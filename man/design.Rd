@@ -27,7 +27,7 @@ design(
 )
 }
 \arguments{
-\item{type}{The type of design. Supported design types are \code{crd}, \code{rcbd}, \code{lsd}, \code{split} and \verb{crossed:<type>} where \verb{<type>} is one of the previous types. See Details for more informtaion.}
+\item{type}{The type of design. Supported design types are \code{crd}, \code{rcbd}, \code{lsd}, \code{split} and \verb{crossed:<type>} where \verb{<type>} is one of the previous types. See Details for more information.}
 
 \item{treatments}{A vector containing the treatment names or labels.}
 

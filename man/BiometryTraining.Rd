@@ -8,10 +8,9 @@
 \title{BiometryTraining: Functions to Assist Teaching Design and Analysis of Agronomic
     Experiments}
 \description{
-Gives users a simple way to install and access documentation 
-    about the functions used and distributed as part of the SAGI-STH Biometrics 
-    Education Initiative. It is mainly intended for applications in agronomy and
-    agricultural sciences, however may be applicable for use in other fields.
+Provides functions to aid in the design and analysis of 
+    agronomic and agricultural experiments through easy access to documentation 
+    and helper functions, especially for users who are learning these concepts.
 }
 \seealso{
 Useful links:

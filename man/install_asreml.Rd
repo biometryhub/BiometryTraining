@@ -3,7 +3,7 @@
 \name{install_asreml}
 \alias{install_asreml}
 \alias{update_asreml}
-\title{Install or Update the ASreml-R package}
+\title{Install or Update the ASReml-R package}
 \usage{
 install_asreml(
   library = .libPaths()[1],
@@ -15,11 +15,11 @@ install_asreml(
 update_asreml(...)
 }
 \arguments{
-\item{library}{Library location to install ASreml-R. Uses first option in \code{.libPaths()} by default.}
+\item{library}{Library location to install ASReml-R. Uses first option in \code{.libPaths()} by default.}
 
 \item{quiet}{Logical (default \code{FALSE}). Should package be installed quietly?}
 
-\item{force}{Logical (default \code{FALSE}). Force ASreml-R to install. Useful for upgrading if it is already installed.}
+\item{force}{Logical (default \code{FALSE}). Force ASReml-R to install. Useful for upgrading if it is already installed.}
 
 \item{keep_file}{Should the downloaded asreml package file be kept? Default is \code{FALSE}. \code{TRUE} downloads to current directory. A file path can also be provided to save to another directory. See \code{Details} for more information.}
 
@@ -29,10 +29,10 @@ update_asreml(...)
 Silently returns \code{TRUE} if \code{asreml} installed successfully or already present, \code{FALSE} otherwise. Optionally prints a confirmation message on success.
 }
 \description{
-Helper functions for installing or updating the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
+Helper functions for installing or updating the ASReml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
 }
 \details{
-The ASreml-R package file is downloaded from a shortlink, and if \code{keep_file} is \code{TRUE}, the package archive file will be saved in the current directory. If a valid path is provided in \code{keep_file}, the file will be saved to that path, but directory is assumed to exist and will not be created. If \code{keep_file} does not specify an existing, valid path, an error will be shown.
+The ASReml-R package file is downloaded from a shortlink, and if \code{keep_file} is \code{TRUE}, the package archive file will be saved in the current directory. If a valid path is provided in \code{keep_file}, the file will be saved to that path, but directory is assumed to exist and will not be created. If \code{keep_file} does not specify an existing, valid path, an error will be shown.
 }
 \examples{
 \dontrun{

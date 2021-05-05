@@ -33,7 +33,7 @@
 #' \dontrun{
 #' library(asreml)
 #'
-#' #Fit ASreml Model
+#' #Fit ASReml Model
 #' model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
 #'                     random = ~ Blocks + Blocks:Wplots,
 #'                     residual = ~ units,
