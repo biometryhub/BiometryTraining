@@ -55,14 +55,14 @@ test_that("keep_file = F doesn't keep file", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_if(.Platform$OS.type == "windows")
     expect_file_2(install_asreml, list(force = T, keep_file = F),
-                  pat = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)", missing = T)
+                  pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)", missing = T)
 })
 
 test_that("keep_file = T keeps file (in temp?)", {
     skip_if(.Platform$OS.type == "windows")
     # skip_if(R.version$status == "Under development (unstable)")
     expect_file_2(install_asreml, list(force = T, keep_file = T),
-                  pat = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)", dir = tempdir())
+                  pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
 })
 
 
@@ -71,7 +71,7 @@ test_that("keep_file = 'data' keeps file in 'data'", {
     skip_if(.Platform$OS.type == "windows")
     dir.create(paste0(tempdir(), "/data"))
     expect_file_2(install_asreml, list(force = T, keep_file = paste0(tempdir(), "/data")),
-                  pat = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)", dir = paste0(tempdir(), "/data"))
+                  pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)", dir = paste0(tempdir(), "/data"))
 })
 
 test_that("Providing a non-existant directory fails", {

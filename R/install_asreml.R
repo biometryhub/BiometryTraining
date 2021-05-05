@@ -47,14 +47,14 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     ver <- paste(os, substr(getRversion(), 1, 3), sep = "_")
 
     url <- switch(ver,
-                  win_3.5 = {"https://link.biometryhubwaite.com/win-35"},
+                  # win_3.5 = {"https://link.biometryhubwaite.com/win-35"},
                   win_3.6 = {"https://link.biometryhubwaite.com/win-36"},
                   win_4.0 = {"https://link.biometryhubwaite.com/win-40"},
                   win_4.1 = {"https://link.biometryhubwaite.com/win-41"},
-                  mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
+                  # mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
                   mac_3.6 = {"https://link.biometryhubwaite.com/mac-36"},
                   mac_4.0 = {"https://link.biometryhubwaite.com/mac-40"},
-                  linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
+                  # linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
                   linux_3.6 = {"https://link.biometryhubwaite.com/linux-36"},
                   linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"}
     )
@@ -150,7 +150,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
     # Check dependencies are installed first
 
-    deps <- c("data.table", "ggplot2", "grid", "methods", "jsonlite")
+    deps <- c("data.table", "ggplot2", "jsonlite")
     for(i in seq_along(deps)) {
       if(!requireNamespace(deps[i], quietly = TRUE)) {
         install.packages(deps[i], repos = "https://cloud.r-project.org")
