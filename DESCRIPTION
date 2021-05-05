@@ -3,7 +3,6 @@ Package: BiometryTraining
 Title: Functions to Assist Teaching Design and Analysis of Agronomic
     Experiments
 Version: 0.7.2
-Date: 2021-03-10
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -21,9 +20,10 @@ Authors@R:
              role = c("cph", "fnd")),
       person(given = "GRDC",
              role = c("cph", "fnd")))
-Description: BiometryTraining gives users a simple way to install and
-    access documentation about the functions used and distributed as part
-    of the SAGI-STH Biometrics Education Initiative.
+Description: Gives users a simple way to install and access documentation 
+    about the functions used and distributed as part of the SAGI-STH Biometrics 
+    Education Initiative. It is mainly intended for applications in agronomy and
+    agricultural sciences, however may be applicable for use in other fields.
 License: MIT + file LICENSE
 URL: https://biometryhub.github.io/BiometryTraining/
 BugReports: https://github.com/biometryhub/BiometryTraining/issues

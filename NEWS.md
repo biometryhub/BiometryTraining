@@ -1,3 +1,15 @@
+# BiometryTraining 0.7.2
+
+## Minor changes
+
+- Updates to the documentation of `mct.out()`.
+
+# BiometryTraining 0.7.1
+
+## Bug fixes
+
+- Fixed a bug based on an old version of `patchwork` by requiring `patchwork` version 1.1.0 or later.
+
 # BiometryTraining 0.7.0
 
 * Added a `NEWS.md` file to track changes to the package.

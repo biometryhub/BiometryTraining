@@ -116,7 +116,7 @@ mct.out <- function(model.obj,
     pp <- pp[!is.na(pp$predicted.value),]
     pp$status <- NULL
 
-    dat.ww <- asreml::wald(model.obj, ssType = "conditional", denDF = "default", trace = FALSE)$Wald
+    dat.ww <- wald(model.obj, ssType = "conditional", denDF = "default", trace = FALSE)$Wald
 
     dendf <- data.frame(Source = row.names(dat.ww), denDF = dat.ww$denDF)
 
