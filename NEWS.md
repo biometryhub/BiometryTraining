@@ -1,4 +1,4 @@
-# BiometryTraining 0.7.2
+# BiometryTraining 1.0.0
 
 First release for CRAN.
 
