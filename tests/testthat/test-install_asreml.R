@@ -7,6 +7,7 @@ test_that("Installation works", {
 test_that("Update function works", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_if(.Platform$OS.type == "windows")
+    skip_on_cran()
     expect_message(update_asreml(), "ASReml-R successfully installed!")
 })
 
