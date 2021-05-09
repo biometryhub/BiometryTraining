@@ -1,5 +1,6 @@
 test_that("Installation works", {
     skip_if(.Platform$OS.type == "windows")
+    skip_on_cran()
     expect_message(install_asreml(force = T), "ASReml-R successfully installed!")
     expect_equal(install_asreml(), TRUE)
 })
@@ -24,6 +25,7 @@ test_that("Update function works", {
 test_that("Returns true if asreml already installed", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_if(.Platform$OS.type == "windows")
+    skip_on_cran()
     install_asreml(quiet=T)
     expect_equal(install_asreml(), TRUE)
 })
@@ -31,6 +33,7 @@ test_that("Returns true if asreml already installed", {
 test_that("Prints message if asreml already installed", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_if(.Platform$OS.type == "windows")
+    skip_on_cran()
     install_asreml(quiet=T)
     expect_message(install_asreml(), "ASReml-R is already installed.")
 })

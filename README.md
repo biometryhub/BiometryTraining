@@ -15,8 +15,8 @@ status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/ba
 ![pkgdown](https://github.com/biometryhub/BiometryTraining/workflows/pkgdown/badge.svg)
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-3.6.0-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.7.2-orange.svg?style=flat-square)](/commits/master)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2021--05--05-yellowgreen.svg)](/commits/master)
+[![packageversion](https://img.shields.io/badge/Package%20version-1.0.0-orange.svg?style=flat-square)](https://github.com/biometryhub/BiometryTraining/commits/master/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2021--05--09-yellowgreen.svg)](https://github.com/biometryhub/BiometryTraining/commits/master/commits/master)
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 <!-- badges: end -->
 

@@ -1,3 +1,8 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Skipped the test that was causing an ERROR on CRAN.
+
 ## Test environments
 * local Windows 10 install, R 4.0.5
 * Ubuntu 20.04 (on Virtual Box), R 4.0.5
