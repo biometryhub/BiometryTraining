@@ -27,8 +27,8 @@ min.r <- substr(description[,"Depends"], 7, 11)
 [![R build status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/BiometryTraining/actions)
 ![pkgdown](https://github.com/biometryhub/BiometryTraining/workflows/pkgdown/badge.svg)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-`r min.r`-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-`r gsub('-', '--', version)`-orange.svg?style=flat-square)](https://github.com/biometryhub/BiometryTraining/commits/master/commits/master)
-[![Last-changedate](https://img.shields.io/badge/last%20change-`r gsub('-', '--', Sys.Date())`-yellowgreen.svg)](https://github.com/biometryhub/BiometryTraining/commits/master/commits/master)
+[![packageversion](https://img.shields.io/badge/Package%20version-`r gsub('-', '--', version)`-orange.svg?style=flat-square)](https://github.com/biometryhub/BiometryTraining/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-`r gsub('-', '--', Sys.Date())`-yellowgreen.svg)](https://github.com/biometryhub/BiometryTraining/commits/master)
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 <!-- badges: end -->
 
