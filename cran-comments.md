@@ -1,3 +1,9 @@
+## Resubmission 2
+This is a resubmission. In this version I have:
+
+* Corrected the broken URL
+* Updated the licence file to follow the requested format
+
 ## Resubmission
 This is a resubmission. In this version I have:
 
