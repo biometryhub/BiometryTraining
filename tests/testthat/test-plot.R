@@ -1,14 +1,14 @@
 test_that("Plots output", {
   skip_if(getRversion() < 3.6)
-  out1 <- plot.des(outdesign_rcbd_plot,
+  out1 <- plot.des(outdesign_rcbd_ploTRUE,
                    nrows = 11,
                    ncols = 4,
                    brows = 11,
                    bcols = 1,
                    rotation = 0,
                    size = 4,
-                   margin = T,
-                   return.seed = T
+                   margin = TRUE,
+                   return.seed = TRUE
   )
 
   out1.1 <- plot.des(outdesign_rcbd_plot2,
@@ -18,8 +18,8 @@ test_that("Plots output", {
                    bcols = 4,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T
+                   margin = FALSE,
+                   return.seed = TRUE
   )
 
   out1.2 <- plot.des(outdesign_rcbd_plot3,
@@ -29,8 +29,8 @@ test_that("Plots output", {
                    bcols = 2,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T
+                   margin = FALSE,
+                   return.seed = TRUE
   )
 
   out1.3 <- plot.des(outdesign_rcbd_plot3,
@@ -40,76 +40,76 @@ test_that("Plots output", {
                    bcols = 6,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T
+                   margin = FALSE,
+                   return.seed = TRUE
   )
 
-  out2 <- plot.des(outdesign_lsd_plot,
+  out2 <- plot.des(outdesign_lsd_ploTRUE,
                    nrows = 4,
                    ncols = 4,
                    brows = NA,
                    bcols = NA,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T
+                   margin = FALSE,
+                   return.seed = TRUE
   )
 
-  out3 <- plot.des(outdesign_crossed_lsd_plot,
+  out3 <- plot.des(outdesign_crossed_lsd_ploTRUE,
                    nrows = 6,
                    ncols = 6,
                    brows = NA,
                    bcols = NA,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T,
+                   margin = FALSE,
+                   return.seed = TRUE,
                    fac.sep = "_"
   )
 
-  out4 <- plot.des(outdesign_crossed_plot,
+  out4 <- plot.des(outdesign_crossed_ploTRUE,
                    nrows = 3,
                    ncols = 6,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T,
+                   margin = FALSE,
+                   return.seed = TRUE,
                    fac.sep = c("", "")
   )
 
-  out4.1 <- plot.des(outdesign_crossed_lsd_plot,
+  out4.1 <- plot.des(outdesign_crossed_lsd_ploTRUE,
                      nrows = 6,
                      ncols = 6,
                      brows = NA,
                      bcols = NA,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c("", "_")
   )
 
-  out4.2 <- plot.des(outdesign_crossed_lsd_plot,
+  out4.2 <- plot.des(outdesign_crossed_lsd_ploTRUE,
                      nrows = 6,
                      ncols = 6,
                      brows = NA,
                      bcols = NA,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c("", "")
   )
 
-  out5 <- plot.des(outdesign_crossed_rcbd_plot,
+  out5 <- plot.des(outdesign_crossed_rcbd_ploTRUE,
                    nrows = 6,
                    ncols = 3,
                    brows = 6,
                    bcols = 1,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T,
+                   margin = FALSE,
+                   return.seed = TRUE,
                    fac.sep = c("", " ")
   )
 
@@ -120,8 +120,8 @@ test_that("Plots output", {
                      bcols = 6,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c(":", "")
   )
 
@@ -132,8 +132,8 @@ test_that("Plots output", {
                      bcols = 3,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c(":", "")
   )
 
@@ -144,42 +144,42 @@ test_that("Plots output", {
                      bcols = 2,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c(":", "")
   )
 
-  out6 <- plot.des(outdesign_split_plot,
+  out6 <- plot.des(outdesign_split_ploTRUE,
                    nrows = 8,
                    ncols = 4,
                    brows = 8,
                    bcols = 1,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T,
+                   margin = FALSE,
+                   return.seed = TRUE,
   )
 
-  out6.1 <- plot.des(outdesign_split_plot,
+  out6.1 <- plot.des(outdesign_split_ploTRUE,
                      nrows = 8,
                      ncols = 4,
                      brows = 1,
                      bcols = 4,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
   )
 
-  out6.2 <- plot.des(outdesign_split_plot,
+  out6.2 <- plot.des(outdesign_split_ploTRUE,
                      nrows = 4,
                      ncols = 8,
                      brows = 1,
                      bcols = 8,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
   )
 
   # Run vdiffr::manage_cases() on the console

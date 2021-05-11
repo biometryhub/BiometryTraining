@@ -74,7 +74,7 @@ quiet <- function(x) {
     if(!is.na(current_version) && current_version > installed_version){ # installed version < current version on CRAN
       warning("    BiometryTraining version ", current_version, " is now available.\n",
               "    Please update BiometryTraining by running\n",
-              "    install.packages('BiometryTraining')", call. = F)
+              "    install.packages('BiometryTraining')", call. = FALSE)
     }
     else {
       output2 <- paste("    The latest version of this package is available at",

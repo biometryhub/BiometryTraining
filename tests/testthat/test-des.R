@@ -26,7 +26,7 @@ test_that("unsupported design types give an error", {
   )
 
   expect_output(
-    cat(des.info(design.ab(c(3, 2), r = 3, design = "crd"), nrows = 6, ncols = 3, quiet = T)$satab),
+    cat(des.info(design.ab(c(3, 2), r = 3, design = "crd"), nrows = 6, ncols = 3, quiet = TRUE)$satab),
     "Source of Variation"
   )
 })
@@ -38,7 +38,7 @@ test_that("save works with all the options", {
       nrows = 11,
       ncols = 4,
       save = "abc",
-      quiet = T
+      quiet = TRUE
     ),
     "save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'."
   )
@@ -231,7 +231,7 @@ test_that("return.seed = T returns the seed of the design", {
 
 test_that("passing arguments to ggsave works", {
   expect_message(
-    des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, save = "plot", quiet = T, width = 8),
+    des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, save = "plot", quiet = TRUE, width = 8),
     "Saving 8 x 7 in image"
   )
 })
@@ -241,7 +241,7 @@ test_that("quiet = F prints output and plot", {
     des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4),
     "Source of Variation                     df"
   )
-  x <- des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, quiet = T)
+  x <- des.info(design.obj = outdesign_crd, nrows = 11, ncols = 4, quiet = TRUE)
 
   # skip_on_travis()
   skip_if(getRversion() < 3.6)

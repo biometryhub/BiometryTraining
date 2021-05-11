@@ -71,7 +71,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           #if(!require(vdiffr)) remotes::install_github("r-lib/vdiffr")
-          install.packages("stringi", deps = T)
+          install.packages("stringi", deps = TRUE)
           if(!require(asremlPlus)) remotes::install_github("briencj/asremlPlus")
           #if(!require(pkgbuild)) remotes::install_github("r-lib/pkgbuild")
           #if(!require(questionr)) remotes::install_cran("questionr")

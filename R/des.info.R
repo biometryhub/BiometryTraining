@@ -134,11 +134,11 @@ des.info <- function(design.obj,
       ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
     }
     else if (output == "workbook") {
-      write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+      write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
     }
     else if (output == "both") {
       ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-      write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+      write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
     }
     else if (output == "none") {
       # Do nothing
@@ -149,7 +149,7 @@ des.info <- function(design.obj,
   }
   else if (save) {
     ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-    write.csv(info$design, file = paste0(savename, ".csv"), row.names = F)
+    write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
   }
 
   return(info)

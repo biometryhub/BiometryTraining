@@ -164,7 +164,7 @@ mct.out <- function(model.obj,
 
   # Check that the predicted levels don't contain a dash -, if they do replace and display warning
   if(any(grepl("-", pp[,1]))) {
-    levs <- grep("-", pp[,1], value = T)
+    levs <- grep("-", pp[,1], value = TRUE)
     if(length(levs)>1) {
       warning("The treatment levels ", paste(levs, collapse = ", "), "contained '-', which has been replaced in the final output with '_'")
     }
@@ -192,12 +192,12 @@ mct.out <- function(model.obj,
   ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing', "default"))
 
   if(ordering == "ascending" | ordering == "increasing") {
-    # Set ordering to FALSE to set decreasing = F in order function
+    # Set ordering to FALSE to set decreasing = FALSE in order function
     ordering <- TRUE
   }
 
   else if(ordering == "descending" | ordering == "decreasing") {
-    # Set ordering to TRUE to set decreasing = T in order function
+    # Set ordering to TRUE to set decreasing = TRUE in order function
     ordering <- FALSE
   }
 
@@ -354,7 +354,7 @@ mct.out <- function(model.obj,
   # pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
 
   if(save) {
-    write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = F)
+    write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = FALSE)
   }
 
   # If there are brackets in the label, grab the text from inside

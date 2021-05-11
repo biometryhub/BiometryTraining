@@ -21,7 +21,7 @@
 #' resplt(dat.aov)
 #' @export
 
-resplt <- function(mod.obj, shapiro = T){
+resplt <- function(mod.obj, shapiro = TRUE){
 
     # Assign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/

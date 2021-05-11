@@ -5,9 +5,9 @@
 \alias{resplot}
 \title{Residual plots of aov or asreml models.}
 \usage{
-resplt(mod.obj, shapiro = T)
+resplt(mod.obj, shapiro = TRUE)
 
-resplot(mod.obj, shapiro = T)
+resplot(mod.obj, shapiro = TRUE)
 }
 \arguments{
 \item{mod.obj}{An \code{aov} or \code{asreml} model object.}

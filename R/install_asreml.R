@@ -176,5 +176,5 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 #'
 #' @export
 update_asreml <- function(...) {
-  install_asreml(force = T, ...)
+  install_asreml(force = TRUE, ...)
 }

@@ -185,7 +185,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
   test.df <- test.df[is.element(test.df$Term, all.terms),]
 
   if(length(warns) > 0) {
-    warning(warns[1], call. = F)
+    warning(warns[1], call. = FALSE)
   }
 
   return(test.df)
