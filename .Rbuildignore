@@ -15,3 +15,4 @@ variogram_2d.R
 check_rhub.R
 cran-comments.md
 ^CRAN-RELEASE$
+^LICENSE\.md$
