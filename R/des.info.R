@@ -115,7 +115,12 @@ des.info <- function(design.obj,
     if(!is.null(fac.names)) {
       design.obj$book$A <- factor(design.obj$book$A, labels = fac.names[[1]])
       design.obj$book$B <- factor(design.obj$book$B, labels = fac.names[[2]])
-      colnames(design.obj$book)[3:4] <- names(fac.names)[1:2]
+      if(design.obj$parameters$applied == "lsd") {
+        colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
+      }
+      else {
+        colnames(design.obj$book)[3:4] <- names(fac.names)[1:2]
+      }
     }
   }
 
