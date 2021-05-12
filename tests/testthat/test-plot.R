@@ -1,6 +1,6 @@
 test_that("Plots output", {
   skip_if(getRversion() < 3.6)
-  out1 <- plot.des(outdesign_rcbd_ploTRUE,
+  out1 <- plot.des(outdesign_rcbd_plot,
                    nrows = 11,
                    ncols = 4,
                    brows = 11,
@@ -44,7 +44,7 @@ test_that("Plots output", {
                    return.seed = TRUE
   )
 
-  out2 <- plot.des(outdesign_lsd_ploTRUE,
+  out2 <- plot.des(outdesign_lsd_plot,
                    nrows = 4,
                    ncols = 4,
                    brows = NA,
@@ -55,7 +55,7 @@ test_that("Plots output", {
                    return.seed = TRUE
   )
 
-  out3 <- plot.des(outdesign_crossed_lsd_ploTRUE,
+  out3 <- plot.des(outdesign_crossed_lsd_plot,
                    nrows = 6,
                    ncols = 6,
                    brows = NA,
@@ -67,7 +67,7 @@ test_that("Plots output", {
                    fac.sep = "_"
   )
 
-  out4 <- plot.des(outdesign_crossed_ploTRUE,
+  out4 <- plot.des(outdesign_crossed_plot,
                    nrows = 3,
                    ncols = 6,
                    rotation = 0,
@@ -77,7 +77,7 @@ test_that("Plots output", {
                    fac.sep = c("", "")
   )
 
-  out4.1 <- plot.des(outdesign_crossed_lsd_ploTRUE,
+  out4.1 <- plot.des(outdesign_crossed_lsd_plot,
                      nrows = 6,
                      ncols = 6,
                      brows = NA,
@@ -89,7 +89,7 @@ test_that("Plots output", {
                      fac.sep = c("", "_")
   )
 
-  out4.2 <- plot.des(outdesign_crossed_lsd_ploTRUE,
+  out4.2 <- plot.des(outdesign_crossed_lsd_plot,
                      nrows = 6,
                      ncols = 6,
                      brows = NA,
@@ -101,7 +101,7 @@ test_that("Plots output", {
                      fac.sep = c("", "")
   )
 
-  out5 <- plot.des(outdesign_crossed_rcbd_ploTRUE,
+  out5 <- plot.des(outdesign_crossed_rcbd_plot,
                    nrows = 6,
                    ncols = 3,
                    brows = 6,
@@ -149,7 +149,7 @@ test_that("Plots output", {
                      fac.sep = c(":", "")
   )
 
-  out6 <- plot.des(outdesign_split_ploTRUE,
+  out6 <- plot.des(outdesign_split_plot,
                    nrows = 8,
                    ncols = 4,
                    brows = 8,
@@ -160,7 +160,7 @@ test_that("Plots output", {
                    return.seed = TRUE,
   )
 
-  out6.1 <- plot.des(outdesign_split_ploTRUE,
+  out6.1 <- plot.des(outdesign_split_plot,
                      nrows = 8,
                      ncols = 4,
                      brows = 1,
@@ -171,7 +171,7 @@ test_that("Plots output", {
                      return.seed = TRUE,
   )
 
-  out6.2 <- plot.des(outdesign_split_ploTRUE,
+  out6.2 <- plot.des(outdesign_split_plot,
                      nrows = 4,
                      ncols = 8,
                      brows = 1,
