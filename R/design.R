@@ -57,6 +57,12 @@
 #'                   fac.names = list(N = c(50, 100, 150),
 #'                                    Water = c("Irrigated", "Rain-fed")))
 #'
+#' # Factorial Design (Crossed, Randomised Complete Block Design), changing separation between factors
+#' des.out <- design(type = "crossed:rcbd", treatments = c(3, 2),
+#'                   reps = 3, nrows = 6, ncols = 3,
+#'                   brows = 6, bcols = 1,
+#'                   seed = 42, fac.sep = c(":", "_"))
+#'
 #' # Factorial Design (Nested, Latin Square)
 #' des.out <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),
 #'                   nrows = 7, ncols = 7, seed = 42)
@@ -116,8 +122,8 @@ design <- function(type,
                                              trt2 = sub_treatments,
                                              r = reps,
                                              seed = ifelse(is.numeric(seed), seed, 0))
-        colnames(outdesign$book)[colnames(outdesign$book)=="treatments"] <- deparse(substitute(treatments))
-        colnames(outdesign$book)[colnames(outdesign$book)=="sub_treatments"] <- deparse(substitute(sub_treatments))
+        # colnames(outdesign$book)[colnames(outdesign$book)=="treatments"] <- deparse(substitute(treatments))
+        # colnames(outdesign$book)[colnames(outdesign$book)=="sub_treatments"] <- deparse(substitute(sub_treatments))
     }
 
     else if(substr(tolower(type), 1, 7) == "crossed") {

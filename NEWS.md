@@ -6,6 +6,12 @@ First release for CRAN.
 
 - Updates to the documentation of `mct.out()`.
 
+## Bug fixes
+
+- Fixed a bug where factorial latin square designs were not generated properly (#62)
+- Updated labels on design outputs so that they are consistent (#65)
+- Fixed up labelling in split plot designs (#64)
+
 # BiometryTraining 0.7.1
 
 ## Bug fixes

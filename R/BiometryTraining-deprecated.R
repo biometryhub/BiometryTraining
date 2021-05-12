@@ -6,4 +6,5 @@
 #'   available at `help("<function>-deprecated")`.
 #' @name BiometryTraining-deprecated
 #' @keywords internal
+#' @return No return value.
 NULL
