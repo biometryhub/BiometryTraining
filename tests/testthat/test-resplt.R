@@ -10,7 +10,7 @@ test_that("plotting works", {
   dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
 
   expect_error(resplt(1:10), "mod.obj must be an aov or asreml object")
-  p1 <- resplot(dat.aov)
+  p1 <- resplt(dat.aov)
 
   skip_if(getRversion() < 3.6)
   vdiffr::expect_doppelganger(title = "Resplot for aov", p1)
