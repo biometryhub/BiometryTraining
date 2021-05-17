@@ -43,7 +43,6 @@ Imports:
 Suggests: 
     covr,
     crayon,
-    png,
     testthat,
     vdiffr
 Enhances: 
