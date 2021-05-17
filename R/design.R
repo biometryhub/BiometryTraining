@@ -128,6 +128,7 @@ design <- function(type,
 
     else if(substr(tolower(type), 1, 7) == "crossed") {
         type_split <- unlist(strsplit(tolower(type), ":"))
+        savename <- gsub(":", "_", savename)
 
         if(type_split[2] %!in% c("crd", "rcbd", "lsd")) {
             stop("Crossed designs of type '", type_split[2], "' are not supported")
