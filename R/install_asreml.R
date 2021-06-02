@@ -54,9 +54,11 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
                   # mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
                   mac_3.6 = {"https://link.biometryhubwaite.com/mac-36"},
                   mac_4.0 = {"https://link.biometryhubwaite.com/mac-40"},
+                  mac_4.1 = {"https://link.biometryhubwaite.com/mac-41"},
                   # linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
                   linux_3.6 = {"https://link.biometryhubwaite.com/linux-36"},
-                  linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"}
+                  linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"},
+                  linux_4.1 = {"https://link.biometryhubwaite.com/linux-41"}
     )
 
     # First check if file already exists, both in the current directory and temp folder
