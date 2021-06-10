@@ -5,8 +5,7 @@
 \alias{BiometryTraining}
 \alias{_PACKAGE}
 \alias{BiometryTraining-package}
-\title{BiometryTraining: Functions to Assist Teaching Design and Analysis of Agronomic
-    Experiments}
+\title{BiometryTraining: Functions to Assist Design and Analysis of Agronomic Experiments}
 \description{
 Provides functions to aid in the design and analysis of 
     agronomic and agricultural experiments through easy access to documentation 
