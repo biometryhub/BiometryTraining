@@ -25,8 +25,6 @@ vario <- function(mod.obj){
     gdat <- interp2xyz(fld, data.frame = TRUE)
 
 
-    output <- list()
-
         a <- ggplot2::ggplot(gdat, aes(x = x, y = y, z = z, fill = z)) +
         ggplot2::geom_tile(alpha = 0.6) +
         ggplot2::coord_equal() +
@@ -50,7 +48,7 @@ vario <- function(mod.obj){
 
           b <- ggplotify::as.grob(b)
 
-        patchwork::wrap_plots(a / b)
+        output <- patchwork::wrap_plots(b / a)
 
         return(output)
 }
