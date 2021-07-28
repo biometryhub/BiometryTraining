@@ -11,7 +11,7 @@
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`. Use 0 if no offset was applied to the transformed data. See Details for more information.
 #' @param decimals Controls rounding of decimal places in output. Default is 2 decimal places.
 #' @param order Order of the letters in the groups output. Options are `'default'`, `'ascending'` or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
-#' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.5 (50%) of the difference between upper and lower error bars above the top error bar.
+#' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.1 (10%) of the difference between upper and lower error bars above the top error bar.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
 #' @param savename A file name for the predicted values to be saved to. Default is `predicted_values`.
@@ -130,7 +130,7 @@ mct.out <- function(model.obj,
 
     # Mean <- pp$predicted.value
     # Names <-  as.character(pp$Names)
-    ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(dendf$Source)]
+    ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(as.character(dendf$Source))]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*sed
 
     # Grab the response from the formula to create plot Y label
@@ -139,7 +139,7 @@ mct.out <- function(model.obj,
 
   else {
 
-    pred.out <- predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
+    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
 
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
@@ -206,7 +206,7 @@ mct.out <- function(model.obj,
   }
 
   else {
-    stop("order must be 'ascending', 'descending' or 'default'")
+    stop("order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
   }
 
   ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
@@ -254,23 +254,6 @@ mct.out <- function(model.obj,
       pp.tab$up <- exp(pp.tab$predicted.value + pp.tab$ci) - ifelse(!is.na(offset), offset, 0)
     }
 
-    if(trans == "sqrt"){
-      pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
-      pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
-      if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
-      }
-      if(int.type == "1se"){
-        pp.tab$ci <- pp.tab$std.error
-      }
-      if(int.type == "2se"){
-        pp.tab$ci <- 2*pp.tab$std.error
-      }
-      pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
-      pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
-    }
-
-
     if(trans == "logit"){
       pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
       pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
@@ -290,9 +273,6 @@ mct.out <- function(model.obj,
 
       pp.tab$ll <- NULL
       pp.tab$uu <- NULL
-      pp.tab$transformed.value <- NULL
-      pp.tab$approx.se <- NULL
-
     }
 
     if(trans == "inverse"){
