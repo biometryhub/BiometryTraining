@@ -72,6 +72,10 @@ mct.out <- function(model.obj,
     classify <- pred
   }
 
+  if(sig > 0.5)  {
+    warning("Significance level given by sig is high. Perhaps you meant ", 1-sig, "?", call. = F)
+  }
+
   if(class(model.obj)[1] == "asreml"){
 
     if(missing(pred.obj)) {
