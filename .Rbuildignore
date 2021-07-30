@@ -16,3 +16,5 @@ check_rhub.R
 cran-comments.md
 ^CRAN-RELEASE$
 ^LICENSE\.md$
+asreml_licencing.R
+variogram.R
