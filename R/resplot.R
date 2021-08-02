@@ -100,13 +100,11 @@ resplot <- function(mod.obj, shapiro = TRUE){
     }
 
 
-    # library(cowplot)
-    # plot_grid(a, b, c)
-    # plot_grid(a, b, add_sub(c, "This is an annotation.\nAnnotations can span multiple lines."))
-    # plot_grid(a, b, add_sub(c, "ABC"), nrow = 2, ncol = 4)
-    # plot_grid(a, b, add_sub(c, "ABC"))
-    # plot_grid(a, b, NULL, add_sub(c, "ABC"), NULL)
-    # plot_grid(a, b, NULL, add_sub(c, "ABC"), NULL, ncol = 2)
+    library(cowplot)
+    top_row <- cowplot::plot_grid(a, b, ncol=2, labels = c("A", "B"))
+    bottom_row <- cowplot::plot_grid(NULL, add_sub(c, "ABC"), NULL, ncol=3, rel_widths=c(0.25,0.5,0.25), labels = "C")
+
+    cowplot::plot_grid(top_row, bottom_row, ncol=1)
 }
 
 #' @rdname resplt
