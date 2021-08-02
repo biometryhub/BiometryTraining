@@ -14,15 +14,15 @@
 #' @importFrom gridtext richtext_grob
 #' @importFrom stats shapiro.test
 #'
-#' @aliases resplot
+#' @aliases resplt
 #'
 #' @examples
 #' dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
-#' resplt(dat.aov)
 #' resplot(dat.aov)
+#' resplt(dat.aov)
 #' @export
 
-resplt <- function(mod.obj, shapiro = TRUE){
+resplot <- function(mod.obj, shapiro = TRUE){
 
     # Assign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
@@ -98,8 +98,17 @@ resplt <- function(mod.obj, shapiro = TRUE){
     else {
         return(output[[1]])
     }
+
+
+    # library(cowplot)
+    # plot_grid(a, b, c)
+    # plot_grid(a, b, add_sub(c, "This is an annotation.\nAnnotations can span multiple lines."))
+    # plot_grid(a, b, add_sub(c, "ABC"), nrow = 2, ncol = 4)
+    # plot_grid(a, b, add_sub(c, "ABC"))
+    # plot_grid(a, b, NULL, add_sub(c, "ABC"), NULL)
+    # plot_grid(a, b, NULL, add_sub(c, "ABC"), NULL, ncol = 2)
 }
 
 #' @rdname resplt
 #' @export
-resplot <- resplt
+resplt <- resplot
