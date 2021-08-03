@@ -134,6 +134,10 @@ design <- function(type,
             stop("Crossed designs of type '", type_split[2], "' are not supported")
         }
 
+        if(length(treatments) > 2) {
+            stop("Crossed designs of more than two treatment factors are not supported")
+        }
+
         outdesign <- agricolae::design.ab(trt = treatments,
                                           r = reps,
                                           design = type_split[2],
