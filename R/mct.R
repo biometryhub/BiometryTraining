@@ -142,7 +142,6 @@ mct.out <- function(model.obj,
   }
 
   else {
-
     pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
 
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]

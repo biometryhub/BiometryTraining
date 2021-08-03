@@ -122,8 +122,6 @@ design <- function(type,
                                              trt2 = sub_treatments,
                                              r = reps,
                                              seed = ifelse(is.numeric(seed), seed, 0))
-        # colnames(outdesign$book)[colnames(outdesign$book)=="treatments"] <- deparse(substitute(treatments))
-        # colnames(outdesign$book)[colnames(outdesign$book)=="sub_treatments"] <- deparse(substitute(sub_treatments))
     }
 
     else if(substr(tolower(type), 1, 7) == "crossed") {

@@ -1,16 +1,19 @@
-# BiometryTraining 1.0.0
-
-First release for CRAN.
+# BiometryTraining 0.8.0
 
 ## Minor changes
 
 - Updates to the documentation of `mct.out()`.
+- Fixed `resplot()` so that plot C is now easier to interpret because it's not as stretched (#72)
+- Switched from `patchwork` to `cowplot` (#74)
+- Reduced default height of labels in `mct.out()` plot (#67)
 
 ## Bug fixes
 
 - Fixed a bug where factorial latin square designs were not generated properly (#62)
-- Updated labels on design outputs so that they are consistent (#65)
+- Updated labels on design outputs so that they are consistent and prevent 3 way factorials (#65)
 - Fixed up labelling in split plot designs (#64)
+- Fixed an issue where incorrect significance values in `mct.out()` give a negative confidence interval (#73)
+- Fixed a bug where crossed designs didn't produce spreadsheet output (#66)
 
 # BiometryTraining 0.7.1
 

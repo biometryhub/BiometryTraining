@@ -31,7 +31,6 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
   ymax <- NULL
   Row <- NULL
 
-
   if(!missing(fac.sep) && length(fac.sep) == 1) {
     fac.sep <- rep(fac.sep, times = 2)
   }
@@ -42,15 +41,6 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
   else {
     des.seed <- NULL
   }
-
-  # if(design.obj$parameters$applied == "lsd") {
-  #   t1 <- design.obj$book[[4]]
-  #   t2 <- design.obj$book[[5]]
-  # }
-  # else {
-  #   t1 <- design.obj$book[[3]]
-  #   t2 <- design.obj$book[[4]]
-  # }
 
   ifelse(design.obj$parameters$design == "factorial",
          design <- paste("factorial", design.obj$parameters$applied, sep = "_"),

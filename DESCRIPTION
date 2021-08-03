@@ -2,6 +2,7 @@ Type: Package
 Package: BiometryTraining
 Title: Functions to Assist Design and Analysis of Agronomic Experiments
 Version: 0.8.0
+Date: 2021-08-03
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
