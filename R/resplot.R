@@ -4,7 +4,8 @@
 #'
 #' @param mod.obj An `aov` or `asreml` model object.
 #' @param shapiro (Logical) Display the Shapiro-Wilks test of normality on the plot?
-#' @param label.size A numeric value for the size of the label font point size.
+#' @param axes.size A numeric value for the size of the axes label font size in points.
+#' @param label.size A numeric value for the size of the label (A,B,C) font point size.
 #'
 #' @return A list containing ggplot2 objects which are diagnostic plots.
 #'
@@ -23,7 +24,7 @@
 #' resplt(dat.aov)
 #' @export
 
-resplot <- function(mod.obj, shapiro = TRUE, label.size = 10){
+resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
 
     # Assign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
@@ -64,14 +65,14 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10){
 
         a <- ggplot2::ggplot(data = aa.f, mapping = ggplot2::aes(x = stdres)) +
             ggplot2::geom_histogram(bins = ifelse(nrow(aa) < 31, 7, 11), fill = "aquamarine3", colour = "black") +
-            ggplot2::theme_bw(base_size = 8) + ggplot2::labs(y = "Frequency", x = "Standardised Residual")
+            ggplot2::theme_bw(base_size = axes.size) + ggplot2::labs(y = "Frequency", x = "Standardised Residual")
 
         b <- ggplot2::ggplot(aa.f, ggplot2::aes(sample = stdres)) + ggplot2::geom_qq(colour = "black", fill = "aquamarine3", size = 2 , shape = 21) +
-            ggplot2::geom_qq_line() + ggplot2::theme_bw(base_size = 8) +
+            ggplot2::geom_qq_line() + ggplot2::theme_bw(base_size = axes.size) +
             ggplot2::labs(y = "Standardised Residual", x = "Theoretical")
 
         c <- ggplot2::ggplot(data = aa.f, mapping = ggplot2::aes(x = fitted, y = stdres)) +
-            ggplot2::geom_point(colour = "black", fill = "aquamarine3", size = 2 , shape = 21) + ggplot2::theme_bw(base_size = 8) +
+            ggplot2::geom_point(colour = "black", fill = "aquamarine3", size = 2 , shape = 21) + ggplot2::theme_bw(base_size = axes.size) +
             ggplot2::labs(y = "Standardised Residual", x = "Fitted Value")
 
         top_row <- cowplot::plot_grid(a, b, ncol=2, labels = c("A", "B"), label_size = label.size)
