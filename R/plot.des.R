@@ -18,6 +18,7 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom ggplot2 ggplot geom_tile aes geom_text theme_bw scale_fill_manual scale_x_continuous scale_y_continuous scale_y_reverse
 #' @importFrom scales reverse_trans
+#' @importFrom stringi stri_sort
 #' @keywords internal
 #'
 plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed, fac.sep) {
@@ -30,6 +31,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
   ymax <- NULL
   Row <- NULL
 
+
   if(!missing(fac.sep) && length(fac.sep) == 1) {
     fac.sep <- rep(fac.sep, times = 2)
   }
@@ -40,6 +42,15 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
   else {
     des.seed <- NULL
   }
+
+  # if(design.obj$parameters$applied == "lsd") {
+  #   t1 <- design.obj$book[[4]]
+  #   t2 <- design.obj$book[[5]]
+  # }
+  # else {
+  #   t1 <- design.obj$book[[3]]
+  #   t2 <- design.obj$book[[4]]
+  # }
 
   ifelse(design.obj$parameters$design == "factorial",
          design <- paste("factorial", design.obj$parameters$applied, sep = "_"),
@@ -160,7 +171,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
       des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
     }
     names(des)[names(des)=="r"] <- "reps"
-    ntrt <- nlevels(as.factor(des$treatments))
+    ntrt <- nlevels(des$treatments)
   }
 
 
@@ -269,7 +280,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
       des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
     }
 
-    ntrt <- nlevels(as.factor(des$treatments))
+    ntrt <- nlevels(des$treatments)
     des$row <- as.numeric(des$row)
     des$col <- as.numeric(des$col)
   }
@@ -284,7 +295,7 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     des$treatments <- factor(paste(des[, trtNams[1]], des[, trtNams[2]], sep = "_"))
 
     # Number of treatments
-    ntrt <- nlevels(as.factor(des$treatments))
+    ntrt <- nlevels(des$treatments)
 
 
     # Calculate direction of blocking
@@ -356,6 +367,8 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
 
     des <- cbind(plan, des)
   }
+
+  des$treatments <- factor(des$treatments, levels = unique(stringi::stri_sort(des$treatments, numeric = TRUE)))
 
   # des <- dplyr::mutate(des, row = factor(row),
   # row = factor(row, levels = rev(levels(row))))

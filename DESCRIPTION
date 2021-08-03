@@ -37,7 +37,8 @@ Imports:
     multcompView,
     predictmeans,
     RColorBrewer,
-    scales
+    scales, 
+    stringi
 Suggests: 
     covr,
     crayon,

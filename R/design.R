@@ -98,7 +98,6 @@ design <- function(type,
         outdesign <- agricolae::design.crd(trt = treatments,
                                            r = reps,
                                            seed = ifelse(is.numeric(seed), seed, 0))
-        outdesign$book$treatments <- factor(outdesign$book$treatments, levels = treatments)
     }
 
     else if(tolower(type) == "rcbd") {
@@ -136,7 +135,7 @@ design <- function(type,
         }
 
         if(length(treatments) > 2) {
-            stop("Crossed designs of more than two treatment factors are not supported")
+            stop("Crossed designs with more than two treatment factors are not supported")
         }
 
         outdesign <- agricolae::design.ab(trt = treatments,
