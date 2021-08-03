@@ -98,6 +98,7 @@ design <- function(type,
         outdesign <- agricolae::design.crd(trt = treatments,
                                            r = reps,
                                            seed = ifelse(is.numeric(seed), seed, 0))
+        outdesign$book$treatments <- factor(outdesign$book$treatments, levels = treatments)
     }
 
     else if(tolower(type) == "rcbd") {
