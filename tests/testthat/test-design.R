@@ -43,7 +43,7 @@ test_that("designs are produced for supported types", {
 })
 
 test_that("reps in lsd produces a message", {
-    expect_message(design(type = "lsd", 1:4, reps = 3, nrows = 4, ncols = 4, seed = 42, quiet = T),
+    expect_message(design(type = "lsd", 1:4, reps = 3, nrows = 4, ncols = 4, seed = 42, quiet = TRUE),
                    "Number of replicates is not required for Latin Square designs")
 })
 

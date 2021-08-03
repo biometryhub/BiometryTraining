@@ -7,7 +7,7 @@
 
 [![Project Status: Active: The project has reached a stable, usable
 state and is being actively
-developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test
 coverage](https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg)](https://codecov.io/gh/biometryhub/BiometryTraining?branch=master)
 [![R build
@@ -15,9 +15,10 @@ status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/ba
 ![pkgdown](https://github.com/biometryhub/BiometryTraining/workflows/pkgdown/badge.svg)
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-3.6.0-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.7.1-orange.svg?style=flat-square)](/commits/master)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2021--05--03-yellowgreen.svg)](/commits/master)
-[![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.8.0-orange.svg?style=flat-square)](https://github.com/biometryhub/BiometryTraining/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2021--08--03-yellowgreen.svg)](https://github.com/biometryhub/BiometryTraining/commits/master)
+[![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fbiometryhub%2FBiometryTraining&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 <!-- badges: end -->
 
 The goal of BiometryTraining is to provide functions to aid in the
@@ -60,7 +61,7 @@ install.<br> Use `force = TRUE` to force installation</span>
 packages, but is not currently installed.</span>
 
 <span style="color: red;">Please download and install Rtools custom from
-<http://cran.r-project.org/bin/windows/Rtools/>.</span>
+<https://cran.r-project.org/bin/windows/Rtools/>.</span>
 
 <span style="color: red;">Warning messages:<br> 1: In untar2(tarfile,
 files, list, exdir) :<br> skipping pax global extended headers<br> 2: In

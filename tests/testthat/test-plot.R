@@ -7,8 +7,8 @@ test_that("Plots output", {
                    bcols = 1,
                    rotation = 0,
                    size = 4,
-                   margin = T,
-                   return.seed = T
+                   margin = TRUE,
+                   return.seed = TRUE
   )
 
   out1.1 <- plot.des(outdesign_rcbd_plot2,
@@ -18,8 +18,8 @@ test_that("Plots output", {
                    bcols = 4,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T
+                   margin = FALSE,
+                   return.seed = TRUE
   )
 
   out1.2 <- plot.des(outdesign_rcbd_plot3,
@@ -29,8 +29,8 @@ test_that("Plots output", {
                    bcols = 2,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T
+                   margin = FALSE,
+                   return.seed = TRUE
   )
 
   out1.3 <- plot.des(outdesign_rcbd_plot3,
@@ -40,8 +40,8 @@ test_that("Plots output", {
                    bcols = 6,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T
+                   margin = FALSE,
+                   return.seed = TRUE
   )
 
   out2 <- plot.des(outdesign_lsd_plot,
@@ -51,8 +51,8 @@ test_that("Plots output", {
                    bcols = NA,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T
+                   margin = FALSE,
+                   return.seed = TRUE
   )
 
   out3 <- plot.des(outdesign_crossed_lsd_plot,
@@ -62,8 +62,8 @@ test_that("Plots output", {
                    bcols = NA,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T,
+                   margin = FALSE,
+                   return.seed = TRUE,
                    fac.sep = "_"
   )
 
@@ -72,8 +72,8 @@ test_that("Plots output", {
                    ncols = 6,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T,
+                   margin = FALSE,
+                   return.seed = TRUE,
                    fac.sep = c("", "")
   )
 
@@ -84,8 +84,8 @@ test_that("Plots output", {
                      bcols = NA,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c("", "_")
   )
 
@@ -96,8 +96,8 @@ test_that("Plots output", {
                      bcols = NA,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c("", "")
   )
 
@@ -108,8 +108,8 @@ test_that("Plots output", {
                    bcols = 1,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T,
+                   margin = FALSE,
+                   return.seed = TRUE,
                    fac.sep = c("", " ")
   )
 
@@ -120,8 +120,8 @@ test_that("Plots output", {
                      bcols = 6,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c(":", "")
   )
 
@@ -132,8 +132,8 @@ test_that("Plots output", {
                      bcols = 3,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c(":", "")
   )
 
@@ -144,8 +144,8 @@ test_that("Plots output", {
                      bcols = 2,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
                      fac.sep = c(":", "")
   )
 
@@ -156,8 +156,8 @@ test_that("Plots output", {
                    bcols = 1,
                    rotation = 0,
                    size = 4,
-                   margin = F,
-                   return.seed = T,
+                   margin = FALSE,
+                   return.seed = TRUE,
   )
 
   out6.1 <- plot.des(outdesign_split_plot,
@@ -167,8 +167,8 @@ test_that("Plots output", {
                      bcols = 4,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
   )
 
   out6.2 <- plot.des(outdesign_split_plot,
@@ -178,8 +178,8 @@ test_that("Plots output", {
                      bcols = 8,
                      rotation = 0,
                      size = 4,
-                     margin = F,
-                     return.seed = T,
+                     margin = FALSE,
+                     return.seed = TRUE,
   )
 
   # Run vdiffr::manage_cases() on the console

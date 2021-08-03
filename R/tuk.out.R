@@ -17,26 +17,6 @@
 #'
 #' @references <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023>
 #'
-#' @examples
-#' \dontrun{
-#' dat.asr <- asreml(Yield ~ Variety,
-#'   random = ~Block,
-#'   residual = ~ id(Plot), data = dat
-#' )
-#'
-#' dat.pred <- predict(dat.asr,
-#'   classify = "Variety",
-#'   sed = TRUE
-#' )
-#'
-#' pred.out <- tuk.out(
-#'   model.obj = dat.asr, pred.obj = dat.pred,
-#'   pred = "Variety", sig = 0.95
-#' )
-#'
-#' pred.out
-#' }
-#'
 #' @name tuk.out-deprecated
 #' @usage tuk.out(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0)
 #' @seealso \code{\link{BiometryTraining-deprecated}}

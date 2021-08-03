@@ -2,12 +2,12 @@
 % Please edit documentation in R/logltest.R
 \name{logl.test}
 \alias{logl.test}
-\title{Log-likelihood test for comparing terms in ASreml-R models}
+\title{Log-likelihood test for comparing terms in ASReml-R models}
 \usage{
 logl.test(model.obj, rand.terms = NULL, resid.terms = NULL)
 }
 \arguments{
-\item{model.obj}{An ASreml-R model object}
+\item{model.obj}{An ASReml-R model object}
 
 \item{rand.terms}{Random terms from the model. Default is NULL.}
 
@@ -17,7 +17,7 @@ logl.test(model.obj, rand.terms = NULL, resid.terms = NULL)
 A dataframe containing the results of the test.
 }
 \description{
-Log-likelihood test for comparing terms in ASreml-R models
+Log-likelihood test for comparing terms in ASReml-R models
 }
 \examples{
 \dontrun{

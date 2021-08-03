@@ -11,11 +11,10 @@
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`. Use 0 if no offset was applied to the transformed data. See Details for more information.
 #' @param decimals Controls rounding of decimal places in output. Default is 2 decimal places.
 #' @param order Order of the letters in the groups output. Options are `'default'`, `'ascending'` or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
-#' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.5 (50%) of the difference between upper and lower error bars above the top error bar.
+#' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.1 (10%) of the difference between upper and lower error bars above the top error bar.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
 #' @param savename A file name for the predicted values to be saved to. Default is `predicted_values`.
-#' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
 #' @param pred Deprecated. Use `classify` instead.
 #'
 #' @importFrom multcompView multcompLetters
@@ -26,7 +25,7 @@
 #'
 #' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
 #'
-#' @return A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
+#' @return A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations (named `predicted_values`), as well as a plot visually displaying the predicted values (named `predicted_plot`). If some of the predicted values are aliased, a warning is printed, and the aliased treatment levels are returned in the output (named `aliased`).
 #'
 #' @references Jørgensen, E. & Pedersen, A. R. How to Obtain Those Nasty Standard Errors From Transformed Data - and Why They Should Not Be Used. [http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023)
 #'
@@ -34,7 +33,7 @@
 #' \dontrun{
 #' library(asreml)
 #'
-#' #Fit ASreml Model
+#' #Fit ASReml Model
 #' model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
 #'                     random = ~ Blocks + Blocks:Wplots,
 #'                     residual = ~ units,
@@ -62,16 +61,19 @@ mct.out <- function(model.obj,
                     offset = NA,
                     decimals = 2,
                     order = "default",
-                    label_height = 0.5,
+                    label_height = 0.1,
                     rotation = 0,
                     save = FALSE,
                     savename = "predicted_values",
-                    plottype = "pdf",
                     pred){
 
   if(!missing(pred)) {
     warning("Argument pred has been deprecated and will be removed in a future version. Please use classify instead.")
     classify <- pred
+  }
+
+  if(sig > 0.5)  {
+    warning("Significance level given by sig is high. Perhaps you meant ", 1-sig, "?", call. = F)
   }
 
   if(class(model.obj)[1] == "asreml"){
@@ -132,7 +134,7 @@ mct.out <- function(model.obj,
 
     # Mean <- pp$predicted.value
     # Names <-  as.character(pp$Names)
-    ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(dendf$Source)]
+    ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(as.character(dendf$Source))]
     crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*sed
 
     # Grab the response from the formula to create plot Y label
@@ -140,8 +142,7 @@ mct.out <- function(model.obj,
   }
 
   else {
-
-    pred.out <- predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
+    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
 
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
@@ -166,7 +167,7 @@ mct.out <- function(model.obj,
 
   # Check that the predicted levels don't contain a dash -, if they do replace and display warning
   if(any(grepl("-", pp[,1]))) {
-    levs <- grep("-", pp[,1], value = T)
+    levs <- grep("-", pp[,1], value = TRUE)
     if(length(levs)>1) {
       warning("The treatment levels ", paste(levs, collapse = ", "), "contained '-', which has been replaced in the final output with '_'")
     }
@@ -194,12 +195,12 @@ mct.out <- function(model.obj,
   ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing', "default"))
 
   if(ordering == "ascending" | ordering == "increasing") {
-    # Set ordering to FALSE to set decreasing = F in order function
+    # Set ordering to FALSE to set decreasing = FALSE in order function
     ordering <- TRUE
   }
 
   else if(ordering == "descending" | ordering == "decreasing") {
-    # Set ordering to TRUE to set decreasing = T in order function
+    # Set ordering to TRUE to set decreasing = TRUE in order function
     ordering <- FALSE
   }
 
@@ -208,7 +209,7 @@ mct.out <- function(model.obj,
   }
 
   else {
-    stop("order must be 'ascending', 'descending' or 'default'")
+    stop("order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
   }
 
   ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
@@ -256,23 +257,6 @@ mct.out <- function(model.obj,
       pp.tab$up <- exp(pp.tab$predicted.value + pp.tab$ci) - ifelse(!is.na(offset), offset, 0)
     }
 
-    if(trans == "sqrt"){
-      pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
-      pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
-      if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
-      }
-      if(int.type == "1se"){
-        pp.tab$ci <- pp.tab$std.error
-      }
-      if(int.type == "2se"){
-        pp.tab$ci <- 2*pp.tab$std.error
-      }
-      pp.tab$low <- (pp.tab$predicted.value - pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
-      pp.tab$up <- (pp.tab$predicted.value + pp.tab$ci)^2 - ifelse(!is.na(offset), offset, 0)
-    }
-
-
     if(trans == "logit"){
       pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
       pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
@@ -292,9 +276,6 @@ mct.out <- function(model.obj,
 
       pp.tab$ll <- NULL
       pp.tab$uu <- NULL
-      pp.tab$transformed.value <- NULL
-      pp.tab$approx.se <- NULL
-
     }
 
     if(trans == "inverse"){
@@ -356,7 +337,7 @@ mct.out <- function(model.obj,
   # pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
 
   if(save) {
-    write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = F)
+    write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = FALSE)
   }
 
   # If there are brackets in the label, grab the text from inside

@@ -1,13 +1,13 @@
-#' Install or Update the ASreml-R package
+#' Install or Update the ASReml-R package
 #'
-#' @description Helper functions for installing or updating the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
+#' @description Helper functions for installing or updating the ASReml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.
 #'
-#' @param library Library location to install ASreml-R. Uses first option in `.libPaths()` by default.
+#' @param library Library location to install ASReml-R. Uses first option in `.libPaths()` by default.
 #' @param quiet Logical (default `FALSE`). Should package be installed quietly?
-#' @param force Logical (default `FALSE`). Force ASreml-R to install. Useful for upgrading if it is already installed.
+#' @param force Logical (default `FALSE`). Force ASReml-R to install. Useful for upgrading if it is already installed.
 #' @param keep_file Should the downloaded asreml package file be kept? Default is `FALSE`. `TRUE` downloads to current directory. A file path can also be provided to save to another directory. See `Details` for more information.
 #'
-#' @details The ASreml-R package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but directory is assumed to exist and will not be created. If `keep_file` does not specify an existing, valid path, an error will be shown.
+#' @details The ASReml-R package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but directory is assumed to exist and will not be created. If `keep_file` does not specify an existing, valid path, an error will be shown.
 #'
 #' @importFrom utils install.packages download.file remove.packages
 #' @importFrom curl curl_fetch_disk
@@ -27,12 +27,12 @@
 #'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
   if(requireNamespace("asreml", quietly = TRUE) & !force) {
-    if(!quiet) message("ASreml-R is already installed.")
+    if(!quiet) message("ASReml-R is already installed.")
     invisible(TRUE)
   }
   else {
     if(!quiet) {
-      message("\nDownloading and installing ASreml-R. This may take some time, depending on internet speed...\n")
+      message("\nDownloading and installing ASReml-R. This may take some time, depending on internet speed...\n")
     }
     if(force && isNamespaceLoaded("asreml")) {
       unloadNamespace("asreml")
@@ -47,16 +47,18 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     ver <- paste(os, substr(getRversion(), 1, 3), sep = "_")
 
     url <- switch(ver,
-                  win_3.5 = {"https://link.biometryhubwaite.com/win-35"},
+                  # win_3.5 = {"https://link.biometryhubwaite.com/win-35"},
                   win_3.6 = {"https://link.biometryhubwaite.com/win-36"},
                   win_4.0 = {"https://link.biometryhubwaite.com/win-40"},
                   win_4.1 = {"https://link.biometryhubwaite.com/win-41"},
-                  mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
+                  # mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
                   mac_3.6 = {"https://link.biometryhubwaite.com/mac-36"},
                   mac_4.0 = {"https://link.biometryhubwaite.com/mac-40"},
-                  linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
+                  mac_4.1 = {"https://link.biometryhubwaite.com/mac-41"},
+                  # linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
                   linux_3.6 = {"https://link.biometryhubwaite.com/linux-36"},
-                  linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"}
+                  linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"},
+                  linux_4.1 = {"https://link.biometryhubwaite.com/linux-41"}
     )
 
     # First check if file already exists, both in the current directory and temp folder
@@ -150,7 +152,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
     # Check dependencies are installed first
 
-    deps <- c("data.table", "ggplot2", "grid", "methods", "jsonlite")
+    deps <- c("data.table", "ggplot2", "jsonlite")
     for(i in seq_along(deps)) {
       if(!requireNamespace(deps[i], quietly = TRUE)) {
         install.packages(deps[i], repos = "https://cloud.r-project.org")
@@ -161,10 +163,10 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
     install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
 
     if(requireNamespace("asreml", quietly = TRUE)) {
-      if(!quiet) message("ASreml-R successfully installed!")
+      if(!quiet) message("ASReml-R successfully installed!")
     }
     else {
-      if(!quiet) warning("There was a problem with installation and ASreml-R was not successfully installed.")
+      if(!quiet) warning("There was a problem with installation and ASReml-R was not successfully installed.")
       invisible(FALSE)
     }
     invisible(TRUE)
@@ -176,5 +178,5 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 #'
 #' @export
 update_asreml <- function(...) {
-  install_asreml(force = T, ...)
+  install_asreml(force = TRUE, ...)
 }

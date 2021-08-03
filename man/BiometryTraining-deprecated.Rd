@@ -7,6 +7,9 @@
 \usage{
 tuk.out(pred.obj, model.obj, pred, sig = 0.95, trans = FALSE, offset = 0)
 }
+\value{
+No return value.
+}
 \description{
 The functions listed below are deprecated and will be removed in
 the future. When possible, alternative functions with similar

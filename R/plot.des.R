@@ -18,12 +18,13 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom ggplot2 ggplot geom_tile aes geom_text theme_bw scale_fill_manual scale_x_continuous scale_y_continuous scale_y_reverse
 #' @importFrom scales reverse_trans
+#' @importFrom stringi stri_sort
 #' @keywords internal
 #'
 plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed, fac.sep) {
   # Asign NULL to variables that give a NOTE in package checks
   # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
-  trt <- NULL
+  treatments <- NULL
   xmin <- NULL
   xmax <- NULL
   ymin <- NULL
@@ -50,13 +51,14 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     plan <- expand.grid(row = 1:nrows, col = 1:ncols)
     des <- cbind(plan, design.obj$book)
 
-    names(des)[5] <- "trt"
-    ntrt <- nlevels(as.factor(des$trt))
+    names(des)[names(des)=="r"] <- "rep"
+    names(des)[names(des)=="trt"] <- "treatments"
+    ntrt <- nlevels(as.factor(des$treatments))
   }
 
   if (design == "rcbd") {
-    names(design.obj$book)[3] <- "trt"
-    ntrt <- nlevels(as.factor(design.obj$book$trt))
+    names(design.obj$book)[names(design.obj$book)=="trt"] <- "treatments"
+    ntrt <- nlevels(as.factor(design.obj$book$treatments))
 
     # Calculate direction of blocking
     xx <- c()
@@ -138,8 +140,8 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     des$row <- as.numeric(des$row)
     des$col <- as.numeric(des$col)
 
-    names(des)[4] <- "trt"
-    ntrt <- nlevels(as.factor(des$trt))
+    names(des)[4] <- "treatments"
+    ntrt <- nlevels(as.factor(des$treatments))
   }
 
 
@@ -153,12 +155,13 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     }
 
     if(fac.sep[2] == "") {
-      des$trt <- factor(trimws(treatments))
+      des$treatments <- factor(trimws(treatments))
     }
     else {
-      des$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+      des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
     }
-    ntrt <- nlevels(as.factor(des$trt))
+    names(des)[names(des)=="r"] <- "reps"
+    ntrt <- nlevels(des$treatments)
   }
 
 
@@ -170,12 +173,12 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     }
 
     if(fac.sep[2] == "") {
-      design.obj$book$trt <- factor(trimws(treatments))
+      design.obj$book$treatments <- factor(trimws(treatments))
     }
     else {
-      design.obj$book$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+      design.obj$book$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
     }
-    ntrt <- nlevels(as.factor(design.obj$book$trt))
+    ntrt <- nlevels(as.factor(design.obj$book$treatments))
 
     # Calculate direction of blocking
     xx <- c()
@@ -261,13 +264,13 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     }
 
     if(fac.sep[2] == "") {
-      des$trt <- factor(trimws(treatments))
+      des$treatments <- factor(trimws(treatments))
     }
     else {
-      des$trt <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+      des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
     }
 
-    ntrt <- nlevels(as.factor(des$trt))
+    ntrt <- nlevels(des$treatments)
     des$row <- as.numeric(des$row)
     des$col <- as.numeric(des$col)
   }
@@ -279,10 +282,10 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     trtNams <- names(des[!is.element(names(des), spfacs)])
 
 
-    des$trt <- factor(paste(des[, trtNams[1]], des[, trtNams[2]], sep = "_"))
+    des$treatments <- factor(paste(des[, trtNams[1]], des[, trtNams[2]], sep = "_"))
 
     # Number of treatments
-    ntrt <- nlevels(as.factor(des$trt))
+    ntrt <- nlevels(des$treatments)
 
 
     # Calculate direction of blocking
@@ -355,6 +358,8 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     des <- cbind(plan, des)
   }
 
+  des$treatments <- factor(des$treatments, levels = unique(stringi::stri_sort(des$treatments, numeric = TRUE)))
+
   # des <- dplyr::mutate(des, row = factor(row),
   # row = factor(row, levels = rev(levels(row))))
 
@@ -365,8 +370,8 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
 
     # create the graph
     plt <- ggplot2::ggplot() +
-      ggplot2::geom_tile(data = des, mapping = ggplot2::aes(x = col, y = row, fill = trt), colour = "black") +
-      ggplot2::geom_text(data = des, mapping = ggplot2::aes(x = col, y = row, label = trt), angle = rotation, size = size) +
+      ggplot2::geom_tile(data = des, mapping = ggplot2::aes(x = col, y = row, fill = treatments), colour = "black") +
+      ggplot2::geom_text(data = des, mapping = ggplot2::aes(x = col, y = row, label = treatments), angle = rotation, size = size) +
       ggplot2::theme_bw() +
       ggplot2::scale_fill_manual(values = color_palette, name = "Treatment")
   }
@@ -387,8 +392,8 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, rotation, size, mar
     }
 
     plt <- ggplot2::ggplot() +
-      ggplot2::geom_tile(data = des, mapping = ggplot2::aes(x = col, y = row, fill = trt), colour = "black") +
-      ggplot2::geom_text(data = des, mapping = ggplot2::aes(x = col, y = row, label = trt), angle = rotation, size = size) +
+      ggplot2::geom_tile(data = des, mapping = ggplot2::aes(x = col, y = row, fill = treatments), colour = "black") +
+      ggplot2::geom_text(data = des, mapping = ggplot2::aes(x = col, y = row, label = treatments), angle = rotation, size = size) +
       #        xlim(0,max(des$col)+1) + ylim(0,max(des$row)+1) +
       ggplot2::geom_rect(
         data = blkdf,

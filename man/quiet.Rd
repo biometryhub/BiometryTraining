@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{quiet}
 \alias{quiet}
-\title{Function to suppress output if desired, especially useful for ASreml output}
+\title{Function to suppress output if desired, especially useful for ASReml output}
 \usage{
 quiet(x)
 }
@@ -13,6 +13,6 @@ quiet(x)
 The invisible output of the function called.
 }
 \description{
-Function to suppress output if desired, especially useful for ASreml output
+Function to suppress output if desired, especially useful for ASReml output
 }
 \keyword{internal}

@@ -25,27 +25,6 @@ A data frame with the predicted values and results of Tukey's test.
 \description{
 This function has been replaced with \code{\link[=mct.out]{mct.out()}} and will be removed in a future version of this package. Performs Tukey's Honest Significant Difference test and optionally back-transforms natural log and squareroot transformed predicted values.
 }
-\examples{
-\dontrun{
-dat.asr <- asreml(Yield ~ Variety,
-  random = ~Block,
-  residual = ~ id(Plot), data = dat
-)
-
-dat.pred <- predict(dat.asr,
-  classify = "Variety",
-  sed = TRUE
-)
-
-pred.out <- tuk.out(
-  model.obj = dat.asr, pred.obj = dat.pred,
-  pred = "Variety", sig = 0.95
-)
-
-pred.out
-}
-
-}
 \references{
 \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023}
 }

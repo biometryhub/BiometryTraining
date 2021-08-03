@@ -1,7 +1,7 @@
 `%notin%` <- `%!in%` <- Negate(`%in%`)
 
 # quiet
-#' Function to suppress output if desired, especially useful for ASreml output
+#' Function to suppress output if desired, especially useful for ASReml output
 #'
 #' @param x A function call with output to be suppressed.
 #'
@@ -74,7 +74,7 @@ quiet <- function(x) {
     if(!is.na(current_version) && current_version > installed_version){ # installed version < current version on CRAN
       warning("    BiometryTraining version ", current_version, " is now available.\n",
               "    Please update BiometryTraining by running\n",
-              "    install.packages('BiometryTraining')", call. = F)
+              "    install.packages('BiometryTraining')", call. = FALSE)
     }
     else {
       output2 <- paste("    The latest version of this package is available at",

@@ -1,9 +1,8 @@
 Type: Package
 Package: BiometryTraining
-Title: Functions to Assist Teaching Design and Analysis of Agronomic
-    Experiments
-Version: 0.7.1
-Date: 2021-03-10
+Title: Functions to Assist Design and Analysis of Agronomic Experiments
+Version: 0.8.0
+Date: 2021-08-03
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -21,9 +20,10 @@ Authors@R:
              role = c("cph", "fnd")),
       person(given = "GRDC",
              role = c("cph", "fnd")))
-Description: BiometryTraining gives users a simple way to install and
-    access documentation about the functions used and distributed as part
-    of the SAGI-STH Biometrics Education Initiative.
+Description: Provides functions to aid in the design and analysis of
+    agronomic and agricultural experiments through easy access to
+    documentation and helper functions, especially for users who are
+    learning these concepts.
 License: MIT + file LICENSE
 URL: https://biometryhub.github.io/BiometryTraining/
 BugReports: https://github.com/biometryhub/BiometryTraining/issues
@@ -31,20 +31,18 @@ Depends:
     R (>= 3.6.0)
 Imports: 
     agricolae,
+    cowplot,
     curl,
     ggplot2,
-    grid,
-    gridtext,
     lucid,
-    multcompView, 
-    patchwork (>= 1.1.0),
+    multcompView,
     predictmeans,
     RColorBrewer,
-    scales
+    scales, 
+    stringi
 Suggests: 
     covr,
     crayon,
-    png,
     testthat,
     vdiffr
 Enhances: 
@@ -52,6 +50,5 @@ Enhances:
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1

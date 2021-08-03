@@ -2,8 +2,8 @@
 #'
 #' Compares means pairwise using Tukey's Honest Significant Difference test
 #'
-#' @param Mean The predicted mean from an `ASreml-R` `predict` function call.
-#' @param SED The Standard Error of Difference from an `ASreml-R` `predict` function call.
+#' @param Mean The predicted mean from an `asreml.predict()` function call.
+#' @param SED The Standard Error of Difference from an `asreml.predict()` function call.
 #' @param Names The treatment names.
 #' @param crit.val The confidence level required.
 #' @author Remy van de Ven

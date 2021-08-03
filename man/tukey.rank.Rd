@@ -7,9 +7,9 @@
 tukey.rank(Mean, SED, Names = NULL, crit.val)
 }
 \arguments{
-\item{Mean}{The predicted mean from an \code{ASreml-R} \code{predict} function call.}
+\item{Mean}{The predicted mean from an \code{asreml.predict()} function call.}
 
-\item{SED}{The Standard Error of Difference from an \code{ASreml-R} \code{predict} function call.}
+\item{SED}{The Standard Error of Difference from an \code{asreml.predict()} function call.}
 
 \item{Names}{The treatment names.}
 

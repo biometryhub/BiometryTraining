@@ -27,7 +27,7 @@ design(
 )
 }
 \arguments{
-\item{type}{The type of design. Supported design types are \code{crd}, \code{rcbd}, \code{lsd}, \code{split} and \verb{crossed:<type>} where \verb{<type>} is one of the previous types. See Details for more informtaion.}
+\item{type}{The type of design. Supported design types are \code{crd}, \code{rcbd}, \code{lsd}, \code{split} and \verb{crossed:<type>} where \verb{<type>} is one of the previous types. See Details for more information.}
 
 \item{treatments}{A vector containing the treatment names or labels.}
 
@@ -103,6 +103,12 @@ des.out <- design(type = "crossed:crd", treatments = c(3, 2),
                   reps = 3, nrows = 6, ncols = 3, seed = 42,
                   fac.names = list(N = c(50, 100, 150),
                                    Water = c("Irrigated", "Rain-fed")))
+
+# Factorial Design (Crossed, Randomised Complete Block Design), changing separation between factors
+des.out <- design(type = "crossed:rcbd", treatments = c(3, 2),
+                  reps = 3, nrows = 6, ncols = 3,
+                  brows = 6, bcols = 1,
+                  seed = 42, fac.sep = c(":", "_"))
 
 # Factorial Design (Nested, Latin Square)
 des.out <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),

@@ -1,6 +1,6 @@
-#' Log-likelihood test for comparing terms in ASreml-R models
+#' Log-likelihood test for comparing terms in ASReml-R models
 #'
-#' @param model.obj An ASreml-R model object
+#' @param model.obj An ASReml-R model object
 #' @param rand.terms Random terms from the model. Default is NULL.
 #' @param resid.terms Residual terms from the model. Default is NULL.
 #'
@@ -185,7 +185,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
   test.df <- test.df[is.element(test.df$Term, all.terms),]
 
   if(length(warns) > 0) {
-    warning(warns[1], call. = F)
+    warning(warns[1], call. = FALSE)
   }
 
   return(test.df)
