@@ -8,9 +8,7 @@
 #'
 #' @importFrom akima interp interp2xyz
 #' @importFrom lattice wireframe
-#' @importFrom latticeExtra resizePanels
-#' @importFrom ggplotify as.grob
-#' @importFrom patchwork wrap_plots
+#' @importFrom cowplot plot_grid
 #' @importFrom ggplot2 ggplot geom_tile coord_equal geom_contour scale_fill_gradientn theme_bw scale_x_continuous scale_y_continuous theme labs
 #'
 #' @examples

@@ -19,9 +19,10 @@ Authors@R:
              role = c("cph", "fnd")),
       person(given = "GRDC",
              role = c("cph", "fnd")))
-Description: Provides functions to aid in the design and analysis of 
-    agronomic and agricultural experiments through easy access to documentation 
-    and helper functions, especially for users who are learning these concepts.
+Description: Provides functions to aid in the design and analysis of
+    agronomic and agricultural experiments through easy access to
+    documentation and helper functions, especially for users who are
+    learning these concepts.
 License: MIT + file LICENSE
 URL: https://biometryhub.github.io/BiometryTraining/
 BugReports: https://github.com/biometryhub/BiometryTraining/issues
@@ -29,13 +30,13 @@ Depends:
     R (>= 3.6.0)
 Imports: 
     agricolae,
+    cowplot,
     curl,
     ggplot2,
     grid,
     gridtext,
     lucid,
     multcompView,
-    patchwork (>= 1.1.0),
     predictmeans,
     RColorBrewer,
     scales

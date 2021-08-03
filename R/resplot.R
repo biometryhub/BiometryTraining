@@ -109,6 +109,6 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
     }
 }
 
-#' @rdname resplt
+#' @rdname resplot
 #' @export
 resplt <- resplot
