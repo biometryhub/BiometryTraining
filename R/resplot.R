@@ -10,11 +10,8 @@
 #' @return A list containing ggplot2 objects which are diagnostic plots.
 #'
 #' @importFrom ggplot2 ggplot geom_histogram aes theme_bw stat_qq labs geom_qq_line geom_point
-#' @importFrom stats fitted qnorm quantile resid sd
+#' @importFrom stats fitted qnorm quantile resid sd shapiro.test
 #' @importFrom cowplot plot_grid add_sub
-#' @importFrom grid gpar
-#' @importFrom gridtext richtext_grob
-#' @importFrom stats shapiro.test
 #'
 #' @aliases resplt
 #'
@@ -89,10 +86,6 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
                                                                     shapiro_text[2], size = 9, vjust = 0.2), NULL,
                                              ncol=3, rel_widths=c(0.25,0.5,0.25), labels = c("", "C", ""),
                                              label_size = label.size, hjust = 1)
-            # bottom_row
-            # d <- gridtext::richtext_grob(shapiro_text, y = c(0.65, 0.4), gp = grid::gpar(fontsize = c(12, 10)))#,
-            # output[[i]] <- patchwork::wrap_plots(A = a, B = b, C = c, D = d, design = "AB\nAB\nAB\nAB\nCC\nCC\nCC\nCC\nDD", tag_level = "new") +
-            # patchwork::plot_annotation(tag_levels = list(c("A", "B", "C")),title = facet_name[i])
         }
         else{
             bottom_row <- cowplot::plot_grid(NULL, c, NULL, ncol=3, rel_widths=c(0.25,0.5,0.25), labels = c("", "C", ""), hjust = 1, label_size = label.size)

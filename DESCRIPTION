@@ -33,8 +33,6 @@ Imports:
     cowplot,
     curl,
     ggplot2,
-    grid,
-    gridtext,
     lucid,
     multcompView,
     predictmeans,
