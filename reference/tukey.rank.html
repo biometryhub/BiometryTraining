@@ -68,7 +68,6 @@
 </script>
 
 
-
   
 
   
@@ -91,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -133,18 +132,18 @@
     <p>Compares means pairwise using Tukey's Honest Significant Difference test</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tukey.rank</span><span class='op'>(</span><span class='va'>Mean</span>, <span class='va'>SED</span>, Names <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>crit.val</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>tukey.rank</span><span class='op'>(</span><span class='va'>Mean</span>, <span class='va'>SED</span>, Names <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>crit.val</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Mean</th>
-      <td><p>The predicted mean from an <code>ASreml-R</code> <code>predict</code> function call.</p></td>
+      <td><p>The predicted mean from an <code>asreml.predict()</code> function call.</p></td>
     </tr>
     <tr>
       <th>SED</th>
-      <td><p>The Standard Error of Difference from an <code>ASreml-R</code> <code>predict</code> function call.</p></td>
+      <td><p>The Standard Error of Difference from an <code>asreml.predict()</code> function call.</p></td>
     </tr>
     <tr>
       <th>Names</th>

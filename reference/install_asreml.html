@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Install or Update the ASreml-R package — install_asreml • BiometryTraining</title>
+<title>Install or Update the ASReml-R package — install_asreml • BiometryTraining</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Install or Update the ASreml-R package — install_asreml" />
-<meta property="og:description" content="Helper functions for installing or updating the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version." />
+<meta property="og:title" content="Install or Update the ASReml-R package — install_asreml" />
+<meta property="og:description" content="Helper functions for installing or updating the ASReml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version." />
 
 
 
@@ -68,9 +68,6 @@
 </script>
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -93,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -126,30 +123,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Install or Update the ASreml-R package</h1>
+    <h1>Install or Update the ASReml-R package</h1>
     <small class="dont-index">Source: <a href='https://github.com/biometryhub/BiometryTraining/blob/master/R/install_asreml.R'><code>R/install_asreml.R</code></a></small>
     <div class="hidden name"><code>install_asreml.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Helper functions for installing or updating the ASreml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.</p>
+    <p>Helper functions for installing or updating the ASReml-R package, intended to reduce the difficulty of finding the correct version for your operating system and R version.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>install_asreml</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>install_asreml</span><span class='op'>(</span>
   library <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
   quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
   force <span class='op'>=</span> <span class='cn'>FALSE</span>,
   keep_file <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span>
 
-<span class='fu'>update_asreml</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>update_asreml</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>library</th>
-      <td><p>Library location to install ASreml-R. Uses first option in <code><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths()</a></code> by default.</p></td>
+      <td><p>Library location to install ASReml-R. Uses first option in <code><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths()</a></code> by default.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -157,7 +154,7 @@
     </tr>
     <tr>
       <th>force</th>
-      <td><p>Logical (default <code>FALSE</code>). Force ASreml-R to install. Useful for upgrading if it is already installed.</p></td>
+      <td><p>Logical (default <code>FALSE</code>). Force ASReml-R to install. Useful for upgrading if it is already installed.</p></td>
     </tr>
     <tr>
       <th>keep_file</th>
@@ -174,18 +171,18 @@
     <p>Silently returns <code>TRUE</code> if <code>asreml</code> installed successfully or already present, <code>FALSE</code> otherwise. Optionally prints a confirmation message on success.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The ASreml-R package file is downloaded from a shortlink, and if <code>keep_file</code> is <code>TRUE</code>, the package archive file will be saved in the current directory. If a valid path is provided in <code>keep_file</code>, the file will be saved to that path, but directory is assumed to exist and will not be created. If <code>keep_file</code> does not specify an existing, valid path, an error will be shown.</p>
+    <p>The ASReml-R package file is downloaded from a shortlink, and if <code>keep_file</code> is <code>TRUE</code>, the package archive file will be saved in the current directory. If a valid path is provided in <code>keep_file</code>, the file will be saved to that path, but directory is assumed to exist and will not be created. If <code>keep_file</code> does not specify an existing, valid path, an error will be shown.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># Example 1: download and install asreml</span>
-<span class='fu'>install_asreml</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Example 2: install asreml and save file for later</span>
-<span class='fu'>install_asreml</span><span class='op'>(</span>keep_file <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='co'># Example 1: download and install asreml</span></span>
+<span class='r-in'><span class='fu'>install_asreml</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Example 2: install asreml and save file for later</span></span>
+<span class='r-in'><span class='fu'>install_asreml</span><span class='op'>(</span>keep_file <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

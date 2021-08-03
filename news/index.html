@@ -67,7 +67,6 @@
 </script>
 
 
-
   
 
   
@@ -90,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BiometryTraining</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -127,41 +126,63 @@
       <small>Source: <a href='https://github.com/biometryhub/BiometryTraining/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="biometrytraining-070" class="section level1">
-<h1 class="page-header" data-toc-text="0.7.0">
-<a href="#biometrytraining-070" class="anchor" aria-hidden="true"></a>BiometryTraining 0.7.0</h1>
-<ul>
-<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
-</ul>
-<div id="major-changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#major-changes" class="anchor" aria-hidden="true"></a>Major changes</h2>
-<ul>
-<li>Introduced the <code><a href="../reference/design.html">design()</a></code> function to create designs and produce the output in one step. (<a href='https://github.com/biometryhub/BiometryTraining/issues/40'>#40</a>)</li>
-<li>
-<code><a href="../reference/resplt.html">resplt()</a></code> now automatically produces multiple residual plots in situations like multisite analyses (<a href='https://github.com/biometryhub/BiometryTraining/issues/53'>#53</a>)</li>
-<li>Updated the look of <code><a href="../reference/resplt.html">resplt()</a></code> and included output of the Shapiro-Wilk’s test for normality.</li>
-<li>Bumped required minimum version of R to 3.6.0.</li>
-</ul>
-</div>
+    <div id="biometrytraining-080" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.0">
+<a href="#biometrytraining-080" class="anchor" aria-hidden="true"></a>BiometryTraining 0.8.0</h1>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor" aria-hidden="true"></a>Minor changes</h2>
-<ul>
-<li>Added the alias <code><a href="../reference/resplt.html">resplot()</a></code> which is identical to <code><a href="../reference/resplt.html">resplt()</a></code> but may be easier to spell.</li>
-<li>Organised the functions on the website under major headings.</li>
-</ul>
-</div>
+<ul><li>Updates to the documentation of <code><a href="../reference/mct.out.html">mct.out()</a></code>.</li>
+<li>Fixed <code><a href="../reference/resplot.html">resplot()</a></code> so that plot C is now easier to interpret because it’s not as stretched (<a href='https://github.com/biometryhub/BiometryTraining/issues/72'>#72</a>)</li>
+<li>Switched from <code>patchwork</code> to <code>cowplot</code> (<a href='https://github.com/biometryhub/BiometryTraining/issues/74'>#74</a>)</li>
+<li>Reduced default height of labels in <code><a href="../reference/mct.out.html">mct.out()</a></code> plot (<a href='https://github.com/biometryhub/BiometryTraining/issues/67'>#67</a>)</li>
+</ul></div>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
-<ul>
-<li>Fixed a bug where aliased treatment levels would cause <code><a href="../reference/mct.out.html">mct.out()</a></code> to crash (<a href='https://github.com/biometryhub/BiometryTraining/issues/47'>#47</a>)</li>
+<ul><li>Fixed a bug where factorial latin square designs were not generated properly (<a href='https://github.com/biometryhub/BiometryTraining/issues/62'>#62</a>)</li>
+<li>Updated labels on design outputs so that they are consistent and prevent 3 way factorials (<a href='https://github.com/biometryhub/BiometryTraining/issues/65'>#65</a>)</li>
+<li>Fixed up labelling in split plot designs (<a href='https://github.com/biometryhub/BiometryTraining/issues/64'>#64</a>)</li>
+<li>Fixed an issue where incorrect significance values in <code><a href="../reference/mct.out.html">mct.out()</a></code> give a negative confidence interval (<a href='https://github.com/biometryhub/BiometryTraining/issues/73'>#73</a>)</li>
+<li>Fixed a bug where crossed designs didn’t produce spreadsheet output (<a href='https://github.com/biometryhub/BiometryTraining/issues/66'>#66</a>)</li>
+</ul></div>
+</div>
+    <div id="biometrytraining-071" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.1">
+<a href="#biometrytraining-071" class="anchor" aria-hidden="true"></a>BiometryTraining 0.7.1</h1>
+<div id="bug-fixes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-1" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
+<ul><li>Fixed a bug based on an old version of <code>patchwork</code> by requiring <code>patchwork</code> version 1.1.0 or later.</li>
+</ul></div>
+</div>
+    <div id="biometrytraining-070" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.0">
+<a href="#biometrytraining-070" class="anchor" aria-hidden="true"></a>BiometryTraining 0.7.0</h1>
+<ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+</ul><div id="major-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes" class="anchor" aria-hidden="true"></a>Major changes</h2>
+<ul><li>Introduced the <code><a href="../reference/design.html">design()</a></code> function to create designs and produce the output in one step. (<a href='https://github.com/biometryhub/BiometryTraining/issues/40'>#40</a>)</li>
+<li>
+<code><a href="../reference/resplot.html">resplt()</a></code> now automatically produces multiple residual plots in situations like multisite analyses (<a href='https://github.com/biometryhub/BiometryTraining/issues/53'>#53</a>)</li>
+<li>Updated the look of <code><a href="../reference/resplot.html">resplt()</a></code> and included output of the Shapiro-Wilk’s test for normality.</li>
+<li>Bumped required minimum version of R to 3.6.0.</li>
+</ul></div>
+<div id="minor-changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes-1" class="anchor" aria-hidden="true"></a>Minor changes</h2>
+<ul><li>Added the alias <code><a href="../reference/resplot.html">resplot()</a></code> which is identical to <code><a href="../reference/resplot.html">resplt()</a></code> but may be easier to spell.</li>
+<li>Organised the functions on the website under major headings.</li>
+</ul></div>
+<div id="bug-fixes-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-2" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
+<ul><li>Fixed a bug where aliased treatment levels would cause <code><a href="../reference/mct.out.html">mct.out()</a></code> to crash (<a href='https://github.com/biometryhub/BiometryTraining/issues/47'>#47</a>)</li>
 <li>Fixed a bug where <code>logltest()</code> could infinitely cycle with models that don’t converge (<a href='https://github.com/biometryhub/BiometryTraining/issues/50'>#50</a>)</li>
 <li>Fixed a bug where <code>logltest()</code> would print all the terms on the boundary.</li>
 <li>Reduced the amount of warnings and messages printed by <code>logltest()</code> (<a href='https://github.com/biometryhub/BiometryTraining/issues/17'>#17</a>)</li>
-</ul>
-</div>
+</ul></div>
 </div>
   </div>
 
