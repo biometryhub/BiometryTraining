@@ -15,21 +15,10 @@
 # savename
 # pred
 
-
-# save_png <- function(code, width = 400, height = 400) {
-#     path <- tempfile(fileext = ".png")
-#     png(path, width = width, height = height)
-#     on.exit(dev.off())
-#     # code
-#
-#     path
-# }
-
 test_that("mct produces output", {
     dat.aov <- aov(Petal.Width ~ Species, data = iris)
     output <- mct.out(dat.aov, classify = "Species")
     expect_identical(output$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
-    # expect_snapshot_file(path = save_png(plot(output$predicted_plot)), "plot.png")
     skip_if(interactive())
     vdiffr::expect_doppelganger("mct output", output$predicted_plot)
 })
@@ -47,32 +36,6 @@ test_that("dashes are handled", {
     vdiffr::expect_doppelganger("mct dashes output", output2$predicted_plot)
 })
 
-
-
-# expect_snapshot_plot <- function(name, code) {
-#     # Other packages might affect results
-#     # skip_if_not_installed("ggplot2", "2.0.0")
-#     # Or maybe the output is different on some operation systems
-#     # skip_on_os("windows")
-#     # You'll need to carefully think about and experiment with these skips
-#
-#     path <- save_png(code)
-#     expect_snapshot_file(path, paste0(name, ".png"))
-# }
-
-
-
-
-# test_that("snapshot", {
-#     expect_snapshot_plot("plot", plot(output$predicted_plot))
-# })
-
-
-# iris2 <- iris
-# iris2$Species <- as.factor(gsub(pattern = "to", replacement = "-", x = iris2$Species))
-# dat.aov <- aov(Petal.Width ~ Species, data = iris2)
-# mct.out(dat.aov, classify = "Species")
-
 test_that("mct removes aliased treatments in aov", {
     iris1 <- iris
     iris1$Petal.Length[1:50] <- NA
@@ -82,7 +45,6 @@ test_that("mct removes aliased treatments in aov", {
     skip_if(interactive())
     vdiffr::expect_doppelganger("aov aliased output", output1$predicted_plot)
 })
-
 
 
 test_that("mct handles aliased results in asreml with a warning", {
@@ -105,6 +67,26 @@ test_that("mct handles aliased results in asreml with a warning", {
     pred2.asr$sed[3, ] <- NA
     pred2.asr$sed[, 3] <- NA
     expect_warning(mct.out(model2.asr, pred2.asr, classify = "Nitrogen"), NULL)
+})
+
+test_that("Significance values that are too high give a warning", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    expect_warning(mct.out(dat.aov, classify = "Species", sig = 0.95),
+                   "Significance level given by sig is high. Perhaps you meant 0.05?")
+})
+
+test_that("Use of pred argument gives warning", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    expect_warning(mct.out(dat.aov, pred = "Species"),
+                   "Argument pred has been deprecated and will be removed in a future version. Please use classify instead.")
+})
+
+test_that("Missing pred.obj object causes error", {
+    skip_if_not_installed("asreml")
+    library(asreml)
+    load("../asreml_oats.Rdata")
+    expect_error(mct.out(model.asr, pred = "Nitrogen"),
+                   "You must provide a prediction object in pred.obj")
 })
 
 

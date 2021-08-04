@@ -16,7 +16,16 @@ test_that("designs are produced for supported types", {
     # Split
     expect_output(design(type = "split", treatments = c("A", "B"),
                          sub_treatments = 1:4, reps = 4, nrows = 8,
-                         ncols = 4, brows = 4, bcols = 2, seed = 42),
+                         ncols = 4, brows = 4, bcols = 2, seed = 42,
+                         fac.names = list(Water = c("Irrigated", "Rain-fed"),
+                                          N = seq(50, 200, 50))),
+                  "Whole plot Residual                          3\n")
+
+    # Split with vector of names
+    expect_output(design(type = "split", treatments = c("A", "B"),
+                         sub_treatments = 1:4, reps = 4, nrows = 8,
+                         ncols = 4, brows = 4, bcols = 2, seed = 42,
+                         fac.names = c("Water", "Nitrogen")),
                   "Whole plot Residual                          3\n")
 
     # Crossed, CRD
@@ -36,6 +45,12 @@ test_that("designs are produced for supported types", {
                          reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1),
                   "Residual                                10\n")
 
+    # Crossed, LSD with names
+    expect_output(design(type = "crossed:lsd", treatments = c(3, 2),
+                         nrows = 6, ncols = 6,
+                         fac.names = list(N = c(50, 100, 150),
+                                          Water = c("Irrigated", "Rain-fed"))),
+                  "Row                                     5\n")
     # Nested, LSD
     expect_output(design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),
                          nrows = 7, ncols = 7, seed = 42),
@@ -64,6 +79,10 @@ test_that("unsupported design types give an error", {
         design(type = "crossed:abc", 1:4, reps = 5, nrows = 4, ncols = 5, seed = 42),
         "Crossed designs of type 'abc' are not supported"
     )
+    expect_error(
+        design(type = "crossed:crd", treatments = 1:4, reps = 5, nrows = 4, ncols = 5, seed = 42),
+        "Crossed designs with more than two treatment factors are not supported"
+    )
 })
 
 test_that("split plot requires sub_treatments", {
@@ -71,6 +90,13 @@ test_that("split plot requires sub_treatments", {
                         sub_treatments = NULL, reps = 4, nrows = 8,
                         ncols = 4, brows = 4, bcols = 2, seed = 42),
                  "sub_treatments are required for a split plot design")
+})
+
+test_that("split plot requires brows and bcols", {
+    expect_error(design(type = "split", treatments = c("A", "B"),
+                        sub_treatments = 1:4, reps = 4, nrows = 8,
+                        ncols = 4, brows = NA, bcols = 2, seed = 42),
+                 "Design has blocks so brows and bcols must be supplied.")
 })
 
 
