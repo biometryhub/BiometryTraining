@@ -15,6 +15,31 @@
 # savename
 # pred
 
+logit <- function (p, percents = range.p[2] > 1, adjust)
+{
+    range.p <- range(p, na.rm = TRUE)
+    if (percents) {
+        if (range.p[1] < 0 || range.p[1] > 100)
+            stop("p must be in the range 0 to 100")
+        p <- p/100
+        range.p <- range.p/100
+    }
+    else if (range.p[1] < 0 || range.p[1] > 1)
+        stop("p must be in the range 0 to 1")
+    a <- if (missing(adjust)) {
+        if (isTRUE(all.equal(range.p[1], 0)) || isTRUE(all.equal(range.p[2],
+                                                                 1)))
+            0.025
+        else 0
+    }
+    else adjust
+    if (missing(adjust) && a != 0)
+        warning(paste("proportions remapped to (", a, ", ",
+                      1 - a, ")", sep = ""))
+    a <- 1 - 2 * a
+    log((0.5 + a * (p - 0.5))/(1 - (0.5 + a * (p - 0.5))))
+}
+
 test_that("mct produces output", {
     dat.aov <- aov(Petal.Width ~ Species, data = iris)
     output <- mct.out(dat.aov, classify = "Species")
@@ -23,12 +48,14 @@ test_that("mct produces output", {
     vdiffr::expect_doppelganger("mct output", output$predicted_plot)
 })
 
+
+
 test_that("transformations are handled", {
     dat.aov.log <- aov(log(Petal.Width) ~ Species, data = iris)
     output.log <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0)
     dat.aov.sqrt <- aov(sqrt(Petal.Width) ~ Species, data = iris)
     output.sqrt <- mct.out(dat.aov.sqrt, classify = "Species", trans = "sqrt", offset = 0)
-    dat.aov.logit <- aov(car::logit(1/Petal.Width) ~ Species, data = iris)
+    dat.aov.logit <- aov(logit(1/Petal.Width) ~ Species, data = iris)
     output.logit <- mct.out(dat.aov.logit, classify = "Species", trans = "logit", offset = 0)
     dat.aov.inverse <- aov((1/Petal.Width) ~ Species, data = iris)
     output.inverse <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0)
