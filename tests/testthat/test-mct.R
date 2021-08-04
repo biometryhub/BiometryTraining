@@ -23,6 +23,33 @@ test_that("mct produces output", {
     vdiffr::expect_doppelganger("mct output", output$predicted_plot)
 })
 
+test_that("transformations are handled", {
+    dat.aov.log <- aov(log(Petal.Width) ~ Species, data = iris)
+    output.log <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0)
+    dat.aov.sqrt <- aov(sqrt(Petal.Width) ~ Species, data = iris)
+    output.sqrt <- mct.out(dat.aov.sqrt, classify = "Species", trans = "sqrt", offset = 0)
+    dat.aov.logit <- aov(car::logit(1/Petal.Width) ~ Species, data = iris)
+    output.logit <- mct.out(dat.aov.logit, classify = "Species", trans = "logit", offset = 0)
+    dat.aov.inverse <- aov((1/Petal.Width) ~ Species, data = iris)
+    output.inverse <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0)
+
+    expect_identical(output.log$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_identical(output.sqrt$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
+    expect_identical(output.logit$predicted_values$predicted.value, c(-5.30, -4.87, -3.07))
+    expect_identical(output.inverse$predicted_values$predicted.value, c(0.50, 0.77, 4.79))
+
+    skip_if(interactive())
+    vdiffr::expect_doppelganger("mct log output", output.log$predicted_plot)
+    vdiffr::expect_doppelganger("mct sqrt output", output.sqrt$predicted_plot)
+    vdiffr::expect_doppelganger("mct logit output", output.logit$predicted_plot)
+    vdiffr::expect_doppelganger("mct inverse output", output.inverse$predicted_plot)
+})
+
+test_that("transformations with no offset produces an error", {
+    dat.aov <- aov(log(Petal.Width) ~ Species, data = iris)
+    expect_error(mct.out(dat.aov, classify = "Species", trans = "log"))
+})
+
 test_that("dashes are handled", {
     iris2 <- iris
     iris2$Species <- as.factor(gsub("to", "-", iris2$Species))
@@ -85,7 +112,7 @@ test_that("Missing pred.obj object causes error", {
     skip_if_not_installed("asreml")
     library(asreml)
     load("../asreml_oats.Rdata")
-    expect_error(mct.out(model.asr, pred = "Nitrogen"),
+    expect_error(suppressWarnings(mct.out(model.asr, pred = "Nitrogen")),
                    "You must provide a prediction object in pred.obj")
 })
 

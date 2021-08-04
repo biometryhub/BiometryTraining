@@ -81,7 +81,7 @@ test_that("unsupported design types give an error", {
     )
     expect_error(
         design(type = "crossed:crd", treatments = 1:4, reps = 5, nrows = 4, ncols = 5, seed = 42),
-        "Crossed designs with more than two treatment factors are not supported"
+        "Crossed designs with more than three treatment factors are not supported"
     )
 })
 
