@@ -56,7 +56,7 @@ vario <- function(mod.obj){
                             ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
                             zlab = list(label = NULL, cex.axis = 0.5))
 
-    output <- cowplot::plot_grid(b, a, nrow = 2, labels = c('A', 'B'), scale = c(2, 1))
+    output <- cowplot::plot_grid(b, a, nrow = 2, scale = c(2, 1))
 
     return(output)
 }
