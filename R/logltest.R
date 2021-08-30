@@ -3,8 +3,8 @@
 #' @param model.obj An ASReml-R model object
 #' @param rand.terms Random terms from the model. Default is NULL.
 #' @param resid.terms Residual terms from the model. Default is NULL.
+#' @param quiet Hide warnings and messages (Default: `FALSE`)
 #'
-#' @importFrom lucid vc
 #' @importFrom stats as.formula update pchisq
 #'
 #'
@@ -32,7 +32,7 @@
 #' oats.logl
 #' }
 #'
-logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
+logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = F) {
 
   # dat.asr <- NULL
 
@@ -44,7 +44,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
   n <- rep(0, 6)
   warns <- character()
 
-  bnd <- lucid::vc(model.obj)$effect[(lucid::vc(model.obj)$bound)== "B"]
+  bnd <- rownames(summary(model.obj)$varcomp[summary(model.obj)$varcomp$bound == "B",])
 
   if (any(grepl("!cor", bnd))) {
     trm <- substring(
@@ -74,6 +74,10 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
     # update model excluding the boundary terms - random
     brand.terms <- c()
     brand.terms <- rand.terms[is.element(rand.terms, bnd)]
+
+    if(any(is.na(model.obj$vparameters.pc))) {
+      model.obj$vparameters.pc[is.na(model.obj$vparameters.pc)] <- 0
+    }
 
     if (length(brand.terms > 0)) {
       model.obj <- suppressWarnings(update(model.obj, random = as.formula(paste("~ . - ", paste(brand.terms, collapse = " - "), sep = " "))))
@@ -117,7 +121,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
         }
 
         n[4] <- 1
-        while (any(model.obj1$vparameters.pc > 1) & n[4] < 10) {
+        while (!model.obj1$converge > 1 & n[4] < 10) {
           model.obj1 <- suppressWarnings(update(model.obj1))
           n[4] <- n[4] + 1
           if(n[4]==10) {
@@ -145,19 +149,19 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
         tst.terms <- tt[grepl(tt[i], tt)]
         model.obj1 <- update(model.obj, random = as.formula(paste("~ . - ", paste(tst.terms, collapse = " - "), sep = " ")))
 
-        n5 <- 1
-        while (!model.obj1$converge & n5 < 10) {
+        n[5] <- 1
+        while (!model.obj1$converge & n[5] < 10) {
           model.obj1 <- update(model.obj1)
-          n5 <- n5 + 1
+          n[5] <- n[5] + 1
           if(n[5]==10) {
             warns <- c(warns, 'Model did not converge')
           }
         }
 
-        n6 <- 1
-        while (any(model.obj1$vparameters.pc > 1) & n6 < 10) {
+        n[6] <- 1
+        while (any(model.obj1$vparameters.pc > 1) & n[6] < 10) {
           model.obj1 <- update(model.obj1)
-          n6 <- n6 + 1
+          n[6] <- n[6] + 1
           if(n[6]==10) {
             warns <- c(warns, 'Model did not converge')
           }
@@ -184,7 +188,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL) {
   all.terms <- c(rand.terms, resid.terms)
   test.df <- test.df[is.element(test.df$Term, all.terms),]
 
-  if(length(warns) > 0) {
+  if(length(warns) > 0 & !quiet) {
     warning(warns[1], call. = FALSE)
   }
 
