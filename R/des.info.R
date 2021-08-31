@@ -25,6 +25,7 @@
 #' @importFrom graphics plot
 #' @importFrom ggplot2 ggsave
 #' @importFrom utils write.csv
+#' @importFrom ellipsis check_dots_used
 #'
 #' @return A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if `return.seed = TRUE`), and the `satab` object, allowing repeat output of the `satab` table via `cat(output$satab)`.
 #'
@@ -96,6 +97,7 @@ des.info <- function(design.obj,
                      ...) {
 
   # Error checking of inputs
+  ellipsis::check_dots_used()
 
   # Check design type is supported
   if(design.obj$parameters$design %!in% c("crd", "rcbd", "lsd", "factorial", "split")) {

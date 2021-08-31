@@ -99,6 +99,14 @@ test_that("split plot requires brows and bcols", {
                  "Design has blocks so brows and bcols must be supplied.")
 })
 
+test_that("passing unknown arguments to ggsave causes an error", {
+    expect_error(
+        design(type = "crd", treatments = c(1, 5, 10, 20),
+               reps = 5, nrows = 4, ncols = 5, seed = 42, Width = 6),
+        "1 components of `...` were not used."
+    )
+})
+
 
 
 # type, treatments, reps, nrows, ncols, brows = NA, bcols = NA,
