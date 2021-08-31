@@ -33,6 +33,7 @@ Imports:
     agricolae,
     cowplot,
     curl,
+    ellipsis,
     ggplot2,
     lucid,
     multcompView,

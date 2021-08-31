@@ -4,7 +4,13 @@
 \alias{logl.test}
 \title{Log-likelihood test for comparing terms in ASReml-R models}
 \usage{
-logl.test(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = F)
+logl.test(
+  model.obj,
+  rand.terms = NULL,
+  resid.terms = NULL,
+  decimals = 3,
+  quiet = F
+)
 }
 \arguments{
 \item{model.obj}{An ASReml-R model object}
@@ -13,13 +19,20 @@ logl.test(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = F)
 
 \item{resid.terms}{Residual terms from the model. Default is NULL.}
 
-\item{quiet}{Hide warnings and messages (Default: \code{FALSE})}
+\item{decimals}{Controls rounding of decimal places in output. Default is 3 decimal places.}
+
+\item{quiet}{Logical (default: \code{FALSE}). Hide warnings and messages?}
+
+\item{numeric}{Return p-values as numeric? Default is that they are characters, where very small values shown as less than a small number. See \code{details} for more.}
 }
 \value{
 A dataframe containing the results of the test.
 }
 \description{
 Log-likelihood test for comparing terms in ASReml-R models
+}
+\details{
+Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation.
 }
 \examples{
 \dontrun{

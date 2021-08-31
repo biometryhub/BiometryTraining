@@ -3,10 +3,13 @@
 #' @param model.obj An ASReml-R model object
 #' @param rand.terms Random terms from the model. Default is NULL.
 #' @param resid.terms Residual terms from the model. Default is NULL.
-#' @param quiet Hide warnings and messages (Default: `FALSE`)
+#' @param decimals Controls rounding of decimal places in output. Default is 3 decimal places.
+#' @param numeric Return p-values as numeric? Default is that they are characters, where very small values shown as less than a small number. See `details` for more.
+#' @param quiet Logical (default: `FALSE`). Hide warnings and messages?
+#'
+#' @details Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation.
 #'
 #' @importFrom stats as.formula update pchisq
-#'
 #'
 #' @return A dataframe containing the results of the test.
 #' @export
@@ -32,15 +35,14 @@
 #' oats.logl
 #' }
 #'
-logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = F) {
+logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, decimals = 3, numeric = FALSE, quiet = F) {
 
-  # dat.asr <- NULL
+  if(is.null(rand.terms) & is.null(resid.terms)) {
+    stop("One of rand.terms or resid.terms must be provided")
+  }
 
   # Find terms on the boundary
 
-  # Supress ASreml output
-  sink(tempfile())
-  on.exit(sink())
   n <- rep(0, 6)
   warns <- character()
 
@@ -80,10 +82,10 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
     }
 
     if (length(brand.terms > 0)) {
-      model.obj <- suppressWarnings(update(model.obj, random = as.formula(paste("~ . - ", paste(brand.terms, collapse = " - "), sep = " "))))
+      model.obj <- quiet(update(model.obj, random = as.formula(paste("~ . - ", paste(brand.terms, collapse = " - "), sep = " "))))
       n[1] <- 1
       while (!model.obj$converge & n[1] < 10) {
-        model.obj <- suppressWarnings(update(model.obj))
+        model.obj <- quiet(update(model.obj))
         n[1] <- n[1] + 1
         if(n[1]==10) {
           # warns <- c(warns, 'Model did not converge')
@@ -92,7 +94,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
 
       n[2] <- 1
       while (any(model.obj$vparameters.pc > 1) & n[2] < 10) {
-        model.obj <- suppressWarnings(update(model.obj))
+        model.obj <- quiet(update(model.obj))
         n[2] <- n[2] + 1
         if(n[2]==10) {
           # warns <- c(warns, 'Model did not converge')
@@ -109,11 +111,11 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
         new.resid <- gsub(tt[[i]], tt.new, old.resid, fixed = TRUE)
 
         # Fit reduced model
-        model.obj1 <- suppressWarnings(update(model.obj, residual = as.formula(paste("~", new.resid, sep = " "))))
+        model.obj1 <- quiet(update(model.obj, residual = as.formula(paste("~", new.resid, sep = " "))))
 
         n[3] <- 1
         while (!model.obj1$converge & n[3] < 10) {
-          model.obj1 <- suppressWarnings(update(model.obj1))
+          model.obj1 <- quiet(update(model.obj1))
           n[3] <- n[3] + 1
           if(n[3]==10) {
             warns <- c(warns, 'Model did not converge')
@@ -122,7 +124,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
 
         n[4] <- 1
         while (!model.obj1$converge > 1 & n[4] < 10) {
-          model.obj1 <- suppressWarnings(update(model.obj1))
+          model.obj1 <- quiet(update(model.obj1))
           n[4] <- n[4] + 1
           if(n[4]==10) {
             warns <- c(warns, 'Model did not converge')
@@ -138,7 +140,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
 
         logl <- 2*(model.obj$loglik-model.obj1$loglik)
 
-        ll.test <- round(1-pchisq(logl, p),3)
+        ll.test <- round(1-pchisq(logl, p), decimals)
 
         result.df <- data.frame(Term = tt[i], LogLRT.pvalue = ll.test)
         test.df <- rbind(test.df, result.df)
@@ -147,11 +149,11 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
 
         # Fit reduced model
         tst.terms <- tt[grepl(tt[i], tt)]
-        model.obj1 <- update(model.obj, random = as.formula(paste("~ . - ", paste(tst.terms, collapse = " - "), sep = " ")))
+        model.obj1 <- quiet(update(model.obj, random = as.formula(paste("~ . - ", paste(tst.terms, collapse = " - "), sep = " "))))
 
         n[5] <- 1
         while (!model.obj1$converge & n[5] < 10) {
-          model.obj1 <- update(model.obj1)
+          model.obj1 <- quiet(update(model.obj1))
           n[5] <- n[5] + 1
           if(n[5]==10) {
             warns <- c(warns, 'Model did not converge')
@@ -160,7 +162,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
 
         n[6] <- 1
         while (any(model.obj1$vparameters.pc > 1) & n[6] < 10) {
-          model.obj1 <- update(model.obj1)
+          model.obj1 <- quiet(update(model.obj1))
           n[6] <- n[6] + 1
           if(n[6]==10) {
             warns <- c(warns, 'Model did not converge')
@@ -174,7 +176,7 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
              length(model.obj1$coefficients$fixed))
         logl <- -2*(model.obj1$loglik-model.obj$loglik)
 
-        ll.test <- round(1-pchisq(abs(logl), p),3)
+        ll.test <- round(1-pchisq(abs(logl), p), decimals)
 
         result.df <- data.frame(Term = tt[i], LogLRT.pvalue = ll.test)
 
@@ -183,7 +185,14 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
     }
   }
 
-  test.df$LogLRT.pvalue <- round(test.df$LogLRT.pvalue, 3)
+  if(!numeric) {
+    test.df$LogLRT.pvalue <- format.pval(test.df$LogLRT.pvalue, digits = decimals,
+                                         eps = max(as.numeric(paste0(1, "e-", decimals)), .Machine$double.eps))
+  }
+  else {
+    test.df$LogLRT.pvalue <- round(test.df$LogLRT.pvalue, decimals)
+    test.df$LogLRT.pvalue[test.df$LogLRT.pvalue==0] <- max(as.numeric(paste0(1, "e-", decimals)), .Machine$double.eps)
+  }
 
   all.terms <- c(rand.terms, resid.terms)
   test.df <- test.df[is.element(test.df$Term, all.terms),]
@@ -191,6 +200,8 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, quiet = 
   if(length(warns) > 0 & !quiet) {
     warning(warns[1], call. = FALSE)
   }
+
+
 
   return(test.df)
 }
