@@ -9,6 +9,7 @@ logl.test(
   rand.terms = NULL,
   resid.terms = NULL,
   decimals = 3,
+  numeric = FALSE,
   quiet = F
 )
 }
@@ -21,9 +22,9 @@ logl.test(
 
 \item{decimals}{Controls rounding of decimal places in output. Default is 3 decimal places.}
 
-\item{quiet}{Logical (default: \code{FALSE}). Hide warnings and messages?}
-
 \item{numeric}{Return p-values as numeric? Default is that they are characters, where very small values shown as less than a small number. See \code{details} for more.}
+
+\item{quiet}{Logical (default: \code{FALSE}). Hide warnings and messages?}
 }
 \value{
 A dataframe containing the results of the test.
