@@ -1,8 +1,8 @@
-#' Residual plots of aov or asreml models.
+#' Residual plots of linear models.
 #'
-#' Produces plots of residuals for assumption checking of an ANOVA or asremlR model.
+#' Produces plots of residuals for assumption checking of linear (mixed) model.
 #'
-#' @param mod.obj An `aov` or `asreml` model object.
+#' @param mod.obj An `aov`, `lm`, `lme` ([nlme::lme()]), `lmerMod` ([lme4::lmer()]), `asreml` or `mmer` (sommer) model object.
 #' @param shapiro (Logical) Display the Shapiro-Wilks test of normality on the plot?
 #' @param axes.size A numeric value for the size of the axes label font size in points.
 #' @param label.size A numeric value for the size of the label (A,B,C) font point size.
@@ -10,7 +10,7 @@
 #' @return A list containing ggplot2 objects which are diagnostic plots.
 #'
 #' @importFrom ggplot2 ggplot geom_histogram aes theme_bw stat_qq labs geom_qq_line geom_point
-#' @importFrom stats fitted qnorm quantile resid sd shapiro.test
+#' @importFrom stats fitted qnorm quantile residuals sd shapiro.test
 #' @importFrom cowplot plot_grid add_sub
 #'
 #' @aliases resplt
@@ -27,19 +27,16 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
 
     stdres <- NULL
-    resids <- NULL
+    # resids <- NULL
 
-    if(!("aov" %in% class(mod.obj)|"asreml" %in% class(mod.obj))) {
-        stop("mod.obj must be an aov or asreml object")
-    }
-
-    if ("aov" %in% class(mod.obj)) {
+    if (any(c("aov", "lm", "lmerMod", "lme", "lmerModLmerTest") %in% class(mod.obj))) {
         facet <- 1
         facet_name <- NULL
-        k <- length(mod.obj$residual)
+        resids <- residuals(mod.obj)
+        k <- length(resids)
+        fits <- fitted(mod.obj)
     }
-
-    if ("asreml" %in% class(mod.obj)){
+    else if ("asreml" %in% class(mod.obj)){
         facet <- length(names(mod.obj$R.param))
         if (facet > 1) {
             facet_name <- names(mod.obj$R.param)
@@ -49,9 +46,23 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
             facet_name <- NULL
             k <- length(mod.obj$residual)
         }
+        resids <- residuals(mod.obj)
+        fits <- fitted(mod.obj)
+    }
+    else if("mmer" %in% class(mod.obj)) {
+        facet <- mod.obj$termsN$rcov
+        facet_name <- NULL
+        k <- length(mod.obj$residual)
+
+        resids <- residuals(mod.obj)[,ncol(residuals(mod.obj))]
+        fits <- fitted(mod.obj)$dataWithFitted[,paste0(mod.obj$terms$response[[1]], ".fitted")]
+    }
+    else {
+        stop("mod.obj must be an aov, lm, lmerMod, lmerModLmerTest, asreml or mmer object")
     }
 
-    aa <- data.frame(residuals = resid(mod.obj), fitted = fitted(mod.obj), lvl = rep(1:facet, k))
+
+    aa <- data.frame(residuals = resids, fitted = fits, lvl = rep(1:facet, k))
 
     output <- list()
 

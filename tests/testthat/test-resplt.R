@@ -9,7 +9,7 @@
 test_that("plotting works for aov", {
   dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
 
-  expect_error(resplt(1:10), "mod.obj must be an aov or asreml object")
+  expect_error(resplt(1:10), "mod.obj must be an aov, lm, lmerMod, lmerModLmerTest, asreml or mmer object")
   p1 <- resplt(dat.aov)
   p2 <- resplt(dat.aov, shapiro = FALSE)
 
