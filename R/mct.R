@@ -2,8 +2,8 @@
 #'
 #' A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 #'
-#' @param model.obj An ASReml-R or aov model object.
-#' @param pred.obj An ASReml-R prediction object with `sed = TRUE`. Not required for aov models, so set to `NA`.
+#' @param model.obj An ASReml-R or aov model object. Will likely also work with `lme` ([nlme::lme()]), `lmerMod` ([lme4::lmer()]) models as well.
+#' @param pred.obj An ASReml-R prediction object with `sed = TRUE`. Not required for other models, so set to `NA`.
 #' @param classify Name of predictor variable as string.
 #' @param sig The significance level, numeric between 0 and 1. Default is 0.05.
 #' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
@@ -163,7 +163,12 @@ mct.out <- function(model.obj,
     crit.val <- 1/sqrt(2)* stats::qtukey((1-sig), nrow(pp), ndf)*SED
 
     # Grab the response from the formula to create plot Y label
-    ylab <- model.obj$terms[[2]]
+    if(any(c("lmerMod", "lmerModLmerTest") %in% class(model.obj))) {
+      ylab <- model.obj@call[[2]][[2]]
+    }
+    else {
+      ylab <- model.obj$terms[[2]]
+    }
   }
 
   # Check that the predicted levels don't contain a dash -, if they do replace and display warning

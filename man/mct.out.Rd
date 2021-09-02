@@ -22,9 +22,9 @@ mct.out(
 )
 }
 \arguments{
-\item{model.obj}{An ASReml-R or aov model object.}
+\item{model.obj}{An ASReml-R or aov model object. Will likely also work with \code{lme} (\code{\link[nlme:lme]{nlme::lme()}}), \code{lmerMod} (\code{\link[lme4:lmer]{lme4::lmer()}}) models as well.}
 
-\item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}. Not required for aov models, so set to \code{NA}.}
+\item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}. Not required for other models, so set to \code{NA}.}
 
 \item{classify}{Name of predictor variable as string.}
 
