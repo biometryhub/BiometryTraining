@@ -103,7 +103,7 @@ test_that("mct removes aliased treatments in aov", {
 
 test_that("mct handles aliased results in asreml with a warning", {
     skip_if_not_installed("asreml")
-    library(asreml)
+    quiet(library(asreml))
     load("../asreml_oats.Rdata")
     pred.asr$pvals$predicted.value[12] <- NA
     pred.asr$sed[12, ] <- NA
@@ -137,7 +137,7 @@ test_that("Use of pred argument gives warning", {
 
 test_that("Missing pred.obj object causes error", {
     skip_if_not_installed("asreml")
-    library(asreml)
+    quiet(library(asreml))
     load("../asreml_oats.Rdata")
     expect_error(suppressWarnings(mct.out(model.asr, pred = "Nitrogen")),
                    "You must provide a prediction object in pred.obj")
