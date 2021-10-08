@@ -53,17 +53,33 @@ test_that("mct produces output", {
 test_that("transformations are handled", {
     dat.aov.log <- aov(log(Petal.Width) ~ Species, data = iris)
     output.log <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0)
+    output.log2 <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0, int.type = "1se")
+    output.log3 <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0, int.type = "2se")
     dat.aov.sqrt <- aov(sqrt(Petal.Width) ~ Species, data = iris)
     output.sqrt <- mct.out(dat.aov.sqrt, classify = "Species", trans = "sqrt", offset = 0)
+    output.sqrt2 <- mct.out(dat.aov.sqrt, classify = "Species", trans = "sqrt", offset = 0, int.type = "1se")
+    output.sqrt3 <- mct.out(dat.aov.sqrt, classify = "Species", trans = "sqrt", offset = 0, int.type = "2se")
     dat.aov.logit <- aov(logit(1/Petal.Width) ~ Species, data = iris)
     output.logit <- mct.out(dat.aov.logit, classify = "Species", trans = "logit", offset = 0)
+    output.logit2 <- mct.out(dat.aov.logit, classify = "Species", trans = "logit", offset = 0, int.type = "1se")
+    output.logit3 <- mct.out(dat.aov.logit, classify = "Species", trans = "logit", offset = 0, int.type = "2se")
     dat.aov.inverse <- aov((1/Petal.Width) ~ Species, data = iris)
     output.inverse <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0)
+    output.inverse2 <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0, int.type = "1se")
+    output.inverse3 <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0, int.type = "2se")
 
     expect_identical(output.log$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_identical(output.log2$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_identical(output.log3$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
     expect_identical(output.sqrt$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
+    expect_identical(output.sqrt2$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
+    expect_identical(output.sqrt3$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
     expect_identical(output.logit$predicted_values$predicted.value, c(-5.30, -4.87, -3.07))
+    expect_identical(output.logit2$predicted_values$predicted.value, c(-5.30, -4.87, -3.07))
+    expect_identical(output.logit3$predicted_values$predicted.value, c(-5.30, -4.87, -3.07))
     expect_identical(output.inverse$predicted_values$predicted.value, c(0.50, 0.77, 4.79))
+    expect_identical(output.inverse2$predicted_values$predicted.value, c(0.50, 0.77, 4.79))
+    expect_identical(output.inverse3$predicted_values$predicted.value, c(0.50, 0.77, 4.79))
 
     skip_if(interactive())
     vdiffr::expect_doppelganger("mct log output", output.log$predicted_plot)
@@ -75,6 +91,23 @@ test_that("transformations are handled", {
 test_that("transformations with no offset produces an error", {
     dat.aov <- aov(log(Petal.Width) ~ Species, data = iris)
     expect_error(mct.out(dat.aov, classify = "Species", trans = "log"))
+})
+
+test_that("ordering output works", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    output1 <- mct.out(dat.aov, classify = "Species", order = "asc")
+    output2 <- mct.out(dat.aov, classify = "Species", order = "desc")
+    expect_identical(output1$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+    expect_identical(output2$predicted_values$predicted.value, c(2.03, 1.33, 0.25))
+
+    vdiffr::expect_doppelganger("mct ascending order", output1$predicted_plot)
+    vdiffr::expect_doppelganger("mct descending output", output2$predicted_plot)
+})
+
+test_that("invalid order input produces an error", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    expect_error(mct.out(dat.aov, classify = "Species", trans = "log", order = "xyz"))
+    expect_error(mct.out(dat.aov, classify = "Species", trans = "log", order = 1))
 })
 
 test_that("dashes are handled", {
