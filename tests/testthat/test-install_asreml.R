@@ -2,7 +2,7 @@ test_that("Installation works", {
     skip_if(.Platform$OS.type == "windows")
     # # skip_on_cran()
 	skip_on_ci()
-    expect_message(install_asreml(force = T), "ASReml-R successfully installed!")
+    expect_message(install_asreml(force = TRUE), "ASReml-R successfully installed!")
     expect_equal(install_asreml(), TRUE)
 })
 
@@ -29,7 +29,7 @@ test_that("Returns true if asreml already installed", {
     skip_if(.Platform$OS.type == "windows")
     # skip_on_cran()
 	skip_on_ci()
-    install_asreml(quiet=T)
+    install_asreml(quiet=TRUE)
     expect_equal(install_asreml(), TRUE)
 })
 
@@ -66,7 +66,7 @@ test_that("keep_file = F doesn't keep file", {
     # skip_on_cran()
 	skip_on_ci()
     expect_file_2(install_asreml, list(force = TRUE, keep_file = FALSE),
-                  pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)", missing = T)
+                  pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)", missing = TRUE)
 })
 
 test_that("keep_file = T keeps file (in temp?)", {

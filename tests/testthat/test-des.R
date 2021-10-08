@@ -49,20 +49,20 @@ test_that("save works with all the options", {
     nrows = 11,
     ncols = 4,
     save = "none",
-    quiet = T
+    quiet = TRUE
   ),
   "crd_design.csv",
-  missing = T
+  missing = TRUE
   )
   expect_file(des.info, list(
     design.obj = outdesign_crd,
     nrows = 11,
     ncols = 4,
     save = "none",
-    quiet = T
+    quiet = TRUE
   ),
   "crd_design.pdf",
-  missing = T
+  missing = TRUE
   )
 
   # FALSE produces nothing
@@ -71,20 +71,20 @@ test_that("save works with all the options", {
     nrows = 11,
     ncols = 4,
     save = FALSE,
-    quiet = T
+    quiet = TRUE
   ),
   "crd_design.csv",
-  missing = T
+  missing = TRUE
   )
   expect_file(des.info, list(
     design.obj = outdesign_crd,
     nrows = 11,
     ncols = 4,
     save = FALSE,
-    quiet = T
+    quiet = TRUE
   ),
   "crd_design.pdf",
-  missing = T
+  missing = TRUE
   )
 
   if (file.exists("crd_design.csv")) file.remove("crd_design.csv")
@@ -97,7 +97,7 @@ test_that("save works with all the options", {
       nrows = 11,
       ncols = 4,
       save = "workbook",
-      quiet = T
+      quiet = TRUE
     ),
     "crd_design.csv"
   )
@@ -106,10 +106,10 @@ test_that("save works with all the options", {
     nrows = 11,
     ncols = 4,
     save = "workbook",
-    quiet = T
+    quiet = TRUE
   ),
   "crd_design.pdf",
-  missing = T
+  missing = TRUE
   )
 
 
@@ -122,10 +122,10 @@ test_that("save works with all the options", {
     nrows = 11,
     ncols = 4,
     save = "plot",
-    quiet = T
+    quiet = TRUE
   ),
   "crd_design.csv",
-  missing = T
+  missing = TRUE
   )
   expect_file(
     des.info, list(
@@ -133,7 +133,7 @@ test_that("save works with all the options", {
       nrows = 11,
       ncols = 4,
       save = "plot",
-      quiet = T
+      quiet = TRUE
     ),
     "crd_design.pdf"
   )
@@ -148,7 +148,7 @@ test_that("save works with all the options", {
       nrows = 11,
       ncols = 4,
       save = "both",
-      quiet = T
+      quiet = TRUE
     ),
     c("crd_design.csv", "crd_design.pdf")
   )
@@ -163,7 +163,7 @@ test_that("save works with all the options", {
       nrows = 11,
       ncols = 4,
       save = TRUE,
-      quiet = T
+      quiet = TRUE
     ),
     c("crd_design.csv", "crd_design.pdf")
   )
@@ -177,7 +177,7 @@ test_that("savename works", {
       ncols = 4,
       save = "both",
       savename = "testfile",
-      quiet = T
+      quiet = TRUE
     ),
     c("testfile.csv", "testfile.pdf")
   )
@@ -191,7 +191,7 @@ test_that("plottype works", {
       ncols = 4,
       save = "plot",
       plottype = "png",
-      quiet = T
+      quiet = TRUE
     ),
     "crd_design.png"
   )
@@ -203,27 +203,27 @@ test_that("plottype works", {
       ncols = 4,
       save = "plot",
       plottype = "jpeg",
-      quiet = T
+      quiet = TRUE
     ),
     "crd_design.jpeg"
   )
 })
 
-test_that("return.seed = T returns the seed of the design", {
+test_that("return.seed = TRUE returns the seed of the design", {
   expect_equal(des.info(
     design.obj = outdesign_crd, nrows = 11,
-    ncols = 4, return.seed = T, quiet = T
+    ncols = 4, return.seed = TRUE, quiet = TRUE
   )$seed, 42)
 
   expect_null(des.info(
     design.obj = outdesign_crd, nrows = 11,
-    ncols = 4, return.seed = F, quiet = T
+    ncols = 4, return.seed = FALSE, quiet = TRUE
   )$seed)
 
   expect_equal(
     des.info(
       design.obj = outdesign_crd_2, nrows = 11,
-      ncols = 4, return.seed = T, quiet = T
+      ncols = 4, return.seed = TRUE, quiet = TRUE
     )$seed,
     outdesign_crd_2$parameters$seed
   )
