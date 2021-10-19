@@ -134,6 +134,18 @@ des.info <- function(design.obj,
     if(!is.null(fac.names)) {
       if(is.list(fac.names)) {
         colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
+        design.obj$book[,4] <- as.factor(design.obj$book[,4])
+        design.obj$book[,5] <- as.factor(design.obj$book[,5])
+
+        if(length(levels(design.obj$book[,4])) == length(fac.names[[1]])) {
+            levels(design.obj$book[,4]) <- fac.names[[1]]
+        }
+        if(length(levels(design.obj$book[,5])) == length(fac.names[[2]])) {
+            levels(design.obj$book[,5]) <- fac.names[[2]]
+        }
+        else {
+            warning("fac.names must contain the correct number of elements. Names have not been applied.")
+        }
       }
       else if(is.character(fac.names)) {
         colnames(design.obj$book)[4:5] <- fac.names[1:2]
