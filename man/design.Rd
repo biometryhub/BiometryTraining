@@ -12,6 +12,7 @@ design(
   ncols,
   brows = NA,
   bcols = NA,
+  byrow = TRUE,
   sub_treatments = NULL,
   rotation = 0,
   size = 4,
@@ -40,6 +41,8 @@ design(
 \item{brows}{For RCBD and Split Plot designs. The number of rows in a block.}
 
 \item{bcols}{For RCBD and Split Plot designs. The number of columns in a block.}
+
+\item{byrow}{For split-plot only. Logical (default: \code{TRUE}). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
 
 \item{sub_treatments}{A vector of treatments for subplots in a split plot design.}
 
