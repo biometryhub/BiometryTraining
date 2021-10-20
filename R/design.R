@@ -93,6 +93,21 @@ design <- function(type,
                    fac.sep = c("", " "),
                    ...) {
 
+    # Some error checking of inputs before creating design
+    dim <- nrows*ncols
+    trs <- ifelse(is.null(sub_treatments),
+                  length(treatments)*reps,
+                  length(treatments)*length(sub_treatments)*reps)
+
+    if(dim > trs & !quiet) {
+        warning("Area provided is larger than treatments applied. Please check inputs.")
+    }
+
+    if(dim < trs & !quiet) {
+        warning("Area provided is smaller than treatments applied. Please check inputs.")
+    }
+
+
     # Generate design based on type input
     # If seed is numeric, use that seed to generate the design. If seed is TRUE,
 
