@@ -201,7 +201,5 @@ logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, decimals
     warning(warns[1], call. = FALSE)
   }
 
-
-
   return(test.df)
 }

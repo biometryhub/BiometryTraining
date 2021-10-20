@@ -165,7 +165,6 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, byrow, rotation, si
         ntrt <- nlevels(des$treatments)
     }
 
-
     if (design == "factorial_rcbd") {
         treatments <- NULL
 
@@ -302,7 +301,6 @@ plot.des <- function(design.obj, nrows, ncols, brows, bcols, byrow, rotation, si
         if (rr > 1 & cc == 1) {
             plan <- expand.grid(col = 1:ncols, row = 1:nrows) # 1
         }
-
 
         # Blocking incomplete rows and incomplete columns
         if (rr > 1 & cc > 1) {
