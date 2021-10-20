@@ -9,7 +9,9 @@
 
 - Fixed some bugs in `logl.test()`.
 - Unknown arguments in `design()` are no longer silently ignored (#77)
-- 
+- Enabled a way for split plot designs to be arranged row-wise or column-wise (#68)
+- Added split plot treatment labels to the output plot (#78)
+- Prevented misspelled arguments passed in the ellipsis from being silently ignored (#77)
 
 # BiometryTraining 0.8.0
 
