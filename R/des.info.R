@@ -5,6 +5,7 @@
 #' @param ncols The number of columns in the design.
 #' @param brows For RCBD only. The number of rows in a block.
 #' @param bcols For RCBD only. The number of columns in a block.
+#' @param byrow For split-plot only. Logical (default: `TRUE`). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
 #' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
@@ -25,6 +26,7 @@
 #' @importFrom graphics plot
 #' @importFrom ggplot2 ggsave
 #' @importFrom utils write.csv
+#' @importFrom ellipsis check_dots_used
 #'
 #' @return A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if `return.seed = TRUE`), and the `satab` object, allowing repeat output of the `satab` table via `cat(output$satab)`.
 #'
@@ -83,6 +85,7 @@ des.info <- function(design.obj,
                      ncols,
                      brows = NA,
                      bcols = NA,
+                     byrow = TRUE,
                      rotation = 0,
                      size = 4,
                      margin = FALSE,
@@ -96,6 +99,7 @@ des.info <- function(design.obj,
                      ...) {
 
   # Error checking of inputs
+  ellipsis::check_dots_used()
 
   # Check design type is supported
   if(design.obj$parameters$design %!in% c("crd", "rcbd", "lsd", "factorial", "split")) {
@@ -132,6 +136,19 @@ des.info <- function(design.obj,
     if(!is.null(fac.names)) {
       if(is.list(fac.names)) {
         colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
+
+        design.obj$book[,4] <- as.factor(design.obj$book[,4])
+        design.obj$book[,5] <- as.factor(design.obj$book[,5])
+
+        if(length(levels(design.obj$book[,4])) == length(fac.names[[1]])) {
+            levels(design.obj$book[,4]) <- fac.names[[1]]
+        }
+        if(length(levels(design.obj$book[,5])) == length(fac.names[[2]])) {
+            levels(design.obj$book[,5]) <- fac.names[[2]]
+        }
+        else {
+            warning("fac.names must contain the correct number of elements. Names have not been applied.")
+        }
       }
       else if(is.character(fac.names)) {
         colnames(design.obj$book)[4:5] <- fac.names[1:2]
@@ -140,7 +157,7 @@ des.info <- function(design.obj,
   }
 
 
-  info <- plot.des(design.obj, nrows, ncols, brows, bcols, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
+  info <- plot.des(design.obj, nrows, ncols, brows, bcols, byrow, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
   info$satab <- satab(design.obj)
 
   if(!quiet) {

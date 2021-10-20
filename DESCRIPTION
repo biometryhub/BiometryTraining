@@ -1,8 +1,8 @@
 Type: Package
 Package: BiometryTraining
 Title: Functions to Assist Design and Analysis of Agronomic Experiments
-Version: 0.8.0
-Date: 2021-08-03
+Version: 0.9.0
+Date: 2021-10-20
 Authors@R: 
     c(person(given = "Sharon",
              family = "Nielsen",
@@ -33,6 +33,7 @@ Imports:
     agricolae,
     cowplot,
     curl,
+    ellipsis,
     ggplot2,
     lucid,
     multcompView,
@@ -46,9 +47,12 @@ Suggests:
     testthat,
     vdiffr
 Enhances: 
-    asreml
+    asreml,
+    lme4,
+    nlme,
+    sommer
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

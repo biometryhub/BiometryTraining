@@ -3,14 +3,14 @@
 \name{resplot}
 \alias{resplot}
 \alias{resplt}
-\title{Residual plots of aov or asreml models.}
+\title{Residual plots of linear models.}
 \usage{
 resplot(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10)
 
 resplt(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10)
 }
 \arguments{
-\item{mod.obj}{An \code{aov} or \code{asreml} model object.}
+\item{mod.obj}{An \code{aov}, \code{lm}, \code{lme} (\code{\link[nlme:lme]{nlme::lme()}}), \code{lmerMod} (\code{\link[lme4:lmer]{lme4::lmer()}}), \code{asreml} or \code{mmer} (sommer) model object.}
 
 \item{shapiro}{(Logical) Display the Shapiro-Wilks test of normality on the plot?}
 
@@ -22,7 +22,7 @@ resplt(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10)
 A list containing ggplot2 objects which are diagnostic plots.
 }
 \description{
-Produces plots of residuals for assumption checking of an ANOVA or asremlR model.
+Produces plots of residuals for assumption checking of linear (mixed) model.
 }
 \examples{
 dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)

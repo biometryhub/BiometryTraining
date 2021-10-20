@@ -10,6 +10,7 @@
   ncols,
   brows,
   bcols,
+  byrow,
   rotation,
   size,
   margin,
@@ -27,6 +28,8 @@
 \item{brows}{For RCBD only. The number of rows in a block.}
 
 \item{bcols}{For RCBD only. The number of columns in a block.}
+
+\item{byrow}{For split-plot only. Logical. Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
 
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0}
 

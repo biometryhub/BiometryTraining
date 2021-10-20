@@ -2,8 +2,8 @@
 #'
 #' A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
 #'
-#' @param model.obj An ASReml-R or aov model object.
-#' @param pred.obj An ASReml-R prediction object with `sed = TRUE`. Not required for aov models, so set to `NA`.
+#' @param model.obj An ASReml-R or aov model object. Will likely also work with `lme` ([nlme::lme()]), `lmerMod` ([lme4::lmer()]) models as well.
+#' @param pred.obj An ASReml-R prediction object with `sed = TRUE`. Not required for other models, so set to `NA`.
 #' @param classify Name of predictor variable as string.
 #' @param sig The significance level, numeric between 0 and 1. Default is 0.05.
 #' @param int.type The type of confidence interval to calculate. One of `ci`, `1se` or `2se`. Default is `ci`.
@@ -20,7 +20,8 @@
 #' @importFrom multcompView multcompLetters
 #' @importFrom agricolae HSD.test
 #' @importFrom predictmeans predictmeans
-#' @importFrom stats predict
+#' @importFrom stats predict qtukey qt
+#' @importFrom utils packageVersion
 #' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #'
 #' @details Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the `trans` argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the `offset` argument.
@@ -105,7 +106,7 @@ mct.out <- function(model.obj,
     }
 
     #For use with asreml 4+
-    if(packageVersion("asreml") > 4) {
+    if(utils::packageVersion("asreml") > 4) {
       pp <- pred.obj$pvals
 
       # Check that the prediction object was created with the sed matrix
@@ -135,14 +136,14 @@ mct.out <- function(model.obj,
     # Mean <- pp$predicted.value
     # Names <-  as.character(pp$Names)
     ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(as.character(dendf$Source))]
-    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*sed
+    crit.val <- 1/sqrt(2)* stats::qtukey((1-sig), nrow(pp), ndf)*sed
 
     # Grab the response from the formula to create plot Y label
     ylab <- model.obj$formulae$fixed[[2]]
   }
 
   else {
-    pred.out <- predictmeans::predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals)
+    pred.out <- suppressWarnings(predictmeans::predictmeans(model.obj, classify, mplot = FALSE, ndecimal = decimals))
 
     pred.out$mean_table <- pred.out$mean_table[,!grepl("95", names(pred.out$mean_table))]
     sed <- pred.out$`Standard Error of Differences`[1]
@@ -159,10 +160,15 @@ mct.out <- function(model.obj,
 
     # Names <-  as.character(pp$Names)
     ndf <- pp$Df[1]
-    crit.val <- 1/sqrt(2)* qtukey((1-sig), nrow(pp), ndf)*SED
+    crit.val <- 1/sqrt(2)* stats::qtukey((1-sig), nrow(pp), ndf)*SED
 
     # Grab the response from the formula to create plot Y label
-    ylab <- model.obj$terms[[2]]
+    if(any(c("lmerMod", "lmerModLmerTest") %in% class(model.obj))) {
+      ylab <- model.obj@call[[2]][[2]]
+    }
+    else {
+      ylab <- model.obj$terms[[2]]
+    }
   }
 
   # Check that the predicted levels don't contain a dash -, if they do replace and display warning
@@ -229,7 +235,7 @@ mct.out <- function(model.obj,
       pp.tab$PredictedValue <- (pp.tab$predicted.value)^2 - ifelse(!is.na(offset), offset, 0)
       pp.tab$ApproxSE <- 2*abs(pp.tab$std.error)*sqrt(pp.tab$PredictedValue)
       if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
+        pp.tab$ci <- stats::qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
       }
       if(int.type == "1se"){
         pp.tab$ci <- pp.tab$std.error
@@ -245,7 +251,7 @@ mct.out <- function(model.obj,
       pp.tab$PredictedValue <- exp(pp.tab$predicted.value) - ifelse(!is.na(offset), offset, 0)
       pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue
       if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
+        pp.tab$ci <- stats::qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
       }
       if(int.type == "1se"){
         pp.tab$ci <- pp.tab$std.error
@@ -261,7 +267,7 @@ mct.out <- function(model.obj,
       pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
       pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
       if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
+        pp.tab$ci <- stats::qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
       }
       if(int.type == "1se"){
         pp.tab$ci <- pp.tab$std.error
@@ -282,7 +288,7 @@ mct.out <- function(model.obj,
       pp.tab$PredictedValue <- 1/pp.tab$predicted.value
       pp.tab$ApproxSE <- abs(pp.tab$std.error)*pp.tab$PredictedValue^2
       if(int.type == "ci"){
-        pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
+        pp.tab$ci <- stats::qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
       }
       if(int.type == "1se"){
         pp.tab$ci <- pp.tab$std.error
@@ -298,7 +304,7 @@ mct.out <- function(model.obj,
   else {
 
     if(int.type == "ci"){
-      pp.tab$ci <- qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
+      pp.tab$ci <- stats::qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
     }
     if(int.type == "1se"){
       pp.tab$ci <- pp.tab$std.error

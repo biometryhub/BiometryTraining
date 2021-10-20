@@ -154,6 +154,7 @@ test_that("Plots output", {
                    ncols = 4,
                    brows = 8,
                    bcols = 1,
+                   byrow = T,
                    rotation = 0,
                    size = 4,
                    margin = FALSE,
@@ -165,6 +166,7 @@ test_that("Plots output", {
                      ncols = 4,
                      brows = 1,
                      bcols = 4,
+                     byrow = T,
                      rotation = 0,
                      size = 4,
                      margin = FALSE,
@@ -176,10 +178,23 @@ test_that("Plots output", {
                      ncols = 8,
                      brows = 1,
                      bcols = 8,
+                     byrow = T,
                      rotation = 0,
                      size = 4,
                      margin = FALSE,
                      return.seed = TRUE,
+  )
+
+  out6.3 <- plot.des(outdesign_split_plot,
+                   nrows = 8,
+                   ncols = 4,
+                   brows = 8,
+                   bcols = 1,
+                   byrow = F,
+                   rotation = 0,
+                   size = 4,
+                   margin = FALSE,
+                   return.seed = TRUE,
   )
 
   # Run vdiffr::manage_cases() on the console
@@ -200,4 +215,5 @@ test_that("Plots output", {
   vdiffr::expect_doppelganger(title = "Split plot produced", out6$plot.des)
   vdiffr::expect_doppelganger(title = "Split plot double row blocks", out6.1$plot.des)
   vdiffr::expect_doppelganger(title = "Split plot ntrt == bcol", out6.2$plot.des)
+  vdiffr::expect_doppelganger(title = "Split plot byrow = F", out6.3$plot.des)
 })

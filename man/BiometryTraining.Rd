@@ -7,10 +7,7 @@
 \alias{BiometryTraining-package}
 \title{BiometryTraining: Functions to Assist Design and Analysis of Agronomic Experiments}
 \description{
-Provides functions to aid in the design and analysis of
-    agronomic and agricultural experiments through easy access to
-    documentation and helper functions, especially for users who are
-    learning these concepts.
+Provides functions to aid in the design and analysis of agronomic and agricultural experiments through easy access to documentation and helper functions, especially for users who are learning these concepts.
 }
 \seealso{
 Useful links:

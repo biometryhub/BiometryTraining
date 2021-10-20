@@ -7,6 +7,7 @@
 #' @param ncols The number of columns in the design.
 #' @param brows For RCBD and Split Plot designs. The number of rows in a block.
 #' @param bcols For RCBD and Split Plot designs. The number of columns in a block.
+#' @param byrow For split-plot only. Logical (default: `TRUE`). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.
 #' @param sub_treatments A vector of treatments for subplots in a split plot design.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
@@ -78,6 +79,7 @@ design <- function(type,
                    ncols,
                    brows = NA,
                    bcols = NA,
+                   byrow = TRUE,
                    sub_treatments = NULL,
                    rotation = 0,
                    size = 4,
@@ -132,8 +134,8 @@ design <- function(type,
             stop("Crossed designs of type '", type_split[2], "' are not supported")
         }
 
-        if(length(treatments) > 2) {
-            stop("Crossed designs with more than two treatment factors are not supported")
+        if(length(treatments) > 3) {
+            stop("Crossed designs with more than three treatment factors are not supported")
         }
 
         outdesign <- agricolae::design.ab(trt = treatments,
@@ -146,7 +148,7 @@ design <- function(type,
         stop("Designs of type '", type, "' are not supported")
     }
 
-    output <- des.info(outdesign, nrows, ncols, brows, bcols, rotation, size, margin,
+    output <- des.info(outdesign, nrows, ncols, brows, bcols, byrow, rotation, size, margin,
                        save, savename, plottype, seed, quiet, fac.names, fac.sep, ...)
     return(output)
 }

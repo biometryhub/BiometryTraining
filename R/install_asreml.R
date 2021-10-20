@@ -44,22 +44,23 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
                  Darwin  = "mac"
     )
 
-    ver <- paste(os, substr(getRversion(), 1, 3), sep = "_")
+    ver <- gsub("\\.", "", substr(getRversion(), 1, 3))
 
-    url <- switch(ver,
-                  # win_3.5 = {"https://link.biometryhubwaite.com/win-35"},
-                  win_3.6 = {"https://link.biometryhubwaite.com/win-36"},
-                  win_4.0 = {"https://link.biometryhubwaite.com/win-40"},
-                  win_4.1 = {"https://link.biometryhubwaite.com/win-41"},
-                  # mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
-                  mac_3.6 = {"https://link.biometryhubwaite.com/mac-36"},
-                  mac_4.0 = {"https://link.biometryhubwaite.com/mac-40"},
-                  mac_4.1 = {"https://link.biometryhubwaite.com/mac-41"},
-                  # linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
-                  linux_3.6 = {"https://link.biometryhubwaite.com/linux-36"},
-                  linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"},
-                  linux_4.1 = {"https://link.biometryhubwaite.com/linux-41"}
-    )
+    url <- paste0("https://link.biometryhubwaite.com/", os, "-", ver)
+    # url <- switch(ver,
+    #               # win_3.5 = {"https://link.biometryhubwaite.com/win-35"},
+    #               win_3.6 = {"https://link.biometryhubwaite.com/win-36"},
+    #               win_4.0 = {"https://link.biometryhubwaite.com/win-40"},
+    #               win_4.1 = {"https://link.biometryhubwaite.com/win-41"},
+    #               # mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
+    #               mac_3.6 = {"https://link.biometryhubwaite.com/mac-36"},
+    #               mac_4.0 = {"https://link.biometryhubwaite.com/mac-40"},
+    #               mac_4.1 = {"https://link.biometryhubwaite.com/mac-41"},
+    #               # linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
+    #               linux_3.6 = {"https://link.biometryhubwaite.com/linux-36"},
+    #               linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"},
+    #               linux_4.1 = {"https://link.biometryhubwaite.com/linux-41"}
+    # )
 
     # First check if file already exists, both in the current directory and temp folder
     # Need to create a regex to check it's the correct file extension, so tests ignore .R files

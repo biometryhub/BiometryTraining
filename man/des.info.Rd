@@ -10,6 +10,7 @@ des.info(
   ncols,
   brows = NA,
   bcols = NA,
+  byrow = TRUE,
   rotation = 0,
   size = 4,
   margin = FALSE,
@@ -33,6 +34,8 @@ des.info(
 \item{brows}{For RCBD only. The number of rows in a block.}
 
 \item{bcols}{For RCBD only. The number of columns in a block.}
+
+\item{byrow}{For split-plot only. Logical (default: \code{TRUE}). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
 
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.}
 

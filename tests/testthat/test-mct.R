@@ -15,23 +15,99 @@
 # savename
 # pred
 
-
-# save_png <- function(code, width = 400, height = 400) {
-#     path <- tempfile(fileext = ".png")
-#     png(path, width = width, height = height)
-#     on.exit(dev.off())
-#     # code
-#
-#     path
-# }
+logit <- function (p, percents = range.p[2] > 1, adjust)
+{
+    range.p <- range(p, na.rm = TRUE)
+    if (percents) {
+        if (range.p[1] < 0 || range.p[1] > 100)
+            stop("p must be in the range 0 to 100")
+        p <- p/100
+        range.p <- range.p/100
+    }
+    else if (range.p[1] < 0 || range.p[1] > 1)
+        stop("p must be in the range 0 to 1")
+    a <- if (missing(adjust)) {
+        if (isTRUE(all.equal(range.p[1], 0)) || isTRUE(all.equal(range.p[2],
+                                                                 1)))
+            0.025
+        else 0
+    }
+    else adjust
+    if (missing(adjust) && a != 0)
+        warning(paste("proportions remapped to (", a, ", ",
+                      1 - a, ")", sep = ""))
+    a <- 1 - 2 * a
+    log((0.5 + a * (p - 0.5))/(1 - (0.5 + a * (p - 0.5))))
+}
 
 test_that("mct produces output", {
     dat.aov <- aov(Petal.Width ~ Species, data = iris)
     output <- mct.out(dat.aov, classify = "Species")
     expect_identical(output$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
-    # expect_snapshot_file(path = save_png(plot(output$predicted_plot)), "plot.png")
     skip_if(interactive())
     vdiffr::expect_doppelganger("mct output", output$predicted_plot)
+})
+
+
+
+test_that("transformations are handled", {
+    dat.aov.log <- aov(log(Petal.Width) ~ Species, data = iris)
+    output.log <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0)
+    output.log2 <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0, int.type = "1se")
+    output.log3 <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0, int.type = "2se")
+    dat.aov.sqrt <- aov(sqrt(Petal.Width) ~ Species, data = iris)
+    output.sqrt <- mct.out(dat.aov.sqrt, classify = "Species", trans = "sqrt", offset = 0)
+    output.sqrt2 <- mct.out(dat.aov.sqrt, classify = "Species", trans = "sqrt", offset = 0, int.type = "1se")
+    output.sqrt3 <- mct.out(dat.aov.sqrt, classify = "Species", trans = "sqrt", offset = 0, int.type = "2se")
+    dat.aov.logit <- aov(logit(1/Petal.Width) ~ Species, data = iris)
+    output.logit <- mct.out(dat.aov.logit, classify = "Species", trans = "logit", offset = 0)
+    output.logit2 <- mct.out(dat.aov.logit, classify = "Species", trans = "logit", offset = 0, int.type = "1se")
+    output.logit3 <- mct.out(dat.aov.logit, classify = "Species", trans = "logit", offset = 0, int.type = "2se")
+    dat.aov.inverse <- aov((1/Petal.Width) ~ Species, data = iris)
+    output.inverse <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0)
+    output.inverse2 <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0, int.type = "1se")
+    output.inverse3 <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0, int.type = "2se")
+
+    expect_identical(output.log$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_identical(output.log2$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_identical(output.log3$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_identical(output.sqrt$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
+    expect_identical(output.sqrt2$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
+    expect_identical(output.sqrt3$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
+    expect_identical(output.logit$predicted_values$predicted.value, c(-5.30, -4.87, -3.07))
+    expect_identical(output.logit2$predicted_values$predicted.value, c(-5.30, -4.87, -3.07))
+    expect_identical(output.logit3$predicted_values$predicted.value, c(-5.30, -4.87, -3.07))
+    expect_identical(output.inverse$predicted_values$predicted.value, c(0.50, 0.77, 4.79))
+    expect_identical(output.inverse2$predicted_values$predicted.value, c(0.50, 0.77, 4.79))
+    expect_identical(output.inverse3$predicted_values$predicted.value, c(0.50, 0.77, 4.79))
+
+    skip_if(interactive())
+    vdiffr::expect_doppelganger("mct log output", output.log$predicted_plot)
+    vdiffr::expect_doppelganger("mct sqrt output", output.sqrt$predicted_plot)
+    vdiffr::expect_doppelganger("mct logit output", output.logit$predicted_plot)
+    vdiffr::expect_doppelganger("mct inverse output", output.inverse$predicted_plot)
+})
+
+test_that("transformations with no offset produces an error", {
+    dat.aov <- aov(log(Petal.Width) ~ Species, data = iris)
+    expect_error(mct.out(dat.aov, classify = "Species", trans = "log"))
+})
+
+test_that("ordering output works", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    output1 <- mct.out(dat.aov, classify = "Species", order = "asc")
+    output2 <- mct.out(dat.aov, classify = "Species", order = "desc")
+    expect_identical(output1$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+    expect_identical(output2$predicted_values$predicted.value, c(2.03, 1.33, 0.25))
+
+    vdiffr::expect_doppelganger("mct ascending order", output1$predicted_plot)
+    vdiffr::expect_doppelganger("mct descending output", output2$predicted_plot)
+})
+
+test_that("invalid order input produces an error", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    expect_error(mct.out(dat.aov, classify = "Species", trans = "log", order = "xyz"))
+    expect_error(mct.out(dat.aov, classify = "Species", trans = "log", order = 1))
 })
 
 test_that("dashes are handled", {
@@ -47,32 +123,6 @@ test_that("dashes are handled", {
     vdiffr::expect_doppelganger("mct dashes output", output2$predicted_plot)
 })
 
-
-
-# expect_snapshot_plot <- function(name, code) {
-#     # Other packages might affect results
-#     # skip_if_not_installed("ggplot2", "2.0.0")
-#     # Or maybe the output is different on some operation systems
-#     # skip_on_os("windows")
-#     # You'll need to carefully think about and experiment with these skips
-#
-#     path <- save_png(code)
-#     expect_snapshot_file(path, paste0(name, ".png"))
-# }
-
-
-
-
-# test_that("snapshot", {
-#     expect_snapshot_plot("plot", plot(output$predicted_plot))
-# })
-
-
-# iris2 <- iris
-# iris2$Species <- as.factor(gsub(pattern = "to", replacement = "-", x = iris2$Species))
-# dat.aov <- aov(Petal.Width ~ Species, data = iris2)
-# mct.out(dat.aov, classify = "Species")
-
 test_that("mct removes aliased treatments in aov", {
     iris1 <- iris
     iris1$Petal.Length[1:50] <- NA
@@ -84,10 +134,9 @@ test_that("mct removes aliased treatments in aov", {
 })
 
 
-
 test_that("mct handles aliased results in asreml with a warning", {
     skip_if_not_installed("asreml")
-    library(asreml)
+    quiet(library(asreml))
     load("../asreml_oats.Rdata")
     pred.asr$pvals$predicted.value[12] <- NA
     pred.asr$sed[12, ] <- NA
@@ -105,6 +154,26 @@ test_that("mct handles aliased results in asreml with a warning", {
     pred2.asr$sed[3, ] <- NA
     pred2.asr$sed[, 3] <- NA
     expect_warning(mct.out(model2.asr, pred2.asr, classify = "Nitrogen"), NULL)
+})
+
+test_that("Significance values that are too high give a warning", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    expect_warning(mct.out(dat.aov, classify = "Species", sig = 0.95),
+                   "Significance level given by sig is high. Perhaps you meant 0.05?")
+})
+
+test_that("Use of pred argument gives warning", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    expect_warning(mct.out(dat.aov, pred = "Species"),
+                   "Argument pred has been deprecated and will be removed in a future version. Please use classify instead.")
+})
+
+test_that("Missing pred.obj object causes error", {
+    skip_if_not_installed("asreml")
+    quiet(library(asreml))
+    load("../asreml_oats.Rdata")
+    expect_error(suppressWarnings(mct.out(model.asr, pred = "Nitrogen")),
+                   "You must provide a prediction object in pred.obj")
 })
 
 
