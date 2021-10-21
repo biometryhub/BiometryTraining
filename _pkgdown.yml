@@ -18,6 +18,6 @@ reference:
   - mct.out
   - resplt
 - title: Utilities
-  desc: Other helper Functions
+  desc: Other helper functions
 - contents:
   - ends_with("asreml")
