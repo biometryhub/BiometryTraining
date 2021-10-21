@@ -1,6 +1,6 @@
 #' Produces an experimental design with graph of design layout and skeletal ANOVA table
 #'
-#' @param type The type of design. Supported design types are `crd`, `rcbd`, `lsd`, `split` and `crossed:<type>` where `<type>` is one of the previous types. See Details for more information.
+#' @param type The type of design. Supported design types are `crd`, `rcbd`, `lsd`, `crossed:<type>` where `<type>` is one of the previous types and `split`. See Details for more information.
 #' @param treatments A vector containing the treatment names or labels.
 #' @param reps The number of replicates. Not required for Latin Squared Designs.
 #' @param nrows The number of rows in the design.
@@ -23,7 +23,7 @@
 #'
 #' @details The designs currently supported by `type` are Completely Randomised designs (`crd`), Randomised Complete Block designs (`rcbd`), Latin Square Designs (`lsd`), Factorial with crossed structure (use `crossed:<type>` where `<type>` is one of the previous types e.g. `crossed:crd`) and Split Plot designs (`split`). Nested factorial designs are supported through manual setup, see Examples.
 #' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory, with filename given by `savename`. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
-#' @details `fac.names` can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example `fac.names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))`. This will result a design output with a column named `A_names` with levels `a, b, c` and another named `B_names` with levels `x, y, z`. Only the first two elements of the list will be used.
+#' @details `fac.names` can be supplied to provide more intuitive names for factors and their levels in factorial and split plot designs. They can be specified in a list format, for example `fac.names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))`. This will result a design output with a column named `A_names` with levels `a, b, c` and another named `B_names` with levels `x, y, z`. Labels can also be supplied as a character vector (e.g. `c("A", "B")`) which will result in only the treatment column names being renamed. Only the first two elements of the list will be used, except in the case of a 3-way factorial design.
 #' @details `...` allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  [ggplot2::ggsave()].
 #'
 #' @importFrom graphics plot
@@ -95,29 +95,20 @@ design <- function(type,
 
     # Some error checking of inputs before creating design
     dim <- nrows*ncols
-    trs <- ifelse(is.null(sub_treatments),
-                  length(treatments)*reps,
-                  length(treatments)*length(sub_treatments)*reps)
-
-    if(dim > trs & !quiet) {
-        warning("Area provided is larger than treatments applied. Please check inputs.")
-    }
-
-    if(dim < trs & !quiet) {
-        warning("Area provided is smaller than treatments applied. Please check inputs.")
-    }
-
 
     # Generate design based on type input
     # If seed is numeric, use that seed to generate the design. If seed is TRUE,
 
     if(tolower(type) == "crd") {
+        trs <- length(treatments)*reps
+
         outdesign <- agricolae::design.crd(trt = treatments,
                                            r = reps,
                                            seed = ifelse(is.numeric(seed), seed, 0))
     }
 
     else if(tolower(type) == "rcbd") {
+        trs <- length(treatments)*reps
         outdesign <- agricolae::design.rcbd(trt = treatments,
                                             r = reps,
                                             seed = ifelse(is.numeric(seed), seed, 0))
@@ -125,8 +116,9 @@ design <- function(type,
 
     else if(tolower(type) == "lsd") {
         if(!missing(reps)) {
-            message("Number of replicates is not required for Latin Square designs")
+            message("Number of replicates is not required for Latin Square designs and has been ignored")
         }
+        trs <- length(treatments)^2
         outdesign <- agricolae::design.lsd(trt = treatments,
                                            seed = ifelse(is.numeric(seed), seed, 0))
     }
@@ -135,6 +127,7 @@ design <- function(type,
         if(is.null(sub_treatments) | anyNA(sub_treatments)) {
             stop("sub_treatments are required for a split plot design")
         }
+        trs <- length(treatments)*length(sub_treatments)*reps
         outdesign <- agricolae::design.split(trt1 = treatments,
                                              trt2 = sub_treatments,
                                              r = reps,
@@ -152,6 +145,7 @@ design <- function(type,
         if(length(treatments) > 3) {
             stop("Crossed designs with more than three treatment factors are not supported")
         }
+        trs <- ifelse(tolower(type_split[2])=="lsd", prod(treatments)^2, prod(treatments)*reps)
 
         outdesign <- agricolae::design.ab(trt = treatments,
                                           r = reps,
@@ -161,6 +155,14 @@ design <- function(type,
 
     else {
         stop("Designs of type '", type, "' are not supported")
+    }
+
+    if(dim > trs & !quiet) {
+        warning("Area provided is larger than treatments applied. Please check inputs.")
+    }
+
+    if(dim < trs & !quiet) {
+        warning("Area provided is smaller than treatments applied. Please check inputs.")
     }
 
     output <- des.info(outdesign, nrows, ncols, brows, bcols, byrow, rotation, size, margin,

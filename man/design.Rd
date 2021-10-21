@@ -28,7 +28,7 @@ design(
 )
 }
 \arguments{
-\item{type}{The type of design. Supported design types are \code{crd}, \code{rcbd}, \code{lsd}, \code{split} and \verb{crossed:<type>} where \verb{<type>} is one of the previous types. See Details for more information.}
+\item{type}{The type of design. Supported design types are \code{crd}, \code{rcbd}, \code{lsd}, \verb{crossed:<type>} where \verb{<type>} is one of the previous types and \code{split}. See Details for more information.}
 
 \item{treatments}{A vector containing the treatment names or labels.}
 
@@ -79,7 +79,7 @@ The designs currently supported by \code{type} are Completely Randomised designs
 
 If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be saved to the current working directory, with filename given by \code{savename}. If one of either \code{"plot"} or \code{"workbook"} is specified, only that output is saved. If \code{save = FALSE} (the default, or equivalently \code{"none"}), nothing will be output.
 
-\code{fac.names} can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example \code{fac.names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))}. This will result a design output with a column named \code{A_names} with levels \verb{a, b, c} and another named \code{B_names} with levels \verb{x, y, z}. Only the first two elements of the list will be used.
+\code{fac.names} can be supplied to provide more intuitive names for factors and their levels in factorial and split plot designs. They can be specified in a list format, for example \code{fac.names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))}. This will result a design output with a column named \code{A_names} with levels \verb{a, b, c} and another named \code{B_names} with levels \verb{x, y, z}. Labels can also be supplied as a character vector (e.g. \code{c("A", "B")}) which will result in only the treatment column names being renamed. Only the first two elements of the list will be used, except in the case of a 3-way factorial design.
 
 \code{...} allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}.
 }

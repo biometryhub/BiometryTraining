@@ -129,12 +129,6 @@ mct.out <- function(model.obj,
            pp$Names <- apply(pp[,unlist(strsplit(classify, ":"))], 1, paste, collapse = "_"),
            pp$Names <- pp[[classify]])
 
-    # zz <- as.numeric(1:nrow(pp))
-
-    # SED <- sed[1:nrow(pp),1:nrow(pp)]
-
-    # Mean <- pp$predicted.value
-    # Names <-  as.character(pp$Names)
     ndf <- dendf$denDF[grepl(classify, dendf$Source) & nchar(classify) == nchar(as.character(dendf$Source))]
     crit.val <- 1/sqrt(2)* stats::qtukey((1-sig), nrow(pp), ndf)*sed
 
@@ -264,7 +258,7 @@ mct.out <- function(model.obj,
     }
 
     if(trans == "logit"){
-      pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
+      pp.tab$PredictedValue <- (exp(pp.tab$predicted.value)- ifelse(!is.na(offset), offset, 0))/(1 + (exp(pp.tab$predicted.value)- ifelse(!is.na(offset), offset, 0)))
       pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
       if(int.type == "ci"){
         pp.tab$ci <- stats::qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error

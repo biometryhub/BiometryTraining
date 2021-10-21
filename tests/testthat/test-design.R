@@ -59,7 +59,7 @@ test_that("designs are produced for supported types", {
 
 test_that("reps in lsd produces a message", {
     expect_message(design(type = "lsd", 1:4, reps = 3, nrows = 4, ncols = 4, seed = 42, quiet = TRUE),
-                   "Number of replicates is not required for Latin Square designs")
+                   "Number of replicates is not required for Latin Square designs and has been ignored")
 })
 
 test_that("unsupported design types give an error", {
@@ -99,6 +99,28 @@ test_that("split plot requires brows and bcols", {
                  "Design has blocks so brows and bcols must be supplied.")
 })
 
+test_that("split plot produces warning when incorrect number of treatment labels given", {
+    expect_warning(design(type = "split", treatments = c("A", "B"),
+                          sub_treatments = 1:4, reps = 4, nrows = 8,
+                          ncols = 4, brows = 4, bcols = 2, seed = 42,
+                          fac.names = list(Water = "ABC",
+                                           N = 1:4)),
+                   "Water must contain the correct number of elements. Elements have not been applied.")
+    expect_warning(design(type = "split", treatments = c("A", "B"),
+                          sub_treatments = 1:4, reps = 4, nrows = 8,
+                          ncols = 4, brows = 4, bcols = 2, seed = 42,
+                          fac.names = list(Water = c("A", "B"),
+                                           N = 1:10)),
+                   "N must contain the correct number of elements. Elements have not been applied.")
+    expect_warning(design(type = "split", treatments = c("A", "B"),
+                          sub_treatments = 1:4, reps = 4, nrows = 8,
+                          ncols = 4, brows = 4, bcols = 2, seed = 42,
+                          fac.names = list(Water = c("A", "B"),
+                                           N = 1:4,
+                                           Another = 1:5)),
+                   "fac.names contains 3 elements but only the first 2 have been used.")
+})
+
 test_that("passing unknown arguments to ggsave causes an error", {
     expect_error(
         design(type = "crd", treatments = c(1, 5, 10, 20),
@@ -107,7 +129,11 @@ test_that("passing unknown arguments to ggsave causes an error", {
     )
 })
 
-
+test_that("3 way factorial designs are possible", {
+    expect_output(design(type = "crossed:crd", treatments = c(2, 2, 2),
+                         reps = 3, nrows = 6, ncols = 4),
+                  "A:B:C                                   1\n")
+})
 
 # type, treatments, reps, nrows, ncols, brows = NA, bcols = NA,
 # rotation = 0, size = 4, margin = FALSE, save = FALSE, savename = paste0(type, "_design"),

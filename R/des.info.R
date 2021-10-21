@@ -98,96 +98,152 @@ des.info <- function(design.obj,
                      fac.sep = c("", " "),
                      ...) {
 
-  # Error checking of inputs
-  ellipsis::check_dots_used()
+    # Error checking of inputs
+    ellipsis::check_dots_used()
 
-  # Check design type is supported
-  if(design.obj$parameters$design %!in% c("crd", "rcbd", "lsd", "factorial", "split")) {
-    stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
-  }
-
-  # Check brows and bcols supplied if necessary
-  if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
-    stop("Design has blocks so brows and bcols must be supplied.")
-  }
-  else if(design.obj$parameters$design == "factorial") {
-    if(design.obj$parameters$applied == "rcbd" & anyNA(c(brows, bcols))) {
-      stop("Design has blocks so brows and bcols must be supplied.")
+    # Check design type is supported
+    if(design.obj$parameters$design %!in% c("crd", "rcbd", "lsd", "factorial", "split")) {
+        stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
     }
 
-    # If factorial design, and names are supplied, use them
-    if(!is.null(fac.names)) {
-      design.obj$book$A <- factor(design.obj$book$A, labels = fac.names[[1]])
-      design.obj$book$B <- factor(design.obj$book$B, labels = fac.names[[2]])
-      if(design.obj$parameters$applied == "lsd") {
-        colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
-      }
-      else {
-        colnames(design.obj$book)[3:4] <- names(fac.names)[1:2]
-      }
+    # Check brows and bcols supplied if necessary
+    if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
+        stop("Design has blocks so brows and bcols must be supplied.")
     }
-  }
-  else if(design.obj$parameters$design == "split") {
-    if(design.obj$parameters$applied == "rcbd" & anyNA(c(brows, bcols))) {
-      stop("Design has blocks so brows and bcols must be supplied.")
-    }
-
-    # If names are supplied, use them
-    if(!is.null(fac.names)) {
-      if(is.list(fac.names)) {
-        colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
-
-        design.obj$book[,4] <- as.factor(design.obj$book[,4])
-        design.obj$book[,5] <- as.factor(design.obj$book[,5])
-
-        if(length(levels(design.obj$book[,4])) == length(fac.names[[1]])) {
-            levels(design.obj$book[,4]) <- fac.names[[1]]
+    else if(design.obj$parameters$design == "factorial") {
+        if(design.obj$parameters$applied == "rcbd" & anyNA(c(brows, bcols))) {
+            stop("Design has blocks so brows and bcols must be supplied.")
         }
-        if(length(levels(design.obj$book[,5])) == length(fac.names[[2]])) {
-            levels(design.obj$book[,5]) <- fac.names[[2]]
+
+        # If factorial design, and names are supplied, use them
+        n_facs <- ifelse(is.null(design.obj$book$C), 2, 3)
+        if(!is.null(fac.names)) {
+            if(length(fac.names) > n_facs) {
+                warning("fac.names contains ", length(fac.names), " elements but only the first ", n_facs, " have been used.", call. = F)
+            }
+            else if(length(fac.names) < n_facs) {
+                warning("fac.names doesn't contain enough elements and has not been used.", call. = F)
+            }
+            else {
+                if(is.list(fac.names)) {
+                    design.obj$book$A <- as.factor(design.obj$book$A)
+                    design.obj$book$B <- as.factor(design.obj$book$B)
+
+                    if(length(levels(design.obj$book$A)) == length(fac.names[[1]])) {
+                        levels(design.obj$book$A) <- fac.names[[1]]
+                    }
+                    else {
+                        warning(names(fac.names)[1], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                    }
+
+                    if(length(levels(design.obj$book$B)) == length(fac.names[[2]])) {
+                        levels(design.obj$book$B) <- fac.names[[2]]
+                    }
+                    else {
+                        warning(names(fac.names)[2], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                    }
+
+                    if(n_facs == 3) {
+                        design.obj$book$C <- as.factor(design.obj$book$C)
+
+                        if(length(levels(design.obj$book$C)) == length(fac.names[[3]])) {
+                            levels(design.obj$book$C) <- fac.names[[3]]
+                            colnames(design.obj$book)[which(colnames(design.obj$book)=="C")] <- names(fac.names)[3]
+                        }
+                        else {
+                            warning(names(fac.names)[3], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                        }
+                    }
+
+                    # colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
+                }
+
+                # if(design.obj$parameters$applied == "lsd") {
+                    # colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
+                    colnames(design.obj$book)[which(colnames(design.obj$book)=="A")] <- names(fac.names)[1]
+                    colnames(design.obj$book)[which(colnames(design.obj$book)=="B")] <- names(fac.names)[2]
+                # }
+                # else {
+                    # colnames(design.obj$book)[3:4] <- names(fac.names)[1:2]
+                    # colnames(design.obj$book)[which(colnames(design.obj$book)=="C")] <- names(fac.names)[3]
+                # }
+            }
+        }
+    }
+    else if(design.obj$parameters$design == "split") {
+        if(design.obj$parameters$applied == "rcbd" & anyNA(c(brows, bcols))) {
+            stop("Design has blocks so brows and bcols must be supplied.")
+        }
+
+        # If names are supplied, use them
+        if(!is.null(fac.names)) {
+
+            if(length(fac.names) > 2) {
+                warning("fac.names contains ", length(fac.names), " elements but only the first 2 have been used.", call. = F)
+            }
+            else if(length(fac.names) < 2) {
+                warning("fac.names doesn't contain enough elements and has not been used.", call. = F)
+            }
+            else {
+                if(is.list(fac.names)) {
+
+                    design.obj$book$treatments <- as.factor(design.obj$book$treatments)
+                    design.obj$book$sub_treatments <- factor(design.obj$book$sub_treatments)
+
+                    if(length(levels(design.obj$book$treatments)) == length(fac.names[[1]])) {
+                        levels(design.obj$book$treatments) <- fac.names[[1]]
+                    }
+                    else {
+                        warning(names(fac.names)[1], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                    }
+
+                    if(length(levels(design.obj$book$sub_treatments)) == length(fac.names[[2]])) {
+                        levels(design.obj$book$sub_treatments) <- fac.names[[2]]
+                    }
+                    else {
+                        warning(names(fac.names)[2], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                    }
+
+                    colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
+                }
+                else if(is.character(fac.names)) {
+                    colnames(design.obj$book)[4:5] <- fac.names[1:2]
+                }
+            }
+        }
+    }
+
+    info <- plot.des(design.obj, nrows, ncols, brows, bcols, byrow, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
+    info$satab <- satab(design.obj)
+
+    if(!quiet) {
+        cat(info$satab)
+        plot(info$plot.des)
+    }
+
+    if(!is.logical(save)) {
+        output <- tolower(save)
+        if(output == "plot") {
+            ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+        }
+        else if(output == "workbook") {
+            write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
+        }
+        else if(output == "both") {
+            ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+            write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
+        }
+        else if(output == "none") {
+            # Do nothing
         }
         else {
-            warning("fac.names must contain the correct number of elements. Names have not been applied.")
+            stop("save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
         }
-      }
-      else if(is.character(fac.names)) {
-        colnames(design.obj$book)[4:5] <- fac.names[1:2]
-      }
     }
-  }
+    else if(save) {
+        ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+        write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
+    }
 
-
-  info <- plot.des(design.obj, nrows, ncols, brows, bcols, byrow, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
-  info$satab <- satab(design.obj)
-
-  if(!quiet) {
-    cat(info$satab)
-    plot(info$plot.des)
-  }
-
-  if(!is.logical(save)) {
-    output <- tolower(save)
-    if(output == "plot") {
-      ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-    }
-    else if(output == "workbook") {
-      write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
-    }
-    else if(output == "both") {
-      ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-      write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
-    }
-    else if(output == "none") {
-      # Do nothing
-    }
-    else {
-      stop("save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
-    }
-  }
-  else if(save) {
-    ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-    write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
-  }
-
-  return(info)
+    return(info)
 }
