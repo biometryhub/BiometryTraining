@@ -38,7 +38,7 @@ quiet <- function(x) {
   # print(last_load)
   # print(.btenv)
 
-  # current_version <- "0.7.0"
+  # current_version <- "0.9.1"
   installed_version <- packageVersion('BiometryTraining')
 
   if(interactive()) {# && Sys.time() > (last_load + 1)) {
