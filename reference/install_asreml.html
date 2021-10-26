@@ -67,21 +67,17 @@
 
 <span class="fu">update_asreml</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>library</th>
-      <td><p>Library location to install ASReml-R. Uses first option in <code><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths()</a></code> by default.</p></td>
-    </tr><tr><th>quiet</th>
-      <td><p>Logical (default <code>FALSE</code>). Should package be installed quietly?</p></td>
-    </tr><tr><th>force</th>
-      <td><p>Logical (default <code>FALSE</code>). Force ASReml-R to install. Useful for upgrading if it is already installed.</p></td>
-    </tr><tr><th>keep_file</th>
-      <td><p>Should the downloaded asreml package file be kept? Default is <code>FALSE</code>. <code>TRUE</code> downloads to current directory. A file path can also be provided to save to another directory. See <code>Details</code> for more information.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>other arguments passed to <code>install_asreml()</code></p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>library</dt><dd><p>Library location to install ASReml-R. Uses first option in <code><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths()</a></code> by default.</p></dd>
+</dl><dl><dt>quiet</dt><dd><p>Logical (default <code>FALSE</code>). Should package be installed quietly?</p></dd>
+</dl><dl><dt>force</dt><dd><p>Logical (default <code>FALSE</code>). Force ASReml-R to install. Useful for upgrading if it is already installed.</p></dd>
+</dl><dl><dt>keep_file</dt><dd><p>Should the downloaded asreml package file be kept? Default is <code>FALSE</code>. <code>TRUE</code> downloads to current directory. A file path can also be provided to save to another directory. See <code>Details</code> for more information.</p></dd>
+</dl><dl><dt>...</dt><dd><p>other arguments passed to <code>install_asreml()</code></p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>Silently returns <code>TRUE</code> if <code>asreml</code> installed successfully or already present, <code>FALSE</code> otherwise. Optionally prints a confirmation message on success.</p>

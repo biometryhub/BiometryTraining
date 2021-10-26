@@ -75,39 +75,26 @@
   <span class="va">pred</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>model.obj</th>
-      <td><p>An ASReml-R or aov model object. Will likely also work with <code>lme</code> (<code><a href="https://rdrr.io/pkg/nlme/man/lme.html" class="external-link">nlme::lme()</a></code>), <code>lmerMod</code> (<code><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lme4::lmer()</a></code>) models as well.</p></td>
-    </tr><tr><th>pred.obj</th>
-      <td><p>An ASReml-R prediction object with <code>sed = TRUE</code>. Not required for other models, so set to <code>NA</code>.</p></td>
-    </tr><tr><th>classify</th>
-      <td><p>Name of predictor variable as string.</p></td>
-    </tr><tr><th>sig</th>
-      <td><p>The significance level, numeric between 0 and 1. Default is 0.05.</p></td>
-    </tr><tr><th>int.type</th>
-      <td><p>The type of confidence interval to calculate. One of <code>ci</code>, <code>1se</code> or <code>2se</code>. Default is <code>ci</code>.</p></td>
-    </tr><tr><th>trans</th>
-      <td><p>Transformation that was applied to the response variable. One of <code>log</code>, <code>sqrt</code>, <code>logit</code> or <code>inverse</code>. Default is <code>NA</code>.</p></td>
-    </tr><tr><th>offset</th>
-      <td><p>Numeric offset applied to response variable prior to transformation. Default is <code>NA</code>. Use 0 if no offset was applied to the transformed data. See Details for more information.</p></td>
-    </tr><tr><th>decimals</th>
-      <td><p>Controls rounding of decimal places in output. Default is 2 decimal places.</p></td>
-    </tr><tr><th>order</th>
-      <td><p>Order of the letters in the groups output. Options are <code>'default'</code>, <code>'ascending'</code> or <code>'descending'</code>. Alternative options that are accepted are <code>increasing</code> and <code>decreasing</code>. Partial matching of text is performed, allowing entry of <code>'desc'</code> for example.</p></td>
-    </tr><tr><th>label_height</th>
-      <td><p>Height of the text labels above the upper error bar on the plot. Default is 0.1 (10%) of the difference between upper and lower error bars above the top error bar.</p></td>
-    </tr><tr><th>rotation</th>
-      <td><p>Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0</p></td>
-    </tr><tr><th>save</th>
-      <td><p>Logical (default <code>FALSE</code>). Save the predicted values to a csv file?</p></td>
-    </tr><tr><th>savename</th>
-      <td><p>A file name for the predicted values to be saved to. Default is <code>predicted_values</code>.</p></td>
-    </tr><tr><th>pred</th>
-      <td><p>Deprecated. Use <code>classify</code> instead.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>model.obj</dt><dd><p>An ASReml-R or aov model object. Will likely also work with <code>lme</code> (<code><a href="https://rdrr.io/pkg/nlme/man/lme.html" class="external-link">nlme::lme()</a></code>), <code>lmerMod</code> (<code><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lme4::lmer()</a></code>) models as well.</p></dd>
+</dl><dl><dt>pred.obj</dt><dd><p>An ASReml-R prediction object with <code>sed = TRUE</code>. Not required for other models, so set to <code>NA</code>.</p></dd>
+</dl><dl><dt>classify</dt><dd><p>Name of predictor variable as string.</p></dd>
+</dl><dl><dt>sig</dt><dd><p>The significance level, numeric between 0 and 1. Default is 0.05.</p></dd>
+</dl><dl><dt>int.type</dt><dd><p>The type of confidence interval to calculate. One of <code>ci</code>, <code>1se</code> or <code>2se</code>. Default is <code>ci</code>.</p></dd>
+</dl><dl><dt>trans</dt><dd><p>Transformation that was applied to the response variable. One of <code>log</code>, <code>sqrt</code>, <code>logit</code> or <code>inverse</code>. Default is <code>NA</code>.</p></dd>
+</dl><dl><dt>offset</dt><dd><p>Numeric offset applied to response variable prior to transformation. Default is <code>NA</code>. Use 0 if no offset was applied to the transformed data. See Details for more information.</p></dd>
+</dl><dl><dt>decimals</dt><dd><p>Controls rounding of decimal places in output. Default is 2 decimal places.</p></dd>
+</dl><dl><dt>order</dt><dd><p>Order of the letters in the groups output. Options are <code>'default'</code>, <code>'ascending'</code> or <code>'descending'</code>. Alternative options that are accepted are <code>increasing</code> and <code>decreasing</code>. Partial matching of text is performed, allowing entry of <code>'desc'</code> for example.</p></dd>
+</dl><dl><dt>label_height</dt><dd><p>Height of the text labels above the upper error bar on the plot. Default is 0.1 (10%) of the difference between upper and lower error bars above the top error bar.</p></dd>
+</dl><dl><dt>rotation</dt><dd><p>Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0</p></dd>
+</dl><dl><dt>save</dt><dd><p>Logical (default <code>FALSE</code>). Save the predicted values to a csv file?</p></dd>
+</dl><dl><dt>savename</dt><dd><p>A file name for the predicted values to be saved to. Default is <code>predicted_values</code>.</p></dd>
+</dl><dl><dt>pred</dt><dd><p>Deprecated. Use <code>classify</code> instead.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations (named <code>predicted_values</code>), as well as a plot visually displaying the predicted values (named <code>predicted_plot</code>). If some of the predicted values are aliased, a warning is printed, and the aliased treatment levels are returned in the output (named <code>aliased</code>).</p>

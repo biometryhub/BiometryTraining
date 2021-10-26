@@ -78,45 +78,29 @@
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>design.obj</th>
-      <td><p>An <code>agricolae</code> design object.</p></td>
-    </tr><tr><th>nrows</th>
-      <td><p>The number of rows in the design.</p></td>
-    </tr><tr><th>ncols</th>
-      <td><p>The number of columns in the design.</p></td>
-    </tr><tr><th>brows</th>
-      <td><p>For RCBD only. The number of rows in a block.</p></td>
-    </tr><tr><th>bcols</th>
-      <td><p>For RCBD only. The number of columns in a block.</p></td>
-    </tr><tr><th>byrow</th>
-      <td><p>For split-plot only. Logical (default: <code>TRUE</code>). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.</p></td>
-    </tr><tr><th>rotation</th>
-      <td><p>Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.</p></td>
-    </tr><tr><th>size</th>
-      <td><p>Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.</p></td>
-    </tr><tr><th>margin</th>
-      <td><p>Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.</p></td>
-    </tr><tr><th>save</th>
-      <td><p>One of <code>FALSE</code> (default)/<code>"none"</code>, <code>TRUE</code>/<code>"both"</code>, <code>"plot"</code> or <code>"workbook"</code>. Specifies which output to save.</p></td>
-    </tr><tr><th>savename</th>
-      <td><p>A filename for the design to be saved to. Default is the type of the design combined with "_design".</p></td>
-    </tr><tr><th>plottype</th>
-      <td><p>The type of file to save the plot as. Usually one of <code>"pdf"</code>, <code>"png"</code>, or <code>"jpg"</code>. See <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> for all possible options.</p></td>
-    </tr><tr><th>return.seed</th>
-      <td><p>Logical (default TRUE). Output the seed used in the design?</p></td>
-    </tr><tr><th>quiet</th>
-      <td><p>Logical (default FALSE). Return the objects without printing output.</p></td>
-    </tr><tr><th>fac.names</th>
-      <td><p>Allows renaming of the <code>A</code> level of factorial designs (i.e. those using <code><a href="https://rdrr.io/pkg/agricolae/man/design.ab.html" class="external-link">agricolae::design.ab()</a></code>) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.</p></td>
-    </tr><tr><th>fac.sep</th>
-      <td><p>The separator used by <code>fac.names</code>. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>Additional parameters passed to <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> for saving the plot.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>design.obj</dt><dd><p>An <code>agricolae</code> design object.</p></dd>
+</dl><dl><dt>nrows</dt><dd><p>The number of rows in the design.</p></dd>
+</dl><dl><dt>ncols</dt><dd><p>The number of columns in the design.</p></dd>
+</dl><dl><dt>brows</dt><dd><p>For RCBD only. The number of rows in a block.</p></dd>
+</dl><dl><dt>bcols</dt><dd><p>For RCBD only. The number of columns in a block.</p></dd>
+</dl><dl><dt>byrow</dt><dd><p>For split-plot only. Logical (default: <code>TRUE</code>). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.</p></dd>
+</dl><dl><dt>rotation</dt><dd><p>Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.</p></dd>
+</dl><dl><dt>size</dt><dd><p>Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.</p></dd>
+</dl><dl><dt>margin</dt><dd><p>Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.</p></dd>
+</dl><dl><dt>save</dt><dd><p>One of <code>FALSE</code> (default)/<code>"none"</code>, <code>TRUE</code>/<code>"both"</code>, <code>"plot"</code> or <code>"workbook"</code>. Specifies which output to save.</p></dd>
+</dl><dl><dt>savename</dt><dd><p>A filename for the design to be saved to. Default is the type of the design combined with "_design".</p></dd>
+</dl><dl><dt>plottype</dt><dd><p>The type of file to save the plot as. Usually one of <code>"pdf"</code>, <code>"png"</code>, or <code>"jpg"</code>. See <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> for all possible options.</p></dd>
+</dl><dl><dt>return.seed</dt><dd><p>Logical (default TRUE). Output the seed used in the design?</p></dd>
+</dl><dl><dt>quiet</dt><dd><p>Logical (default FALSE). Return the objects without printing output.</p></dd>
+</dl><dl><dt>fac.names</dt><dd><p>Allows renaming of the <code>A</code> level of factorial designs (i.e. those using <code><a href="https://rdrr.io/pkg/agricolae/man/design.ab.html" class="external-link">agricolae::design.ab()</a></code>) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.</p></dd>
+</dl><dl><dt>fac.sep</dt><dd><p>The separator used by <code>fac.names</code>. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.</p></dd>
+</dl><dl><dt>...</dt><dd><p>Additional parameters passed to <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> for saving the plot.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A list containing a data frame with the complete design, a ggplot object with plot layout, the seed (if <code>return.seed = TRUE</code>), and the <code>satab</code> object, allowing repeat output of the <code>satab</code> table via <code>cat(output$satab)</code>.</p>
