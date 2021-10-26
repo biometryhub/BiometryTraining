@@ -1,6 +1,6 @@
 # BiometryTraining 0.9.0
 
-# Major changes
+## Major changes
 
 - `resplot()` function now supports models from the packages `lme4`, `nlme`, and `sommer`.
 - `mct.out()` function now supports models from the packages `lme4` and `nlme`.
