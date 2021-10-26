@@ -46,8 +46,8 @@
 #' pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #'
 #' #Determine ranking and groups according to Tukey's Test
-#' pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
-#'                     int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
+#' pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen",
+#'                     order = "descending", decimals = 5)
 #'
 #' pred.out}
 #'
@@ -77,7 +77,7 @@ mct.out <- function(model.obj,
     warning("Significance level given by sig is high. Perhaps you meant ", 1-sig, "?", call. = F)
   }
 
-  if(class(model.obj)[1] == "asreml"){
+  if(inherits(model.obj, "asreml")){
 
     if(missing(pred.obj)) {
       stop("You must provide a prediction object in pred.obj")
@@ -333,8 +333,6 @@ mct.out <- function(model.obj,
 
   # rounding to the correct number of decimal places
   pp.tab <- rapply(object = pp.tab, f = round, classes = "numeric", how = "replace", digits = decimals)
-  # pp.tab[[grep("groups", names(pp.tab))-2]] <- round(pp.tab[[grep("groups", names(pp.tab))-2]], decimals)
-  # pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
 
   if(save) {
     write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = FALSE)
@@ -378,10 +376,12 @@ mct.out <- function(model.obj,
     plot <- plot + ggplot2::facet_wrap(as.formula(paste("~", classify2)))
   }
 
+
   output <- list(predicted_values = pp.tab, predicted_plot = plot)
   if(exists("aliased_names")) {
     output$aliased <- aliased_names
   }
 
+  class(output$predicted_values) <- c("mct", class(output$predicted_values))
   return(output)
 }
