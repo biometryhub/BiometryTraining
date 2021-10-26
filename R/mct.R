@@ -46,8 +46,8 @@
 #' pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #'
 #' #Determine ranking and groups according to Tukey's Test
-#' pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, classify = "Nitrogen",
-#'                     order = "descending", decimals = 5)
+#' pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
+#'                     int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
 #'
 #' pred.out}
 #'
@@ -116,7 +116,6 @@ mct.out <- function(model.obj,
 
       sed <- pred.obj$sed
     }
-
 
     pp <- pp[!is.na(pp$predicted.value),]
     pp$status <- NULL
@@ -190,29 +189,30 @@ mct.out <- function(model.obj,
 
   names(diffs) <- m
 
+  # Change to a factor for use in ordering if needed
+  pp$Names <- factor(pp$Names)
+
   # Check ordering of output
   # Refactor with switch cases?
   ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing', "default"))
 
   if(ordering == "ascending" | ordering == "increasing") {
     # Set ordering to FALSE to set decreasing = FALSE in order function
-    ordering <- TRUE
+      ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = TRUE)
   }
 
   else if(ordering == "descending" | ordering == "decreasing") {
     # Set ordering to TRUE to set decreasing = TRUE in order function
-    ordering <- FALSE
+      ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = FALSE)
   }
 
   else if(ordering == "default") {
-    ordering <- TRUE
+      ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp)
   }
 
   else {
     stop("order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
   }
-
-  ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = ordering)
 
   rr <- data.frame(groups = ll$Letters)
   rr$Names <- row.names(rr)
@@ -258,7 +258,7 @@ mct.out <- function(model.obj,
     }
 
     if(trans == "logit"){
-      pp.tab$PredictedValue <- (exp(pp.tab$predicted.value)- ifelse(!is.na(offset), offset, 0))/(1 + (exp(pp.tab$predicted.value)- ifelse(!is.na(offset), offset, 0)))
+      pp.tab$PredictedValue <- exp(pp.tab$predicted.value)/(1 + exp(pp.tab$predicted.value))
       pp.tab$ApproxSE <- pp.tab$PredictedValue * (1 - pp.tab$PredictedValue)* abs(pp.tab$std.error)
       if(int.type == "ci"){
         pp.tab$ci <- stats::qt(p = sig, ndf, lower.tail = FALSE) * pp.tab$std.error
@@ -311,9 +311,19 @@ mct.out <- function(model.obj,
 
   }
 
+  # Change the order of letters and factors if ordering == default
+  if(ordering == "default") {
+      levs <- unique(dat$letter)
+
+      levels(dat$letter) <- sort(levs)[order(levs)]
+      dat
+  }
+  else {
+      pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = !ordering),]
+  }
+
   pp.tab$Names <- NULL
 
-  pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = !ordering),]
 
 
   if(class(model.obj)[1] == "asreml"){
@@ -333,6 +343,8 @@ mct.out <- function(model.obj,
 
   # rounding to the correct number of decimal places
   pp.tab <- rapply(object = pp.tab, f = round, classes = "numeric", how = "replace", digits = decimals)
+  # pp.tab[[grep("groups", names(pp.tab))-2]] <- round(pp.tab[[grep("groups", names(pp.tab))-2]], decimals)
+  # pp.tab[[grep("groups", names(pp.tab))-1]] <- round(pp.tab[[grep("groups", names(pp.tab))-1]], decimals)
 
   if(save) {
     write.csv(pp.tab, file = paste0(savename, ".csv"), row.names = FALSE)
@@ -376,12 +388,10 @@ mct.out <- function(model.obj,
     plot <- plot + ggplot2::facet_wrap(as.formula(paste("~", classify2)))
   }
 
-
   output <- list(predicted_values = pp.tab, predicted_plot = plot)
   if(exists("aliased_names")) {
     output$aliased <- aliased_names
   }
 
-  class(output$predicted_values) <- c("mct", class(output$predicted_values))
   return(output)
 }
