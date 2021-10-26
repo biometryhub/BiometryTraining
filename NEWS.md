@@ -3,7 +3,7 @@
 ## Major changes
 
 - `resplot()` function now supports models from the packages `lme4`, `nlme`, and `sommer`.
-- `mct.out()` function now supports models from the packages `lme4` and `nlme`.
+- `mct.out()` function now supports models from the packages `lme4` and `nlme`. Support for `sommer` models is in progress.
 
 ## Minor changes
 
