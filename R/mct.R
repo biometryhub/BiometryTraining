@@ -46,8 +46,8 @@
 #' pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 #'
 #' #Determine ranking and groups according to Tukey's Test
-#' pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
-#'                     int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
+#' pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr,
+#'                     classify = "Nitrogen", order = "descending", decimals = 5)
 #'
 #' pred.out}
 #'
@@ -189,9 +189,6 @@ mct.out <- function(model.obj,
 
   names(diffs) <- m
 
-  # Change to a factor for use in ordering if needed
-  pp$Names <- factor(pp$Names)
-
   # Check ordering of output
   # Refactor with switch cases?
   ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing', "default"))
@@ -313,10 +310,12 @@ mct.out <- function(model.obj,
 
   # Change the order of letters and factors if ordering == default
   if(ordering == "default") {
-      levs <- unique(dat$letter)
+      # Change to a factor for use in ordering if needed
+      pp.tab <- pp.tab[stringi::stri_order(pp.tab$Names),]
+      pp.tab$groups <- factor(pp.tab$groups)
+      levs <- unique(pp.tab$groups)
+      levels(pp.tab$groups) <- sort(levs)[order(levs)]
 
-      levels(dat$letter) <- sort(levs)[order(levs)]
-      dat
   }
   else {
       pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = !ordering),]
