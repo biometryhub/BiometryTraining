@@ -29,14 +29,14 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
     stdres <- NULL
     # resids <- NULL
 
-    if (any(c("aov", "lm", "lmerMod", "lme", "lmerModLmerTest") %in% class(mod.obj))) {
+    if (inherits(mod.obj, c("aov", "lm", "lmerMod", "lme", "lmerModLmerTest"))) {
         facet <- 1
         facet_name <- NULL
         resids <- residuals(mod.obj)
         k <- length(resids)
         fits <- fitted(mod.obj)
     }
-    else if ("asreml" %in% class(mod.obj)){
+    else if (inherits(mod.obj, "asreml")){
         facet <- length(names(mod.obj$R.param))
         if (facet > 1) {
             facet_name <- names(mod.obj$R.param)
@@ -49,7 +49,7 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
         resids <- residuals(mod.obj)
         fits <- fitted(mod.obj)
     }
-    else if("mmer" %in% class(mod.obj)) {
+    else if(inherits(mod.obj, "mmer")) {
         facet <- mod.obj$termsN$rcov
         facet_name <- NULL
         k <- length(mod.obj$residual)
@@ -60,7 +60,6 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
     else {
         stop("mod.obj must be an aov, lm, lmerMod, lmerModLmerTest, asreml or mmer object")
     }
-
 
     aa <- data.frame(residuals = resids, fitted = fits, lvl = rep(1:facet, k))
 
