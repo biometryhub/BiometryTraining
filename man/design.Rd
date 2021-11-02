@@ -121,4 +121,8 @@ des.out <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2
 des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
                   reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2, seed = 42)
 
+# Alternative arangement of the same design as above
+des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
+                  reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2, byrow = F, seed = 42)
+
 }
