@@ -40,7 +40,8 @@ Imports:
     predictmeans,
     RColorBrewer,
     scales, 
-    stringi
+    stringi,
+    withr
 Suggests: 
     covr,
     crayon,
