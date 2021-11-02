@@ -9,8 +9,9 @@
 #'
 #' @details The ASReml-R package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but directory is assumed to exist and will not be created. If `keep_file` does not specify an existing, valid path, an error will be shown.
 #'
-#' @importFrom utils install.packages download.file remove.packages
+#' @importFrom utils install.packages installed.packages download.file remove.packages
 #' @importFrom curl curl_fetch_disk
+#' @importFrom withr local_file
 #'
 #' @export
 #'
@@ -57,7 +58,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         dir_files <- list.files(pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
 
         if(length(temp_files) > 0) {
-            filename <- temp_files
+            filename <- temp_files[1]
             save_file <- paste0(tempdir(), "/", filename)
 
             if(keep_file == TRUE) {
@@ -114,6 +115,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
             # Extract everything after the last / as the filename
             filename <- basename(response$url)#, pos+1, nchar(response$url))
+            install_file <- withr::local_file(paste0(tempdir(), "/", filename))
 
             # If keep_file is true, copy asreml to current directory
             if(keep_file == TRUE) {
@@ -133,7 +135,6 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
                 )
             }
             else if(keep_file == FALSE) {
-                install_file <- withr::local_file(paste0(tempdir(), "/", filename))
                 file.rename(save_file, install_file)
             }
             else { # Assume keep_file is a path
@@ -148,17 +149,17 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
                         },
                         error = function(cond) {
                             warning("Could not copy asreml file to provided directory.", call. = F)
-                            install_file <- withr::local_file(paste0(tempdir(), "/", filename))
-                            file.rename(save_file, install_file)
                             return(FALSE)
                         },
                         warning = function(cond) {
                             warning("Could not copy asreml file to provided directory.", call. = F)
-                            install_file <- withr::local_file(paste0(tempdir(), "/", filename))
-                            file.rename(save_file, install_file)
                             return(FALSE)
                         }
                     )
+                    if(!result) {
+                        install_file <- withr::local_file(paste0(tempdir(), "/", filename))
+                        file.rename(save_file, install_file)
+                    }
                 }
             }
         }
