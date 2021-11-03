@@ -196,11 +196,13 @@ mct.out <- function(model.obj,
   if(ordering == "ascending" | ordering == "increasing") {
     # Set ordering to FALSE to set decreasing = FALSE in order function
       ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = TRUE)
+      ordering <- TRUE
   }
 
   else if(ordering == "descending" | ordering == "decreasing") {
     # Set ordering to TRUE to set decreasing = TRUE in order function
       ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = FALSE)
+      ordering <- FALSE
   }
 
   else if(ordering == "default") {
@@ -315,15 +317,12 @@ mct.out <- function(model.obj,
       pp.tab$groups <- factor(pp.tab$groups)
       levs <- unique(pp.tab$groups)
       levels(pp.tab$groups) <- sort(levs)[order(levs)]
-
   }
   else {
       pp.tab <- pp.tab[order(pp.tab$predicted.value, decreasing = !ordering),]
   }
 
   pp.tab$Names <- NULL
-
-
 
   if(class(model.obj)[1] == "asreml"){
     trtindex <- grep("groups", names(pp.tab)) - 3

@@ -123,6 +123,7 @@ des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4
 
 # Alternative arangement of the same design as above
 des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
-                  reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2, byrow = F, seed = 42)
+                  reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2,
+                  byrow = FALSE, seed = 42)
 
 }
