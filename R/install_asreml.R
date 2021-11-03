@@ -28,7 +28,7 @@
 #'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
 
-    pkgs <- rownames(installed.packages())
+    pkgs <- rownames(installed.packages(lib.loc = library))
     pkgs <- pkgs[pkgs != "asremlPlus"]
 
     if("asreml" %in% pkgs & !force) {
@@ -57,51 +57,15 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         temp_files <- list.files(tempdir(), pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
         dir_files <- list.files(pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
 
-        if(length(temp_files) > 0) {
-            filename <- temp_files[1]
+        if(length(temp_files) > 0) {  # I don't think this will ever trigger, as I will clean up downloads from Temp
+            filename <- temp_files[length(temp_files)] #Get the alphabetically last file. Theoretically should be the latest version?
             save_file <- paste0(tempdir(), "/", filename)
-
-            if(keep_file == TRUE) {
-                install_file <- filename
-                # Copy to current working directory
-                file.copy(save_file, filename)
-            }
-
-            else if(is.character(keep_file)) {
-                if(!dir.exists(keep_file)) {
-                    stop("Directory provided in keep_path does not exist. Please provide a path in the keep_file argument to save the package to.")
-                }
-                else {
-                    install_file <- paste0(keep_file, "/", filename)
-                    # If path has a trailing slash remove it
-                    # install_file <- gsub("//", "/", install_file)
-                    file.copy(save_file, install_file)
-                }
-            }
-            else {
-                install_file <- save_file
-            }
         }
         else if(length(dir_files) > 0) {
-            filename <- dir_files
+            filename <- dir_files[length(dir_files)] # Get the alphabetically last one. Theoretically this should be the highest version number.
             save_file <- filename
-
-            if(is.character(keep_file)) {
-                if(!dir.exists(keep_file)) {
-                    stop("Directory provided in keep_path does not exist. Please provide a path in the keep_file argument to save the package to.")
-                }
-                else {
-                    install_file <- paste0(keep_file, "/", filename)
-                    # If path had a trailing slash remove it
-                    # install_file <- gsub("//", "/", install_file)
-                    file.copy(save_file, install_file)
-                    file.remove(save_file)
-                }
-            }
-            else {
-                install_file <- filename
-            }
         }
+
         # Can't find file, download
         else {
             #Create a temporary file to save the package
@@ -110,58 +74,10 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
             # Use httr to GET the file which also gives the expanded URL
             response <- curl::curl_fetch_disk(url = url, path = save_file)
 
-            # Find position of the last / in the expanded URL
-            # pos <- regexpr("\\/[^\\/]*$", response$url)
-
             # Extract everything after the last / as the filename
             filename <- basename(response$url)#, pos+1, nchar(response$url))
-            install_file <- withr::local_file(paste0(tempdir(), "/", filename))
-
-            # If keep_file is true, copy asreml to current directory
-            if(keep_file == TRUE) {
-                install_file <- filename
-                result <- tryCatch(
-                    expr = {
-                        file.copy(save_file, filename)
-                    },
-                    error = function(cond) {
-                        warning("Could not copy asreml file to current working directory", call. = F)
-                        return(FALSE)
-                    },
-                    warning = function(cond) {
-                        warning("Could not copy asreml file to current working directory", call. = F)
-                        return(FALSE)
-                    }
-                )
-            }
-            else if(keep_file == FALSE) {
-                file.rename(save_file, install_file)
-            }
-            else { # Assume keep_file is a path
-                if(!dir.exists(keep_file)) {
-                    stop("Directory provided in keep_file does not exist. Please provide a valid path in the keep_file argument to save the package to.")
-                }
-                else {
-                    result <- tryCatch(
-                        expr = {
-                            install_file <- paste0(keep_file, "/", filename)
-                            file.copy(save_file, install_file)
-                        },
-                        error = function(cond) {
-                            warning("Could not copy asreml file to provided directory.", call. = F)
-                            return(FALSE)
-                        },
-                        warning = function(cond) {
-                            warning("Could not copy asreml file to provided directory.", call. = F)
-                            return(FALSE)
-                        }
-                    )
-                    if(!result) {
-                        install_file <- withr::local_file(paste0(tempdir(), "/", filename))
-                        file.rename(save_file, install_file)
-                    }
-                }
-            }
+            file.rename(save_file, paste0(tempdir(), "/", filename))
+            save_file <- paste0(tempdir(), "/", filename)
         }
 
         # If forcing installation, remove existing version to avoid errors on installation
@@ -170,18 +86,67 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         }
 
         # Check dependencies are installed first
-
         deps <- setdiff(c("data.table", "ggplot2", "jsonlite"), pkgs)
-        # for(i in seq_along(deps)) {
         if(length(deps) > 0) {
-            install.packages(deps, repos = "https://cloud.r-project.org")
+            install.packages(deps, lib = library, repos = "https://cloud.r-project.org",
+                             Ncpus = ifelse("parallel" %in% pkgs,
+                                            max(ceiling(parallel::detectCores()/2), # Use multiple CPUs if available
+                                                ceiling(parallel::detectCores()-2)), 1))
         }
-        # }
 
         # Install asreml
-        install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
+        install.packages(save_file, lib = library, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
 
-        if("asreml" %in% installed.packages(noCache = T)) {
+        # If keep_file is true, copy asreml to current directory
+        if(keep_file == TRUE) {
+            result <- tryCatch(
+                expr = {
+                    file.rename(save_file, filename)
+                },
+                error = function(cond) {
+                    warning("Could not copy asreml install file to current working directory", call. = F)
+                    file.remove(save_file)
+                    return(FALSE)
+                },
+                warning = function(cond) {
+                    warning("Could not copy asreml install file to current working directory", call. = F)
+                    file.remove(save_file)
+                    return(FALSE)
+                }
+            )
+        }
+        else if(keep_file == FALSE) {
+            file.remove(save_file)
+        }
+        else if(is.character(keep_file) & length(keep_file) == 1) { # Assume keep_file is a path
+            if(dir.exists(keep_file)) {
+                result <- tryCatch(
+                    expr = {
+                        file.rename(save_file, paste0(keep_file, "/", filename))
+                    },
+                    error = function(cond) {
+                        warning("Could not copy asreml install file to provided directory.", call. = F)
+                        file.remove(save_file)
+                        return(FALSE)
+                    },
+                    warning = function(cond) {
+                        warning("Could not copy asreml install file to provided directory.", call. = F)
+                        file.remove(save_file)
+                        return(FALSE)
+                    }
+                )
+            }
+            else {
+                warning("Directory provided in keep_file does not exist. Please provide a valid path in the keep_file argument to save the package to.")
+            }
+        }
+        else {
+            warning("Argument keep_file should be provided as a path to a single directory or TRUE to save in current working directory. Downloaded file has not been kept.")
+        }
+
+        pkgs <- rownames(installed.packages(lib.loc = library, noCache = T))
+        pkgs <- pkgs[pkgs != "asremlPlus"]
+        if("asreml" %in% pkgs) {
             if(!quiet) message("ASReml-R successfully installed!")
         }
         else {
