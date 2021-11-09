@@ -4,8 +4,10 @@
 #'
 #' @param mod.obj An `aov`, `lm`, `lme` ([nlme::lme()]), `lmerMod` ([lme4::lmer()]), `asreml` or `mmer` (sommer) model object.
 #' @param shapiro (Logical) Display the Shapiro-Wilks test of normality on the plot?
+#' @param call (Logical) Display the model call on the plot?
 #' @param axes.size A numeric value for the size of the axes label font size in points.
 #' @param label.size A numeric value for the size of the label (A,B,C) font point size.
+#' @param call.size A numeric value for the size of the model displayed on the plot.
 #'
 #' @return A list containing ggplot2 objects which are diagnostic plots.
 #'
@@ -21,7 +23,7 @@
 #' resplt(dat.aov)
 #' @export
 
-resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
+resplot <- function(mod.obj, shapiro = TRUE, call = FALSE, label.size = 10, axes.size = 10, call.size = 9){
 
     # Assign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
@@ -49,7 +51,7 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
         resids <- residuals(mod.obj)
         fits <- fitted(mod.obj)
     }
-    else if(inherits(mod.obj, "mmer")) {
+    else if(inherits(mod.obj, "mmer")) { # sommer doesn't display residuals the same way
         facet <- mod.obj$termsN$rcov
         facet_name <- NULL
         k <- length(mod.obj$residual)
@@ -98,9 +100,16 @@ resplot <- function(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10){
                                              label_size = label.size, hjust = 1)
         }
         else{
-            bottom_row <- cowplot::plot_grid(NULL, c, NULL, ncol=3, rel_widths=c(0.25,0.5,0.25), labels = c("", "C", ""), hjust = 1, label_size = label.size)
+            bottom_row <- cowplot::plot_grid(NULL, c, NULL, ncol=3, rel_widths=c(0.25,0.5,0.25), labels = c("", "C", ""), hjust = -1, label_size = label.size)
         }
-        output[[i]] <- cowplot::plot_grid(top_row, bottom_row, ncol=1)
+        if(call) {
+            title <- cowplot::ggdraw() + cowplot::draw_label(paste(deparse(mod.obj$call), collapse = "\n"), size = call.size, hjust = 0.5)
+            call_row <- cowplot::plot_grid(title, ncol=1)
+            output[[i]] <- cowplot::plot_grid(call_row, top_row, bottom_row, ncol=1, rel_heights = c(0.1, 0.4, 0.4))
+        }
+        else{
+            output[[i]] <- cowplot::plot_grid(top_row, bottom_row, ncol=1, rel_heights = c(0.4, 0.4))
+        }
     }
 
     if(facet>1) {

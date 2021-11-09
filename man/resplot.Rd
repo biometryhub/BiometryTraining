@@ -5,18 +5,36 @@
 \alias{resplt}
 \title{Residual plots of linear models.}
 \usage{
-resplot(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10)
+resplot(
+  mod.obj,
+  shapiro = TRUE,
+  call = FALSE,
+  label.size = 10,
+  axes.size = 10,
+  call.size = 9
+)
 
-resplt(mod.obj, shapiro = TRUE, label.size = 10, axes.size = 10)
+resplt(
+  mod.obj,
+  shapiro = TRUE,
+  call = FALSE,
+  label.size = 10,
+  axes.size = 10,
+  call.size = 9
+)
 }
 \arguments{
 \item{mod.obj}{An \code{aov}, \code{lm}, \code{lme} (\code{\link[nlme:lme]{nlme::lme()}}), \code{lmerMod} (\code{\link[lme4:lmer]{lme4::lmer()}}), \code{asreml} or \code{mmer} (sommer) model object.}
 
 \item{shapiro}{(Logical) Display the Shapiro-Wilks test of normality on the plot?}
 
+\item{call}{(Logical) Display the model call on the plot?}
+
 \item{label.size}{A numeric value for the size of the label (A,B,C) font point size.}
 
 \item{axes.size}{A numeric value for the size of the axes label font size in points.}
+
+\item{call.size}{A numeric value for the size of the model displayed on the plot.}
 }
 \value{
 A list containing ggplot2 objects which are diagnostic plots.
