@@ -1,3 +1,9 @@
+# BiometryTraining 0.9.1
+
+## Minor changes
+
+- Enabled model call to be displayed on resplots for easy comparison between several models (#81)
+
 # BiometryTraining 0.9.0
 
 ## Major changes
