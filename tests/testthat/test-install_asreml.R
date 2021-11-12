@@ -94,7 +94,8 @@ test_that("Providing a non-existant directory fails", {
     skip_if(.Platform$OS.type == "windows")
     # skip_on_cran()
 	skip_on_ci()
-    expect_error(install_asreml(force = TRUE, keep_file = "abc"))
+    expect_warning(install_asreml(force = TRUE, keep_file = "abc"),
+                 "Directory provided in keep_file does not exist. Please provide a valid path in the keep_file argument to save the package to.")
 })
 
 test_that("force and quiet work together", {
