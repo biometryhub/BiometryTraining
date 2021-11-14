@@ -162,11 +162,11 @@ design <- function(type,
         stop("Designs of type '", type, "' are not supported")
     }
 
-    if(dim > trs & !quiet) {
+    if(dim > trs) {
         warning("Area provided is larger than treatments applied. Please check inputs.")
     }
 
-    if(dim < trs & !quiet) {
+    if(dim < trs) {
         warning("Area provided is smaller than treatments applied. Please check inputs.")
     }
 
