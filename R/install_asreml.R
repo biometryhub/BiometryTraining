@@ -87,6 +87,11 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
         # Check dependencies are installed first
         deps <- setdiff(c("data.table", "ggplot2", "jsonlite"), pkgs)
+
+        if("data.table" %in% pkgs && packageVersion("data.table") < "1.9.6") {
+            deps <- c(deps, "data.table")
+        }
+
         if(length(deps) > 0) {
             install.packages(deps, lib = library, repos = "https://cloud.r-project.org",
                              Ncpus = ifelse("parallel" %in% pkgs,
