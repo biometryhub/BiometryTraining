@@ -30,6 +30,10 @@ vario <- function(mod.obj){
         stop("mod.obj must be an asreml object")
     }
 
+    if(!requireNamespace("asreml", quietly = T)) {
+        stop("asreml must be installed")
+    }
+
     aa <- asreml::varioGram(mod.obj)
     xnam <- names(aa)[2]
     ynam <- names(aa)[1]
