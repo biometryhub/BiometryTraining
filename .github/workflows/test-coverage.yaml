@@ -17,6 +17,8 @@ name: test-coverage
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
+    env:
+      RSPM: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"
     steps:
       - uses: actions/checkout@v2
 
@@ -27,9 +29,7 @@ jobs:
       - name: Set up RSPM
         run: |
           echo "options(repos = c(CRAN = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest'))" >> ~/.Rprofile.site
-          echo "options(HTTPUserAgent = paste0('R/', getRversion(), ' R (',
-            paste(getRversion(), R.version['platform'], R.version['arch'], R.version['os']),
-            ')'))" >> ~/.Rprofile.site
+          echo "options(HTTPUserAgent = sprintf('R/%s R (%s)', getRversion(), paste(getRversion(), R.version['platform'], R.version['arch'], R.version['os'])))" >> ~/.Rprofile.site
         shell: bash
 
       - name: Query dependencies
