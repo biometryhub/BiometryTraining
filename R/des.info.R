@@ -102,9 +102,9 @@ des.info <- function(design.obj,
     ellipsis::check_dots_used()
 
     # Check design type is supported
-    if(design.obj$parameters$design %!in% c("crd", "rcbd", "lsd", "factorial", "split")) {
-        stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
-    }
+    # if(design.obj$parameters$design %!in% c("crd", "rcbd", "lsd", "factorial", "split")) {
+    #     stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
+    # }
 
     # Check brows and bcols supplied if necessary
     if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {

@@ -48,8 +48,6 @@ test_that("mct produces output", {
     vdiffr::expect_doppelganger("mct output", output$predicted_plot)
 })
 
-
-
 test_that("transformations are handled", {
     dat.aov.log <- aov(log(Petal.Width) ~ Species, data = iris)
     output.log <- mct.out(dat.aov.log, classify = "Species", trans = "log", offset = 0)
@@ -112,11 +110,20 @@ test_that("invalid order input produces an error", {
 
 test_that("dashes are handled", {
     iris2 <- iris
+    # Replace 'gin' in setosa with '-'
     iris2$Species <- as.factor(gsub("to", "-", iris2$Species))
     dat.aov2 <- aov(Petal.Width ~ Species, data = iris2)
     output2 <- suppressWarnings(mct.out(dat.aov2, classify = "Species"))
     expect_warning(mct.out(dat.aov2, classify = "Species"),
                    "The treatment level se-sa contained '-', which has been replaced in the final output with '_'")
+    expect_identical(output2$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+
+    # Replace 'gin' in virginica with '-' as well
+    iris2$Species <- as.factor(gsub("gin", "-", iris2$Species))
+    dat.aov2 <- aov(Petal.Width ~ Species, data = iris2)
+
+    expect_warning(mct.out(dat.aov2, classify = "Species"),
+                   "The treatment levels se-sa, vir-ica contained '-', which has been replaced in the final output with '_'")
     expect_identical(output2$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
 
     skip_if(interactive())
@@ -172,10 +179,50 @@ test_that("Missing pred.obj object causes error", {
     skip_if_not_installed("asreml")
     quiet(library(asreml))
     load("../asreml_oats.Rdata")
-    expect_error(suppressWarnings(mct.out(model.asr, pred = "Nitrogen")),
-                   "You must provide a prediction object in pred.obj")
+    expect_error(suppressWarnings(mct.out(model.asr, classify = "Nitrogen")),
+                 "You must provide a prediction object in pred.obj")
 })
 
+test_that("Forgetting sed = T in pred.obj object causes error", {
+    skip_if_not_installed("asreml")
+    quiet(library(asreml))
+    dat.asr <- quiet(asreml(Petal.Width ~ Species, data = iris, trace = F))
+    pred.out <- predict.asreml(dat.asr, classify = "Species")
+    expect_error(mct.out(dat.asr, pred.out, classify = "Species"),
+                 "Prediction object \\(pred.obj\\) must be created with argument sed = TRUE\\.")
+})
+
+test_that("Invalid order input gives an error", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    expect_error(mct.out(dat.aov, classify = "Species", order = "abc"),
+                 "order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
+    expect_error(
+        expect_warning(mct.out(dat.aov, classify = "Species", order = 1:2),
+                       "argument 'pattern' has length > 1 and only the first element will be used"),
+        "order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
+})
+
+test_that("lme4 model works", {
+    skip_if_not_installed("lme4")
+    quiet(library(lme4))
+    load("../oats_data.Rdata")
+    dat.lmer <- lmer(yield ~ nitro*gen + (1|block), data = dat)
+    output <- mct.out(dat.lmer, classify = "nitro")
+    expect_identical(output$predicted_values$predicted.value, c(79.39, 98.89, 114.22, 123.39))
+    skip_if(interactive())
+    vdiffr::expect_doppelganger("lme4 output", output$predicted_plot)
+})
+
+# test_that("sommer model works", {
+#     skip_if_not_installed("sommer")
+#     quiet(library(sommer))
+#     data("DT_yatesoats")
+#     dat.sommer <- mmer(Y ~ N*V, random = ~B + B/MP, data = DT_yatesoats, verbose = F)
+#     output <- mct.out(dat.sommer, classify = "N")
+#     expect_identical(output$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+#     skip_if(interactive())
+#     vdiffr::expect_doppelganger("mct output", output$predicted_plot)
+# })
 
 # skip if not local/asreml installed
 # model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,

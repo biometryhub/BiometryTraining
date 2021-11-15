@@ -156,7 +156,7 @@ mct.out <- function(model.obj,
     crit.val <- 1/sqrt(2)* stats::qtukey((1-sig), nrow(pp), ndf)*SED
 
     # Grab the response from the formula to create plot Y label
-    if(any(c("lmerMod", "lmerModLmerTest") %in% class(model.obj))) {
+    if(inherits(model.obj, c("lmerMod", "lmerModLmerTest"))) {
       ylab <- model.obj@call[[2]][[2]]
     }
     else {
@@ -168,7 +168,7 @@ mct.out <- function(model.obj,
   if(any(grepl("-", pp[,1]))) {
     levs <- grep("-", pp[,1], value = TRUE)
     if(length(levs)>1) {
-      warning("The treatment levels ", paste(levs, collapse = ", "), "contained '-', which has been replaced in the final output with '_'")
+      warning("The treatment levels ", paste(levs, collapse = ", "), " contained '-', which has been replaced in the final output with '_'")
     }
     else {
       warning("The treatment level ", levs, " contained '-', which has been replaced in the final output with '_'")
@@ -191,9 +191,13 @@ mct.out <- function(model.obj,
 
   # Check ordering of output
   # Refactor with switch cases?
-  ordering <- match.arg(order, c('ascending', 'descending', 'increasing', 'decreasing', "default"))
+  ordering <- grep(order, c('ascending', 'descending', 'increasing', 'decreasing', 'default'), value = TRUE)
 
-  if(ordering == "ascending" | ordering == "increasing") {
+  if(length(ordering) == 0) {
+      # No match found, error
+      stop("order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
+  }
+  else if(ordering == "ascending" | ordering == "increasing") {
     # Set ordering to FALSE to set decreasing = FALSE in order function
       ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp, reversed = TRUE)
       ordering <- TRUE
@@ -207,10 +211,6 @@ mct.out <- function(model.obj,
 
   else if(ordering == "default") {
       ll <- multcompView::multcompLetters3("Names", "predicted.value", diffs, pp)
-  }
-
-  else {
-    stop("order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
   }
 
   rr <- data.frame(groups = ll$Letters)
