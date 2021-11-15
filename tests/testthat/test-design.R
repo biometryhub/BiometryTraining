@@ -149,10 +149,11 @@ test_that("Area and treatment size mismatches produce warnings", {
     )
 })
 
-test_that("save argument saves files", {
-    withr::local_file("lsd-design.csv")
-    withr::local_file("lsd-design.pdf")
-    expect_snapshot_file(design(type = "lsd", 1:4, reps = 3, nrows = 4, ncols = 4, seed = 42, quiet = TRUE, save = T), )
-})
+# test_that("save argument saves files", {
+#     withr::local_file("lsd_design.csv")
+#     withr::local_file("lsd_design.pdf")
+#     expect_snapshot_file(design(type = "lsd", 1:4, reps = 3, nrows = 4, ncols = 4, seed = 42, quiet = TRUE, save = T, savename = "lsd_design"), name = "lsd_design.pdf")
+#     expect_snapshot_file(design(type = "lsd", 1:4, reps = 3, nrows = 4, ncols = 4, seed = 42, quiet = TRUE, save = T, savename = "lsd_design"), name = "lsd_design.csv")
+# })
 
 
