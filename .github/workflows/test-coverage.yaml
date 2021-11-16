@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RSPM: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"
+      vsni_LICENSE: ${{ secrets.vsni_LICENSE }}
+
     steps:
       - uses: actions/checkout@v2
 
@@ -57,6 +59,13 @@ jobs:
           install.packages(c("remotes"))
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("covr")
+        shell: Rscript {0}
+
+      - name: Create and populate .Renviron file
+        run: echo vsni_LICENSE="vsni_LICENSE" >> ~/.Renviron
+
+      - name: Licence ASreml
+        run: BiometryTraining::install_asreml()
         shell: Rscript {0}
 
       - name: Test coverage
