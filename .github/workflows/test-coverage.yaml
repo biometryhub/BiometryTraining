@@ -64,9 +64,11 @@ jobs:
       - name: Create and populate .Renviron file
         run: echo vsni_LICENSE="vsni_LICENSE" >> ~/.Renviron
 
-      - name: Licence ASreml
-        run: BiometryTraining::install_asreml()
-        shell: Rscript {0}
+      # - name: Licence ASreml
+      #   run: |
+      #     remotes::install_github("")
+      #     BiometryTraining::install_asreml()
+      #   shell: Rscript {0}
 
       - name: Test coverage
         run: covr::codecov()
