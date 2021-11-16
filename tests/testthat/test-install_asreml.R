@@ -114,12 +114,13 @@ test_that("More than one element for keep_file produces a warning", {
     expect_warning(install_asreml(force = TRUE, quiet = TRUE, keep_file = 1:2))
 })
 
-test_that("Old version of data.table results in upgrade to newer version", {
-    # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(.Platform$OS.type == "windows")
-    skip_on_cran()
-    skip_on_ci()
-    remotes::install_version("data.table", "1.9.4", upgrade = "never")
-    install_asreml(force = TRUE, quiet = TRUE)
-    expect_true(packageVersion("data.table") > "1.9.4")
-})
+# test_that("Old version of data.table results in upgrade to newer version", {
+#     # skip_if(R.version$status == "Under development (unstable)")
+#     skip_if(.Platform$OS.type == "windows")
+#     skip_if_not_installed("remotes")
+#     skip_on_cran()
+#     skip_on_ci()
+#     remotes::install_version("data.table", "1.9.4", upgrade = "never")
+#     install_asreml(force = TRUE, quiet = TRUE)
+#     expect_true(packageVersion("data.table") > "1.9.4")
+# })
