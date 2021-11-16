@@ -3,17 +3,8 @@
 # Test ordering works as expected
 
 # model.obj
-# pred.obj
-# classify
-# sig
-# int.type
-# trans
 # offset
 # decimals
-# order
-# save
-# savename
-# pred
 
 logit <- function (p, percents = range.p[2] > 1, adjust)
 {
@@ -79,7 +70,7 @@ test_that("transformations are handled", {
     expect_identical(output.inverse2$predicted_values$predicted.value, c(4.79, 0.77, 0.50))
     expect_identical(output.inverse3$predicted_values$predicted.value, c(4.79, 0.77, 0.50))
 
-    skip_if(interactive())
+    # skip_if(interactive())
     vdiffr::expect_doppelganger("mct log output", output.log$predicted_plot)
     vdiffr::expect_doppelganger("mct sqrt output", output.sqrt$predicted_plot)
     vdiffr::expect_doppelganger("mct logit output", output.logit$predicted_plot)
@@ -102,10 +93,47 @@ test_that("ordering output works", {
     vdiffr::expect_doppelganger("mct descending output", output2$predicted_plot)
 })
 
+test_that("different interval types work", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    output1 <- mct.out(dat.aov, classify = "Species", int.type = "1se")
+    output2 <- mct.out(dat.aov, classify = "Species", int.type = "2se")
+    expect_identical(output1$predicted_values$low, c(0.22, 1.30, 2.00))
+    expect_identical(output1$predicted_values$up, c(0.27, 1.35, 2.05))
+    expect_identical(output2$predicted_values$low, c(0.19, 1.27, 1.97))
+    expect_identical(output2$predicted_values$up, c(0.30, 1.38, 2.08))
+
+    vdiffr::expect_doppelganger("mct output 1se", output1$predicted_plot)
+    vdiffr::expect_doppelganger("mct output 2se", output2$predicted_plot)
+})
+
+test_that("save produces output", {
+    dat.aov <- aov(Petal.Width ~ Species, data = iris)
+    withr::local_file("pred_vals.csv")
+    output <- mct.out(dat.aov, classify = "Species", save = TRUE, savename = "pred_vals")
+    output$predicted_values[c("Species", "groups")] <- lapply(output$predicted_values[c("Species", "groups")], as.character)
+    expect_identical(output$predicted_values, read.csv("pred_vals.csv"))
+})
+
+test_that("Interaction terms work", {
+    skip_if_not_installed("asreml")
+    quiet(library(asreml))
+    load("../asreml_oats.Rdata")
+    output <- mct.out(model.asr, pred.asr, classify = "Nitrogen:Variety")
+    expect_identical(output$predicted_values$predicted.value,
+                     c(80.00, 86.67, 71.50, 98.50, 108.50, 89.67, 114.67, 117.17, 110.83, 124.83, 126.83, 118.50))
+
+    # skip_if(interactive())
+    vdiffr::expect_doppelganger("Interactions work", output$predicted_plot)
+})
+
 test_that("invalid order input produces an error", {
     dat.aov <- aov(Petal.Width ~ Species, data = iris)
-    expect_error(mct.out(dat.aov, classify = "Species", trans = "log", order = "xyz"))
-    expect_error(mct.out(dat.aov, classify = "Species", trans = "log", order = 1))
+    expect_error(mct.out(dat.aov, classify = "Species", order = "xyz"),
+                 "order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
+    expect_error(
+        expect_warning(mct.out(dat.aov, classify = "Species", order = 1:2),
+                       "argument 'pattern' has length > 1 and only the first element will be used"),
+        "order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
 })
 
 test_that("dashes are handled", {
@@ -126,7 +154,7 @@ test_that("dashes are handled", {
                    "The treatment levels se-sa, vir-ica contained '-', which has been replaced in the final output with '_'")
     expect_identical(output2$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
 
-    skip_if(interactive())
+    # skip_if(interactive())
     vdiffr::expect_doppelganger("mct dashes output", output2$predicted_plot)
 })
 
@@ -136,7 +164,7 @@ test_that("mct removes aliased treatments in aov", {
     dat.aov1 <- aov(Petal.Length ~ Species, data = iris1)
     output1 <- mct.out(dat.aov1, classify = "Species")
     expect_identical(output1$predicted_values$predicted.value, c(4.26, 5.55))
-    skip_if(interactive())
+    # skip_if(interactive())
     vdiffr::expect_doppelganger("aov aliased output", output1$predicted_plot)
 })
 
@@ -192,16 +220,6 @@ test_that("Forgetting sed = T in pred.obj object causes error", {
                  "Prediction object \\(pred.obj\\) must be created with argument sed = TRUE\\.")
 })
 
-test_that("Invalid order input gives an error", {
-    dat.aov <- aov(Petal.Width ~ Species, data = iris)
-    expect_error(mct.out(dat.aov, classify = "Species", order = "abc"),
-                 "order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
-    expect_error(
-        expect_warning(mct.out(dat.aov, classify = "Species", order = 1:2),
-                       "argument 'pattern' has length > 1 and only the first element will be used"),
-        "order must be one of 'ascending', 'increasing', 'descending', 'decreasing' or 'default'")
-})
-
 test_that("lme4 model works", {
     skip_if_not_installed("lme4")
     quiet(library(lme4))
@@ -209,7 +227,7 @@ test_that("lme4 model works", {
     dat.lmer <- lmer(yield ~ nitro*gen + (1|block), data = dat)
     output <- mct.out(dat.lmer, classify = "nitro")
     expect_identical(output$predicted_values$predicted.value, c(79.39, 98.89, 114.22, 123.39))
-    skip_if(interactive())
+    # skip_if(interactive())
     vdiffr::expect_doppelganger("lme4 output", output$predicted_plot)
 })
 
