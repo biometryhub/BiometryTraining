@@ -29,9 +29,9 @@
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
 
     pkgs <- rownames(installed.packages(lib.loc = library))
-    pkgs <- pkgs[pkgs != "asremlPlus"]
+    # pkgs <- pkgs[pkgs != "asremlPlus"]
 
-    if("asreml" %in% pkgs & !force) {
+    if(any(grep("^asreml$", pkgs)) & !force) {
         if(!quiet) message("ASReml-R is already installed.")
         invisible(TRUE)
     }
@@ -150,8 +150,8 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         }
 
         pkgs <- rownames(installed.packages(lib.loc = library, noCache = T))
-        pkgs <- pkgs[pkgs != "asremlPlus"]
-        if("asreml" %in% pkgs) {
+
+        if(any(grep("^asreml$", pkgs))) {
             if(!quiet) message("ASReml-R successfully installed!")
         }
         else {
