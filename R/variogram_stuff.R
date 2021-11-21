@@ -8,12 +8,12 @@ model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
                     data = oats)
 
 
-
 vario <- function(model.obj) {
     # So the 'z' value for the variogram is the residuals
     # Need to be able to pull out the x/y from the model object
-    vals <- oats[, c('Row', 'Column', 'yield')]
-    vals[, 'yield'] <- model.obj$residuals
+
+    vals <- model.obj$mf[, c('Row', 'Column')]
+    vals <- cbind(vals, resid = resid(model.obj))
 
 
     rows <- max(as.numeric(vals$Row))
@@ -43,7 +43,7 @@ vario <- function(model.obj) {
 
                 if (0 < row && row <= rows && 0 < col && col <= cols) {
                     other <- vals[which(vals['Row'] == row & vals['Column'] == col), ]
-                    gamma <- gamma + (as.numeric(val['yield'])-as.numeric(other['yield']))^2
+                    gamma <- gamma + (as.numeric(val['resid'])-as.numeric(other['resid']))^2
                     np <- np + 1
                 }
             }
@@ -63,4 +63,6 @@ vario <- function(model.obj) {
 }
 
 # Direct comparison
-View(cbind(vario, asreml::varioGram(model.asr)))
+# View(cbind(vario, asreml::varioGram(model.asr)))
+
+# vario(model.asr)
