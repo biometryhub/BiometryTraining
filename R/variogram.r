@@ -1,4 +1,4 @@
-#' Variogram for spatial models.
+#' Variogram plots for spatial models.
 #'
 #' Produces variogram plots for checking spatial trends.
 #'
@@ -7,6 +7,7 @@
 #' @return A list containing ggplot2 objects.
 #'
 #' @importFrom akima interp interp2xyz
+#' @importFrom grDevices rainbow
 #' @importFrom lattice wireframe
 #' @importFrom cowplot plot_grid
 #' @importFrom ggplot2 ggplot geom_tile coord_equal geom_contour scale_fill_gradientn theme_bw scale_x_continuous scale_y_continuous theme labs
@@ -26,15 +27,15 @@
 
 vario <- function(mod.obj){
 
-    if(!("asreml" %in% class(mod.obj))) {
-        stop("mod.obj must be an asreml object")
+    if(!(inherits(mod.obj, "asreml"))) {
+        stop("mod.obj must be an asreml model object")
     }
 
-    if(!requireNamespace("asreml", quietly = T)) {
-        stop("asreml must be installed")
-    }
+    x <- NULL
+    y <- NULL
+    z <- NULL
 
-    aa <- asreml::varioGram(mod.obj)
+    aa <- variogram(mod.obj)
     xnam <- names(aa)[2]
     ynam <- names(aa)[1]
     fld <- akima::interp(y = aa[,1], x = aa[,2], z = aa$gamma)
@@ -44,8 +45,8 @@ vario <- function(mod.obj){
         ggplot2::geom_tile(alpha = 0.6) +
         ggplot2::coord_equal() +
         ggplot2::geom_contour(color = "white", alpha = 0.5) +
-        ggplot2::scale_fill_gradientn(colours = rainbow(100)) +
-        ggplot2::theme_bw(base_size = 6) +
+        ggplot2::scale_fill_gradientn(colours = grDevices::rainbow(100)) +
+        ggplot2::theme_bw(base_size = 8) +
         ggplot2::scale_y_continuous(expand = c(0, 0), breaks = seq(1, max(gdat$x), 2)) +
         ggplot2::scale_x_continuous(expand = c(0, 0), breaks = seq(1, max(gdat$y), 2)) +
         ggplot2::theme(legend.position = "none", aspect.ratio = 0.3) +
@@ -63,4 +64,85 @@ vario <- function(mod.obj){
     output <- cowplot::plot_grid(b, a, nrow = 2, scale = c(2, 1))
 
     return(output)
+}
+
+#' Calculate the variogram for a model
+#'
+#' @param model.obj An asreml model
+#'
+#' @return A data frame with the variogram for a model. The data frame contains the spatial coordinaties (typically row and column), the $gamma$ for that position and the number of points with the separation.
+#' @keywords internal
+#'
+#' @references
+#'
+#' @examples
+#' \dontrun{
+#' library(asreml)
+#' oats <- asreml::oats
+#' oats <- oats[order(oats$Row, oats$Column),]
+#' model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
+#'                     random = ~ Blocks + Blocks:Wplots,
+#'                     residual = ~ ar1(Row):ar1(Column),
+#'                     data = oats)
+#' variogram(model.asr)
+#' }
+#'
+variogram <- function(model.obj) {
+    # So the 'z' value for the variogram is the residuals
+    # Need to be able to pull out the x/y from the model object
+
+    dims <- unlist(strsplit(names(model.obj$R.param[1]), ":"))
+    # vals <- cbind(data.frame(model.obj$mf[[dims[1]]]), data.frame(model.obj$mf[[dims[2]]]), resid = resid(model.obj))
+    # colnames(vals) <- c(dims, "resid")
+    Row <- as.numeric(model.obj$mf[[dims[1]]])
+    Column <- as.numeric(model.obj$mf[[dims[2]]])
+    Resid <- residuals(model.obj)
+
+    nrows <- max(Row)
+    ncols <- max(Column)
+
+    vario <- expand.grid(Row = 0:(nrows-1), Column = 0:(ncols-1))
+
+    # Ignore the 0, 0 case (gamma=0, counted row*cols times)
+    gammas <- rep(0, nrows*ncols)
+    nps <- rep(nrows*ncols, nrows*ncols)
+
+    for (index in 2:nrow(vario)) {
+        i <- vario[index, 'Row']
+        j <- vario[index, 'Column']
+
+        gamma <- 0
+        np <- 0
+        for (val_index in 1:nrows) {
+            # val <- vals[val_index, ]
+
+            # Deliberate double-counting so that offset handling is easy
+            # (so e.g. we compute distance from (1,1)->(2,3), and then again
+            # later from (2,3)->(1,1)).
+            for (offset in unique(list(c(i, j), c(-i, j), c(i, -j), c(-i, -j)))) {
+                row <- Row[val_index] + offset[1]
+                col <- Column[val_index] + offset[2]
+
+                if (0 < row && row <= nrows && 0 < col && col <= ncols) {
+                    other <- which(Row == row & Column == col)
+                    gamma <- gamma + (Resid[val_index]-Resid[other])^2
+                    np <- np + 1
+                }
+            }
+        }
+        # Since we double-counted precisely, halve to get the correct answer.
+        np <- np / 2
+        gamma <- gamma / 2
+
+        if (np > 0) {
+            gamma <- gamma / (2*np)
+        }
+
+        gammas[index] <- gamma
+        nps[index] <- np
+    }
+    vario <- cbind(vario, data.frame(gamma = gammas, np = nps))
+    colnames(vario) <- c(dims, "gamma", "np")
+    class(vario) <- c("varioGram", "data.frame")
+    return(vario)
 }

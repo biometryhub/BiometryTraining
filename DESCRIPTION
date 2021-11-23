@@ -30,11 +30,13 @@ BugReports: https://github.com/biometryhub/BiometryTraining/issues
 Depends: 
     R (>= 3.6.0)
 Imports: 
+    akima,
     agricolae,
     cowplot,
     curl,
     ellipsis,
     ggplot2,
+    lattice,
     lucid,
     multcompView,
     predictmeans,
