@@ -4,10 +4,10 @@
 \alias{vario}
 \title{Variogram plots for spatial models.}
 \usage{
-vario(mod.obj)
+vario(model.obj)
 }
 \arguments{
-\item{mod.obj}{An \code{asreml} model object.}
+\item{model.obj}{An \code{asreml} model object.}
 }
 \value{
 A list containing ggplot2 objects.

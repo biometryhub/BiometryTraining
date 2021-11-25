@@ -1,12 +1,22 @@
 test_that("Residual plots work for aov", {
   dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
 
-  expect_error(resplot(1:10), "mod.obj must be an aov, lm, lmerMod, lmerModLmerTest, asreml or mmer object")
   p1 <- resplt(dat.aov)
   p2 <- resplot(dat.aov, shapiro = FALSE)
 
   vdiffr::expect_doppelganger(title = "Resplot for aov", p1)
   vdiffr::expect_doppelganger(title = "Resplot for aov without shapiro", p2)
+})
+
+test_that("resplot produces an error for invalid data types work for aov", {
+    expect_error(resplot(1:10), "model.obj must be an aov, lm, lmerMod, lmerModLmerTest, asreml or mmer object")
+})
+
+test_that("Old mod.obj argument produces a warning", {
+    dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
+    expect_warning(p <- resplot(mod.obj = dat.aov),
+                   "mod.obj has been deprecated to be consistent with other functions. Please use `model.obj` instead.")
+    vdiffr::expect_doppelganger(title = "Resplot after warning", p)
 })
 
 test_that("Residual plots work for asreml", {

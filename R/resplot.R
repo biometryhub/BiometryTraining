@@ -2,12 +2,13 @@
 #'
 #' Produces plots of residuals for assumption checking of linear (mixed) model.
 #'
-#' @param mod.obj An `aov`, `lm`, `lme` ([nlme::lme()]), `lmerMod` ([lme4::lmer()]), `asreml` or `mmer` (sommer) model object.
+#' @param model.obj An `aov`, `lm`, `lme` ([nlme::lme()]), `lmerMod` ([lme4::lmer()]), `asreml` or `mmer` (sommer) model object.
 #' @param shapiro (Logical) Display the Shapiro-Wilks test of normality on the plot?
 #' @param call (Logical) Display the model call on the plot?
 #' @param axes.size A numeric value for the size of the axes label font size in points.
 #' @param label.size A numeric value for the size of the label (A,B,C) font point size.
 #' @param call.size A numeric value for the size of the model displayed on the plot.
+#' @param mod.obj Deprecated to be consistent with other functions. Please use `model.obj` instead.
 #'
 #' @return A list containing ggplot2 objects which are diagnostic plots.
 #'
@@ -23,44 +24,48 @@
 #' resplt(dat.aov)
 #' @export
 
-resplot <- function(mod.obj, shapiro = TRUE, call = FALSE, label.size = 10, axes.size = 10, call.size = 9){
-
+resplot <- function(model.obj, shapiro = TRUE, call = FALSE, label.size = 10, axes.size = 10, call.size = 9, mod.obj){
     # Assign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
 
     stdres <- NULL
     # resids <- NULL
 
-    if (inherits(mod.obj, c("aov", "lm", "lmerMod", "lme", "lmerModLmerTest"))) {
+    if(!missing(mod.obj)) {
+        warning("mod.obj has been deprecated to be consistent with other functions. Please use `model.obj` instead.")
+        model.obj <- mod.obj
+    }
+
+    if (inherits(model.obj, c("aov", "lm", "lmerMod", "lme", "lmerModLmerTest"))) {
         facet <- 1
         facet_name <- NULL
-        resids <- residuals(mod.obj)
+        resids <- residuals(model.obj)
         k <- length(resids)
-        fits <- fitted(mod.obj)
+        fits <- fitted(model.obj)
     }
-    else if (inherits(mod.obj, "asreml")){
-        facet <- length(names(mod.obj$R.param))
+    else if (inherits(model.obj, "asreml")){
+        facet <- length(names(model.obj$R.param))
         if (facet > 1) {
-            facet_name <- names(mod.obj$R.param)
-            k <- unlist(lapply(1:facet, function(i) mod.obj$R.param[[i]]$variance$size))
+            facet_name <- names(model.obj$R.param)
+            k <- unlist(lapply(1:facet, function(i) model.obj$R.param[[i]]$variance$size))
         }
         else {
             facet_name <- NULL
-            k <- length(mod.obj$residual)
+            k <- length(model.obj$residual)
         }
-        resids <- residuals(mod.obj)
-        fits <- fitted(mod.obj)
+        resids <- residuals(model.obj)
+        fits <- fitted(model.obj)
     }
-    else if(inherits(mod.obj, "mmer")) { # sommer doesn't display residuals the same way
-        facet <- mod.obj$termsN$rcov
+    else if(inherits(model.obj, "mmer")) { # sommer doesn't display residuals the same way
+        facet <- model.obj$termsN$rcov
         facet_name <- NULL
-        k <- length(mod.obj$residual)
+        k <- length(model.obj$residual)
 
-        resids <- residuals(mod.obj)[,ncol(residuals(mod.obj))]
-        fits <- fitted(mod.obj)$dataWithFitted[,paste0(mod.obj$terms$response[[1]], ".fitted")]
+        resids <- residuals(model.obj)[,ncol(residuals(model.obj))]
+        fits <- fitted(model.obj)$dataWithFitted[,paste0(model.obj$terms$response[[1]], ".fitted")]
     }
     else {
-        stop("mod.obj must be an aov, lm, lmerMod, lmerModLmerTest, asreml or mmer object")
+        stop("model.obj must be an aov, lm, lmerMod, lmerModLmerTest, asreml or mmer object")
     }
 
     aa <- data.frame(residuals = resids, fitted = fits, lvl = rep(1:facet, k))
@@ -103,7 +108,7 @@ resplot <- function(mod.obj, shapiro = TRUE, call = FALSE, label.size = 10, axes
             bottom_row <- cowplot::plot_grid(NULL, c, NULL, ncol=3, rel_widths=c(0.25,0.5,0.25), labels = c("", "C", ""), hjust = -1, label_size = label.size)
         }
         if(call) {
-            title <- cowplot::ggdraw() + cowplot::draw_label(paste(deparse(mod.obj$call), collapse = "\n"), size = call.size, hjust = 0.5)
+            title <- cowplot::ggdraw() + cowplot::draw_label(paste(deparse(model.obj$call), collapse = "\n"), size = call.size, hjust = 0.5)
             call_row <- cowplot::plot_grid(title, ncol=1)
             output[[i]] <- cowplot::plot_grid(call_row, top_row, bottom_row, ncol=1, rel_heights = c(0.1, 0.4, 0.4))
         }

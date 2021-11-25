@@ -2,7 +2,7 @@
 #'
 #' Produces variogram plots for checking spatial trends.
 #'
-#' @param mod.obj An `asreml` model object.
+#' @param model.obj An `asreml` model object.
 #'
 #' @return A list containing ggplot2 objects.
 #'
@@ -27,17 +27,17 @@
 #' }
 #' @export
 
-vario <- function(mod.obj){
+vario <- function(model.obj){
 
-    if(!(inherits(mod.obj, "asreml"))) {
-        stop("mod.obj must be an asreml model object")
+    if(!(inherits(model.obj, "asreml"))) {
+        stop("model.obj must be an asreml model object")
     }
 
     x <- NULL
     y <- NULL
     z <- NULL
 
-    aa <- variogram(mod.obj)
+    aa <- variogram(model.obj)
     xnam <- names(aa)[2]
     ynam <- names(aa)[1]
     fld <- akima::interp(y = aa[,1], x = aa[,2], z = aa$gamma)
