@@ -12,6 +12,8 @@
 #' @importFrom cowplot plot_grid
 #' @importFrom ggplot2 ggplot geom_tile coord_equal geom_contour scale_fill_gradientn theme_bw scale_x_continuous scale_y_continuous theme labs
 #'
+#' @references S. P. Kaluzny, S. C. Vega, T. P. Cardoso, A. A. Shelly, _S+SpatialStats: User’s Manual for Windows® and UNIX®_ (Springer New York, 2013; https://books.google.com.au/books?id=iADkBwAAQBAJ).
+#'
 #' @examples
 #' \dontrun{
 #' library(asreml)
@@ -73,7 +75,6 @@ vario <- function(mod.obj){
 #' @return A data frame with the variogram for a model. The data frame contains the spatial coordinaties (typically row and column), the $gamma$ for that position and the number of points with the separation.
 #' @keywords internal
 #'
-#' @references
 #'
 #' @examples
 #' \dontrun{

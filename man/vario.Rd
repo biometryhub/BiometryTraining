@@ -27,3 +27,6 @@ model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
 vario(model.asr)
 }
 }
+\references{
+S. P. Kaluzny, S. C. Vega, T. P. Cardoso, A. A. Shelly, \emph{S+SpatialStats: User’s Manual for Windows® and UNIX®} (Springer New York, 2013; https://books.google.com.au/books?id=iADkBwAAQBAJ).
+}

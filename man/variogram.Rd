@@ -28,7 +28,4 @@ variogram(model.asr)
 }
 
 }
-\references{
-
-}
 \keyword{internal}
