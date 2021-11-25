@@ -1,16 +1,19 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+test_that("vario produces a variogram", {
+    load("../asreml_oats.Rdata")
+    # withr::local_file("variogram.svg")
+    v1 <- vario(model.asr)
+    vdiffr::expect_doppelganger(title = "Variogram produced", v1)
 })
 
 
 # Comp to asreml
 # library(asreml)
 # oats <- asreml::oats
-# oats <- oats[order(oats$Row, oats$Column),]
+# dat <- dat[order(dat$Row, dat$Column),]
 # model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
 #                     random = ~ Blocks + Blocks:Wplots,
 #                     residual = ~ ar1(Row):ar1(Column),
-#                     data = oats)
+#                     data = dat)
 
 
 
