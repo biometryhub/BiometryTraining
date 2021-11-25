@@ -1,8 +1,13 @@
 test_that("vario produces a variogram", {
     load("../asreml_oats.Rdata")
-    # withr::local_file("variogram.svg")
     v1 <- vario(model.asr)
     vdiffr::expect_doppelganger(title = "Variogram produced", v1)
+})
+
+test_that("vario produces an error for other models and data types", {
+    model.lm <- lm(Petal.Length~Petal.Width, data = iris)
+    expect_error(vario(model.lm), "model.obj must be an asreml model object")
+    expect_error(vario(1:3), "model.obj must be an asreml model object")
 })
 
 
