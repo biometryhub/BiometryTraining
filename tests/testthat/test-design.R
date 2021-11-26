@@ -1,14 +1,3 @@
-expect_file <- function(fn, args, file, missing = F) {
-    x <- do.call(fn, args)
-    if (!missing) {
-        expect_true(all(file.exists(file)))
-    }
-    else {
-        expect_false(all(file.exists(file)))
-    }
-}
-
-
 test_that("designs are produced for supported types", {
     # CRD
     expect_output(design(type = "crd", treatments = c(1, 5, 10, 20),
@@ -160,7 +149,7 @@ test_that("Area and treatment size mismatches produce warnings", {
     )
 })
 
-test_that("save works with all the options", {
+test_that("invalid save option produces an error", {
     expect_error(
         design(
             "crd",
@@ -173,147 +162,49 @@ test_that("save works with all the options", {
         ),
         "save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'."
     )
-
-    # 'none' produces nothing
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = "none",
-        quiet = TRUE
-    ),
-    "crd_design.csv",
-    missing = TRUE
-    )
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = "none",
-        quiet = TRUE
-    ),
-    "crd_design.pdf",
-    missing = TRUE
-    )
-
-    # FALSE produces nothing
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = FALSE,
-        quiet = TRUE
-    ),
-    "crd_design.csv",
-    missing = TRUE
-    )
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = FALSE,
-        quiet = TRUE
-    ),
-    "crd_design.pdf",
-    missing = TRUE
-    )
-
-    if (file.exists("crd_design.csv")) file.remove("crd_design.csv")
-    if (file.exists("crd_design.pdf")) file.remove("crd_design.pdf")
-
-    # 'workbook' produces csv file and not plot
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = "workbook",
-        quiet = TRUE
-    ),
-    "crd_design.csv"
-    )
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = "workbook",
-        quiet = TRUE
-    ),
-    "crd_design.pdf",
-    missing = TRUE
-    )
-
-
-    if (file.exists("crd_design.csv")) file.remove("crd_design.csv")
-    if (file.exists("crd_design.pdf")) file.remove("crd_design.pdf")
-
-    # 'plot' produces plot file and not csv
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = "plot",
-        quiet = TRUE
-    ),
-    "crd_design.csv",
-    missing = TRUE
-    )
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = "plot",
-        quiet = TRUE
-    ),
-    "crd_design.pdf"
-    )
-
-    if (file.exists("crd_design.csv")) file.remove("crd_design.csv")
-    if (file.exists("crd_design.pdf")) file.remove("crd_design.pdf")
-
-    # 'plot' produces plot file and not csv
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = "both",
-        quiet = TRUE
-    ),
-    c("crd_design.csv", "crd_design.pdf")
-    )
-
-    if (file.exists("crd_design.csv")) file.remove("crd_design.csv")
-    if (file.exists("crd_design.pdf")) file.remove("crd_design.pdf")
-
-    # TRUE produces plot file and not csv
-    expect_file(design, list(
-        "crd",
-        treatments = 1:11,
-        reps = 4,
-        nrows = 11,
-        ncols = 4,
-        save = TRUE,
-        quiet = TRUE
-    ),
-    c("crd_design.csv", "crd_design.pdf")
-    )
 })
 
+test_that("save = 'none' produces nothing", {
+    design("crd", treatments = 1:11, reps = 4, nrows = 11, ncols = 4, save = "none", quiet = TRUE)
+    expect_false(file.exists("crd_design.csv"))
+    expect_false(file.exists("crd_design.pdf"))
+})
 
+test_that("save = FALSE produces nothing", {
+    design("crd", treatments = 1:11, reps = 4, nrows = 11, ncols = 4, save = FALSE, quiet = TRUE)
+    expect_false(file.exists("crd_design.csv"))
+    expect_false(file.exists("crd_design.pdf"))
+})
+
+test_that("save = 'workbook' produces csv file and not plot", {
+    design("crd", treatments = 1:11, reps = 4, nrows = 11, ncols = 4, save = "workbook", savename = "crd_design1", quiet = TRUE)
+    withr::local_file("crd_design1.csv")
+    expect_true(file.exists("crd_design1.csv"))
+    expect_snapshot_file("crd_design1.csv")
+    expect_false(file.exists("crd_design1.pdf"))
+})
+
+test_that("save = 'plot' produces plot file and not csv", {
+    design("crd", treatments = 1:11, reps = 4, nrows = 11, ncols = 4, save = "plot", savename = "crd_design2", quiet = TRUE)
+    withr::local_file("crd_design2.pdf")
+    expect_false(file.exists("crd_design2.csv"))
+    expect_true(file.exists("crd_design2.pdf"))
+})
+
+test_that("save = 'both' produces plot file and csv", {
+    design("crd", treatments = 1:11, reps = 4, nrows = 11, ncols = 4, save = "both", savename = "crd_design3", quiet = TRUE)
+    withr::local_file("crd_design3.pdf")
+    withr::local_file("crd_design3.csv")
+    expect_true(file.exists("crd_design3.csv"))
+    expect_true(file.exists("crd_design3.pdf"))
+    expect_snapshot_file("crd_design3.csv")
+})
+
+test_that("save = TRUE produces plot file and csv", {
+    design("crd", treatments = 1:11, reps = 4, nrows = 11, ncols = 4, save = TRUE, savename = "crd_design4", quiet = TRUE)
+    withr::local_file("crd_design4.pdf")
+    withr::local_file("crd_design4.csv")
+    expect_true(file.exists("crd_design4.csv"))
+    expect_true(file.exists("crd_design4.pdf"))
+    expect_snapshot_file("crd_design4.csv")
+})
