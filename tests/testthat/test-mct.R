@@ -223,11 +223,12 @@ test_that("Forgetting sed = T in pred.obj object causes error", {
 test_that("lme4 model works", {
     skip_if_not_installed("lme4")
     quiet(library(lme4))
-    load("../oats_data.Rdata")
+    load("tests/oats_data.Rdata")
     dat.lmer <- lmer(yield ~ Nitrogen*Variety + (1|Blocks), data = dat)
     output <- mct.out(dat.lmer, classify = "Nitrogen")
+    expect_identical(round(output$predicted_values$std.error, 2), rep(7.4, 4))
+    skip_if(Sys.info()[["sysname"]] == "Linux")
     expect_identical(output$predicted_values$predicted.value, c(79.39, 98.89, 114.22, 123.39))
-    # skip_if(interactive())
     vdiffr::expect_doppelganger("lme4 output", output$predicted_plot)
 })
 
