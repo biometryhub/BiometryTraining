@@ -117,10 +117,10 @@ test_that("save produces output", {
 test_that("Interaction terms work", {
     skip_if_not_installed("asreml")
     quiet(library(asreml))
-    load("../asreml_oats.Rdata")
+    load("../asreml_oats.Rdata", .GlobalEnv)
     output <- mct.out(model.asr, pred.asr, classify = "Nitrogen:Variety")
     expect_identical(output$predicted_values$predicted.value,
-                     c(80.00, 86.67, 71.50, 98.50, 108.50, 89.67, 114.67, 117.17, 110.83, 124.83, 126.83, 118.50))
+                     c(76.58, 85.86, 70.85, 99.91, 108.32, 92.22, 116.63, 113.50, 113.10, 123.75, 127.53, 118.40))
 
     # skip_if(interactive())
     vdiffr::expect_doppelganger("Interactions work", output$predicted_plot)
@@ -172,7 +172,7 @@ test_that("mct removes aliased treatments in aov", {
 test_that("mct handles aliased results in asreml with a warning", {
     skip_if_not_installed("asreml")
     quiet(library(asreml))
-    load("../asreml_oats.Rdata")
+    load("../asreml_oats.Rdata", .GlobalEnv)
     pred.asr$pvals$predicted.value[12] <- NA
     pred.asr$sed[12, ] <- NA
     pred.asr$sed[, 12] <- NA

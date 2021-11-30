@@ -1,6 +1,14 @@
 test_that("vario produces a variogram", {
-    load("../asreml_oats.Rdata")
+    load("../asreml_oats.Rdata", .GlobalEnv)
+
+    vg <- variogram(model.asr)
+    expect_equal(nrow(vg), 72)
+    expect_equal(round(vg[1:6, "gamma"], 3), c(0.000, 50.171, 54.679, 91.463, 101.107, 96.750))
+
     v1 <- vario(model.asr)
+    expect_type(v1, "list")
+    expect_s3_class(v1, "ggplot")
+    skip_if_not(Sys.info()[["sysname"]] == "Linux")
     vdiffr::expect_doppelganger(title = "Variogram produced", v1)
 })
 
