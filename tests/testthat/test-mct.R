@@ -231,6 +231,23 @@ test_that("lme4 model works", {
     vdiffr::expect_doppelganger("lme4 output", output$predicted_plot)
 })
 
+test_that("3 way interaction works", {
+    des <- design(type = "crossed:crd", treatments = c(3, 3, 3),
+                  reps = 3, nrows = 9, ncols = 9, seed = 42, quiet = T)
+    des$design$response <- rnorm(81, 100)
+    des$design$A <- factor(des$design$A)
+    des$design$B <- factor(des$design$B)
+    des$design$C <- factor(des$design$C)
+    dat.aov <- aov(response~A*B*C, data = des$design)
+    output <- mct.out(dat.aov, classify = "A:B:C")
+    expect_identical(round(output$predicted_values$predicted.value[1:10],2),
+                     c(100.68, 100.46, 99.79, 99.08, 100.48, 99.90, 100.19, 99.26, 100.22, 99.94))
+    expect_identical(round(output$predicted_values$std.error, 2),
+                     rep(0.63, 27))
+    # skip_if(interactive())
+    vdiffr::expect_doppelganger("3 way interaction", output$predicted_plot)
+})
+
 test_that("nlme model produces an error", {
         skip_if_not_installed("nlme")
         quiet(library(nlme))
