@@ -58,31 +58,40 @@ test_that("designs are produced for supported types", {
 })
 
 test_that("reps in lsd produces a message", {
-    expect_message(design(type = "lsd", 1:4, reps = 3, nrows = 4, ncols = 4, seed = 42, quiet = TRUE),
+    expect_message(x <- design(type = "lsd", 1:4, reps = 3, nrows = 4, ncols = 4, seed = 42, quiet = TRUE),
                    "Number of replicates is not required for Latin Square designs and has been ignored")
 })
 
+test_that("rcbd requires brows and bcols", {
+    expect_error(design("rcbd", treatments = LETTERS[1:11],
+                        reps = 4, nrows = 11, ncols = 4,
+                        brows = NA, bcols = 1, seed = 42),
+                 "Design has blocks so brows and bcols must be supplied.")
+    expect_error(design(type = "crossed:rcbd", treatments = c(3, 2),
+                        reps = 3, nrows = 6, ncols = 3, brows = NA, bcols = 1),
+                 "Design has blocks so brows and bcols must be supplied.")
+})
+
 test_that("unsupported design types give an error", {
-    expect_error(
-        design(type = "abc", 1:4, reps = 5, nrows = 4, ncols = 5, seed = 42),
-        "Designs of type 'abc' are not supported"
-    )
-    expect_error(
-        design(type = "strip", 1:4, reps = 5, nrows = 4, ncols = 5, seed = 42),
-        "Designs of type 'strip' are not supported"
-    )
-    expect_error(
-        design(type = "crossed:split", 1:4, reps = 5, nrows = 4, ncols = 5, seed = 42),
-        "Crossed designs of type 'split' are not supported"
-    )
-    expect_error(
-        design(type = "crossed:abc", 1:4, reps = 5, nrows = 4, ncols = 5, seed = 42),
-        "Crossed designs of type 'abc' are not supported"
-    )
-    expect_error(
-        design(type = "crossed:crd", treatments = 1:4, reps = 5, nrows = 4, ncols = 5, seed = 42),
-        "Crossed designs with more than three treatment factors are not supported"
-    )
+    expect_error(design(type = "abc", 1:4, reps = 5,
+                        nrows = 4, ncols = 5, seed = 42),
+                 "Designs of type 'abc' are not supported")
+
+    expect_error(design(type = "strip", 1:4, reps = 5,
+                        nrows = 4, ncols = 5, seed = 42),
+                 "Designs of type 'strip' are not supported")
+
+    expect_error(design(type = "crossed:split", 1:4, reps = 5,
+                        nrows = 4, ncols = 5, seed = 42),
+                 "Crossed designs of type 'split' are not supported")
+
+    expect_error(design(type = "crossed:abc", 1:4, reps = 5,
+                        nrows = 4, ncols = 5, seed = 42),
+                 "Crossed designs of type 'abc' are not supported")
+
+    expect_error(design(type = "crossed:crd", treatments = 1:4,
+                        reps = 5, nrows = 4, ncols = 5, seed = 42),
+                 "Crossed designs with more than three treatment factors are not supported")
 })
 
 test_that("split plot requires sub_treatments", {
@@ -119,6 +128,37 @@ test_that("split plot produces warning when incorrect number of treatment labels
                                            N = 1:4,
                                            Another = 1:5)),
                    "fac.names contains 3 elements but only the first 2 have been used.")
+
+    expect_warning(design(type = "split", treatments = c("A", "B"),
+                          sub_treatments = 1:4, reps = 4, nrows = 8,
+                          ncols = 4, brows = 4, bcols = 2, seed = 42,
+                          fac.names = list(Water = c("A", "B"))),
+                   "fac.names doesn't contain enough elements and has not been used.")
+})
+
+
+
+test_that("factorial designs produce warnings when incorrect number of treatment labels given", {
+    expect_warning(design(type = "crossed:rcbd", treatments = c(3, 2),
+                          reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1,
+                          fac.names = list(Water = c("A", "B"), N = 1:2), quiet = TRUE),
+                   "Water must contain the correct number of elements. Elements have not been applied.")
+
+    expect_warning(design(type = "crossed:rcbd", treatments = c(3, 2),
+                          reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1,
+                          fac.names = list(Water = c("A", "B", "C"), N = 1), quiet = TRUE),
+                   "N must contain the correct number of elements. Elements have not been applied.")
+
+    expect_warning(design(type = "crossed:rcbd", treatments = c(3, 2),
+                          reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1,
+                          fac.names = list(Water = c("A", "B", "C"), N = 1:2, Another = 1:10), quiet = TRUE),
+                   "fac.names contains 3 elements but only the first 2 have been used.")
+
+
+    expect_warning(design(type = "crossed:rcbd", treatments = c(3, 2),
+                          reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1,
+                          fac.names = list(Water = c("A", "B", "C")), quiet = TRUE),
+                   "fac.names doesn't contain enough elements and has not been used.")
 })
 
 test_that("passing unknown arguments to ggsave causes an error", {
@@ -133,6 +173,10 @@ test_that("3 way factorial designs are possible", {
     expect_output(design(type = "crossed:crd", treatments = c(2, 2, 2),
                          reps = 3, nrows = 6, ncols = 4),
                   "A:B:C                                   1\n")
+    expect_output(design(type = "crossed:crd", treatments = c(2, 2, 2),
+                         reps = 3, nrows = 6, ncols = 4,
+                         fac.names = list(X = c("A", "B"), Y = 1:2, Z = c(10, 20))),
+                  "X:Y:Z                                   1\n")
 })
 
 test_that("Area and treatment size mismatches produce warnings", {
@@ -150,17 +194,9 @@ test_that("Area and treatment size mismatches produce warnings", {
 })
 
 test_that("invalid save option produces an error", {
-    expect_error(
-        design(
-            "crd",
-            treatments = 1:11,
-            reps = 4,
-            nrows = 11,
-            ncols = 4,
-            save = "abc",
-            quiet = TRUE
-        ),
-        "save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'."
+    expect_error(design("crd", treatments = 1:11, reps = 4, nrows = 11,
+                        ncols = 4, save = "abc", quiet = TRUE),
+                 "save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'."
     )
 })
 
