@@ -154,11 +154,15 @@ test_that("factorial designs produce warnings when incorrect number of treatment
                           fac.names = list(Water = c("A", "B", "C"), N = 1:2, Another = 1:10), quiet = TRUE),
                    "fac.names contains 3 elements but only the first 2 have been used.")
 
-
     expect_warning(design(type = "crossed:rcbd", treatments = c(3, 2),
                           reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1,
                           fac.names = list(Water = c("A", "B", "C")), quiet = TRUE),
                    "fac.names doesn't contain enough elements and has not been used.")
+
+    expect_warning(design(type = "crossed:crd", treatments = c(2, 2, 2),
+                          reps = 3, nrows = 6, ncols = 4,
+                          fac.names = list(Water = c("A", "B"), N = 1:2, Another = 1), quiet = T),
+                   "Another must contain the correct number of elements. Elements have not been applied.")
 })
 
 test_that("passing unknown arguments to ggsave causes an error", {

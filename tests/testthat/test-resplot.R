@@ -20,7 +20,7 @@ test_that("Old mod.obj argument produces a warning", {
 })
 
 test_that("Residual plots work for asreml", {
-  skip_if_not_installed("asreml")
+  skip_if_not(requireNamespace("asreml", quietly = T))
 
   dat.asr <- quiet(asreml::asreml(Petal.Length ~ Petal.Width, data = iris, trace = F))
   p1_single <- resplot(dat.asr, shapiro = F)

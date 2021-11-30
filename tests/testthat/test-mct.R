@@ -115,7 +115,7 @@ test_that("save produces output", {
 })
 
 test_that("Interaction terms work", {
-    skip_if_not_installed("asreml")
+    skip_if_not(requireNamespace("asreml", quietly = T))
     quiet(library(asreml))
     load("../asreml_oats.Rdata", .GlobalEnv)
     output <- mct.out(model.asr, pred.asr, classify = "Nitrogen:Variety")
@@ -170,7 +170,7 @@ test_that("mct removes aliased treatments in aov", {
 
 
 test_that("mct handles aliased results in asreml with a warning", {
-    skip_if_not_installed("asreml")
+    skip_if_not(requireNamespace("asreml", quietly = T))
     quiet(library(asreml))
     load("../asreml_oats.Rdata", .GlobalEnv)
     pred.asr$pvals$predicted.value[12] <- NA
@@ -204,7 +204,7 @@ test_that("Use of pred argument gives warning", {
 })
 
 test_that("Missing pred.obj object causes error", {
-    skip_if_not_installed("asreml")
+    skip_if_not(requireNamespace("asreml", quietly = T))
     quiet(library(asreml))
     load("../asreml_oats.Rdata")
     expect_error(suppressWarnings(mct.out(model.asr, classify = "Nitrogen")),
@@ -212,7 +212,7 @@ test_that("Missing pred.obj object causes error", {
 })
 
 test_that("Forgetting sed = T in pred.obj object causes error", {
-    skip_if_not_installed("asreml")
+    skip_if_not(requireNamespace("asreml", quietly = T))
     quiet(library(asreml))
     dat.asr <- quiet(asreml(Petal.Width ~ Species, data = iris, trace = F))
     pred.out <- predict.asreml(dat.asr, classify = "Species")
@@ -229,6 +229,14 @@ test_that("lme4 model works", {
     expect_identical(output$predicted_values$predicted.value, c(79.39, 98.89, 114.22, 123.39))
     # skip_if(interactive())
     vdiffr::expect_doppelganger("lme4 output", output$predicted_plot)
+})
+
+test_that("nlme model produces an error", {
+        skip_if_not_installed("nlme")
+        quiet(library(nlme))
+        fm1 <- lme(distance ~ age, data = Orthodont)
+        expect_error(mct.out(fm1, classify = "age"),
+                     "Models of type lme are not supported.")
 })
 
 # test_that("sommer model works", {
