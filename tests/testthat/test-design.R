@@ -1,60 +1,81 @@
 test_that("designs are produced for supported types", {
     # CRD
-    expect_output(design(type = "crd", treatments = c(1, 5, 10, 20),
-                         reps = 5, nrows = 4, ncols = 5, seed = 42),
-                  "Residual                                16\n")
+    d1 <- design(type = "crd", treatments = c(1, 5, 10, 20),
+                 reps = 5, nrows = 4, ncols = 5, seed = 42, quiet = TRUE)
+    expect_equal(d1$satab[4], "Residual                                16\n")
+    expect_snapshot_output(d1$satab)
+
     # RCBD
-    expect_output(design("rcbd", treatments = LETTERS[1:11], reps = 4,
-                         nrows = 11, ncols = 4, brows = 11, bcols = 1, seed = 42),
-                  "Block stratum                           3\n")
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1, seed = 42, quiet = TRUE)
+    expect_equal(d2$satab[3],
+                 "Block stratum                           3\n")
+    expect_snapshot_output(d2$satab)
 
     # LSD
-    expect_output(design(type = "lsd", c("S1", "S2", "S3", "S4"),
-                         nrows = 4, ncols = 4, seed = 42),
-                  "Residual                                6\n")
+    d3 <- design(type = "lsd", c("S1", "S2", "S3", "S4"),
+                 nrows = 4, ncols = 4, seed = 42, quiet = TRUE)
+    expect_equal(d3$satab[6],
+                 "Residual                                6\n")
+    expect_snapshot_output(d3$satab)
 
     # Split
-    expect_output(design(type = "split", treatments = c("A", "B"),
-                         sub_treatments = 1:4, reps = 4, nrows = 8,
-                         ncols = 4, brows = 4, bcols = 2, seed = 42,
-                         fac.names = list(Water = c("Irrigated", "Rain-fed"),
-                                          N = seq(50, 200, 50))),
-                  "Whole plot Residual                          3\n")
+    d4 <- design(type = "split", treatments = c("A", "B"),
+                 sub_treatments = 1:4, reps = 4, nrows = 8,
+                 ncols = 4, brows = 4, bcols = 2, seed = 42,
+                 fac.names = list(Water = c("Irrigated", "Rain-fed"),
+                                  N = seq(50, 200, 50)), quiet = TRUE)
+    expect_equal(d4$satab[11],
+                 "         Water:N                            3\n")
+    expect_snapshot_output(d4$satab)
 
     # Split with vector of names
-    expect_output(design(type = "split", treatments = c("A", "B"),
-                         sub_treatments = 1:4, reps = 4, nrows = 8,
-                         ncols = 4, brows = 4, bcols = 2, seed = 42,
-                         fac.names = c("Water", "Nitrogen")),
-                  "Whole plot Residual                          3\n")
+    d5 <- design(type = "split", treatments = c("A", "B"),
+                 sub_treatments = 1:4, reps = 4, nrows = 8,
+                 ncols = 4, brows = 4, bcols = 2, seed = 42,
+                 fac.names = c("Water", "Nitrogen"), quiet = TRUE)
+    expect_equal(d5$satab[11],
+                 "         Water:Nitrogen                     3\n")
+    expect_snapshot_output(d5$satab)
 
     # Crossed, CRD
-    expect_output(design(type = "crossed:crd", treatments = c(3, 2),
-                         reps = 3, nrows = 6, ncols = 3),
-                  "A:B                                     2\n")
+    d6 <- design(type = "crossed:crd", treatments = c(3, 2),
+                 reps = 3, nrows = 6, ncols = 3, quiet = TRUE)
+    expect_equal(d6$satab[5],
+                 "A:B                                     2\n")
+    expect_snapshot_output(d6$satab)
 
     # Crossed, CRD with renaming
-    expect_output(design(type = "crossed:crd", treatments = c(3, 2),
-                         reps = 3, nrows = 6, ncols = 3,
-                         fac.names = list(N = c(50, 100, 150),
-                                          Water = c("Irrigated", "Rain-fed"))),
-                  "N:Water                                 2\n")
+    d7 <- design(type = "crossed:crd", treatments = c(3, 2),
+                 reps = 3, nrows = 6, ncols = 3,
+                 fac.names = list(N = c(50, 100, 150),
+                                  Water = c("Irrigated", "Rain-fed")), quiet = TRUE)
+    expect_equal(d7$satab[5],
+                 "N:Water                                 2\n")
+    expect_snapshot_output(d7$satab)
 
     # Crossed, RCBD
-    expect_output(design(type = "crossed:rcbd", treatments = c(3, 2),
-                         reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1),
-                  "Residual                                10\n")
+    d8 <- design(type = "crossed:rcbd", treatments = c(3, 2),
+                 reps = 3, nrows = 6, ncols = 3, brows = 6, bcols = 1, quiet = TRUE)
+    expect_equal(d8$satab[8],
+                 "Residual                                10\n")
+    expect_snapshot_output(d8$satab)
 
     # Crossed, LSD with names
-    expect_output(design(type = "crossed:lsd", treatments = c(3, 2),
-                         nrows = 6, ncols = 6,
-                         fac.names = list(N = c(50, 100, 150),
-                                          Water = c("Irrigated", "Rain-fed"))),
-                  "Row                                     5\n")
+    d9 <- design(type = "crossed:lsd", treatments = c(3, 2),
+                 nrows = 6, ncols = 6,
+                 fac.names = list(N = c(50, 100, 150),
+                                  Water = c("Irrigated", "Rain-fed")), quiet = TRUE)
+    expect_equal(d9$satab[3],
+                 "Row                                     5\n")
+    expect_snapshot_output(d9$satab)
+
     # Nested, LSD
-    expect_output(design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),
-                         nrows = 7, ncols = 7, seed = FALSE),
-                  "Residual                                30\n")
+    d10 <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2", "B3"),
+           nrows = 7, ncols = 7, seed = FALSE, quiet = TRUE)
+    expect_equal(d10$satab[6],
+                 "Residual                                30\n")
+    expect_snapshot_output(d10$satab)
 })
 
 test_that("reps in lsd produces a message", {
@@ -248,3 +269,28 @@ test_that("save = TRUE produces plot file and csv", {
     expect_true(file.exists("crd_design4.pdf"))
     expect_snapshot_file("crd_design4.csv")
 })
+
+test_that("designs have a class of 'design'", {
+    d1 <- design("crd", treatments = 1:11, reps = 4, nrows = 11, ncols = 4, quiet = TRUE)
+    expect_s3_class(d1, "design")
+})
+
+test_that("brows or bcols larger than nrows or ncols gives an error", {
+    expect_error(design("rcbd", treatments = 1:4, reps = 4, nrows = 4,
+                        ncols = 4, brows = 5, bcols = 1, quiet = TRUE),
+                 "brows must not be larger than nrows")
+    expect_error(design("rcbd", treatments = 1:4, reps = 4, nrows = 4,
+                        ncols = 4, brows = 1, bcols = 5, quiet = TRUE),
+                 "bcols must not be larger than ncols")
+})
+
+test_that("size argument must be numeric", {
+    expect_error(design("crd", treatments = 1:4, reps = 4, nrows = 4,
+                        ncols = 4, size = "A", quiet = TRUE),
+                 "size must be numeric")
+    expect_error(design("crd", treatments = 1:4, reps = 4, nrows = 4,
+                        ncols = 4, size = TRUE, quiet = TRUE),
+                 "size must be numeric")
+})
+
+# if(file.exists("Rplots.pdf")) unlink("Rplots.pdf", force = T)

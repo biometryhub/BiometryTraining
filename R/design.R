@@ -99,8 +99,19 @@ design <- function(type,
                    ...) {
 
     # Some error checking of inputs before creating design
-    dim <- nrows*ncols
+    if(!is.na(brows) & brows > nrows) {
+        stop("brows must not be larger than nrows")
+    }
 
+    if(!is.na(bcols) & bcols > ncols) {
+        stop("bcols must not be larger than ncols")
+    }
+
+    if(!is.numeric(size)) {
+        stop("size must be numeric")
+    }
+
+    dim <- nrows*ncols
     # Generate design based on type input
     # If seed is numeric, use that seed to generate the design. If seed is TRUE,
 
@@ -167,10 +178,12 @@ design <- function(type,
     }
 
     if(dim < trs) {
-        warning("Area provided is smaller than treatments applied. Please check inputs.")
+        warning("Area provided is smaller than treatments applied. Please check inputs.", call. = F)
     }
 
     output <- des.info(outdesign, nrows, ncols, brows, bcols, byrow, rotation, size, margin,
                        save, savename, plottype, seed, quiet, fac.names, fac.sep, ...)
+
+    class(output) <- c("design", class(output))
     return(output)
 }
