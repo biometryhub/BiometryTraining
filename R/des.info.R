@@ -101,11 +101,6 @@ des.info <- function(design.obj,
     # Error checking of inputs
     ellipsis::check_dots_used()
 
-    # Check design type is supported
-    # if(design.obj$parameters$design %!in% c("crd", "rcbd", "lsd", "factorial", "split")) {
-    #     stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
-    # }
-
     # Check brows and bcols supplied if necessary
     if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
         stop("Design has blocks so brows and bcols must be supplied.")
@@ -154,19 +149,10 @@ des.info <- function(design.obj,
                             warning(names(fac.names)[3], " must contain the correct number of elements. Elements have not been applied.", call. = F)
                         }
                     }
-
-                    # colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
                 }
 
-                # if(design.obj$parameters$applied == "lsd") {
-                    # colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
-                    colnames(design.obj$book)[which(colnames(design.obj$book)=="A")] <- names(fac.names)[1]
-                    colnames(design.obj$book)[which(colnames(design.obj$book)=="B")] <- names(fac.names)[2]
-                # }
-                # else {
-                    # colnames(design.obj$book)[3:4] <- names(fac.names)[1:2]
-                    # colnames(design.obj$book)[which(colnames(design.obj$book)=="C")] <- names(fac.names)[3]
-                # }
+                colnames(design.obj$book)[which(colnames(design.obj$book)=="A")] <- names(fac.names)[1]
+                colnames(design.obj$book)[which(colnames(design.obj$book)=="B")] <- names(fac.names)[2]
             }
         }
     }
