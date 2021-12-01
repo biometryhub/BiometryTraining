@@ -11,6 +11,7 @@
 #' @param offset Numeric offset applied to response variable prior to transformation. Default is `NA`. Use 0 if no offset was applied to the transformed data. See Details for more information.
 #' @param decimals Controls rounding of decimal places in output. Default is 2 decimal places.
 #' @param order Order of the letters in the groups output. Options are `'default'`, `'ascending'` or `'descending'`. Alternative options that are accepted are `increasing` and `decreasing`. Partial matching of text is performed, allowing entry of `'desc'` for example.
+#' @param plot Automatically produce a plot of the output of the multiple comparison test? Default is `FALSE`. This is maintained for backwards compatibility, but the preferred method now is to use `autoplot(<mct.out outout>)`. See [BiometryTraining::autoplot.mct()] for more details.
 #' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.1 (10%) of the difference between upper and lower error bars above the top error bar.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param save Logical (default `FALSE`). Save the predicted values to a csv file?
@@ -18,7 +19,6 @@
 #' @param pred Deprecated. Use `classify` instead.
 #'
 #' @importFrom multcompView multcompLetters
-#' @importFrom agricolae HSD.test
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict qtukey qt
 #' @importFrom utils packageVersion
@@ -62,6 +62,7 @@ mct.out <- function(model.obj,
                     offset = NA,
                     decimals = 2,
                     order = "default",
+                    plot = F,
                     label_height = 0.1,
                     rotation = 0,
                     save = FALSE,
@@ -356,6 +357,9 @@ mct.out <- function(model.obj,
     if(is.call(ylab)) {
         ylab <- as.character(ylab)[2]
     }
+    attr(pp.tab, "ylab") <- ylab
+
+    output <- list(predicted_values = pp.tab)
 
     if(grepl(":", classify)) {
         split_classify <- unlist(strsplit(classify, ":"))
@@ -366,34 +370,39 @@ mct.out <- function(model.obj,
         classify <- split_classify[1]
     }
 
-    if(is.na(trans)) {
-        plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
-            ggplot2::geom_errorbar(ggplot2::aes(ymin = low, ymax = up), width = 0.2) +
-            ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*label_height) +
-            ggplot2::geom_point(ggplot2::aes(y = predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
-            ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
-            ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
-    }
-    else {
-        plot <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
-            ggplot2::geom_errorbar(aes(ymin = low, ymax = up), width = 0.2) +
-            ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*label_height) +
-            ggplot2::geom_point(ggplot2::aes(y = PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
-            ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
-            ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
+    if(plot) {
+        if(is.na(trans)) {
+            p <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
+                ggplot2::geom_errorbar(ggplot2::aes(ymin = low, ymax = up), width = 0.2) +
+                ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*label_height) +
+                ggplot2::geom_point(ggplot2::aes(y = predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
+                ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
+                ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
+        }
+        else {
+            p <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
+                ggplot2::geom_errorbar(aes(ymin = low, ymax = up), width = 0.2) +
+                ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*label_height) +
+                ggplot2::geom_point(ggplot2::aes(y = PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
+                ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
+                ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
+        }
+
+        if(exists("classify3")) {
+            p <- p + ggplot2::facet_wrap(as.formula(paste("~", classify2, "+", classify3)))
+        }
+        else if(exists("classify2")) {
+            p <- p + ggplot2::facet_wrap(as.formula(paste("~", classify2)))
+        }
+        output$predicted_plot <- p
     }
 
-    if(exists("classify3")) {
-        plot <- plot + ggplot2::facet_wrap(as.formula(paste("~", classify2, "+", classify3)))
-    }
-    else if(exists("classify2")) {
-        plot <- plot + ggplot2::facet_wrap(as.formula(paste("~", classify2)))
-    }
 
-    output <- list(predicted_values = pp.tab, predicted_plot = plot)
     if(exists("aliased_names")) {
         output$aliased <- aliased_names
     }
 
+    class(output$predicted_values) <- c("mct", class(output$predicted_values))
+    class(output) <- c("mct", class(output))
     return(output)
 }
