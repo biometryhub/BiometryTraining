@@ -4,14 +4,14 @@
 \alias{autoplot}
 \alias{autoplot.mct}
 \alias{autoplot.design}
-\title{Automatic plots for objects}
+\title{Automatic plots for objects generated in BiometryTraining}
 \usage{
 \method{autoplot}{mct}(object, label_height = 0.1, rotation = 0, ...)
 
-\method{autoplot}{design}(design)
+\method{autoplot}{design}(object, ...)
 }
 \arguments{
-\item{object}{A data frame of output from the \code{\link[=mct.out]{mct.out()}} function with class "mct".}
+\item{object}{An object from the \code{\link[=mct.out]{mct.out()}} or \code{\link[=design]{design()}} function with class "mct" or "design".}
 
 \item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.1 (10\%) of the difference between upper and lower error bars above the top error bar.}
 
@@ -23,12 +23,12 @@
 A \code{ggplot2} object.
 }
 \description{
-Automatic plots for objects
+Automatic plots for objects generated in BiometryTraining
 }
 \examples{
 dat.aov <- aov(Petal.Width ~ Species, data = iris)
 output <- mct.out(dat.aov, classify = "Species")
-autoplot(output, label_height = 0.25)
+autoplot(output, label_height = 0.5)
 }
 \seealso{
 \code{\link[=mct.out]{mct.out()}} and \code{\link[=design]{design()}}

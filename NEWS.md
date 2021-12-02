@@ -1,8 +1,17 @@
 # BiometryTraining 0.9.1
 
+## Major changes
+
+- Created a variogram function that does not rely on ASreml (#33)
+- Enabled `autoplot()` function for `design()` and `mct.out()`. (#60)
+
 ## Minor changes
 
-- Enabled model call to be displayed on resplots for easy comparison between several models (#81)
+- Enabled model call to be displayed on `resplot()` for easy comparison between several models (#81)
+
+## Bug fixes
+
+- More sanity checking of inputs in `design()` (#69)
 
 # BiometryTraining 0.9.0
 
