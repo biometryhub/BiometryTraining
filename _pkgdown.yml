@@ -17,7 +17,9 @@ reference:
   - logl.test
   - mct.out
   - resplt
+  - vario
 - title: Utilities
   desc: Other helper functions
 - contents:
+  - starts_with("autoplot")
   - ends_with("asreml")
