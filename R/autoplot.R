@@ -1,4 +1,5 @@
 #' @importFrom ggplot2 autoplot
+#' @rdname autoplot
 #' @export
 ggplot2::autoplot
 
@@ -22,7 +23,7 @@ NULL
 
 
 #' @rdname autoplot
-#' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
+#' @importFrom ggplot2 autoplot ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #' @export
 autoplot.mct <- function(object, label_height = 0.1, rotation = 0, ...) {
     stopifnot(inherits(object, "mct"))
