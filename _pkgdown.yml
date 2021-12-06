@@ -3,6 +3,7 @@ url: https://biometryhub.github.io/BiometryTraining/
 destination: docs
 
 template:
+  bootstrap: 5
   params:
     ganalytics: G-3DTR7EJN4Q
 
@@ -21,5 +22,5 @@ reference:
 - title: Utilities
   desc: Other helper functions
 - contents:
-  - starts_with("autoplot")
+  - autoplot
   - ends_with("asreml")
