@@ -7,7 +7,7 @@
 #' @param numeric Return p-values as numeric? Default is that they are characters, where very small values shown as less than a small number. See `details` for more.
 #' @param quiet Logical (default: `FALSE`). Hide warnings and messages?
 #'
-#' @details Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation.
+#' @details Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation of probability.
 #'
 #' @importFrom stats as.formula update pchisq
 #'
