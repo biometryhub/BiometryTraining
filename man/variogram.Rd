@@ -2,18 +2,18 @@
 % Please edit documentation in R/variogram.r
 \name{variogram}
 \alias{variogram}
-\title{Calculate the variogram for a model}
+\title{Variogram plots for spatial models.}
 \usage{
 variogram(model.obj)
 }
 \arguments{
-\item{model.obj}{An asreml model}
+\item{model.obj}{An \code{asreml} model object.}
 }
 \value{
-A data frame with the variogram for a model. The data frame contains the spatial coordinaties (typically row and column), the $gamma$ for that position and the number of points with the separation.
+A list containing ggplot2 objects.
 }
 \description{
-Calculate the variogram for a model
+Produces variogram plots for checking spatial trends.
 }
 \examples{
 \dontrun{
@@ -26,6 +26,7 @@ model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
                     data = oats)
 variogram(model.asr)
 }
-
 }
-\keyword{internal}
+\references{
+S. P. Kaluzny, S. C. Vega, T. P. Cardoso, A. A. Shelly, \emph{S+SpatialStats: User’s Manual for Windows® and UNIX®} (Springer New York, 2013; https://books.google.com.au/books?id=iADkBwAAQBAJ).
+}

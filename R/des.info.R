@@ -199,7 +199,338 @@ des.info <- function(design.obj,
         }
     }
 
-    info <- plot.des(design.obj, nrows, ncols, brows, bcols, byrow, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
+    if(!missing(fac.sep) && length(fac.sep) == 1) {
+        fac.sep <- rep(fac.sep, times = 2)
+    }
+
+    if (return.seed) {
+        des.seed <- design.obj$parameters$seed
+    }
+    else {
+        des.seed <- NULL
+    }
+
+    ifelse(design.obj$parameters$design == "factorial",
+           design <- paste("factorial", design.obj$parameters$applied, sep = "_"),
+           design <- design.obj$parameters$design
+    )
+
+    if (design == "crd") {
+        plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+        des <- cbind(plan, design.obj$book)
+
+        names(des)[names(des)=="r"] <- "rep"
+        names(des)[names(des)=="trt"] <- "treatments"
+        ntrt <- nlevels(as.factor(des$treatments))
+    }
+
+    if (design == "rcbd") {
+        names(design.obj$book)[names(design.obj$book)=="trt"] <- "treatments"
+        ntrt <- nlevels(as.factor(design.obj$book$treatments))
+
+        # Calculate direction of blocking
+        xx <- c()
+        rr <- nrows / brows
+        cc <- ncols / bcols
+        # Blocking across rows: brows == ntrt in a single column
+        if (brows == ntrt) {
+            des <- design.obj$book
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols) # 2
+        }
+
+        # Blocking incomplete rows all columns
+        if (rr > 1 & cc == 1) {
+            des <- design.obj$book
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows) # 1
+        }
+
+
+        # Blocking incomplete rows and incomplete columns
+        if (rr > 1 & cc > 1) {
+            des <- design.obj$book
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (j in 1:rr) {
+                for (k in 1:cc) {
+                    plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                    plan$row[plan$block == i] <- pp$row + (brows * (j - 1))
+                    k <- k + 1
+                    i <- i + 1
+                }
+                j <- j + 1
+            }
+            plan$block <- NULL
+        } # 3
+
+
+        # Blocking across columns: bcols == ntrt in a single row
+        if (bcols == ntrt) {
+            des <- design.obj$book
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows)
+        } # 4
+
+
+        # Blocking incomplete columns all rows
+        if (cc > 1 & rr == 1) {
+            des <- design.obj$book
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (k in 1:cc) {
+                plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                plan$row[plan$block == i] <- pp$row
+                k <- k + 1
+                i <- i + 1
+            }
+            plan$block <- NULL
+        } # 5
+
+        des <- cbind(plan, des)
+    }
+
+    if (design == "lsd") {
+        des <- design.obj$book
+        des$row <- as.numeric(des$row)
+        des$col <- as.numeric(des$col)
+
+        names(des)[4] <- "treatments"
+        ntrt <- nlevels(as.factor(des$treatments))
+    }
+
+
+    if (design == "factorial_crd") {
+        treatments <- NULL
+        plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+        des <- cbind(plan, design.obj$book, row.names = NULL)
+
+        for (i in 3:ncol(design.obj$book)) {
+            treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+        }
+
+        if(fac.sep[2] == "") {
+            des$treatments <- factor(trimws(treatments))
+        }
+        else {
+            des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+        }
+        names(des)[names(des)=="r"] <- "reps"
+        ntrt <- nlevels(des$treatments)
+    }
+
+    if (design == "factorial_rcbd") {
+        treatments <- NULL
+
+        for (i in 3:ncol(design.obj$book)) {
+            treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+        }
+
+        if(fac.sep[2] == "") {
+            design.obj$book$treatments <- factor(trimws(treatments))
+        }
+        else {
+            design.obj$book$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+        }
+        ntrt <- nlevels(as.factor(design.obj$book$treatments))
+
+        # Calculate direction of blocking
+        xx <- c()
+        rr <- nrows / brows
+        cc <- ncols / bcols
+        # Blocking across rows: brows == ntrt in a single column
+        if (brows == ntrt) {
+            des <- design.obj$book
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols) # 2
+        }
+
+        # Blocking incomplete rows all columns
+        if (rr > 1 & cc == 1) {
+            des <- design.obj$book
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows) # 1
+        }
+
+
+        # Blocking incomplete rows and incomplete columns
+        if (rr > 1 & cc > 1) {
+            des <- design.obj$book
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (j in 1:rr) {
+                for (k in 1:cc) {
+                    plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                    plan$row[plan$block == i] <- pp$row + (brows * (j - 1))
+                    k <- k + 1
+                    i <- i + 1
+                }
+                j <- j + 1
+            }
+            plan$block <- NULL
+        } # 3
+
+
+        # Blocking across columns: bcols == ntrt in a single row
+        if (bcols == ntrt) {
+            des <- design.obj$book
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows)
+        } # 4
+
+
+        # Blocking incomplete columns all rows
+        if (cc > 1 & rr == 1) {
+            des <- design.obj$book
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (k in 1:cc) {
+                plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                plan$row[plan$block == i] <- pp$row
+                k <- k + 1
+                i <- i + 1
+            }
+            plan$block <- NULL
+        } # 5
+
+        des <- cbind(plan, des)
+    }
+
+    if (design == "factorial_lsd") {
+        treatments <- NULL
+        des <- design.obj$book
+
+        for (i in 4:ncol(design.obj$book)) {
+            treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+        }
+
+        if(fac.sep[2] == "") {
+            des$treatments <- factor(trimws(treatments))
+        }
+        else {
+            des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+        }
+
+        ntrt <- nlevels(des$treatments)
+        des$row <- as.numeric(des$row)
+        des$col <- as.numeric(des$col)
+    }
+
+    if (design == "split") {
+        des <- design.obj$book
+        spfacs <- c("plots", "splots", "block")
+
+        trtNams <- names(des[!is.element(names(des), spfacs)])
+
+
+        des$treatments <- factor(paste(des[, trtNams[1]], des[, trtNams[2]], sep = "_"))
+
+        # Number of treatments
+        ntrt <- nlevels(des$treatments)
+
+
+        # Calculate direction of blocking
+        xx <- c()
+        rr <- nrows / brows
+        cc <- ncols / bcols
+        # Blocking across rows: brows == ntrt in a single column
+        if (brows == ntrt) {
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols) # 2
+        }
+
+        # Blocking incomplete rows all columns
+        if (rr > 1 & cc == 1) {
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows) # 1
+        }
+
+        # Blocking incomplete rows and incomplete columns
+        if (rr > 1 & cc > 1) {
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (j in 1:rr) {
+                for (k in 1:cc) {
+                    plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                    plan$row[plan$block == i] <- pp$row + (brows * (j - 1))
+                    k <- k + 1
+                    i <- i + 1
+                }
+                j <- j + 1
+            }
+            plan$block <- NULL
+        } # 3
+
+
+        # Blocking across columns: bcols == ntrt in a single row
+        if (bcols == ntrt) {
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows)
+        } # 4
+
+
+        # Blocking incomplete columns all rows
+        if (cc > 1 & rr == 1) {
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (k in 1:cc) {
+                plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                plan$row[plan$block == i] <- pp$row
+                k <- k + 1
+                i <- i + 1
+            }
+            plan$block <- NULL
+        } # 5
+
+        des <- cbind(plan, des)
+        # Order by column within blocks, rather than row default
+        if(!byrow) {
+            des[,c("row", "col", "block")] <- des[order(des$block, des$col, des$row), c("row", "col", "block")]
+        }
+    }
+
+    des$treatments <- factor(des$treatments, levels = unique(stringi::stri_sort(des$treatments, numeric = TRUE)))
+
+    info <- plot.des(des, ntrt, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
     info$satab <- satab(design.obj)
 
     if(!quiet) {

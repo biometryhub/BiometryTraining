@@ -8,18 +8,22 @@
 \alias{autoplot.design}
 \title{Objects exported from other packages}
 \usage{
-\method{autoplot}{mct}(object, label_height = 0.1, rotation = 0, ...)
+\method{autoplot}{mct}(object, rotation = 0, size = 4, label_height = 0.1, ...)
 
-\method{autoplot}{design}(object, ...)
+\method{autoplot}{design}(object, rotation = 0, size = 4, margin = FALSE, ...)
 }
 \arguments{
 \item{object}{An object from the \code{\link[=mct.out]{mct.out()}} or \code{\link[=design]{design()}} function with class "mct" or "design".}
 
-\item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.1 (10\%) of the difference between upper and lower error bars above the top error bar.}
-
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0}
 
+\item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
+
+\item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.1 (10\%) of the difference between upper and lower error bars above the top error bar.}
+
 \item{...}{Other arguments to be passed through.}
+
+\item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.}
 }
 \value{
 A \code{ggplot2} object.

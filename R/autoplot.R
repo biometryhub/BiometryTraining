@@ -8,6 +8,8 @@ ggplot2::autoplot
 #' @param object An object from the [mct.out()] or [design()] function with class "mct" or "design".
 #' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.1 (10%) of the difference between upper and lower error bars above the top error bar.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
+#' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
+#' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.
 #' @param ... Other arguments to be passed through.
 #'
 #' @name autoplot
@@ -25,7 +27,7 @@ NULL
 #' @rdname autoplot
 #' @importFrom ggplot2 autoplot ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #' @export
-autoplot.mct <- function(object, label_height = 0.1, rotation = 0, ...) {
+autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...) {
     stopifnot(inherits(object, "mct"))
     if(!is.data.frame(object)) {
         object <- object$predicted_values
@@ -47,7 +49,7 @@ autoplot.mct <- function(object, label_height = 0.1, rotation = 0, ...) {
 
     plot <- ggplot2::ggplot(data = object, ggplot2::aes_(x = as.name(classify))) +
         ggplot2::geom_errorbar(aes(ymin = low, ymax = up), width = 0.2) +
-        ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = object$up, label = object$groups), vjust = 0, nudge_y = (object$up-object$low)*label_height) +
+        ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = object$up, label = object$groups), vjust = 0, nudge_y = (object$up-object$low)*label_height, size = size) +
         ggplot2::geom_point(ggplot2::aes_(y = as.name(yval)), color = "black", shape = 16) + ggplot2::theme_bw() +
         ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
         ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
@@ -68,7 +70,7 @@ autoplot.mct <- function(object, label_height = 0.1, rotation = 0, ...) {
 #' @importFrom scales reverse_trans
 #' @importFrom stringi stri_sort
 #' @export
-autoplot.design <- function(object, ...) {
+autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...) {
     plot(object)
 }
 

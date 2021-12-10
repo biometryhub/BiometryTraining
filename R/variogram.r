@@ -23,11 +23,11 @@
 #'                     random = ~ Blocks + Blocks:Wplots,
 #'                     residual = ~ ar1(Row):ar1(Column),
 #'                     data = oats)
-#' vario(model.asr)
+#' variogram(model.asr)
 #' }
 #' @export
 
-vario <- function(model.obj){
+variogram <- function(model.obj, Row, Col){
 
     if(!(inherits(model.obj, "asreml"))) {
         stop("model.obj must be an asreml model object")
@@ -68,7 +68,7 @@ vario <- function(model.obj){
     return(output)
 }
 
-#' Calculate the variogram for a model
+#' Calculate the variogram data frame for a model
 #'
 #' @param model.obj An asreml model
 #'
@@ -85,10 +85,10 @@ vario <- function(model.obj){
 #'                     random = ~ Blocks + Blocks:Wplots,
 #'                     residual = ~ ar1(Row):ar1(Column),
 #'                     data = oats)
-#' variogram(model.asr)
+#' vario_df(model.asr)
 #' }
 #'
-variogram <- function(model.obj) {
+vario_df <- function(model.obj, Row, Col) {
     # So the 'z' value for the variogram is the residuals
     # Need to be able to pull out the x/y from the model object
 

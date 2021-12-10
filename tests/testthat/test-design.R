@@ -129,6 +129,14 @@ test_that("split plot requires brows and bcols", {
                  "Design has blocks so brows and bcols must be supplied.")
 })
 
+test_that("split plot allows a character vector for factor names", {
+    expect_error(design(type = "split", treatments = c("A", "B"),
+                        sub_treatments = 1:4, reps = 4, nrows = 8,
+                        ncols = 4, brows = NA, bcols = 2, seed = 42,
+                        fac.names = c("A", "B")),
+                 "Design has blocks so brows and bcols must be supplied.")
+})
+
 test_that("split plot produces warning when incorrect number of treatment labels given", {
     expect_warning(design(type = "split", treatments = c("A", "B"),
                           sub_treatments = 1:4, reps = 4, nrows = 8,

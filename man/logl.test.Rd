@@ -33,7 +33,7 @@ A dataframe containing the results of the test.
 Log-likelihood test for comparing terms in ASReml-R models
 }
 \details{
-Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation.
+Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation of probability.
 }
 \examples{
 \dontrun{
