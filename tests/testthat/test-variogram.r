@@ -1,11 +1,11 @@
 test_that("vario produces a variogram", {
     load("../asreml_oats.Rdata", .GlobalEnv)
 
-    vg <- variogram(model.asr)
+    vg <- vario_df(model.asr)
     expect_equal(nrow(vg), 72)
     expect_equal(round(vg[1:6, "gamma"], 3), c(0.000, 50.171, 54.679, 91.463, 101.107, 96.750))
 
-    v1 <- vario(model.asr)
+    v1 <- variogram(model.asr)
     expect_type(v1, "list")
     expect_s3_class(v1, "ggplot")
     skip_if_not(Sys.info()[["sysname"]] == "Linux")
@@ -14,8 +14,8 @@ test_that("vario produces a variogram", {
 
 test_that("vario produces an error for other models and data types", {
     model.lm <- lm(Petal.Length~Petal.Width, data = iris)
-    expect_error(vario(model.lm), "model.obj must be an asreml model object")
-    expect_error(vario(1:3), "model.obj must be an asreml model object")
+    expect_error(variogram(model.lm), "model.obj must be an asreml model object")
+    expect_error(variogram(1:3), "model.obj must be an asreml model object")
 })
 
 

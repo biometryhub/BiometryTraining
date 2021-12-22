@@ -14,6 +14,9 @@ design(
   bcols = NA,
   byrow = TRUE,
   sub_treatments = NULL,
+  fac.names = NULL,
+  fac.sep = c("", " "),
+  plot = TRUE,
   rotation = 0,
   size = 4,
   margin = FALSE,
@@ -22,8 +25,6 @@ design(
   plottype = "pdf",
   seed = TRUE,
   quiet = FALSE,
-  fac.names = NULL,
-  fac.sep = c("", " "),
   ...
 )
 }
@@ -42,15 +43,21 @@ design(
 
 \item{bcols}{For RCBD and Split Plot designs. The number of columns in a block.}
 
-\item{byrow}{For split-plot only. Logical (default: \code{TRUE}). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
+\item{byrow}{For split-plot only. Logical (default \code{TRUE}). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
 
 \item{sub_treatments}{A vector of treatments for subplots in a split plot design.}
+
+\item{fac.names}{Allows renaming of the \code{A} level of factorial designs (i.e. those using \code{\link[agricolae:design.ab]{agricolae::design.ab()}}) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.}
+
+\item{fac.sep}{The separator used by \code{fac.names}. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.}
+
+\item{plot}{Logical (default \code{TRUE}). If \code{TRUE}, display a plot of the generated design. A plot can always be produced later using \code{\link[=autoplot]{autoplot()}}.}
 
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.}
 
 \item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
 
-\item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.}
+\item{margin}{Logical (default \code{FALSE}). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.}
 
 \item{save}{One of \code{FALSE} (default)/\code{"none"}, \code{TRUE}/\code{"both"}, \code{"plot"} or \code{"workbook"}. Specifies which output to save.}
 
@@ -58,13 +65,9 @@ design(
 
 \item{plottype}{The type of file to save the plot as. Usually one of \code{"pdf"}, \code{"png"}, or \code{"jpg"}. See \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for all possible options.}
 
-\item{seed}{If \code{TRUE} (the default), return the seed used to generate the design. If a numeric value, use that value as the seed for the design.}
+\item{seed}{Logical (default \code{TRUE}). If \code{TRUE}, return the seed used to generate the design. If a numeric value, use that value as the seed for the design.}
 
-\item{quiet}{Logical (default FALSE). Return the objects without printing output.}
-
-\item{fac.names}{Allows renaming of the \code{A} level of factorial designs (i.e. those using \code{\link[agricolae:design.ab]{agricolae::design.ab()}}) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.}
-
-\item{fac.sep}{The separator used by \code{fac.names}. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.}
+\item{quiet}{Logical (default \code{FALSE}). Hide the output.}
 
 \item{...}{Additional parameters passed to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving the plot.}
 }

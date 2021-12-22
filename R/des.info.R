@@ -566,7 +566,7 @@ des.info <- function(design.obj,
     }
 
     if (return.seed) {
-        info$des.seed <- design.obj$parameters$seed
+        info$seed <- design.obj$parameters$seed
     }
 
     return(info)

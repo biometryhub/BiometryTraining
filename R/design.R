@@ -7,18 +7,19 @@
 #' @param ncols The number of columns in the design.
 #' @param brows For RCBD and Split Plot designs. The number of rows in a block.
 #' @param bcols For RCBD and Split Plot designs. The number of columns in a block.
-#' @param byrow For split-plot only. Logical (default: `TRUE`). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.
+#' @param byrow For split-plot only. Logical (default `TRUE`). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.
 #' @param sub_treatments A vector of treatments for subplots in a split plot design.
+#' @param fac.names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
+#' @param fac.sep The separator used by `fac.names`. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.
+#' @param plot Logical (default `TRUE`). If `TRUE`, display a plot of the generated design. A plot can always be produced later using [autoplot()].
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
-#' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
+#' @param margin Logical (default `FALSE`). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
 #' @param save One of `FALSE` (default)/`"none"`, `TRUE`/`"both"`, `"plot"` or `"workbook"`. Specifies which output to save.
 #' @param savename A filename for the design to be saved to. Default is the type of the design combined with "_design".
 #' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
-#' @param seed If `TRUE` (the default), return the seed used to generate the design. If a numeric value, use that value as the seed for the design.
-#' @param quiet Logical (default FALSE). Return the objects without printing output.
-#' @param fac.names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
-#' @param fac.sep The separator used by `fac.names`. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.
+#' @param seed Logical (default `TRUE`). If `TRUE`, return the seed used to generate the design. If a numeric value, use that value as the seed for the design.
+#' @param quiet Logical (default `FALSE`). Hide the output.
 #' @param ... Additional parameters passed to [ggplot2::ggsave()] for saving the plot.
 #'
 #' @details The designs currently supported by `type` are Completely Randomised designs (`crd`), Randomised Complete Block designs (`rcbd`), Latin Square Designs (`lsd`), Factorial with crossed structure (use `crossed:<type>` where `<type>` is one of the previous types e.g. `crossed:crd`) and Split Plot designs (`split`). Nested factorial designs are supported through manual setup, see Examples.
@@ -86,6 +87,9 @@ design <- function(type,
                    bcols = NA,
                    byrow = TRUE,
                    sub_treatments = NULL,
+                   fac.names = NULL,
+                   fac.sep = c("", " "),
+                   plot = TRUE,
                    rotation = 0,
                    size = 4,
                    margin = FALSE,
@@ -94,8 +98,6 @@ design <- function(type,
                    plottype = "pdf",
                    seed = TRUE,
                    quiet = FALSE,
-                   fac.names = NULL,
-                   fac.sep = c("", " "),
                    ...) {
 
     # Some error checking of inputs before creating design

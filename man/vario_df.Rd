@@ -4,7 +4,7 @@
 \alias{vario_df}
 \title{Calculate the variogram data frame for a model}
 \usage{
-vario_df(model.obj)
+vario_df(model.obj, Row, Col)
 }
 \arguments{
 \item{model.obj}{An asreml model}

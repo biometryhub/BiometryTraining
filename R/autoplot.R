@@ -79,7 +79,7 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...)
     ymax <- NULL
     Row <- NULL
 
-    # if(object)
+    object <- object$design
 
     ntrt <- nlevels(as.factor(object$treatments))
 

@@ -4,7 +4,7 @@
 \alias{plot.des}
 \title{Produces graph of design layout}
 \usage{
-\method{plot}{des}(design.obj, ntrt, rotation, size, margin, return.seed, fac.sep)
+\method{plot}{des}(design.obj, rotation, size, margin)
 }
 \arguments{
 \item{design.obj}{An \code{agricolae} design object.}
@@ -14,22 +14,6 @@
 \item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
 
 \item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.}
-
-\item{return.seed}{Logical (default TRUE). Output the seed used in the design?}
-
-\item{fac.sep}{Character to separate factorial treatments.}
-
-\item{nrows}{The number of rows in the design.}
-
-\item{ncols}{The number of columns in the design.}
-
-\item{brows}{For RCBD only. The number of rows in a block.}
-
-\item{bcols}{For RCBD only. The number of columns in a block.}
-
-\item{byrow}{For split-plot only. Logical. Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
-
-\item{quiet}{Logical (default FALSE). Return the objects without printing output.}
 }
 \value{
 Returns dataframe of design and ggplot object of design layout.

@@ -13,7 +13,7 @@
 \method{autoplot}{design}(object, rotation = 0, size = 4, margin = FALSE, ...)
 }
 \arguments{
-\item{object}{An object from the \code{\link[=mct.out]{mct.out()}} or \code{\link[=design]{design()}} function with class "mct" or "design".}
+\item{object}{An object to create a plot for. Currently objects rom the \code{\link[=mct.out]{mct.out()}} or \code{\link[=design]{design()}} functions with class "mct" or "design" respectively are supported.}
 
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0}
 
@@ -23,7 +23,7 @@
 
 \item{...}{Other arguments to be passed through.}
 
-\item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.}
+\item{margin}{Logical (default \code{FALSE}). A value of \code{FALSE} will expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.}
 }
 \value{
 A \code{ggplot2} object.
