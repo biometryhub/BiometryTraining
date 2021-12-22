@@ -3,6 +3,8 @@
 #' Produces variogram plots for checking spatial trends.
 #'
 #' @param model.obj An `asreml` model object.
+#' @param row A row variable.
+#' @param column A column variable.
 #'
 #' @return A list containing ggplot2 objects.
 #'
@@ -27,7 +29,7 @@
 #' }
 #' @export
 
-variogram <- function(model.obj, Row, Col){
+variogram <- function(model.obj, row, column){
 
     if(!(inherits(model.obj, "asreml"))) {
         stop("model.obj must be an asreml model object")

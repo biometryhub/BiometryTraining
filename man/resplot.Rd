@@ -49,5 +49,5 @@ Produces plots of residuals for assumption checking of linear (mixed) model.
 \examples{
 dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
 resplot(dat.aov)
-resplt(dat.aov, call = T)
+resplt(dat.aov, call = TRUE)
 }

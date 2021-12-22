@@ -1,7 +1,7 @@
-test_that("variogram produces a plot", {
-    load("../asreml_oats.Rdata", .GlobalEnv)
-
-}
+# test_that("variogram produces a plot", {
+#     load("../asreml_oats.Rdata", .GlobalEnv)
+#
+# })
 
 test_that("variogram produces a plot", {
     load("../asreml_oats.Rdata", .GlobalEnv)

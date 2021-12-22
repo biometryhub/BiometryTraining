@@ -4,10 +4,14 @@
 \alias{variogram}
 \title{Variogram plots for spatial models.}
 \usage{
-variogram(model.obj, Row, Col)
+variogram(model.obj, row, column)
 }
 \arguments{
 \item{model.obj}{An \code{asreml} model object.}
+
+\item{row}{A row variable.}
+
+\item{column}{A column variable.}
 }
 \value{
 A list containing ggplot2 objects.

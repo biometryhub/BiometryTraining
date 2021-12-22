@@ -78,6 +78,7 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...)
     ymin <- NULL
     ymax <- NULL
     Row <- NULL
+    treatments <- NULL
 
     object <- object$design
 
