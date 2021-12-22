@@ -339,13 +339,7 @@ des.info <- function(design.obj,
             treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
         }
 
-        if(fac.sep[2] == "") {
-            design.obj$book$treatments <- factor(trimws(treatments))
-        }
-        else {
-            design.obj$book$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
-        }
-        ntrt <- nlevels(as.factor(design.obj$book$treatments))
+        ntrt <- nlevels(as.factor(treatments))
 
         # Calculate direction of blocking
         xx <- c()
@@ -418,6 +412,13 @@ des.info <- function(design.obj,
             }
             plan$block <- NULL
         } # 5
+
+        if(fac.sep[2] == "") {
+            des$treatments <- factor(trimws(treatments))
+        }
+        else {
+            des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+        }
 
         des <- cbind(plan, des)
     }
@@ -530,7 +531,9 @@ des.info <- function(design.obj,
 
     des$treatments <- factor(des$treatments, levels = unique(stringi::stri_sort(des$treatments, numeric = TRUE)))
 
-    info <- plot.des(des, ntrt, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
+    info <- list(design = des)
+
+    info$plot.des = plot.des(des, rotation = rotation, size = size, margin = margin)
     info$satab <- satab(design.obj)
 
     if(!quiet) {
@@ -560,6 +563,10 @@ des.info <- function(design.obj,
     else if(save) {
         ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
         write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
+    }
+
+    if (return.seed) {
+        info$des.seed <- design.obj$parameters$seed
     }
 
     return(info)

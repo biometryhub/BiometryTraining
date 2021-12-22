@@ -1,17 +1,9 @@
 #' Produces graph of design layout
 #'
 #' @param design.obj An `agricolae` design object.
-#' @param nrows The number of rows in the design.
-#' @param ncols The number of columns in the design.
-#' @param brows For RCBD only. The number of rows in a block.
-#' @param bcols For RCBD only. The number of columns in a block.
-#' @param byrow For split-plot only. Logical. Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
 #' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.
-#' @param quiet Logical (default FALSE). Return the objects without printing output.
-#' @param return.seed Logical (default TRUE). Output the seed used in the design?
-#' @param fac.sep Character to separate factorial treatments.
 #'
 #' @return Returns dataframe of design and ggplot object of design layout.
 #'
@@ -22,17 +14,16 @@
 #' @importFrom stringi stri_sort
 #' @keywords internal
 #'
-plot.des <- function(design.obj, ntrt, rotation, size, margin, return.seed, fac.sep) {
+plot.des <- function(design.obj, rotation, size, margin) {
     # Asign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
-    treatments <- NULL
     xmin <- NULL
     xmax <- NULL
     ymin <- NULL
     ymax <- NULL
     Row <- NULL
 
-
+    ntrt <- nlevels(as.factor(design.obj$treatments))
 
     # des <- dplyr::mutate(des, row = factor(row),
     # row = factor(row, levels = rev(levels(row))))
@@ -80,7 +71,7 @@ plot.des <- function(design.obj, ntrt, rotation, size, margin, return.seed, fac.
                 size = 0.6, colour = "white", fill = NA
             ) +
             ggplot2::theme_bw() +
-            ggplot2::scale_fill_manual(values = color_palette, name = "Treatment") #+ ggplot2::scale_y_continuous(trans = scales::reverse_trans())
+            ggplot2::scale_fill_manual(values = color_palette, name = "Treatment")
     }
 
     if (!margin) {

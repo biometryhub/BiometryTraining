@@ -122,18 +122,18 @@ satab <- function(design.obj) {
 
     output <- paste0(format("Source of Variation", width = 45), "df", "\n")
     output <- c(output, paste0("==================================================\n"))
-    output <- c(output, paste0(format("Block stratum", width = 45), blkdf, "\n"))
+    output <- c(output, paste0(format("Block stratum", width = ifelse(blkdf>10, 44, 45)), blkdf, "\n"))
     output <- c(output, paste0("--------------------------------------------------\n"))
     output <- c(output, paste0("Whole plot stratum", "\n"))
-    output <- c(output, paste0(format(" ", width = 9), format(names(design.obj)[4], width = 35), trtAdf, "\n"))
+    output <- c(output, paste0(format(" ", width = 9), format(names(design.obj)[4], width = ifelse(trtAdf>10, 35, 36)), trtAdf, "\n"))
     output <- c(output, paste0(format("Whole plot Residual", width = 45), wpresdf, "\n"))
     output <- c(output, paste0("==================================================\n"))
     output <- c(output, paste0("Subplot stratum", "\n"))
-    output <- c(output, paste0(format(" ", width = 9), format(names(design.obj)[5], width = 35), trtBdf, "\n"))
-    output <- c(output, paste0(format(" ", width = 9), format(paste(names(design.obj)[4], names(design.obj)[5], sep = ":"), width = 35), trtABdf, "\n"))
+    output <- c(output, paste0(format(" ", width = 9), format(names(design.obj)[5], width = ifelse(trtBdf>10, 35, 36)), trtBdf, "\n"))
+    output <- c(output, paste0(format(" ", width = 9), format(paste(names(design.obj)[4], names(design.obj)[5], sep = ":"), width = ifelse(trtABdf>10, 35, 36)), trtABdf, "\n"))
     output <- c(output, paste0(format(" ", width = 9), format("Subplot Residual", width = 35), errdf, "\n"))
     output <- c(output, paste0("==================================================\n"))
-    output <- c(output, paste0(format("Total", width = 45), totdf, "\n"))
+    output <- c(output, paste0(format("Total", width = ifelse(totdf>10, 44, 45)), totdf, "\n"))
   }
 
   if (design == "factorial_lsd") {

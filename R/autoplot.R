@@ -5,11 +5,11 @@ ggplot2::autoplot
 
 #' Automatic plots for objects generated in BiometryTraining
 #'
-#' @param object An object from the [mct.out()] or [design()] function with class "mct" or "design".
+#' @param object An object to create a plot for. Currently objects rom the [mct.out()] or [design()] functions with class "mct" or "design" respectively are supported.
 #' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.1 (10%) of the difference between upper and lower error bars above the top error bar.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
-#' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove whitespace between plot and axes.
+#' @param margin Logical (default `FALSE`). A value of `FALSE` will expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
 #' @param ... Other arguments to be passed through.
 #'
 #' @name autoplot
@@ -71,6 +71,71 @@ autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...
 #' @importFrom stringi stri_sort
 #' @export
 autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...) {
-    plot(object)
+    # Asign NULL to variables that give a NOTE in package checks
+    # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
+    xmin <- NULL
+    xmax <- NULL
+    ymin <- NULL
+    ymax <- NULL
+    Row <- NULL
+
+    # if(object)
+
+    ntrt <- nlevels(as.factor(object$treatments))
+
+    # create the colours for the graph
+    color_palette <- grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(ntrt)
+
+    if (!any(grepl("block", names(object)))) {
+
+        # create the graph
+        plt <- ggplot2::ggplot() +
+            ggplot2::geom_tile(data = object, mapping = ggplot2::aes(x = col, y = row, fill = treatments), colour = "black") +
+            ggplot2::geom_text(data = object, mapping = ggplot2::aes(x = col, y = row, label = treatments), angle = rotation, size = size) +
+            ggplot2::theme_bw() +
+            ggplot2::scale_fill_manual(values = color_palette, name = "Treatment")
+    }
+    if (any(grepl("block", names(object)))) {
+
+        # Set up dataframe with coordinates for drawing the blocks
+        blkdf <- data.frame(
+            block = sort(unique(object$block)),
+            xmin = 0, xmax = 0, ymin = 0, ymax = 0
+        )
+        for (i in 1:nrow(blkdf)) {
+            item <- blkdf$block[i]
+            tmp <- object[object$block == item, ]
+            blkdf[i, "ymin"] <- (min(tmp$row) - 0.5)
+            blkdf[i, "ymax"] <- (max(tmp$row) + 0.5)
+            blkdf[i, "xmin"] <- (min(tmp$col) - 0.5)
+            blkdf[i, "xmax"] <- (max(tmp$col) + 0.5)
+        }
+
+        plt <- ggplot2::ggplot() +
+            ggplot2::geom_tile(data = object, mapping = ggplot2::aes(x = col, y = row, fill = treatments), colour = "black") +
+            ggplot2::geom_text(data = object, mapping = ggplot2::aes(x = col, y = row, label = treatments), angle = rotation, size = size) +
+            #        xlim(0,max(des$col)+1) + ylim(0,max(des$row)+1) +
+            ggplot2::geom_rect(
+                data = blkdf,
+                mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+                size = 1.8, colour = "black", fill = NA
+            ) +
+            ggplot2::geom_rect(
+                data = blkdf,
+                mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+                size = 0.6, colour = "white", fill = NA
+            ) +
+            ggplot2::theme_bw() +
+            ggplot2::scale_fill_manual(values = color_palette, name = "Treatment")
+    }
+
+    if (!margin) {
+        plt <- plt + ggplot2::scale_x_continuous(expand = c(0, 0), breaks = seq(1, max(object$col), 1)) + ggplot2::scale_y_continuous(expand = c(0, 0), trans = scales::reverse_trans(), breaks = seq(1, max(object$row), 1))
+    }
+    else {
+        plt <- plt + ggplot2::scale_y_continuous(trans = scales::reverse_trans(), breaks = seq(1, max(object$row), 1)) + ggplot2::scale_x_continuous(breaks = seq(1, max(object$col), 1))
+    }
+
+    return(plt)
 }
 

@@ -36,15 +36,15 @@
      [3] "Block stratum                                3\n"    
      [4] "--------------------------------------------------\n"
      [5] "Whole plot stratum\n"                                
-     [6] "         Water                              1\n"     
+     [6] "         Water                               1\n"    
      [7] "Whole plot Residual                          3\n"    
      [8] "==================================================\n"
      [9] "Subplot stratum\n"                                   
-    [10] "         N                                  3\n"     
-    [11] "         Water:N                            3\n"     
+    [10] "         N                                   3\n"    
+    [11] "         Water:N                             3\n"    
     [12] "         Subplot Residual                   18\n"    
     [13] "==================================================\n"
-    [14] "Total                                        31\n"   
+    [14] "Total                                       31\n"    
 
 ---
 
@@ -53,15 +53,15 @@
      [3] "Block stratum                                3\n"    
      [4] "--------------------------------------------------\n"
      [5] "Whole plot stratum\n"                                
-     [6] "         Water                              1\n"     
+     [6] "         Water                               1\n"    
      [7] "Whole plot Residual                          3\n"    
      [8] "==================================================\n"
      [9] "Subplot stratum\n"                                   
-    [10] "         Nitrogen                           3\n"     
-    [11] "         Water:Nitrogen                     3\n"     
+    [10] "         Nitrogen                            3\n"    
+    [11] "         Water:Nitrogen                      3\n"    
     [12] "         Subplot Residual                   18\n"    
     [13] "==================================================\n"
-    [14] "Total                                        31\n"   
+    [14] "Total                                       31\n"    
 
 ---
 
