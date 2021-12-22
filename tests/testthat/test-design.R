@@ -26,7 +26,7 @@ test_that("designs are produced for supported types", {
                  fac.names = list(Water = c("Irrigated", "Rain-fed"),
                                   N = seq(50, 200, 50)), quiet = TRUE)
     expect_equal(d4$satab[11],
-                 "         Water:N                            3\n")
+                 "         Water:N                             3\n")
     expect_snapshot_output(d4$satab)
 
     # Split with vector of names
@@ -35,7 +35,7 @@ test_that("designs are produced for supported types", {
                  ncols = 4, brows = 4, bcols = 2, seed = 42,
                  fac.names = c("Water", "Nitrogen"), quiet = TRUE)
     expect_equal(d5$satab[11],
-                 "         Water:Nitrogen                     3\n")
+                 "         Water:Nitrogen                      3\n")
     expect_snapshot_output(d5$satab)
 
     # Crossed, CRD

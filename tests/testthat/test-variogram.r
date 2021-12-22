@@ -1,4 +1,9 @@
-test_that("vario produces a variogram", {
+test_that("variogram produces a plot", {
+    load("../asreml_oats.Rdata", .GlobalEnv)
+
+}
+
+test_that("variogram produces a plot", {
     load("../asreml_oats.Rdata", .GlobalEnv)
 
     vg <- vario_df(model.asr)
