@@ -35,8 +35,8 @@ dat.aov <- aov(Petal.Width ~ Species, data = iris)
 
 test_that("mct produces output", {
     # dat.aov <- aov(Petal.Width ~ Species, data = iris)
-    output <- mct.out(dat.aov, classify = "Species")
-    expect_equal(output$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+    output <- mct.out(dat.aov, classify = "Species", plot = TRUE)
+    expect_equal(output$predicted.value, c(0.25, 1.33, 2.03))
     # skip_if(interactive())
     vdiffr::expect_doppelganger("mct output", autoplot(output))
 })
@@ -59,18 +59,18 @@ test_that("transformations are handled", {
     output.inverse2 <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0, int.type = "1se")
     output.inverse3 <- mct.out(dat.aov.inverse, classify = "Species", trans = "inverse", offset = 0, int.type = "2se")
 
-    expect_equal(output.log$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
-    expect_equal(output.log2$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
-    expect_equal(output.log3$predicted_values$predicted.value, c(-1.48, 0.27, 0.70))
-    expect_equal(output.sqrt$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
-    expect_equal(output.sqrt2$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
-    expect_equal(output.sqrt3$predicted_values$predicted.value, c(0.49, 1.15, 1.42))
-    expect_equal(output.logit$predicted_values$predicted.value, c(-3.07, -4.87, -5.30))
-    expect_equal(output.logit2$predicted_values$predicted.value, c(-3.07, -4.87, -5.30))
-    expect_equal(output.logit3$predicted_values$predicted.value, c(-3.07, -4.87, -5.30))
-    expect_equal(output.inverse$predicted_values$predicted.value, c(4.79, 0.77, 0.50))
-    expect_equal(output.inverse2$predicted_values$predicted.value, c(4.79, 0.77, 0.50))
-    expect_equal(output.inverse3$predicted_values$predicted.value, c(4.79, 0.77, 0.50))
+    expect_equal(output.log$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_equal(output.log2$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_equal(output.log3$predicted.value, c(-1.48, 0.27, 0.70))
+    expect_equal(output.sqrt$predicted.value, c(0.49, 1.15, 1.42))
+    expect_equal(output.sqrt2$predicted.value, c(0.49, 1.15, 1.42))
+    expect_equal(output.sqrt3$predicted.value, c(0.49, 1.15, 1.42))
+    expect_equal(output.logit$predicted.value, c(-3.07, -4.87, -5.30))
+    expect_equal(output.logit2$predicted.value, c(-3.07, -4.87, -5.30))
+    expect_equal(output.logit3$predicted.value, c(-3.07, -4.87, -5.30))
+    expect_equal(output.inverse$predicted.value, c(4.79, 0.77, 0.50))
+    expect_equal(output.inverse2$predicted.value, c(4.79, 0.77, 0.50))
+    expect_equal(output.inverse3$predicted.value, c(4.79, 0.77, 0.50))
 
     # skip_if(interactive())
     vdiffr::expect_doppelganger("mct log output", autoplot(output.log))
@@ -87,8 +87,8 @@ test_that("transformations with no offset produces an error", {
 test_that("ordering output works", {
     output1 <- mct.out(dat.aov, classify = "Species", order = "asc")
     output2 <- mct.out(dat.aov, classify = "Species", order = "desc")
-    expect_equal(output1$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
-    expect_equal(output2$predicted_values$predicted.value, c(2.03, 1.33, 0.25))
+    expect_equal(output1$predicted.value, c(0.25, 1.33, 2.03))
+    expect_equal(output2$predicted.value, c(2.03, 1.33, 0.25))
 
     vdiffr::expect_doppelganger("mct ascending order", autoplot(output1))
     vdiffr::expect_doppelganger("mct descending output", autoplot(output2))
@@ -98,10 +98,10 @@ test_that("different interval types work", {
     # dat.aov <- aov(Petal.Width ~ Species, data = iris)
     output1 <- mct.out(dat.aov, classify = "Species", int.type = "1se")
     output2 <- mct.out(dat.aov, classify = "Species", int.type = "2se")
-    expect_equal(output1$predicted_values$low, c(0.22, 1.30, 2.00))
-    expect_equal(output1$predicted_values$up, c(0.27, 1.35, 2.05))
-    expect_equal(output2$predicted_values$low, c(0.19, 1.27, 1.97))
-    expect_equal(output2$predicted_values$up, c(0.30, 1.38, 2.08))
+    expect_equal(output1$low, c(0.22, 1.30, 2.00))
+    expect_equal(output1$up, c(0.27, 1.35, 2.05))
+    expect_equal(output2$low, c(0.19, 1.27, 1.97))
+    expect_equal(output2$up, c(0.30, 1.38, 2.08))
 
     vdiffr::expect_doppelganger("mct output 1se", autoplot(output1))
     vdiffr::expect_doppelganger("mct output 2se", autoplot(output2))
@@ -111,12 +111,12 @@ test_that("save produces output", {
     # dat.aov <- aov(Petal.Width ~ Species, data = iris)
     withr::local_file("pred_vals.csv")
     output <- mct.out(dat.aov, classify = "Species", save = TRUE, savename = "pred_vals")
-    expect_snapshot_output(output$predicted_values)
+    expect_snapshot_output(output)
     expect_snapshot_file("pred_vals.csv")
     pred_vals <- read.csv("pred_vals.csv")
-    expect_equal(dim(output$predicted_values), dim(pred_vals))
-    expect_equal(colMeans(output$predicted_values[,c(2:4, 6:8)]), colMeans(pred_vals[,c(2:4, 6:8)]))
-    expect_equal(colnames(output$predicted_values), colnames(pred_vals))
+    expect_equal(dim(output), dim(pred_vals))
+    expect_equal(colMeans(output[,c(2:4, 6:8)]), colMeans(pred_vals[,c(2:4, 6:8)]))
+    expect_equal(colnames(output), colnames(pred_vals))
 })
 
 test_that("Interaction terms work", {
@@ -124,7 +124,7 @@ test_that("Interaction terms work", {
     quiet(library(asreml))
     load("../asreml_oats.Rdata", .GlobalEnv)
     output <- mct.out(model.asr, pred.asr, classify = "Nitrogen:Variety")
-    expect_equal(output$predicted_values$predicted.value,
+    expect_equal(output$predicted.value,
                  c(76.58, 85.86, 70.85, 99.91, 108.32, 92.22, 116.63, 113.50, 113.10, 123.75, 127.53, 118.40))
 
     # skip_if(interactive())
@@ -149,7 +149,7 @@ test_that("dashes are handled", {
     output2 <- suppressWarnings(mct.out(dat.aov2, classify = "Species"))
     expect_warning(mct.out(dat.aov2, classify = "Species"),
                    "The treatment level se-sa contained '-', which has been replaced in the final output with '_'")
-    expect_equal(output2$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+    expect_equal(output2$predicted.value, c(0.25, 1.33, 2.03))
 
     # Replace 'gin' in virginica with '-' as well
     iris2$Species <- as.factor(gsub("gin", "-", iris2$Species))
@@ -157,7 +157,7 @@ test_that("dashes are handled", {
 
     expect_warning(mct.out(dat.aov2, classify = "Species"),
                    "The treatment levels se-sa, vir-ica contained '-', which has been replaced in the final output with '_'")
-    expect_equal(output2$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+    expect_equal(output2$predicted.value, c(0.25, 1.33, 2.03))
 
     # skip_if(interactive())
     vdiffr::expect_doppelganger("mct dashes output", autoplot(output2))
@@ -168,7 +168,7 @@ test_that("mct removes aliased treatments in aov", {
     iris1$Petal.Length[1:50] <- NA
     dat.aov1 <- aov(Petal.Length ~ Species, data = iris1)
     output1 <- mct.out(dat.aov1, classify = "Species")
-    expect_equal(output1$predicted_values$predicted.value, c(4.26, 5.55))
+    expect_equal(output1$predicted.value, c(4.26, 5.55))
     # skip_if(interactive())
     vdiffr::expect_doppelganger("aov aliased output", autoplot(output1))
 })
@@ -231,9 +231,9 @@ test_that("lme4 model works", {
     load("../oats_data.Rdata")
     dat.lmer <- lmer(yield ~ Nitrogen*Variety + (1|Blocks), data = dat)
     output <- mct.out(dat.lmer, classify = "Nitrogen")
-    expect_equal(output$predicted_values$std.error, rep(7.4, 4))
+    expect_equal(output$std.error, rep(7.4, 4))
     skip_if(Sys.info()[["sysname"]] == "Linux")
-    expect_equal(output$predicted_values$predicted.value, c(79.39, 98.89, 114.22, 123.39))
+    expect_equal(output$predicted.value, c(79.39, 98.89, 114.22, 123.39))
     vdiffr::expect_doppelganger("lme4 output", autoplot(output))
 })
 
@@ -246,9 +246,26 @@ test_that("3 way interaction works", {
     des$design$C <- factor(des$design$C)
     dat.aov <- aov(response~A*B*C, data = des$design)
     output <- mct.out(dat.aov, classify = "A:B:C")
-    expect_equal(output$predicted_values$predicted.value[1:10],
+    expect_equal(output$predicted.value[1:10],
                  c(100.68, 100.46, 99.79, 99.08, 100.48, 99.90, 100.19, 99.26, 100.22, 99.94))
-    expect_equal(output$predicted_values$std.error,
+    expect_equal(output$std.error,
+                 rep(0.63, 27))
+    # skip_if(interactive())
+    vdiffr::expect_doppelganger("3 way interaction", autoplot(output))
+})
+
+test_that("plots are produced when requested", {
+    des <- design(type = "crossed:crd", treatments = c(3, 3, 3),
+                  reps = 3, nrows = 9, ncols = 9, seed = 42, quiet = T)
+    des$design$response <- rnorm(81, 100)
+    des$design$A <- factor(des$design$A)
+    des$design$B <- factor(des$design$B)
+    des$design$C <- factor(des$design$C)
+    dat.aov <- aov(response~A*B*C, data = des$design)
+    output <- mct.out(dat.aov, classify = "A:B:C")
+    expect_equal(output$predicted.value[1:10],
+                 c(100.68, 100.46, 99.79, 99.08, 100.48, 99.90, 100.19, 99.26, 100.22, 99.94))
+    expect_equal(output$std.error,
                  rep(0.63, 27))
     # skip_if(interactive())
     vdiffr::expect_doppelganger("3 way interaction", autoplot(output))
@@ -273,7 +290,7 @@ test_that("mct.out output has a class of 'mct'", {
 #     data("DT_yatesoats")
 #     dat.sommer <- mmer(Y ~ N*V, random = ~B + B/MP, data = DT_yatesoats, verbose = F)
 #     output <- mct.out(dat.sommer, classify = "N")
-#     expect_identical(output$predicted_values$predicted.value, c(0.25, 1.33, 2.03))
+#     expect_identical(output$predicted.value, c(0.25, 1.33, 2.03))
 #     skip_if(interactive())
 #     vdiffr::expect_doppelganger("mct output", output$predicted_plot)
 # })

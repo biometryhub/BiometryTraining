@@ -359,7 +359,7 @@ mct.out <- function(model.obj,
     }
     attr(pp.tab, "ylab") <- ylab
 
-    output <- list(predicted_values = pp.tab)
+    # output <- pp.tab
 
     if(grepl(":", classify)) {
         split_classify <- unlist(strsplit(classify, ":"))
@@ -370,39 +370,16 @@ mct.out <- function(model.obj,
         classify <- split_classify[1]
     }
 
+    class(pp.tab) <- c("mct", class(pp.tab))
     if(plot) {
-        if(is.na(trans)) {
-            p <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
-                ggplot2::geom_errorbar(ggplot2::aes(ymin = low, ymax = up), width = 0.2) +
-                ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*label_height) +
-                ggplot2::geom_point(ggplot2::aes(y = predicted.value), color = "black", shape = 16) + ggplot2::theme_bw() +
-                ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
-                ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
-        }
-        else {
-            p <- ggplot2::ggplot(data = pp.tab, ggplot2::aes_(x = as.name(classify))) +
-                ggplot2::geom_errorbar(aes(ymin = low, ymax = up), width = 0.2) +
-                ggplot2::geom_text(ggplot2::aes_(x = as.name(classify), y = pp.tab$up, label = pp.tab$groups), vjust = 0, nudge_y = (pp.tab$up-pp.tab$low)*label_height) +
-                ggplot2::geom_point(ggplot2::aes(y = PredictedValue), color = "black", shape = 16) + ggplot2::theme_bw() +
-                ggplot2::theme(axis.text.x = ggplot2::element_text(angle = rotation)) +
-                ggplot2::labs(x = "", y = paste0("Predicted ", ylab))
-        }
-
-        if(exists("classify3")) {
-            p <- p + ggplot2::facet_wrap(as.formula(paste("~", classify2, "+", classify3)))
-        }
-        else if(exists("classify2")) {
-            p <- p + ggplot2::facet_wrap(as.formula(paste("~", classify2)))
-        }
-        output$predicted_plot <- p
+        print(autoplot(pp.tab))
     }
-
 
     if(exists("aliased_names")) {
-        output$aliased <- aliased_names
+        attr(pp.tab, 'aliased') <- aliased_names
     }
 
-    class(output$predicted_values) <- c("mct", class(output$predicted_values))
-    class(output) <- c("mct", class(output))
-    return(output)
+    # class(output$predicted_values) <- c("mct", class(output$predicted_values))
+
+    return(pp.tab)
 }
