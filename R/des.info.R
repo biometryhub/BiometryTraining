@@ -532,8 +532,9 @@ des.info <- function(design.obj,
     des$treatments <- factor(des$treatments, levels = unique(stringi::stri_sort(des$treatments, numeric = TRUE)))
 
     info <- list(design = des)
+    class(des) <- c("design", class(des))
 
-    info$plot.des = plot.des(des, rotation = rotation, size = size, margin = margin)
+    info$plot.des = autoplot(des, rotation = rotation, size = size, margin = margin)
     info$satab <- satab(design.obj)
 
     if(!quiet) {

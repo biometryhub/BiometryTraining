@@ -4,7 +4,7 @@
 \alias{variogram}
 \title{Variogram plots for spatial models.}
 \usage{
-variogram(model.obj, row, column)
+variogram(model.obj, row = NA, column = NA)
 }
 \arguments{
 \item{model.obj}{An \code{asreml} model object.}

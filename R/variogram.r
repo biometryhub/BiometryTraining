@@ -29,7 +29,7 @@
 #' }
 #' @export
 
-variogram <- function(model.obj, row, column){
+variogram <- function(model.obj, row = NA, column = NA){
 
     if(!(inherits(model.obj, "asreml"))) {
         stop("model.obj must be an asreml model object")
@@ -39,7 +39,7 @@ variogram <- function(model.obj, row, column){
     y <- NULL
     z <- NULL
 
-    aa <- variogram(model.obj)
+    aa <- vario_df(model.obj)
     xnam <- names(aa)[2]
     ynam <- names(aa)[1]
     fld <- akima::interp(y = aa[,1], x = aa[,2], z = aa$gamma)
@@ -146,6 +146,6 @@ vario_df <- function(model.obj, Row, Col) {
     }
     vario <- cbind(vario, data.frame(gamma = gammas, np = nps))
     colnames(vario) <- c(dims, "gamma", "np")
-    class(vario) <- c("varioGram", "data.frame")
+    class(vario) <- c("variogram", "data.frame")
     return(vario)
 }

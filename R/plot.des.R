@@ -22,6 +22,7 @@ plot.des <- function(design.obj, rotation, size, margin) {
     ymin <- NULL
     ymax <- NULL
     Row <- NULL
+    treatments <- NULL
 
     ntrt <- nlevels(as.factor(design.obj$treatments))
 

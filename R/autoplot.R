@@ -80,7 +80,9 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...)
     Row <- NULL
     treatments <- NULL
 
-    object <- object$design
+    if(inherits(object, "list")) {
+        object <- object$design
+    }
 
     ntrt <- nlevels(as.factor(object$treatments))
 
