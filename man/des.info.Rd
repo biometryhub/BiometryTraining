@@ -11,6 +11,9 @@ des.info(
   brows = NA,
   bcols = NA,
   byrow = TRUE,
+  fac.names = NULL,
+  fac.sep = c("", " "),
+  plot = TRUE,
   rotation = 0,
   size = 4,
   margin = FALSE,
@@ -19,8 +22,6 @@ des.info(
   plottype = "pdf",
   return.seed = TRUE,
   quiet = FALSE,
-  fac.names = NULL,
-  fac.sep = c("", " "),
   ...
 )
 }
@@ -37,6 +38,12 @@ des.info(
 
 \item{byrow}{For split-plot only. Logical (default: \code{TRUE}). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
 
+\item{fac.names}{Allows renaming of the \code{A} level of factorial designs (i.e. those using \code{\link[agricolae:design.ab]{agricolae::design.ab()}}) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.}
+
+\item{fac.sep}{The separator used by \code{fac.names}. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.}
+
+\item{plot}{Logical (default \code{TRUE}). If \code{TRUE}, display a plot of the generated design. A plot can always be produced later using \code{\link[=autoplot]{autoplot()}}.}
+
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.}
 
 \item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
@@ -52,10 +59,6 @@ des.info(
 \item{return.seed}{Logical (default TRUE). Output the seed used in the design?}
 
 \item{quiet}{Logical (default FALSE). Return the objects without printing output.}
-
-\item{fac.names}{Allows renaming of the \code{A} level of factorial designs (i.e. those using \code{\link[agricolae:design.ab]{agricolae::design.ab()}}) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.}
-
-\item{fac.sep}{The separator used by \code{fac.names}. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.}
 
 \item{...}{Additional parameters passed to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving the plot.}
 }
