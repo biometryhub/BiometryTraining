@@ -6,6 +6,9 @@
 #' @param brows For RCBD only. The number of rows in a block.
 #' @param bcols For RCBD only. The number of columns in a block.
 #' @param byrow For split-plot only. Logical (default: `TRUE`). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.
+#' @param fac.sep The separator used by `fac.names`. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.
+#' @param fac.names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
+#' @param plot Logical (default `TRUE`). If `TRUE`, display a plot of the generated design. A plot can always be produced later using [autoplot()].
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
 #' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
@@ -14,8 +17,6 @@
 #' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
 #' @param return.seed Logical (default TRUE). Output the seed used in the design?
 #' @param quiet Logical (default FALSE). Return the objects without printing output.
-#' @param fac.names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
-#' @param fac.sep The separator used by `fac.names`. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.
 #' @param ... Additional parameters passed to [ggplot2::ggsave()] for saving the plot.
 #'
 #' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory, with filename given by `savename`. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
@@ -86,6 +87,9 @@ des.info <- function(design.obj,
                      brows = NA,
                      bcols = NA,
                      byrow = TRUE,
+                     fac.names = NULL,
+                     fac.sep = c("", " "),
+                     plot = TRUE,
                      rotation = 0,
                      size = 4,
                      margin = FALSE,
@@ -94,8 +98,6 @@ des.info <- function(design.obj,
                      plottype = "pdf",
                      return.seed = TRUE,
                      quiet = FALSE,
-                     fac.names = NULL,
-                     fac.sep = c("", " "),
                      ...) {
 
     # Error checking of inputs
@@ -534,12 +536,16 @@ des.info <- function(design.obj,
     info <- list(design = des)
     class(des) <- c("design", class(des))
 
-    info$plot.des = autoplot(des, rotation = rotation, size = size, margin = margin)
+    if(plot) {
+        info$plot.des = autoplot(des, rotation = rotation, size = size, margin = margin)
+    }
     info$satab <- satab(design.obj)
 
     if(!quiet) {
         cat(info$satab)
-        plot(info$plot.des)
+        if(plot) {
+            plot(info$plot.des)
+        }
     }
 
     if(!is.logical(save)) {
