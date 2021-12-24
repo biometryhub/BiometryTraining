@@ -32,6 +32,12 @@ test_that("RCBD designs are supported", {
                    nrows = 6, ncols = 4, brows = 3, bcols = 2, seed = 42, quiet = TRUE)
 
     vdiffr::expect_doppelganger(title = "RCBD with square blocks", autoplot(d2.2))
+
+    # RCBD cases needed:
+    # nrows > brows, ncols = bcols
+    # nrows > brows, ncols > bcols
+    # bcols = ntrt
+
 })
 
 test_that("LSD designs are supported", {
@@ -140,7 +146,7 @@ test_that("Crossed RCBD designs are supported", {
     # Crossed RCBD with row blocks
     d6.1 <- design(type = "crossed:rcbd", treatments = c(3, 2),
                    reps = 3, nrows = 3, ncols = 6, brows = 1, bcols = 6,
-                   seed = 42, quiet = TRUE)
+                   fac.sep = c(":", ""), seed = 42, quiet = TRUE)
 
     expect_equal(d6$satab, d6.1$satab)
     vdiffr::expect_doppelganger(title = "Factorial RCBD plot with row blocks", autoplot(d6.1))
@@ -159,6 +165,11 @@ test_that("Crossed RCBD designs are supported", {
                    seed = 42, quiet = TRUE)
 
     vdiffr::expect_doppelganger(title = "Factorial RCBD plot square blocks", autoplot(d6.3))
+
+    # RCBD cases needed:
+    # nrows > brows, ncols = bcols
+    # nrows > brows, ncols > bcols
+    # bcols = ntrt
 })
 
 test_that("Crossed LSD designs are supported", {
@@ -188,7 +199,7 @@ test_that("Crossed LSD designs are supported", {
                    nrows = 6, ncols = 6, seed = 42, quiet = TRUE,
                    fac.names = list(N = c(50, 100, 150),
                                     W = c("I", "R")),
-                   fac.sep = c(":", " "))
+                   fac.sep = c(":", ""))
 
     expect_equal(d7.2$seed, 42)
     expect_equal(d7.2$satab, d7.1$satab)
@@ -226,6 +237,16 @@ test_that("3 way factorial designs are possible", {
                  "X:Y:Z                                   1\n")
     expect_snapshot_output(d9.1$satab)
     vdiffr::expect_doppelganger(title = "3 way factorial with names", autoplot(d9.1))
+
+    d9.2 <- design(type = "crossed:rcbd", treatments = c(2, 2, 2),
+                   reps = 3, nrows = 8, ncols = 3, brows = 8, bcols = 1, seed = 42,
+                   fac.names = list(X = c("A", "B"), Y = 1:2, Z = c(10, 20)))
+
+    expect_equal(d9.2$seed, 42)
+    expect_equal(d9.2$satab[3],
+                 "Block stratum                           2\n")
+    expect_snapshot_output(d9.2$satab)
+    vdiffr::expect_doppelganger(title = "3 way rcbd factorial with names", autoplot(d9.2))
 })
 
 test_that("seed options work", {
@@ -527,4 +548,5 @@ test_that("autoplot responds to size argument", {
                  reps = 5, nrows = 4, ncols = 5, seed = 42, quiet = TRUE)
     vdiffr::expect_doppelganger(title = "autoplot with size", autoplot(d1, size = 8))
 })
-# if(file.exists("Rplots.pdf")) unlink("Rplots.pdf", force = T)
+
+#
