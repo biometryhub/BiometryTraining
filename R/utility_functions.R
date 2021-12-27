@@ -24,6 +24,7 @@ quiet <- function(x) {
 ######################################################
 
 #' @importFrom utils available.packages
+#' @importFrom rlang is_interactive is_installed
 .onAttach <- function(library, pkg)
 {
   # Create a hidden variable to only print this output every 8 hours
@@ -41,7 +42,7 @@ quiet <- function(x) {
   # current_version <- "0.9.1"
   installed_version <- packageVersion('BiometryTraining')
 
-  if(interactive()) {# && Sys.time() > (last_load + 1)) {
+  if(rlang::is_interactive()) {# && Sys.time() > (last_load + 1)) {
     output <- paste("    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
                     paste("    |  ", pkg, " version ", installed_version, "                                   |",sep=""),
                     "    |  Authors: Sharon Nielsen, Sam Rogers, Annie Conway                |",
@@ -53,7 +54,7 @@ quiet <- function(x) {
                     "    |  Type 'citation('BiometryTraining')' for the citation details.    |",
                     "    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n", sep = "\n")
 
-    if(requireNamespace("crayon", quietly = TRUE)) {
+    if(rlang::is_installed("crayon")) {
       packageStartupMessage(crayon::green(output), appendLF=TRUE)
     }
     else {
@@ -81,7 +82,7 @@ quiet <- function(x) {
                        "    https://github.com/biometryhub/BiometryTraining. To update type:",
                        "    remotes::install_github('biometryhub/BiometryTraining')", sep = "\n")
 
-      if(requireNamespace("crayon", quietly = TRUE)) {
+      if(rlang::is_installed("crayon")) {
         packageStartupMessage(crayon::green(output2),appendLF=TRUE)
       }
       else {

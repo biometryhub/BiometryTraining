@@ -12,6 +12,7 @@
 #' @importFrom utils install.packages installed.packages download.file remove.packages
 #' @importFrom curl curl_fetch_disk
 #' @importFrom withr local_file
+#' @importFrom rlang is_installed
 #'
 #' @export
 #'
@@ -28,10 +29,10 @@
 #'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
 
-    pkgs <- rownames(installed.packages(lib.loc = library))
+    # pkgs <- rownames(installed.packages(lib.loc = library))
     # pkgs <- pkgs[pkgs != "asremlPlus"]
 
-    if(any(grep("^asreml$", pkgs)) & !force) {
+    if(rlang::is_installed("asreml") & !force) {
         if(!quiet) message("ASReml-R is already installed.")
         invisible(TRUE)
     }
@@ -149,9 +150,9 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
             warning("Argument keep_file should be provided as a path to a single directory or TRUE to save in current working directory. Downloaded file has not been kept.")
         }
 
-        pkgs <- rownames(installed.packages(lib.loc = library, noCache = T))
+        # pkgs <- rownames(installed.packages(lib.loc = library, noCache = T))
 
-        if(any(grep("^asreml$", pkgs))) {
+        if(rlang::is_installed("asreml")) {
             if(!quiet) message("ASReml-R successfully installed!")
         }
         else {

@@ -41,6 +41,7 @@ Imports:
     multcompView,
     predictmeans,
     RColorBrewer,
+    rlang,
     scales, 
     stringi,
     withr
