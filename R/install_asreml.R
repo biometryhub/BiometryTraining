@@ -82,14 +82,15 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         }
 
         # If forcing installation, remove existing version to avoid errors on installation
-        if(force && "asreml" %in% pkgs) {
+        if(force && rlang::is_installed("asreml")) {
             suppressMessages(remove.packages("asreml"))
         }
 
         # Check dependencies are installed first
+        pkgs <- rownames(installed.packages(lib.loc = library))
         deps <- setdiff(c("data.table", "ggplot2", "jsonlite"), pkgs)
 
-        if("data.table" %in% pkgs && packageVersion("data.table") < "1.9.6") {
+        if(rlang::is_installed("data.table") && packageVersion("data.table") < "1.9.6") {
             deps <- c(deps, "data.table")
         }
 
