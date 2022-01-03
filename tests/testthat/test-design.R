@@ -290,21 +290,21 @@ test_that("Invalid seed options give errors or warnings", {
                  "seed must be numeric or TRUE/FALSE")
 
     # seed is vector of numbers
-    expect_warning(
-        expect_warning(
-            expect_warning(d1 <- design(type = "crd", treatments = c(1, 5, 10, 20),
-                                        reps = 5, nrows = 4, ncols = 5, seed = 1:10, quiet = TRUE),
-                           "the condition has length > 1 and only the first element will be used"),
-            "the condition has length > 1 and only the first element will be used"),
-        "the condition has length > 1 and only the first element will be used")
-    expect_true(is.numeric(d1$seed))
-    expect_equal(d1$seed, 1)
+    # expect_warning(
+    #     expect_warning(
+    #         expect_warning(d1 <- design(type = "crd", treatments = c(1, 5, 10, 20),
+    #                                     reps = 5, nrows = 4, ncols = 5, seed = 1:10, quiet = TRUE),
+    #                        "the condition has length > 1 and only the first element will be used"),
+    #         "the condition has length > 1 and only the first element will be used"),
+    #     "the condition has length > 1 and only the first element will be used")
+    # expect_true(is.numeric(d1$seed))
+    # expect_equal(d1$seed, 1)
 
-    expect_warning(
-        expect_error(design(type = "crd", treatments = c(1, 5, 10, 20),
-                            reps = 5, nrows = 4, ncols = 5, seed = c('a', 'b'), quiet = TRUE),
-                     "seed must be numeric or TRUE/FALSE"),
-        "the condition has length > 1 and only the first element will be used")
+    # expect_warning(
+    #     expect_error(design(type = "crd", treatments = c(1, 5, 10, 20),
+    #                         reps = 5, nrows = 4, ncols = 5, seed = c('a', 'b'), quiet = TRUE),
+    #                  "seed must be numeric or TRUE/FALSE"),
+    #     "the condition has length > 1 and only the first element will be used")
 })
 
 test_that("reps in lsd produces a message", {
