@@ -62,8 +62,9 @@ test_that("Split plot designs are supported", {
                  "         treatments:sub_treatments           3\n")
     expect_snapshot_output(d4$satab)
     vdiffr::expect_doppelganger(title = "Split plot produced", autoplot(d4))
+})
 
-    # Split plot with names
+test_that("Split plot designs with names are supported", {
     d4.1 <- design(type = "split", treatments = c("A", "B"),
                    sub_treatments = 1:4, reps = 4, nrows = 8,
                    ncols = 4, brows = 4, bcols = 2, seed = 42,
@@ -74,36 +75,40 @@ test_that("Split plot designs are supported", {
                  "         Water:N                             3\n")
     expect_snapshot_output(d4.1$satab)
     vdiffr::expect_doppelganger(title = "Split plot with names", autoplot(d4.1))
+})
 
-    # Split plot with double row blocks
+test_that("Split plot designs with double row blocks are supported", {
     d4.2 <- design(type = "split", treatments = c("A", "B"),
                    sub_treatments = 1:4, reps = 4, nrows = 8,
                    ncols = 4, brows = 1, bcols = 4, seed = 42, quiet = TRUE)
 
-    expect_equal(d4$satab, d4.2$satab)
-    expect_equal(d4$seed, d4.2$seed)
+    expect_equal(d4.2$satab[11],
+                 "         treatments:sub_treatments           3\n")
+    expect_equal(d4.2$seed, 42)
     vdiffr::expect_doppelganger(title = "Split plot double row blocks", autoplot(d4.2))
+})
 
-    # Split plot with ntrt == bcol
+test_that("Split plot designs with ntrt == bcol are supported", {
     d4.3 <- design(type = "split", treatments = c("A", "B"),
                    sub_treatments = 1:4, reps = 4, nrows = 4,
-                   ncols = 8, brows = 1, bcols = 8, seed = 42, quiet = TRUE)
+                   ncols = 8, brows = 2, bcols = 4, seed = 42, quiet = TRUE)
 
-    expect_equal(d4$satab, d4.3$satab)
-    expect_equal(d4$seed, d4.3$seed)
+    expect_equal(d4.3$satab[11],
+                 "         treatments:sub_treatments           3\n")
+    expect_equal(d4.3$seed, 42)
     vdiffr::expect_doppelganger(title = "Split plot ntrt == bcol", autoplot(d4.3))
+})
 
-    # Split plot with column-wise arrangement
+test_that("Split plot designs with column-wise arrangement are supported", {
     d4.4 <- design(type = "split", treatments = c("A", "B"),
                    sub_treatments = 1:4, reps = 4, nrows = 8,
                    ncols = 4, brows = 4, bcols = 2, byrow = FALSE,
                    seed = 42, quiet = TRUE)
 
-    expect_equal(d4$satab, d4.4$satab)
-    expect_equal(d4$seed, d4.4$seed)
+    expect_equal(d4.4$satab[11],
+                 "         treatments:sub_treatments           3\n")
+    expect_equal(d4.4$seed, 42)
     vdiffr::expect_doppelganger(title = "Split plot byrow = F", autoplot(d4.4))
-
-
 })
 
 test_that("Crossed CRD designs are supported", {
@@ -142,34 +147,34 @@ test_that("Crossed RCBD designs are supported", {
                  "Residual                                10\n")
     expect_snapshot_output(d6$satab)
     vdiffr::expect_doppelganger(title = "Factorial RCBD plot produced", autoplot(d6))
+})
 
-    # Crossed RCBD with row blocks
+test_that("Crossed RCBD designs with row blocks are supported", {
     d6.1 <- design(type = "crossed:rcbd", treatments = c(3, 2),
                    reps = 3, nrows = 3, ncols = 6, brows = 1, bcols = 6,
                    fac.sep = c(":", ""), seed = 42, quiet = TRUE)
 
-    expect_equal(d6$satab, d6.1$satab)
+    expect_equal(d6.1$satab[8],
+                 "Residual                                10\n")
     vdiffr::expect_doppelganger(title = "Factorial RCBD plot with row blocks", autoplot(d6.1))
+})
 
-    # Crossed RCBD with double row blocks
+test_that("Crossed RCBD designs with double row blocks are supported", {
     d6.2 <- design(type = "crossed:rcbd", treatments = c(3, 2),
                    reps = 3, nrows = 6, ncols = 3, brows = 2, bcols = 3,
                    seed = 42, quiet = TRUE)
 
-    expect_equal(d6$satab, d6.2$satab)
+    expect_equal(d6.2$satab[8],
+                 "Residual                                10\n")
     vdiffr::expect_doppelganger(title = "Factorial RCBD plot double row blocks", autoplot(d6.2))
+})
 
-    # Crossed RCBD with double row blocks
+test_that("Crossed RCBD designs with double row blocks are supported", {
     d6.3 <- design(type = "crossed:rcbd", treatments = c(3, 2),
                    reps = 4, nrows = 6, ncols = 4, brows = 3, bcols = 2,
                    seed = 42, quiet = TRUE)
 
     vdiffr::expect_doppelganger(title = "Factorial RCBD plot square blocks", autoplot(d6.3))
-
-    # RCBD cases needed:
-    # nrows > brows, ncols = bcols
-    # nrows > brows, ncols > bcols
-    # bcols = ntrt
 })
 
 test_that("Crossed LSD designs are supported", {
@@ -183,18 +188,21 @@ test_that("Crossed LSD designs are supported", {
                  "Row                                     5\n")
     expect_snapshot_output(d7$satab)
     vdiffr::expect_doppelganger(title = "Factorial LSD plot with sep", autoplot(d7))
+})
 
-    # Crossed LSD with names
+test_that("Crossed LSD designs with names are supported", {
     d7.1 <- design(type = "crossed:lsd", treatments = c(3, 2),
                    nrows = 6, ncols = 6, seed = 42, quiet = TRUE,
                    fac.names = list(N = c(50, 100, 150),
                                     W = c("I", "R")))
 
     expect_equal(d7.1$seed, 42)
-    expect_equal(d7$satab[3], d7.1$satab[3])
+    expect_equal(d7.1$satab[3],
+                 "Row                                     5\n")
     vdiffr::expect_doppelganger(title = "Factorial LSD with names", autoplot(d7.1))
+})
 
-    # Crossed LSD with names and separator
+test_that("Crossed LSD designs with names and separator are supported", {
     d7.2 <- design(type = "crossed:lsd", treatments = c(3, 2),
                    nrows = 6, ncols = 6, seed = 42, quiet = TRUE,
                    fac.names = list(N = c(50, 100, 150),
@@ -202,7 +210,8 @@ test_that("Crossed LSD designs are supported", {
                    fac.sep = c(":", ""))
 
     expect_equal(d7.2$seed, 42)
-    expect_equal(d7.2$satab, d7.1$satab)
+    expect_equal(d7.2$satab[3],
+                 "Row                                     5\n")
     vdiffr::expect_doppelganger(title = "Factorial LSD plot names and sep", autoplot(d7.2))
 })
 
@@ -251,15 +260,15 @@ test_that("3 way factorial designs are possible", {
 
 
 test_that("Adding names to 3 way factorial designs works", {
-d9.2 <- design(type = "crossed:rcbd", treatments = c(2, 2, 2),
-               reps = 3, nrows = 8, ncols = 3, brows = 8, bcols = 1, seed = 42,
-               fac.names = list(X = c("A", "B"), Y = 1:2, Z = c(10, 20)))
+    d9.2 <- design(type = "crossed:rcbd", treatments = c(2, 2, 2),
+                   reps = 3, nrows = 8, ncols = 3, brows = 8, bcols = 1, seed = 42,
+                   fac.names = list(X = c("A", "B"), Y = 1:2, Z = c(10, 20)))
 
-expect_equal(d9.2$seed, 42)
-expect_equal(d9.2$satab[3],
-             "Block stratum                           2\n")
-expect_snapshot_output(d9.2$satab)
-vdiffr::expect_doppelganger(title = "3 way rcbd factorial with names", autoplot(d9.2))
+    expect_equal(d9.2$seed, 42)
+    expect_equal(d9.2$satab[3],
+                 "Block stratum                           2\n")
+    expect_snapshot_output(d9.2$satab)
+    vdiffr::expect_doppelganger(title = "3 way rcbd factorial with names", autoplot(d9.2))
 })
 
 
