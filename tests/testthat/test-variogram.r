@@ -1,4 +1,4 @@
-load("../asreml_oats.Rdata", .GlobalEnv)
+model.asr <- readRDS(test_path("data", "model_asr.rds"))
 
 test_that("vario_df produces a dataframe", {
     vg <- vario_df(model.asr)
@@ -9,8 +9,6 @@ test_that("vario_df produces a dataframe", {
 })
 
 test_that("variogram produces a plot", {
-    # load("../asreml_oats.Rdata", .GlobalEnv)
-
     v1 <- variogram(model.asr)
     expect_type(v1, "list")
     expect_s3_class(v1, "ggplot")

@@ -122,7 +122,7 @@ test_that("save produces output", {
 test_that("Interaction terms work", {
     skip_if_not(requireNamespace("asreml", quietly = T))
     quiet(library(asreml))
-    load("../asreml_oats.Rdata", .GlobalEnv)
+    load(test_path("data", "asreml_model.Rdata"), .GlobalEnv)
     output <- mct.out(model.asr, pred.asr, classify = "Nitrogen:Variety")
     expect_equal(output$predicted.value,
                  c(76.58, 85.86, 70.85, 99.91, 108.32, 92.22, 116.63, 113.50, 113.10, 123.75, 127.53, 118.40))
@@ -177,7 +177,11 @@ test_that("mct removes aliased treatments in aov", {
 test_that("mct handles aliased results in asreml with a warning", {
     skip_if_not(requireNamespace("asreml", quietly = T))
     quiet(library(asreml))
-    load("../asreml_oats.Rdata", .GlobalEnv)
+    model.asr <- readRDS(test_path("data", "model_asr.rds"))
+    pred.asr <- readRDS(test_path("data", "pred_asr.rds"))
+    model2.asr <- readRDS(test_path("data", "model_asr2.rds"))
+    pred2.asr <- readRDS(test_path("data", "pred_asr2.rds"))
+    dat <- readRDS(test_path("data", "oats_data.rds"))
     pred.asr$pvals$predicted.value[12] <- NA
     pred.asr$sed[12, ] <- NA
     pred.asr$sed[, 12] <- NA
@@ -211,7 +215,8 @@ test_that("Use of pred argument gives warning", {
 test_that("Missing pred.obj object causes error", {
     skip_if_not(requireNamespace("asreml", quietly = T))
     quiet(library(asreml))
-    load("../asreml_oats.Rdata")
+    model.asr <- readRDS(test_path("data", "model_asr.rds"))
+    dat <- readRDS(test_path("data", "oats_data.rds"))
     expect_error(suppressWarnings(mct.out(model.asr, classify = "Nitrogen")),
                  "You must provide a prediction object in pred.obj")
 })
@@ -228,11 +233,11 @@ test_that("Forgetting sed = T in pred.obj object causes error", {
 test_that("lme4 model works", {
     skip_if_not_installed("lme4")
     quiet(library(lme4))
-    load("../oats_data.Rdata")
+    dat <- readRDS(test_path("data", "oats_data.rds"))
     dat.lmer <- lmer(yield ~ Nitrogen*Variety + (1|Blocks), data = dat)
     output <- mct.out(dat.lmer, classify = "Nitrogen")
     expect_equal(output$std.error, rep(7.4, 4))
-    skip_if(Sys.info()[["sysname"]] == "Linux")
+    # skip_if(Sys.info()[["sysname"]] == "Linux")
     expect_equal(output$predicted.value, c(79.39, 98.89, 114.22, 123.39))
     vdiffr::expect_doppelganger("lme4 output", autoplot(output))
 })

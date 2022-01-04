@@ -25,7 +25,7 @@ test_that("Residual plots work for asreml", {
   dat.asr <- quiet(asreml::asreml(Petal.Length ~ Petal.Width, data = iris, trace = F))
   p1_single <- resplot(dat.asr, shapiro = F)
 
-  load("../complexmodel.Rdata")
+  final.m.asr <- readRDS(test_path("data", "complex_model.rds"))
   p1_multi <- suppressWarnings(resplot(final.m.asr))
 
   # expect_plots_identical("test-plot.png", "../figs/resplt/resplt-aov.png")
@@ -68,7 +68,7 @@ test_that("Residual plots work for nlme", {
 
 test_that("Residual plots work for sommer", {
   skip_if_not_installed("sommer")
-  load("../asreml_oats.Rdata")
+  dat <- readRDS(test_path("data", "oats_data.rds"))
   dat.som <- sommer::mmer(yield ~ Nitrogen + Variety + Nitrogen:Variety,
                           random = ~ Blocks + Blocks:Wplots,
                           rcov = ~ units,
@@ -82,7 +82,6 @@ test_that("Residual plots work for sommer", {
 })
 
 test_that("Residual plots display call for aov and lm", {
-  # dat.aov <-
   dat.aov <- aov(Petal.Length ~ Petal.Width, data = iris)
   p1 <- resplot(dat.aov, call = TRUE)
   p2 <- resplot(dat.aov, call = TRUE, call.size = 7)
