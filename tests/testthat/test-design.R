@@ -20,24 +20,22 @@ test_that("RCBD designs are supported", {
                  "Block stratum                           3\n")
     expect_snapshot_output(d2$satab)
     vdiffr::expect_doppelganger(title = "RCBD plot produced", autoplot(d2))
+})
 
+test_that("RCBD with row-wise blocks are supported", {
     # RCBD with row-wise blocks
     d2.1 <- design("rcbd", treatments = LETTERS[1:6], reps = 4,
                    nrows = 4, ncols = 6, brows = 1, bcols = 6, seed = 42, quiet = TRUE)
 
     vdiffr::expect_doppelganger(title = "RCBD with row blocks", autoplot(d2.1))
 
-    # RCBD with square blocks
+})
+
+test_that("RCBD with square blocks are supported", {
     d2.2 <- design("rcbd", treatments = LETTERS[1:6], reps = 4,
                    nrows = 6, ncols = 4, brows = 3, bcols = 2, seed = 42, quiet = TRUE)
 
     vdiffr::expect_doppelganger(title = "RCBD with square blocks", autoplot(d2.2))
-
-    # RCBD cases needed:
-    # nrows > brows, ncols = bcols
-    # nrows > brows, ncols > bcols
-    # bcols = ntrt
-
 })
 
 test_that("LSD designs are supported", {
@@ -104,6 +102,8 @@ test_that("Split plot designs are supported", {
     expect_equal(d4$satab, d4.4$satab)
     expect_equal(d4$seed, d4.4$seed)
     vdiffr::expect_doppelganger(title = "Split plot byrow = F", autoplot(d4.4))
+
+
 })
 
 test_that("Crossed CRD designs are supported", {
@@ -248,6 +248,20 @@ test_that("3 way factorial designs are possible", {
     expect_snapshot_output(d9.2$satab)
     vdiffr::expect_doppelganger(title = "3 way rcbd factorial with names", autoplot(d9.2))
 })
+
+
+test_that("Adding names to 3 way factorial designs works", {
+d9.2 <- design(type = "crossed:rcbd", treatments = c(2, 2, 2),
+               reps = 3, nrows = 8, ncols = 3, brows = 8, bcols = 1, seed = 42,
+               fac.names = list(X = c("A", "B"), Y = 1:2, Z = c(10, 20)))
+
+expect_equal(d9.2$seed, 42)
+expect_equal(d9.2$satab[3],
+             "Block stratum                           2\n")
+expect_snapshot_output(d9.2$satab)
+vdiffr::expect_doppelganger(title = "3 way rcbd factorial with names", autoplot(d9.2))
+})
+
 
 test_that("seed options work", {
     # seed = TRUE
