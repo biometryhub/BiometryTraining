@@ -1,7 +1,7 @@
 test_that("Installation works", {
     skip_if(Sys.info()[["sysname"]] == "Windows")
     skip_if(Sys.info()[["sysname"]] == "Darwin")
-    skip_on_cran()
+    # skip_on_cran()
     # skip_on_ci()
     expect_message(install_asreml(force = TRUE), "ASReml-R successfully installed!")
     expect_equal(install_asreml(), TRUE)
@@ -10,7 +10,7 @@ test_that("Installation works", {
 test_that("Update function works", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_if(Sys.info()[["sysname"]] == "Windows")
-    skip_on_cran()
+    # skip_on_cran()
     skip_on_ci()
     expect_message(update_asreml(), "ASReml-R successfully installed!")
 })
@@ -28,7 +28,7 @@ test_that("Update function works", {
 test_that("Returns true if asreml already installed", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_if(Sys.info()[["sysname"]] == "Windows")
-    skip_on_cran()
+    # skip_on_cran()
     skip_on_ci()
     install_asreml(quiet=TRUE)
     expect_equal(install_asreml(), TRUE)
@@ -111,14 +111,6 @@ test_that("force and quiet work together", {
     skip_on_cran()
     skip_on_ci()
     expect_invisible(install_asreml(force = TRUE, quiet = TRUE))
-})
-
-test_that("More than one element for keep_file produces a warning", {
-    # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
-    skip_on_cran()
-    skip_on_ci()
-    expect_warning(install_asreml(force = TRUE, quiet = TRUE, keep_file = 1:2))
 })
 
 # test_that("Old version of data.table results in upgrade to newer version", {
