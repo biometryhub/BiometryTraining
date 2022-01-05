@@ -29,9 +29,6 @@
 #'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
 
-    # pkgs <- rownames(installed.packages(lib.loc = library))
-    # pkgs <- pkgs[pkgs != "asremlPlus"]
-
     if(rlang::is_installed("asreml") & !force) {
         if(!quiet) message("ASReml-R is already installed.")
         invisible(TRUE)
@@ -82,8 +79,9 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         }
 
         # If forcing installation, remove existing version to avoid errors on installation
-        if(force && rlang::is_installed("asreml")) {
-            suppressMessages(remove.packages("asreml"))
+        if(force && rlang::is_installed("asreml") && Sys.info()[["sysname"]] == "Windows") {
+            detach("package:asreml", unload = T, force = T)
+            suppressMessages(remove.packages("asreml", ))
         }
 
         # Check dependencies are installed first
@@ -96,7 +94,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
         if(length(deps) > 0) {
             install.packages(deps, lib = library, repos = "https://cloud.r-project.org",
-                             Ncpus = ifelse("parallel" %in% pkgs,
+                             Ncpus = ifelse(length(deps)>1,
                                             max(ceiling(parallel::detectCores()/2), # Use multiple CPUs if available
                                                 ceiling(parallel::detectCores()-2)), 1))
         }
@@ -150,8 +148,6 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
         else {
             warning("Argument keep_file should be provided as a path to a single directory or TRUE to save in current working directory. Downloaded file has not been kept.")
         }
-
-        # pkgs <- rownames(installed.packages(lib.loc = library, noCache = T))
 
         if(rlang::is_installed("asreml")) {
             if(!quiet) message("ASReml-R successfully installed!")

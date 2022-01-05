@@ -1,6 +1,6 @@
 test_that("Installation works", {
-    skip_if(Sys.info()[["sysname"]] == "Windows")
-    skip_if(Sys.info()[["sysname"]] == "Darwin")
+    skip_on_os("windows")
+    skip_on_os("mac")
     # skip_on_cran()
     # skip_on_ci()
     expect_message(install_asreml(force = TRUE), "ASReml-R successfully installed!")
@@ -9,7 +9,7 @@ test_that("Installation works", {
 
 test_that("Update function works", {
     # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     # skip_on_cran()
     skip_on_ci()
     expect_message(update_asreml(), "ASReml-R successfully installed!")
@@ -27,7 +27,7 @@ test_that("Update function works", {
 
 test_that("Returns true if asreml already installed", {
     # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     # skip_on_cran()
     skip_on_ci()
     install_asreml(quiet=TRUE)
@@ -36,15 +36,15 @@ test_that("Returns true if asreml already installed", {
 
 test_that("Prints message if asreml already installed", {
     # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
-    skip_on_cran()
+    skip_on_os("windows")
+    # skip_on_cran()
     skip_on_ci()
     install_asreml(quiet=T)
     expect_message(install_asreml(), "ASReml-R is already installed.")
 })
 
 test_that("Quiet returns no output", {
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     skip_on_cran()
     skip_on_ci()
     expect_invisible(install_asreml(quiet = TRUE))
