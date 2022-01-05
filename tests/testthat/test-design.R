@@ -54,7 +54,7 @@ test_that("Split plot designs are supported", {
     # Split
     d4 <- design(type = "split", treatments = c("A", "B"),
                  sub_treatments = 1:4, reps = 4, nrows = 8,
-                 ncols = 4, brows = 4, bcols = 2, seed = 42,
+                 ncols = 4, brows = 8, bcols = 1, seed = 42,
                  quiet = TRUE)
 
     expect_equal(d4$seed, 42)
@@ -91,7 +91,7 @@ test_that("Split plot designs with double row blocks are supported", {
 test_that("Split plot designs with ntrt == bcol are supported", {
     d4.3 <- design(type = "split", treatments = c("A", "B"),
                    sub_treatments = 1:4, reps = 4, nrows = 4,
-                   ncols = 8, brows = 2, bcols = 4, seed = 42, quiet = TRUE)
+                   ncols = 8, brows = 1, bcols = 8, seed = 42, quiet = TRUE)
 
     expect_equal(d4.3$satab[11],
                  "         treatments:sub_treatments           3\n")
