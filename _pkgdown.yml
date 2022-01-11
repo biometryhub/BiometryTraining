@@ -18,7 +18,7 @@ reference:
   - logl.test
   - mct.out
   - resplt
-  - vario
+  - variogram
 - title: Utilities
   desc: Other helper functions
 - contents:

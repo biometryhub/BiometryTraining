@@ -14,7 +14,7 @@ variogram(model.obj, row = NA, column = NA)
 \item{column}{A column variable.}
 }
 \value{
-A list containing ggplot2 objects.
+A ggplot2 object.
 }
 \description{
 Produces variogram plots for checking spatial trends.

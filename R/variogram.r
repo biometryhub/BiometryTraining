@@ -6,7 +6,7 @@
 #' @param row A row variable.
 #' @param column A column variable.
 #'
-#' @return A list containing ggplot2 objects.
+#' @return A ggplot2 object.
 #'
 #' @importFrom akima interp interp2xyz
 #' @importFrom grDevices rainbow
