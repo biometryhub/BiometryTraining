@@ -29,9 +29,6 @@ NULL
 #' @export
 autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...) {
     stopifnot(inherits(object, "mct"))
-    # if(!is.data.frame(object)) {
-    #     object <- object$predicted_values
-    # }
 
     # classify is just the first n columns (before predicted.value)
     classify <- colnames(object)[1]
