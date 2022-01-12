@@ -14,7 +14,8 @@
 #' @importFrom cowplot plot_grid
 #' @importFrom ggplot2 ggplot geom_tile coord_equal geom_contour scale_fill_gradientn theme_bw scale_x_continuous scale_y_continuous theme labs
 #'
-#' @references S. P. Kaluzny, S. C. Vega, T. P. Cardoso, A. A. Shelly, _S+SpatialStats: User’s Manual for Windows® and UNIX®_ (Springer New York, 2013; https://books.google.com.au/books?id=iADkBwAAQBAJ).
+#' @references S. P. Kaluzny, S. C. Vega, T. P. Cardoso, A. A. Shelly, "S+SpatialStats: User’s Manual for Windows® and UNIX®" _Springer New York_, 2013, p. 68, https://books.google.com.au/books?id=iADkBwAAQBAJ.
+#' @references A. R. Gilmour, B. R. Cullis, A. P. Verbyla, "Accounting for Natural and Extraneous Variation in the Analysis of Field Experiments." _Journal of Agricultural, Biological, and Environmental Statistics 2, no. 3_, 1997, pp. 269–93, https://doi.org/10.2307/1400446.
 #'
 #' @examples
 #' \dontrun{
