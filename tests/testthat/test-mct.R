@@ -1,11 +1,3 @@
-# Test model object is correct type
-# Test pred.obj is provided with asreml objects?
-# Test ordering works as expected
-
-# model.obj
-# offset
-# decimals
-
 logit <- function (p, percents = range.p[2] > 1, adjust)
 {
     range.p <- range(p, na.rm = TRUE)
@@ -233,6 +225,7 @@ test_that("Forgetting sed = T in pred.obj object causes error", {
 test_that("lme4 model works", {
     skip_if_not_installed("lme4")
     quiet(library(lme4))
+    withr::local_locale(c("LC_COLLATE" = "en_AU.UTF-8"))
     dat <- readRDS(test_path("data", "oats_data.rds"))
     dat.lmer <- lmer(yield ~ Nitrogen*Variety + (1|Blocks), data = dat)
     output <- mct.out(dat.lmer, classify = "Nitrogen")
