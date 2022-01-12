@@ -225,9 +225,10 @@ test_that("Forgetting sed = T in pred.obj object causes error", {
 test_that("lme4 model works", {
     skip_if_not_installed("lme4")
     quiet(library(lme4))
-    withr::local_locale(c("LC_COLLATE" = "en_AU.UTF-8"))
     dat <- readRDS(test_path("data", "oats_data.rds"))
     dat.lmer <- lmer(yield ~ Nitrogen*Variety + (1|Blocks), data = dat)
+    withr::local_locale(c("LC_COLLATE" = "en_AU.UTF-8"))
+    print(Sys.getlocale())
     output <- mct.out(dat.lmer, classify = "Nitrogen")
     expect_equal(output$std.error, rep(7.4, 4))
     # skip_if(Sys.info()[["sysname"]] == "Linux")
