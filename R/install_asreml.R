@@ -80,7 +80,7 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 
         # If forcing installation, remove existing version to avoid errors on installation
         if(force && rlang::is_installed("asreml") && Sys.info()[["sysname"]] == "Windows") {
-            detach("package:asreml", unload = T, force = T)
+            detach("package:asreml", unload = TRUE, force = TRUE)
             suppressMessages(remove.packages("asreml", ))
         }
 
@@ -109,12 +109,12 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
                     file.rename(save_file, filename)
                 },
                 error = function(cond) {
-                    warning("Could not copy asreml install file to current working directory", call. = F)
+                    warning("Could not copy asreml install file to current working directory", call. = FALSE)
                     file.remove(save_file)
                     return(FALSE)
                 },
                 warning = function(cond) {
-                    warning("Could not copy asreml install file to current working directory", call. = F)
+                    warning("Could not copy asreml install file to current working directory", call. = FALSE)
                     file.remove(save_file)
                     return(FALSE)
                 }
@@ -130,12 +130,12 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
                         file.rename(save_file, paste0(keep_file, "/", filename))
                     },
                     error = function(cond) {
-                        warning("Could not copy asreml install file to provided directory.", call. = F)
+                        warning("Could not copy asreml install file to provided directory.", call. = FALSE)
                         file.remove(save_file)
                         return(FALSE)
                     },
                     warning = function(cond) {
-                        warning("Could not copy asreml install file to provided directory.", call. = F)
+                        warning("Could not copy asreml install file to provided directory.", call. = FALSE)
                         file.remove(save_file)
                         return(FALSE)
                     }

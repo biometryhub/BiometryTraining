@@ -35,7 +35,7 @@
 #' oats.logl
 #' }
 #'
-logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, decimals = 3, numeric = FALSE, quiet = F) {
+logl.test <- function(model.obj, rand.terms = NULL, resid.terms = NULL, decimals = 3, numeric = FALSE, quiet = FALSE) {
 
     if(!inherits(model.obj, "asreml")){
         stop("Only asreml models are supported at this time.")

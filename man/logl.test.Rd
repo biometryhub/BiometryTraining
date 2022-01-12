@@ -10,7 +10,7 @@ logl.test(
   resid.terms = NULL,
   decimals = 3,
   numeric = FALSE,
-  quiet = F
+  quiet = FALSE
 )
 }
 \arguments{

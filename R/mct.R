@@ -75,7 +75,7 @@ mct.out <- function(model.obj,
     }
 
     if(sig > 0.5)  {
-        warning("Significance level given by sig is high. Perhaps you meant ", 1-sig, "?", call. = F)
+        warning("Significance level given by sig is high. Perhaps you meant ", 1-sig, "?", call. = FALSE)
     }
 
     if(inherits(model.obj, "asreml")){

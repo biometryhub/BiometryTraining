@@ -184,7 +184,7 @@ design <- function(type,
     }
 
     if(dim < trs) {
-        warning("Area provided is smaller than treatments applied. Please check inputs.", call. = F)
+        warning("Area provided is smaller than treatments applied. Please check inputs.")
     }
 
     output <- des.info(design.obj = outdesign, nrows = nrows, ncols = ncols,
