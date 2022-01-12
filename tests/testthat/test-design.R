@@ -258,7 +258,6 @@ test_that("3 way factorial designs are possible", {
     vdiffr::expect_doppelganger(title = "3 way rcbd factorial with names", autoplot(d9.2))
 })
 
-
 test_that("Adding names to 3 way factorial designs works", {
     d9.2 <- design(type = "crossed:rcbd", treatments = c(2, 2, 2),
                    reps = 3, nrows = 8, ncols = 3, brows = 8, bcols = 1, seed = 42,
@@ -270,7 +269,6 @@ test_that("Adding names to 3 way factorial designs works", {
     expect_snapshot_output(d9.2$satab)
     vdiffr::expect_doppelganger(title = "3 way rcbd factorial with names", autoplot(d9.2))
 })
-
 
 test_that("seed options work", {
     # seed = TRUE

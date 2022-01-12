@@ -116,10 +116,10 @@ des.info <- function(design.obj,
         n_facs <- ifelse(is.null(design.obj$book$C), 2, 3)
         if(!is.null(fac.names)) {
             if(length(fac.names) > n_facs) {
-                warning("fac.names contains ", length(fac.names), " elements but only the first ", n_facs, " have been used.", call. = F)
+                warning("fac.names contains ", length(fac.names), " elements but only the first ", n_facs, " have been used.", call. = FALSE)
             }
             else if(length(fac.names) < n_facs) {
-                warning("fac.names doesn't contain enough elements and has not been used.", call. = F)
+                warning("fac.names doesn't contain enough elements and has not been used.", call. = FALSE)
             }
             else {
                 if(is.list(fac.names)) {
@@ -130,14 +130,14 @@ des.info <- function(design.obj,
                         levels(design.obj$book$A) <- fac.names[[1]]
                     }
                     else {
-                        warning(names(fac.names)[1], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                        warning(names(fac.names)[1], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
                     }
 
                     if(length(levels(design.obj$book$B)) == length(fac.names[[2]])) {
                         levels(design.obj$book$B) <- fac.names[[2]]
                     }
                     else {
-                        warning(names(fac.names)[2], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                        warning(names(fac.names)[2], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
                     }
 
                     if(n_facs == 3) {
@@ -148,7 +148,7 @@ des.info <- function(design.obj,
                             colnames(design.obj$book)[which(colnames(design.obj$book)=="C")] <- names(fac.names)[3]
                         }
                         else {
-                            warning(names(fac.names)[3], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                            warning(names(fac.names)[3], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
                         }
                     }
                 }
@@ -167,10 +167,10 @@ des.info <- function(design.obj,
         if(!is.null(fac.names)) {
 
             if(length(fac.names) > 2) {
-                warning("fac.names contains ", length(fac.names), " elements but only the first 2 have been used.", call. = F)
+                warning("fac.names contains ", length(fac.names), " elements but only the first 2 have been used.", call. = FALSE)
             }
             else if(length(fac.names) < 2) {
-                warning("fac.names doesn't contain enough elements and has not been used.", call. = F)
+                warning("fac.names doesn't contain enough elements and has not been used.", call. = FALSE)
             }
             else {
                 if(is.list(fac.names)) {
@@ -182,14 +182,14 @@ des.info <- function(design.obj,
                         levels(design.obj$book$treatments) <- fac.names[[1]]
                     }
                     else {
-                        warning(names(fac.names)[1], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                        warning(names(fac.names)[1], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
                     }
 
                     if(length(levels(design.obj$book$sub_treatments)) == length(fac.names[[2]])) {
                         levels(design.obj$book$sub_treatments) <- fac.names[[2]]
                     }
                     else {
-                        warning(names(fac.names)[2], " must contain the correct number of elements. Elements have not been applied.", call. = F)
+                        warning(names(fac.names)[2], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
                     }
 
                     colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
@@ -205,12 +205,12 @@ des.info <- function(design.obj,
         fac.sep <- rep(fac.sep, times = 2)
     }
 
-    if (return.seed) {
-        des.seed <- design.obj$parameters$seed
-    }
-    else {
-        des.seed <- NULL
-    }
+    # if (return.seed) {
+    #     des.seed <- design.obj$parameters$seed
+    # }
+    # else {
+    #     des.seed <- NULL
+    # }
 
     ifelse(design.obj$parameters$design == "factorial",
            design <- paste("factorial", design.obj$parameters$applied, sep = "_"),
@@ -222,13 +222,19 @@ des.info <- function(design.obj,
         des <- cbind(plan, design.obj$book)
 
         names(des)[names(des)=="r"] <- "rep"
-        names(des)[names(des)=="trt"] <- "treatments"
+        # if(any(grepl("trt", names(des)))) {
+            # names(des)[names(des)=="trt"] <- "treatments"
+        # }
+        # else {
+        names(des)[ncol(des)] <- "treatments"
+        # }
         ntrt <- nlevels(as.factor(des$treatments))
     }
 
     if (design == "rcbd") {
-        names(design.obj$book)[names(design.obj$book)=="trt"] <- "treatments"
-        ntrt <- nlevels(as.factor(design.obj$book$treatments))
+        # names(design.obj$book)[names(design.obj$book)=="trt"] <- "treatments"
+        # names(design.obj$book)[ncol(design.obj$book)] <- "treatments"
+        ntrt <- nlevels(as.factor(design.obj$book[,ncol(design.obj$book)]))
 
         # Calculate direction of blocking
         xx <- c()
@@ -303,6 +309,7 @@ des.info <- function(design.obj,
         } # 5
 
         des <- cbind(plan, des)
+        names(des)[ncol(des)] <- "treatments"
     }
 
     if (design == "lsd") {
@@ -310,10 +317,9 @@ des.info <- function(design.obj,
         des$row <- as.numeric(des$row)
         des$col <- as.numeric(des$col)
 
-        names(des)[4] <- "treatments"
+        names(des)[ncol(des)] <- "treatments"
         ntrt <- nlevels(as.factor(des$treatments))
     }
-
 
     if (design == "factorial_crd") {
         treatments <- NULL
