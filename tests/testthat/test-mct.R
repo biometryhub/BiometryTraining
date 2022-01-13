@@ -233,6 +233,8 @@ test_that("lme4 model works", {
     output <- mct.out(dat.lmer, classify = "Nitrogen")
     expect_equal(output$std.error, rep(7.4, 4))
     # skip_if(Sys.info()[["sysname"]] == "Linux")
+    # expect_equal(min(output$predicted.value), 79.39)
+    # expect_equal(max(output$predicted.value), 123.39)
     expect_equal(output$predicted.value, c(79.39, 98.89, 114.22, 123.39))
     vdiffr::expect_doppelganger("lme4 output", autoplot(output))
 })

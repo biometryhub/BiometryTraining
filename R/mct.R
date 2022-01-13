@@ -21,6 +21,7 @@
 #' @importFrom multcompView multcompLetters
 #' @importFrom predictmeans predictmeans
 #' @importFrom stats predict qtukey qt
+#' @importFrom stringi stri_order
 #' @importFrom utils packageVersion
 #' @importFrom ggplot2 ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #'
