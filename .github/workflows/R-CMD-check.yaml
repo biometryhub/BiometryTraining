@@ -44,6 +44,12 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo -s apt-get install zlib1g-dev pkg-config
 
+      - name: Set Locale
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update && sudo apt install locales -y && sudo locale-gen en_AU.UTF-8
+          sudo update-locale LC_ALL=en_AU.UTF-8 LANG=en_AU.UTF-8
+
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
