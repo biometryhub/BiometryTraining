@@ -17,7 +17,7 @@ test_that("Update function works", {
 
 # test_that("Installation provides output on success", {
 #     # skip_if(R.version$status == "Under development (unstable)")
-#     skip_if(Sys.info()[["sysname"]] == "Windows")
+#     skip_on_os("windows")
 #     if(requireNamespace("asreml", quietly = TRUE)){
 #         unloadNamespace("asreml")
 #         remove.packages("asreml")
@@ -53,7 +53,7 @@ test_that("Quiet returns no output", {
 
 test_that("Force argument makes package install", {
     # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     skip_on_cran()
     skip_on_ci()
     install_asreml(force = TRUE)
@@ -63,7 +63,7 @@ test_that("Force argument makes package install", {
 
 test_that("keep_file = F doesn't keep file", {
     # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     skip_on_cran()
     skip_on_ci()
     install_asreml(force = TRUE, keep_file = FALSE)
@@ -73,7 +73,7 @@ test_that("keep_file = F doesn't keep file", {
 })
 
 test_that("keep_file = T keeps file (in temp?)", {
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     skip_on_cran()
     skip_on_ci()
     # skip_if(R.version$status == "Under development (unstable)")
@@ -86,7 +86,7 @@ test_that("keep_file = T keeps file (in temp?)", {
 
 test_that("keep_file = 'data' keeps file in 'data'", {
     # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     skip_on_cran()
     skip_on_ci()
     dir.create(paste0(tempdir(), "/data"))
@@ -98,7 +98,7 @@ test_that("keep_file = 'data' keeps file in 'data'", {
 
 test_that("Providing a non-existant directory fails", {
     # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     skip_on_cran()
     skip_on_ci()
     expect_warning(install_asreml(force = TRUE, keep_file = "abc"),
@@ -107,7 +107,7 @@ test_that("Providing a non-existant directory fails", {
 
 test_that("force and quiet work together", {
     # skip_if(R.version$status == "Under development (unstable)")
-    skip_if(Sys.info()[["sysname"]] == "Windows")
+    skip_on_os("windows")
     skip_on_cran()
     skip_on_ci()
     expect_invisible(install_asreml(force = TRUE, quiet = TRUE))
@@ -115,7 +115,7 @@ test_that("force and quiet work together", {
 
 # test_that("Old version of data.table results in upgrade to newer version", {
 #     # skip_if(R.version$status == "Under development (unstable)")
-#     skip_if(Sys.info()[["sysname"]] == "Windows")
+#     skip_on_os("windows")
 #     skip_if_not_installed("remotes")
 #     skip_on_cran()
 #     skip_on_ci()

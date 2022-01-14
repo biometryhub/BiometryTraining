@@ -44,10 +44,6 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo -s apt-get install zlib1g-dev pkg-config
 
-      - name: Check Locale
-        if: runner.os == 'Linux'
-        run: locale
-
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
