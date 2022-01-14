@@ -12,7 +12,7 @@ test_that("variogram produces a plot", {
     v1 <- variogram(model.asr)
     expect_type(v1, "list")
     expect_s3_class(v1, "ggplot")
-    skip_on_os(c("windows", "mac")
+    skip_on_os(c("windows", "mac"))
     vdiffr::expect_doppelganger(title = "Variogram produced", v1)
 })
 
