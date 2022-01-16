@@ -3,7 +3,7 @@
 ## Major changes
 
 - Created a variogram function that does not rely on ASreml (#33)
-- Enabled `autoplot()` function for `design()` and `mct.out()`. (#60)
+- Implemented `autoplot()` function for `design()` and `mct.out()`. (#60)
 
 ## Minor changes
 
@@ -12,6 +12,7 @@
 ## Bug fixes
 
 - More sanity checking of inputs in `design()` (#69)
+- Various bug fixes in `logl.test()` (#31 and #51)
 
 # BiometryTraining 0.9.0
 

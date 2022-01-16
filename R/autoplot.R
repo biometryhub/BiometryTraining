@@ -67,7 +67,7 @@ autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...
 #' @importFrom scales reverse_trans
 #' @importFrom stringi stri_sort
 #' @export
-autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...) {
+autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colour_blind = F, ...) {
     stopifnot(inherits(object, "design"))
     # Asign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
@@ -82,10 +82,19 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...)
         object <- object$design
     }
 
+    if(hasArg(color_blind)) {
+        colour_blind <- color_blind
+    }
+
     ntrt <- nlevels(as.factor(object$treatments))
 
     # create the colours for the graph
-    color_palette <- grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(ntrt)
+    if(!colour_blind) {
+        colour_palette <- grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(ntrt)
+    }
+    else {
+        colour_palette <- viridis::viridis(ntrt)
+    }
 
     if (!any(grepl("block", names(object)))) {
 
@@ -94,7 +103,7 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...)
             ggplot2::geom_tile(data = object, mapping = ggplot2::aes(x = col, y = row, fill = treatments), colour = "black") +
             ggplot2::geom_text(data = object, mapping = ggplot2::aes(x = col, y = row, label = treatments), angle = rotation, size = size) +
             ggplot2::theme_bw() +
-            ggplot2::scale_fill_manual(values = color_palette, name = "Treatment")
+            ggplot2::scale_fill_manual(values = colour_palette, name = "Treatment")
     }
     if (any(grepl("block", names(object)))) {
 
@@ -127,7 +136,7 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, ...)
                 size = 0.6, colour = "white", fill = NA
             ) +
             ggplot2::theme_bw() +
-            ggplot2::scale_fill_manual(values = color_palette, name = "Treatment")
+            ggplot2::scale_fill_manual(values = colour_palette, name = "Treatment")
     }
 
     if (!margin) {
