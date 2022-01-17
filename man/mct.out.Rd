@@ -14,18 +14,18 @@ mct.out(
   offset = NA,
   decimals = 2,
   order = "default",
-  label_height = 0.5,
+  plot = F,
+  label_height = 0.1,
   rotation = 0,
   save = FALSE,
   savename = "predicted_values",
-  plottype = "pdf",
   pred
 )
 }
 \arguments{
-\item{model.obj}{An ASReml-R or aov model object.}
+\item{model.obj}{An ASReml-R or aov model object. Will likely also work with \code{lme} (\code{\link[nlme:lme]{nlme::lme()}}), \code{lmerMod} (\code{\link[lme4:lmer]{lme4::lmer()}}) models as well.}
 
-\item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}. Not required for aov models, so set to \code{NA}.}
+\item{pred.obj}{An ASReml-R prediction object with \code{sed = TRUE}. Not required for other models, so set to \code{NA}.}
 
 \item{classify}{Name of predictor variable as string.}
 
@@ -41,7 +41,9 @@ mct.out(
 
 \item{order}{Order of the letters in the groups output. Options are \code{'default'}, \code{'ascending'} or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
 
-\item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.5 (50\%) of the difference between upper and lower error bars above the top error bar.}
+\item{plot}{Automatically produce a plot of the output of the multiple comparison test? Default is \code{FALSE}. This is maintained for backwards compatibility, but the preferred method now is to use \verb{autoplot(<mct.out outout>)}. See \code{\link[=autoplot.mct]{autoplot.mct()}} for more details.}
+
+\item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.1 (10\%) of the difference between upper and lower error bars above the top error bar.}
 
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0}
 
@@ -49,12 +51,10 @@ mct.out(
 
 \item{savename}{A file name for the predicted values to be saved to. Default is \code{predicted_values}.}
 
-\item{plottype}{The type of file to save the plot as. Usually one of \code{"pdf"}, \code{"png"}, or \code{"jpg"}. See \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for all possible options.}
-
 \item{pred}{Deprecated. Use \code{classify} instead.}
 }
 \value{
-A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations, as well as a plot visually displaying the predicted values.
+A list containing a data frame with predicted means, standard errors, confidence interval upper and lower bounds, and significant group allocations (named \code{predicted_values}), as well as a plot visually displaying the predicted values (named \code{predicted_plot}). If some of the predicted values are aliased, a warning is printed, and the aliased treatment levels are returned in the output (named \code{aliased}).
 }
 \description{
 A function for comparing and ranking predicted means with Tukey's Honest Significant Difference (HSD) Test.
@@ -63,10 +63,28 @@ A function for comparing and ranking predicted means with Tukey's Honest Signifi
 Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
 }
 \examples{
+# Fit aov model
+model <- aov(Petal.Length ~ Species, data = iris)
+
+# Display the ANOVA table for the model
+anova(model)
+
+# Determine ranking and groups according to Tukey's Test
+pred.out <- mct.out(model, classify = "Species")
+
+# Display the predicted values table
+pred.out
+
+# Show the predicted values plot
+autoplot(pred.out, label_height = 0.5)
+
+
+
 \dontrun{
+# ASReml-R Example
 library(asreml)
 
-#Fit ASreml Model
+#Fit ASReml Model
 model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
                     random = ~ Blocks + Blocks:Wplots,
                     residual = ~ units,
@@ -78,8 +96,8 @@ wald(model.asr) #Nitrogen main effect significant
 pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
-pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
-                    int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
+pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr,
+                    classify = "Nitrogen", order = "descending", decimals = 5)
 
 pred.out}
 

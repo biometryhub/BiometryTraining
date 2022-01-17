@@ -7,17 +7,16 @@
 
 [![Project Status: Active: The project has reached a stable, usable
 state and is being actively
-developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test
 coverage](https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg)](https://codecov.io/gh/biometryhub/BiometryTraining?branch=master)
 [![R build
 status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/BiometryTraining/actions)
-![pkgdown](https://github.com/biometryhub/BiometryTraining/workflows/pkgdown/badge.svg)
 [![minimal R
-version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.6.0-orange.svg?style=flat-square)](/commits/master)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2021--02--15-yellowgreen.svg)](/commits/master)
-[![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
+version](https://img.shields.io/badge/R%3E%3D-3.6.0-6666ff.svg)](https://cran.r-project.org/)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.9.0-orange.svg?style=flat-square)](https://github.com/biometryhub/BiometryTraining/commits/master)
+[![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fbiometryhub%2FBiometryTraining&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 <!-- badges: end -->
 
 The goal of BiometryTraining is to provide functions to aid in the
@@ -34,7 +33,18 @@ if(!require("remotes")) install.packages("remotes")
 remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 ```
 
-### Troubleshooting Installation
+## Using the package
+
+Load the package and start using it with:
+
+``` r
+library(BiometryTraining)
+```
+
+If you find this pacakge useful, please cite it! Type
+`citation("BiometryTraining")` on the R console to find out how.
+
+## Troubleshooting Installation
 
 -   If you have the latest version already installed, you will get a
     response like:
@@ -49,7 +59,7 @@ install.<br> Use `force = TRUE` to force installation</span>
 packages, but is not currently installed.</span>
 
 <span style="color: red;">Please download and install Rtools custom from
-<http://cran.r-project.org/bin/windows/Rtools/>.</span>
+<https://cran.r-project.org/bin/windows/Rtools/>.</span>
 
 <span style="color: red;">Warning messages:<br> 1: In untar2(tarfile,
 files, list, exdir) :<br> skipping pax global extended headers<br> 2: In
@@ -62,27 +72,3 @@ headers</span>
     updated (`remove.packages("rlang")`). Then reinstall with
     `install.packages("rlang")` and then try installing
     `BiometryTraining` again.
-
--   If you are trying to install this on R version 3.5.x (or earlier),
-    you should note three things:
-
-    1.  It *is* possible to install this package on R 3.5.x (and
-        possibly earlier versions) as of 4 August 2020, but…
-    2.  You should upgrade to a newer version of R as soon as possible,
-        as it is no longer tested.
-    3.  This package won’t install properly until you have *downgraded*
-        a dependency that requires R 3.6+. To do that, use the following
-        code:
-
-``` r
-remotes::install_version("pbkrtest", version = "0.4-7")
-remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
-```
-
-## Using the package
-
-Load the package and start using it with:
-
-``` r
-library(BiometryTraining)
-```

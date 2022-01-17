@@ -3,6 +3,7 @@ url: https://biometryhub.github.io/BiometryTraining/
 destination: docs
 
 template:
+  bootstrap: 5
   params:
     ganalytics: G-3DTR7EJN4Q
 
@@ -17,7 +18,9 @@ reference:
   - logl.test
   - mct.out
   - resplt
+  - variogram
 - title: Utilities
-  desc: Other helper Functions
+  desc: Other helper functions
 - contents:
+  - autoplot
   - ends_with("asreml")

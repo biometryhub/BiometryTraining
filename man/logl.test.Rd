@@ -2,22 +2,38 @@
 % Please edit documentation in R/logltest.R
 \name{logl.test}
 \alias{logl.test}
-\title{Log-likelihood test for comparing terms in ASreml-R models}
+\title{Log-likelihood test for comparing terms in ASReml-R models}
 \usage{
-logl.test(model.obj, rand.terms = NULL, resid.terms = NULL)
+logl.test(
+  model.obj,
+  rand.terms = NULL,
+  resid.terms = NULL,
+  decimals = 3,
+  numeric = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
-\item{model.obj}{An ASreml-R model object}
+\item{model.obj}{An ASReml-R model object}
 
 \item{rand.terms}{Random terms from the model. Default is NULL.}
 
 \item{resid.terms}{Residual terms from the model. Default is NULL.}
+
+\item{decimals}{Controls rounding of decimal places in output. Default is 3 decimal places.}
+
+\item{numeric}{Return p-values as numeric? Default is that they are characters, where very small values shown as less than a small number. See \code{details} for more.}
+
+\item{quiet}{Logical (default: \code{FALSE}). Hide warnings and messages?}
 }
 \value{
 A dataframe containing the results of the test.
 }
 \description{
-Log-likelihood test for comparing terms in ASreml-R models
+Log-likelihood test for comparing terms in ASReml-R models
+}
+\details{
+Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation of probability.
 }
 \examples{
 \dontrun{
