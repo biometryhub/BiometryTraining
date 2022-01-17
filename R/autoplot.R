@@ -27,7 +27,7 @@ NULL
 #' @rdname autoplot
 #' @importFrom ggplot2 autoplot ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #' @export
-autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.5, ...) {
+autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...) {
     stopifnot(inherits(object, "mct"))
 
     # classify is just the first n columns (before predicted.value)

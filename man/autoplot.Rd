@@ -8,7 +8,7 @@
 \alias{autoplot.design}
 \title{Objects exported from other packages}
 \usage{
-\method{autoplot}{mct}(object, rotation = 0, size = 4, label_height = 0.5, ...)
+\method{autoplot}{mct}(object, rotation = 0, size = 4, label_height = 0.1, ...)
 
 \method{autoplot}{design}(object, rotation = 0, size = 4, margin = FALSE, colour_blind = F, ...)
 }
