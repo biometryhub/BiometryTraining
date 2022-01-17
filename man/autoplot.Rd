@@ -8,9 +8,9 @@
 \alias{autoplot.design}
 \title{Objects exported from other packages}
 \usage{
-\method{autoplot}{mct}(object, rotation = 0, size = 4, label_height = 0.1, ...)
+\method{autoplot}{mct}(object, rotation = 0, size = 4, label_height = 0.5, ...)
 
-\method{autoplot}{design}(object, rotation = 0, size = 4, margin = FALSE, ...)
+\method{autoplot}{design}(object, rotation = 0, size = 4, margin = FALSE, colour_blind = F, ...)
 }
 \arguments{
 \item{object}{An object to create a plot for. Currently objects rom the \code{\link[=mct.out]{mct.out()}} or \code{\link[=design]{design()}} functions with class "mct" or "design" respectively are supported.}

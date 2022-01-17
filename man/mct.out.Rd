@@ -63,7 +63,25 @@ A function for comparing and ranking predicted means with Tukey's Honest Signifi
 Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
 }
 \examples{
+# Fit aov model
+model <- aov(Petal.Length ~ Species, data = iris)
+
+# Display the ANOVA table for the model
+anova(model)
+
+# Determine ranking and groups according to Tukey's Test
+pred.out <- mct.out(model, classify = "Species")
+
+# Display the predicted values table
+pred.out
+
+# Show the predicted values plot
+autoplot(pred.out, label_height = 0.5)
+
+
+
 \dontrun{
+# ASReml-R Example
 library(asreml)
 
 #Fit ASReml Model

@@ -32,7 +32,25 @@
 #' @references Jørgensen, E. & Pedersen, A. R. How to Obtain Those Nasty Standard Errors From Transformed Data - and Why They Should Not Be Used. [http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.47.9023)
 #'
 #' @examples
+#' # Fit aov model
+#' model <- aov(Petal.Length ~ Species, data = iris)
+#'
+#' # Display the ANOVA table for the model
+#' anova(model)
+#'
+#' # Determine ranking and groups according to Tukey's Test
+#' pred.out <- mct.out(model, classify = "Species")
+#'
+#' # Display the predicted values table
+#' pred.out
+#'
+#' # Show the predicted values plot
+#' autoplot(pred.out, label_height = 0.5)
+#'
+#'
+#'
 #' \dontrun{
+#' # ASReml-R Example
 #' library(asreml)
 #'
 #' #Fit ASReml Model
