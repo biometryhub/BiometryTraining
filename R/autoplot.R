@@ -10,17 +10,30 @@ ggplot2::autoplot
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
 #' @param margin Logical (default `FALSE`). A value of `FALSE` will expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
+#' @param colour_blind Logical or character (default `FALSE`). If `TRUE`, it will display the plot with colour blindness friendly colours. Alternative colour blind friendly palettes can be provided by using the options "viridis" (default option), "magma", "inferno", "plasma" or "cividis"
 #' @param ... Other arguments to be passed through.
 #'
 #' @name autoplot
 #'
 #' @return A `ggplot2` object.
 #' @seealso [mct.out()] and [design()]
-#'
 #' @examples
+#' library(ggplot2)
+#' library(BiometryTraining)
+#' # Multiple comparisons plot
 #' dat.aov <- aov(Petal.Width ~ Species, data = iris)
 #' output <- mct.out(dat.aov, classify = "Species")
-#' autoplot(output, label_height = 0.5)
+#' autoplot.mct(output, label_height = 0.5)
+#'
+#' des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
+#'                   reps = 5, nrows = 4, ncols = 5, seed = 42, plot = FALSE)
+#' autoplot(des.out)
+#'
+#' # Colour blind friendly colours
+#' autoplot(des.out, colour_blind = TRUE)
+#'
+#' # Alternative colour scheme
+#' autoplot(des.out, colour_blind = "plasma")
 NULL
 
 
@@ -65,6 +78,7 @@ autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...
 #' @importFrom farver decode_colour
 #' @importFrom grDevices colorRampPalette
 #' @importFrom ggplot2 ggplot geom_tile aes geom_text theme_bw scale_fill_manual scale_x_continuous scale_y_continuous scale_y_reverse
+#' @importFrom methods hasArg
 #' @importFrom scales brewer_pal reverse_trans viridis_pal
 #' @importFrom stringi stri_sort
 #' @export
@@ -83,7 +97,7 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colo
         object <- object$design
     }
 
-    if(hasArg(color_blind)) {
+    if(methods::hasArg(color_blind)) {
         colour_blind <- list(...)$color_blind
     }
 

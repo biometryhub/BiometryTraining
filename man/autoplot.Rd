@@ -10,7 +10,14 @@
 \usage{
 \method{autoplot}{mct}(object, rotation = 0, size = 4, label_height = 0.1, ...)
 
-\method{autoplot}{design}(object, rotation = 0, size = 4, margin = FALSE, colour_blind = F, ...)
+\method{autoplot}{design}(
+  object,
+  rotation = 0,
+  size = 4,
+  margin = FALSE,
+  colour_blind = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{An object to create a plot for. Currently objects rom the \code{\link[=mct.out]{mct.out()}} or \code{\link[=design]{design()}} functions with class "mct" or "design" respectively are supported.}
@@ -24,14 +31,29 @@
 \item{...}{Other arguments to be passed through.}
 
 \item{margin}{Logical (default \code{FALSE}). A value of \code{FALSE} will expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.}
+
+\item{colour_blind}{Logical or character (default \code{FALSE}). If \code{TRUE}, it will display the plot with colour blindness friendly colours. Alternative colour blind friendly palettes can be provided by using the options "viridis" (default option), "magma", "inferno", "plasma" or "cividis"}
 }
 \value{
 A \code{ggplot2} object.
 }
 \examples{
+library(ggplot2)
+library(BiometryTraining)
+# Multiple comparisons plot
 dat.aov <- aov(Petal.Width ~ Species, data = iris)
 output <- mct.out(dat.aov, classify = "Species")
-autoplot(output, label_height = 0.5)
+autoplot.mct(output, label_height = 0.5)
+
+des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
+                  reps = 5, nrows = 4, ncols = 5, seed = 42, plot = FALSE)
+autoplot(des.out)
+
+# Colour blind friendly colours
+autoplot(des.out, colour_blind = TRUE)
+
+# Alternative colour scheme
+autoplot(des.out, colour_blind = "plasma")
 }
 \seealso{
 \code{\link[=mct.out]{mct.out()}} and \code{\link[=design]{design()}}

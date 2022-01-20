@@ -28,8 +28,8 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item University of Adelaide [copyright holder, funder]
-  \item GRDC [copyright holder, funder]
+  \item University of Adelaide (https://adelaide.edu.au/) [copyright holder, funder]
+  \item Grains Research and Development Corporation (https://grdc.com.au/) [copyright holder, funder]
 }
 
 }
