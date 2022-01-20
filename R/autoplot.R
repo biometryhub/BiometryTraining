@@ -17,29 +17,17 @@ ggplot2::autoplot
 #'
 #' @return A `ggplot2` object.
 #' @seealso [mct.out()] and [design()]
-#' @examples
-#' library(ggplot2)
-#' library(BiometryTraining)
-#' # Multiple comparisons plot
-#' dat.aov <- aov(Petal.Width ~ Species, data = iris)
-#' output <- mct.out(dat.aov, classify = "Species")
-#' autoplot.mct(output, label_height = 0.5)
 #'
-#' des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
-#'                   reps = 5, nrows = 4, ncols = 5, seed = 42, plot = FALSE)
-#' autoplot(des.out)
-#'
-#' # Colour blind friendly colours
-#' autoplot(des.out, colour_blind = TRUE)
-#'
-#' # Alternative colour scheme
-#' autoplot(des.out, colour_blind = "plasma")
 NULL
 
 
 #' @rdname autoplot
 #' @importFrom ggplot2 autoplot ggplot aes_ aes geom_errorbar geom_text geom_point theme_bw labs theme element_text facet_wrap
 #' @export
+#' @examples
+#' dat.aov <- aov(Petal.Width ~ Species, data = iris)
+#' output <- mct.out(dat.aov, classify = "Species")
+#' autoplot(output, label_height = 0.5)
 autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...) {
     stopifnot(inherits(object, "mct"))
 
@@ -82,6 +70,16 @@ autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...
 #' @importFrom scales brewer_pal reverse_trans viridis_pal
 #' @importFrom stringi stri_sort
 #' @export
+#' @examples
+#' des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
+#'                   reps = 5, nrows = 4, ncols = 5, seed = 42, plot = FALSE)
+#' autoplot(des.out)
+#'
+#' # Colour blind friendly colours
+#' autoplot(des.out, colour_blind = TRUE)
+#'
+#' # Alternative colour scheme
+#' autoplot(des.out, colour_blind = "plasma")
 autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colour_blind = FALSE, ...) {
     stopifnot(inherits(object, "design"))
     # Asign NULL to variables that give a NOTE in package checks

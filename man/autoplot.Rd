@@ -38,13 +38,9 @@
 A \code{ggplot2} object.
 }
 \examples{
-library(ggplot2)
-library(BiometryTraining)
-# Multiple comparisons plot
 dat.aov <- aov(Petal.Width ~ Species, data = iris)
 output <- mct.out(dat.aov, classify = "Species")
-autoplot.mct(output, label_height = 0.5)
-
+autoplot(output, label_height = 0.5)
 des.out <- design(type = "crd", treatments = c(1, 5, 10, 20),
                   reps = 5, nrows = 4, ncols = 5, seed = 42, plot = FALSE)
 autoplot(des.out)
