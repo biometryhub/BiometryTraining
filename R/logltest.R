@@ -26,7 +26,7 @@
 #'                     residual = ~ ar1(Row):ar1(Column),
 #'                     data = dat)
 #' oats.logl <- logl.test(
-#'   model.obj = dat.asr, rand.terms = c("Blocks", "Blocks:Wplots"),
+#'   model.obj = model.asr, rand.terms = c("Blocks", "Blocks:Wplots"),
 #'   resid.terms = c("ar1(Row)", "ar1(Column)")
 #' )
 #' oats.logl
