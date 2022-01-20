@@ -292,7 +292,6 @@ test_that("seed options work", {
 })
 
 
-
 # Testing messages, warnings and errors
 test_that("Invalid seed options give errors or warnings", {
     # seed = NA
@@ -468,7 +467,7 @@ test_that("Area and treatment size mismatches produce warnings", {
     )
 })
 
-test_that("invalid save option produces an error", {
+test_that("Invalid save option produces an error", {
     expect_error(design("crd", treatments = 1:11, reps = 4, nrows = 11,
                         ncols = 4, save = "abc", quiet = TRUE),
                  "save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'."
@@ -568,6 +567,136 @@ test_that("autoplot responds to size argument", {
     d1 <- design(type = "crd", treatments = c(1, 5, 10, 20),
                  reps = 5, nrows = 4, ncols = 5, seed = 42, quiet = TRUE)
     vdiffr::expect_doppelganger(title = "autoplot with size", autoplot(d1, size = 8))
+})
+
+test_that("Colour blind friendly plots work", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+
+    expect_snapshot_output(d1$satab)
+    expect_snapshot_output(d2$satab)
+    vdiffr::expect_doppelganger(title = "CRD colour blind", autoplot(d1, colour_blind = T))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind", autoplot(d2, colour_blind = T))
+})
+
+test_that("Colour blind friendly viridis", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+
+    vdiffr::expect_doppelganger(title = "CRD colour blind viridis", autoplot(d1, colour_blind = "viridis"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind viridis", autoplot(d2, colour_blind = "viridis"))
+})
+
+test_that("Colour blind friendly magma", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+
+    vdiffr::expect_doppelganger(title = "CRD colour blind magma", autoplot(d1, colour_blind = "magma"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind magma", autoplot(d2, colour_blind = "magma"))
+})
+
+test_that("Colour blind friendly inferno", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+
+    vdiffr::expect_doppelganger(title = "CRD colour blind inferno", autoplot(d1, colour_blind = "inferno"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind inferno", autoplot(d2, colour_blind = "inferno"))
+})
+
+test_that("Colour blind friendly plasma", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+
+    vdiffr::expect_doppelganger(title = "CRD colour blind plasma", autoplot(d1, colour_blind = "plasma"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind plasma", autoplot(d2, colour_blind = "plasma"))
+})
+
+test_that("Colour blind friendly cividis", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+
+    vdiffr::expect_doppelganger(title = "CRD colour blind cividis", autoplot(d1, colour_blind = "cividis"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind cividis", autoplot(d2, colour_blind = "cividis"))
+})
+
+test_that("Colour blind friendly misspelt", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+
+    vdiffr::expect_doppelganger(title = "CRD colour blind misspelt", autoplot(d1, color_blind = TRUE))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind misspelt", autoplot(d2, color_blind = TRUE))
+})
+
+test_that("Colour blind friendly misspelt with option", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+
+    vdiffr::expect_doppelganger(title = "CRD colour blind misspelt cividis", autoplot(d1, color_blind = "cividis"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind misspelt cividis", autoplot(d2, color_blind = "cividis"))
+})
+
+test_that("Invalid colour blind option produces error", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    expect_error(autoplot(d1, colour_blind = "abc"), "Invalid colour_blind option.")
 })
 
 #

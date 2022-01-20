@@ -60,14 +60,15 @@ autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...
     return(plot)
 }
 
+
 #' @rdname autoplot
+#' @importFrom farver decode_colour
 #' @importFrom grDevices colorRampPalette
-#' @importFrom RColorBrewer brewer.pal
 #' @importFrom ggplot2 ggplot geom_tile aes geom_text theme_bw scale_fill_manual scale_x_continuous scale_y_continuous scale_y_reverse
-#' @importFrom scales reverse_trans
+#' @importFrom scales brewer_pal reverse_trans viridis_pal
 #' @importFrom stringi stri_sort
 #' @export
-autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colour_blind = F, ...) {
+autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colour_blind = FALSE, ...) {
     stopifnot(inherits(object, "design"))
     # Asign NULL to variables that give a NOTE in package checks
     # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
@@ -83,30 +84,44 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colo
     }
 
     if(hasArg(color_blind)) {
-        colour_blind <- color_blind
+        colour_blind <- list(...)$color_blind
     }
 
     ntrt <- nlevels(as.factor(object$treatments))
 
     # create the colours for the graph
-    if(!colour_blind) {
-        colour_palette <- grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(ntrt)
+    if(isFALSE(colour_blind)) {
+        colour_palette <- grDevices::colorRampPalette(scales::brewer_pal(palette = "Spectral")(11))(ntrt)
+        object$text_col <- "black"
+    }
+    else if(isTRUE(colour_blind)) {
+        colour_palette <- scales::viridis_pal(option = "viridis")(ntrt)
+        # Set text colour to be light on dark colours
+        hcl <- farver::decode_colour(colour_palette, "rgb", "hcl")
+        cols <- data.frame(treatments = levels(as.factor(object$treatments)),
+                           text_col = ifelse(hcl[, "l"] > 50, "black", "white"))
+        object <- merge(object, cols)
+    }
+    else if(is.character(colour_blind) & colour_blind %in% c("viridis", "magma", "inferno", "cividis", "plasma")) {
+        colour_palette <- scales::viridis_pal(option = colour_blind)(ntrt)
+        # Set text colour to be light on dark colours
+        hcl <- farver::decode_colour(colour_palette, "rgb", "hcl")
+        cols <- data.frame(treatments = levels(as.factor(object$treatments)),
+                           text_col = ifelse(hcl[, "l"] > 50, "black", "white"))
+        object <- merge(object, cols)
     }
     else {
-        colour_palette <- viridis::viridis(ntrt)
+        stop("Invalid colour_blind option.")
     }
 
     if (!any(grepl("block", names(object)))) {
-
         # create the graph
         plt <- ggplot2::ggplot() +
             ggplot2::geom_tile(data = object, mapping = ggplot2::aes(x = col, y = row, fill = treatments), colour = "black") +
-            ggplot2::geom_text(data = object, mapping = ggplot2::aes(x = col, y = row, label = treatments), angle = rotation, size = size) +
-            ggplot2::theme_bw() +
-            ggplot2::scale_fill_manual(values = colour_palette, name = "Treatment")
+            ggplot2::geom_text(data = object, mapping = ggplot2::aes(x = col, y = row, label = treatments), colour = object$text_col, angle = rotation, size = size) +
+            ggplot2::theme_bw()
     }
-    if (any(grepl("block", names(object)))) {
-
+    else {
         # Set up dataframe with coordinates for drawing the blocks
         blkdf <- data.frame(
             block = sort(unique(object$block)),
@@ -123,8 +138,7 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colo
 
         plt <- ggplot2::ggplot() +
             ggplot2::geom_tile(data = object, mapping = ggplot2::aes(x = col, y = row, fill = treatments), colour = "black") +
-            ggplot2::geom_text(data = object, mapping = ggplot2::aes(x = col, y = row, label = treatments), angle = rotation, size = size) +
-            #        xlim(0,max(des$col)+1) + ylim(0,max(des$row)+1) +
+            ggplot2::geom_text(data = object, mapping = ggplot2::aes(x = col, y = row, label = treatments), colour = object$text_col, angle = rotation, size = size) +
             ggplot2::geom_rect(
                 data = blkdf,
                 mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
@@ -135,15 +149,16 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colo
                 mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
                 size = 0.6, colour = "white", fill = NA
             ) +
-            ggplot2::theme_bw() +
-            ggplot2::scale_fill_manual(values = colour_palette, name = "Treatment")
+            ggplot2::theme_bw()
     }
+
+    plt <- plt + scale_fill_manual(values = colour_palette, name = "Treatment")
 
     if (!margin) {
         plt <- plt + ggplot2::scale_x_continuous(expand = c(0, 0), breaks = seq(1, max(object$col), 1)) + ggplot2::scale_y_continuous(expand = c(0, 0), trans = scales::reverse_trans(), breaks = seq(1, max(object$row), 1))
     }
     else {
-        plt <- plt + ggplot2::scale_y_continuous(trans = scales::reverse_trans(), breaks = seq(1, max(object$row), 1)) + ggplot2::scale_x_continuous(breaks = seq(1, max(object$col), 1))
+        plt <- plt + ggplot2::scale_x_continuous(breaks = seq(1, max(object$col), 1))+ ggplot2::scale_y_continuous(trans = scales::reverse_trans(), breaks = seq(1, max(object$row), 1))
     }
 
     return(plt)
