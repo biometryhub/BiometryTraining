@@ -39,10 +39,6 @@ variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, colou
         stop("model.obj must be an asreml model object")
     }
 
-    x <- NULL
-    y <- NULL
-    z <- NULL
-
     if(hasArg(color_blind)) {
         colour_blind <- list(...)$color_blind
     }

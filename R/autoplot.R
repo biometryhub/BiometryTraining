@@ -82,14 +82,6 @@ autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...
 #' autoplot(des.out, colour_blind = "plasma")
 autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colour_blind = FALSE, ...) {
     stopifnot(inherits(object, "design"))
-    # Asign NULL to variables that give a NOTE in package checks
-    # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
-    xmin <- NULL
-    xmax <- NULL
-    ymin <- NULL
-    ymax <- NULL
-    Row <- NULL
-    treatments <- NULL
 
     if(inherits(object, "list")) {
         object <- object$design

@@ -25,12 +25,6 @@
 #' @export
 
 resplot <- function(model.obj, shapiro = TRUE, call = FALSE, label.size = 10, axes.size = 10, call.size = 9, mod.obj){
-    # Assign NULL to variables that give a NOTE in package checks
-    # Known issue. See https://www.r-bloggers.com/no-visible-binding-for-global-variable/
-
-    stdres <- NULL
-    # resids <- NULL
-
     if(!missing(mod.obj)) {
         warning("mod.obj has been deprecated to be consistent with other functions. Please use `model.obj` instead.")
         model.obj <- mod.obj
