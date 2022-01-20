@@ -4,7 +4,14 @@
 \alias{variogram}
 \title{Variogram plots for spatial models.}
 \usage{
-variogram(model.obj, row = NA, column = NA)
+variogram(
+  model.obj,
+  row = NA,
+  column = NA,
+  horizontal = TRUE,
+  colour_blind = FALSE,
+  ...
+)
 }
 \arguments{
 \item{model.obj}{An \code{asreml} model object.}
@@ -12,6 +19,12 @@ variogram(model.obj, row = NA, column = NA)
 \item{row}{A row variable.}
 
 \item{column}{A column variable.}
+
+\item{horizontal}{Logical (default \code{TRUE}). The direction the plots are arranged. The default \code{TRUE} places the plots above and below, while \code{FALSE} will place them side by side.}
+
+\item{colour_blind}{Logical or character (default \code{FALSE}). If \code{TRUE}, it will display the plot with colour blindness friendly colours. Alternative colour blind friendly palettes can be provided by using the options "viridis" (default option), "magma", "inferno", "plasma" or "cividis"}
+
+\item{...}{A}
 }
 \value{
 A ggplot2 object.

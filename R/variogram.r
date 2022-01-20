@@ -5,6 +5,9 @@
 #' @param model.obj An `asreml` model object.
 #' @param row A row variable.
 #' @param column A column variable.
+#' @param horizontal Logical (default `TRUE`). The direction the plots are arranged. The default `TRUE` places the plots above and below, while `FALSE` will place them side by side.
+#' @param colour_blind Logical or character (default `FALSE`). If `TRUE`, it will display the plot with colour blindness friendly colours. Alternative colour blind friendly palettes can be provided by using the options "viridis" (default option), "magma", "inferno", "plasma" or "cividis"
+#' @param ... A
 #'
 #' @return A ggplot2 object.
 #'
@@ -30,7 +33,7 @@
 #' }
 #' @export
 
-variogram <- function(model.obj, row = NA, column = NA){
+variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, colour_blind = FALSE, ...) {
 
     if(!(inherits(model.obj, "asreml"))) {
         stop("model.obj must be an asreml model object")
@@ -39,6 +42,10 @@ variogram <- function(model.obj, row = NA, column = NA){
     x <- NULL
     y <- NULL
     z <- NULL
+
+    if(hasArg(color_blind)) {
+        colour_blind <- list(...)$color_blind
+    }
 
     aa <- vario_df(model.obj)
     xnam <- names(aa)[2]
@@ -50,23 +57,62 @@ variogram <- function(model.obj, row = NA, column = NA){
         ggplot2::geom_tile(alpha = 0.6) +
         ggplot2::coord_equal() +
         ggplot2::geom_contour(color = "white", alpha = 0.5) +
-        ggplot2::scale_fill_gradientn(colours = grDevices::rainbow(100)) +
         ggplot2::theme_bw(base_size = 8) +
         ggplot2::scale_y_continuous(expand = c(0, 0), breaks = seq(1, max(gdat$x), 2)) +
         ggplot2::scale_x_continuous(expand = c(0, 0), breaks = seq(1, max(gdat$y), 2)) +
         ggplot2::theme(legend.position = "none", aspect.ratio = 0.3) +
         ggplot2::labs(y = paste(xnam, "Lag", sep = " "), x = paste(ynam, "Lag", sep = " "))
 
+    if(isFALSE(colour_blind)) {
+        a <- a + ggplot2::scale_fill_gradientn(colours = grDevices::rainbow(100))
 
-    b <- lattice::wireframe(z ~ y * x, data = gdat, aspect = c(61/87, 0.4),
-                            scales = list(cex = 0.5, arrows = FALSE),
-                            shade = TRUE, colorkey = FALSE,
-                            par.settings = list(axis.line = list(col = 'transparent')),
-                            xlab = list(label = paste(ynam, "Lag", sep = " "), cex = .8, rot = 20),
-                            ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
-                            zlab = list(label = NULL, cex.axis = 0.5))
+        b <- lattice::wireframe(z ~ y * x, data = gdat, aspect = c(61/87, 0.4),
+                                scales = list(cex = 0.5, arrows = FALSE),
+                                shade = TRUE, colorkey = FALSE,
+                                par.settings = list(axis.line = list(col = 'transparent')),
+                                xlab = list(label = paste(ynam, "Lag", sep = " "), cex = .8, rot = 20),
+                                ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
+                                zlab = list(label = NULL, cex.axis = 0.5))
+    }
+    else if(isTRUE(colour_blind)) {
+        a <- a + ggplot2::scale_fill_gradientn(colours = scales::viridis_pal(option = "viridis")(50))
 
-    output <- cowplot::plot_grid(b, a, nrow = 2, scale = c(2, 1))
+        # Create the lattice plot
+        b <- lattice::wireframe(z ~ y * x, data = gdat, aspect = c(61/87, 0.4),
+                                scales = list(cex = 0.5, arrows = FALSE),
+                                drape = TRUE, colorkey = FALSE,
+                                par.settings = list(axis.line = list(col = 'transparent')),
+                                xlab = list(label = paste(ynam, "Lag", sep = " "), cex = .8, rot = 20),
+                                ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
+                                zlab = list(label = NULL, cex.axis = 0.5),
+                                col.regions = scales::viridis_pal(option = "viridis")(100))
+    }
+    else if(is.character(colour_blind) & colour_blind %in% c("viridis", "magma", "inferno", "cividis", "plasma")) {
+        a <- a + ggplot2::scale_fill_gradientn(colours = scales::viridis_pal(option = colour_blind)(50))
+
+        # Create the lattice plot
+        b <- lattice::wireframe(z ~ y * x, data = gdat, aspect = c(61/87, 0.4),
+                                scales = list(cex = 0.5, arrows = FALSE),
+                                drape = TRUE, colorkey = FALSE,
+                                par.settings = list(axis.line = list(col = 'transparent')),
+                                xlab = list(label = paste(ynam, "Lag", sep = " "), cex = .8, rot = 20),
+                                ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
+                                zlab = list(label = NULL, cex.axis = 0.5),
+                                col.regions = scales::viridis_pal(option = colour_blind)(100))
+    }
+    else {
+        stop("Invalid value for colour_blind.")
+    }
+
+    # if(isTRUE(horizontal)) {
+        output <- cowplot::plot_grid(b, a, nrow = 2, scale = c(2, 1))
+    # }
+    # else if(isFALSE(horizontal)) {
+    #     output <- cowplot::plot_grid(b, a, ncol = 2, nrow = 1, scale = c(1, 1))
+    # }
+    # else {
+    #     stop("horizontal must be either TRUE or FALSE")
+    # }
 
     return(output)
 }
@@ -92,12 +138,10 @@ variogram <- function(model.obj, row = NA, column = NA){
 #' }
 #'
 vario_df <- function(model.obj, Row, Col) {
-    # So the 'z' value for the variogram is the residuals
+    # The 'z' value for the variogram is the residuals
     # Need to be able to pull out the x/y from the model object
 
     dims <- unlist(strsplit(names(model.obj$R.param[1]), ":"))
-    # vals <- cbind(data.frame(model.obj$mf[[dims[1]]]), data.frame(model.obj$mf[[dims[2]]]), resid = resid(model.obj))
-    # colnames(vals) <- c(dims, "resid")
     Row <- as.numeric(model.obj$mf[[dims[1]]])
     Column <- as.numeric(model.obj$mf[[dims[2]]])
     Resid <- residuals(model.obj)

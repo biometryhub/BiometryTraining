@@ -123,7 +123,7 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colo
         object <- merge(object, cols)
     }
     else {
-        stop("Invalid colour_blind option.")
+        stop("Invalid value for colour_blind.")
     }
 
     if (!any(grepl("block", names(object)))) {

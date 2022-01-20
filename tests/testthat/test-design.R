@@ -696,7 +696,7 @@ test_that("Invalid colour blind option produces error", {
     d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
                  nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
 
-    expect_error(autoplot(d1, colour_blind = "abc"), "Invalid colour_blind option.")
+    expect_error(autoplot(d1, colour_blind = "abc"), "Invalid value for colour_blind.")
 })
 
 #
