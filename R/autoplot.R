@@ -5,7 +5,7 @@ ggplot2::autoplot
 
 #' Automatic plots for objects generated in BiometryTraining
 #'
-#' @param object An object to create a plot for. Currently objects rom the [mct.out()] or [design()] functions with class "mct" or "design" respectively are supported.
+#' @param object An object to create a plot for. Currently objects from the [mct.out()] or [design()] functions with class "mct" or "design" respectively are supported.
 #' @param label_height Height of the text labels above the upper error bar on the plot. Default is 0.1 (10%) of the difference between upper and lower error bars above the top error bar.
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
