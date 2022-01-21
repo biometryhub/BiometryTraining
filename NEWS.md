@@ -4,6 +4,7 @@
 
 - Created a variogram function that does not rely on ASreml (#33)
 - Implemented `autoplot()` function for `design()` and `mct.out()`. (#60)
+- Coloured plots (`autoplot.design()` and `variogram()`) now gain a `colour_blind` argument to enable colour blind friendly colours in the plots if desired. (#85)
 
 ## Minor changes
 
