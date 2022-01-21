@@ -13,6 +13,7 @@
           |  If you have used this package in your work, please cite it.      |
           |  Type 'citation('BiometryTraining')' for the citation details.    |
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      
           The latest version of this package is available at
           https://github.com/biometryhub/BiometryTraining. To update type:
           remotes::install_github('biometryhub/BiometryTraining')
@@ -32,6 +33,7 @@
           |  If you have used this package in your work, please cite it.      |
           |  Type 'citation('BiometryTraining')' for the citation details.    |
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      
           The latest version of this package is available at
           https://github.com/biometryhub/BiometryTraining. To update type:
           remotes::install_github('biometryhub/BiometryTraining')
