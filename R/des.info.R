@@ -202,15 +202,8 @@ des.info <- function(design.obj,
     }
 
     if(!missing(fac.sep) && length(fac.sep) == 1) {
-        fac.sep <- rep(fac.sep, times = 2)
+        fac.sep <- rep(fac.sep, times = ifelse(is.null(design.obj$book$C), 2, 3))
     }
-
-    # if (return.seed) {
-    #     des.seed <- design.obj$parameters$seed
-    # }
-    # else {
-    #     des.seed <- NULL
-    # }
 
     ifelse(design.obj$parameters$design == "factorial",
            design <- paste("factorial", design.obj$parameters$applied, sep = "_"),
