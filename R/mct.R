@@ -402,3 +402,34 @@ mct.out <- function(model.obj,
 
     return(pp.tab)
 }
+
+
+#' Print method for mct.out objects
+#'
+#' @param object An mct object to print to the console.
+#' @param ... Other arguments to be passed through.
+#'
+#' @return The original object invisibly.
+#' @seealso [mct.out()]
+#' @method print mct
+#' @export
+#' @examples
+#' dat.aov <- aov(Petal.Width ~ Species, data = iris)
+#' output <- mct.out(dat.aov, classify = "Species")
+#' autoplot(output, label_height = 0.5)
+print.mct <- function(object, ...) {
+    stopifnot(inherits(object, "mct"))
+
+    if(!is.null(attr(object, "aliased"))) {
+        aliased <- attr(object, "aliased")
+        if(length(aliased) > 1) {
+            cat("Aliased levels are: ", paste(aliased[1:(length(aliased)-1)], collapse = ", "), "and", aliased[length(aliased)], "\n\n")
+        }
+        else {
+            cat("Aliased level is: ", aliased, "\n\n")
+        }
+    }
+    print.data.frame(object, ...)
+    invisible(object)
+}
+
