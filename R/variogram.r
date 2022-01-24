@@ -32,7 +32,7 @@
 #' }
 #' @export
 
-variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, palette = "rainbow", ...) {
+variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, palette = "default") {
 
     if(!(inherits(model.obj, "asreml"))) {
         stop("model.obj must be an asreml model object")
@@ -54,7 +54,7 @@ variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, palet
         ggplot2::theme(legend.position = "none", aspect.ratio = 0.3) +
         ggplot2::labs(y = paste(xnam, "Lag", sep = " "), x = paste(ynam, "Lag", sep = " "))
 
-    if(tolower(palette) == "rainbow") {
+    if(tolower(palette) == "rainbow" | tolower(palette) == "default") {
         a <- a + ggplot2::scale_fill_gradientn(colours = grDevices::rainbow(100))
 
         b <- lattice::wireframe(z ~ y * x, data = gdat, aspect = c(61/87, 0.4),
@@ -90,6 +90,20 @@ variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, palet
                                 ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
                                 zlab = list(label = NULL, cex.axis = 0.5),
                                 col.regions = scales::viridis_pal(option = palette)(100))
+    }
+
+    else if(palette %in% c("Spectral")) {
+        a <- a + ggplot2::scale_fill_gradientn(colours = scales::brewer_pal(palette = palette)(11))
+
+        # Create the lattice plot
+        b <- lattice::wireframe(z ~ y * x, data = gdat, aspect = c(61/87, 0.4),
+                                scales = list(cex = 0.5, arrows = FALSE),
+                                drape = TRUE, colorkey = FALSE,
+                                par.settings = list(axis.line = list(col = 'transparent')),
+                                xlab = list(label = paste(ynam, "Lag", sep = " "), cex = .8, rot = 20),
+                                ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
+                                zlab = list(label = NULL, cex.axis = 0.5),
+                                col.regions = scales::brewer_pal(palette = palette)(11))
     }
     else {
         stop("Invalid value for palette.")

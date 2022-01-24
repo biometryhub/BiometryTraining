@@ -9,8 +9,7 @@ variogram(
   row = NA,
   column = NA,
   horizontal = TRUE,
-  palette = "rainbow",
-  ...
+  palette = "default"
 )
 }
 \arguments{
