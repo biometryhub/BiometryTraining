@@ -6,7 +6,7 @@
 #' @param row A row variable.
 #' @param column A column variable.
 #' @param horizontal Logical (default `TRUE`). The direction the plots are arranged. The default `TRUE` places the plots above and below, while `FALSE` will place them side by side.
-#' @param palatte A string specifying the colour scheme to use for plotting. Default is equivalent to "Spectral". Colour blind friendly palletes can also be provided via options `"colour blind"` (or `"color blind"`, both equivalent to `"viridis"`), `"magma"`, `"inferno"`, `"plasma"` or `"cividis"`. Other diverging palettes from [scales::brewer_pal()] are also possible.
+#' @param palette A string specifying the colour scheme to use for plotting. The default value (`"default"`) is equivalent to `"rainbow"`. Colour blind friendly palettes can also be provided via options `"colour blind"` (or `"color blind"`, both equivalent to `"viridis"`), `"magma"`, `"inferno"`, `"plasma"` or `"cividis"`. The `"Spectral"` palette from [scales::brewer_pal()] is also possible.
 #'
 #' @return A ggplot2 object.
 #'

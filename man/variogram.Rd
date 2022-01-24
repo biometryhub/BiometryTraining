@@ -21,7 +21,7 @@ variogram(
 
 \item{horizontal}{Logical (default \code{TRUE}). The direction the plots are arranged. The default \code{TRUE} places the plots above and below, while \code{FALSE} will place them side by side.}
 
-\item{palatte}{A string specifying the colour scheme to use for plotting. Default is equivalent to "Spectral". Colour blind friendly palletes can also be provided via options \code{"colour blind"} (or \code{"color blind"}, both equivalent to \code{"viridis"}), \code{"magma"}, \code{"inferno"}, \code{"plasma"} or \code{"cividis"}. Other diverging palettes from \code{\link[scales:brewer_pal]{scales::brewer_pal()}} are also possible.}
+\item{palette}{A string specifying the colour scheme to use for plotting. The default value (\code{"default"}) is equivalent to \code{"rainbow"}. Colour blind friendly palettes can also be provided via options \code{"colour blind"} (or \code{"color blind"}, both equivalent to \code{"viridis"}), \code{"magma"}, \code{"inferno"}, \code{"plasma"} or \code{"cividis"}. The \code{"Spectral"} palette from \code{\link[scales:brewer_pal]{scales::brewer_pal()}} is also possible.}
 }
 \value{
 A ggplot2 object.
