@@ -6,8 +6,7 @@
 #' @param row A row variable.
 #' @param column A column variable.
 #' @param horizontal Logical (default `TRUE`). The direction the plots are arranged. The default `TRUE` places the plots above and below, while `FALSE` will place them side by side.
-#' @param colour_blind Logical or character (default `FALSE`). If `TRUE`, it will display the plot with colour blindness friendly colours. Alternative colour blind friendly palettes can be provided by using the options "viridis" (default option), "magma", "inferno", "plasma" or "cividis"
-#' @param ... A
+#' @param palatte A string specifying the colour scheme to use for plotting. Default is equivalent to "Spectral". Colour blind friendly palletes can also be provided via options `"colour blind"` (or `"color blind"`, both equivalent to `"viridis"`), `"magma"`, `"inferno"`, `"plasma"` or `"cividis"`. Other diverging palettes from [scales::brewer_pal()] are also possible.
 #'
 #' @return A ggplot2 object.
 #'
@@ -33,14 +32,10 @@
 #' }
 #' @export
 
-variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, colour_blind = FALSE, ...) {
+variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, palette = "rainbow", ...) {
 
     if(!(inherits(model.obj, "asreml"))) {
         stop("model.obj must be an asreml model object")
-    }
-
-    if(hasArg(color_blind)) {
-        colour_blind <- list(...)$color_blind
     }
 
     aa <- vario_df(model.obj)
@@ -59,7 +54,7 @@ variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, colou
         ggplot2::theme(legend.position = "none", aspect.ratio = 0.3) +
         ggplot2::labs(y = paste(xnam, "Lag", sep = " "), x = paste(ynam, "Lag", sep = " "))
 
-    if(isFALSE(colour_blind)) {
+    if(tolower(palette) == "rainbow") {
         a <- a + ggplot2::scale_fill_gradientn(colours = grDevices::rainbow(100))
 
         b <- lattice::wireframe(z ~ y * x, data = gdat, aspect = c(61/87, 0.4),
@@ -70,7 +65,7 @@ variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, colou
                                 ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
                                 zlab = list(label = NULL, cex.axis = 0.5))
     }
-    else if(isTRUE(colour_blind)) {
+    else if(any(grepl("(colou?r([[:punct:]]|[[:space:]]?)blind)|cb|viridis", palette, ignore.case = T))) {
         a <- a + ggplot2::scale_fill_gradientn(colours = scales::viridis_pal(option = "viridis")(50))
 
         # Create the lattice plot
@@ -83,8 +78,8 @@ variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, colou
                                 zlab = list(label = NULL, cex.axis = 0.5),
                                 col.regions = scales::viridis_pal(option = "viridis")(100))
     }
-    else if(is.character(colour_blind) & colour_blind %in% c("viridis", "magma", "inferno", "cividis", "plasma")) {
-        a <- a + ggplot2::scale_fill_gradientn(colours = scales::viridis_pal(option = colour_blind)(50))
+    else if(tolower(palette) %in% c("magma", "inferno", "cividis", "plasma")) {
+        a <- a + ggplot2::scale_fill_gradientn(colours = scales::viridis_pal(option = palette)(50))
 
         # Create the lattice plot
         b <- lattice::wireframe(z ~ y * x, data = gdat, aspect = c(61/87, 0.4),
@@ -94,10 +89,10 @@ variogram <- function(model.obj, row = NA, column = NA, horizontal = TRUE, colou
                                 xlab = list(label = paste(ynam, "Lag", sep = " "), cex = .8, rot = 20),
                                 ylab = list(label = paste(xnam, "Lag", sep = " "), cex = .8, rot = -18),
                                 zlab = list(label = NULL, cex.axis = 0.5),
-                                col.regions = scales::viridis_pal(option = colour_blind)(100))
+                                col.regions = scales::viridis_pal(option = palette)(100))
     }
     else {
-        stop("Invalid value for colour_blind.")
+        stop("Invalid value for palette.")
     }
 
     # if(isTRUE(horizontal)) {
