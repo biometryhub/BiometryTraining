@@ -2,12 +2,12 @@
 % Please edit documentation in R/mct.R
 \name{print.mct}
 \alias{print.mct}
-\title{Print method for mct.out objects}
+\title{Print method for mct.out xs}
 \usage{
-\method{print}{mct}(object, ...)
+\method{print}{mct}(x, ...)
 }
 \arguments{
-\item{object}{An mct object to print to the console.}
+\item{x}{An mct object to print to the console.}
 
 \item{...}{Other arguments to be passed through.}
 }
@@ -15,12 +15,12 @@
 The original object invisibly.
 }
 \description{
-Print method for mct.out objects
+Print method for mct.out xs
 }
 \examples{
 dat.aov <- aov(Petal.Width ~ Species, data = iris)
 output <- mct.out(dat.aov, classify = "Species")
-autoplot(output, label_height = 0.5)
+print(output)
 }
 \seealso{
 \code{\link[=mct.out]{mct.out()}}
