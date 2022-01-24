@@ -9,7 +9,7 @@ variogram(
   row = NA,
   column = NA,
   horizontal = TRUE,
-  colour_blind = FALSE,
+  palette = "rainbow",
   ...
 )
 }
