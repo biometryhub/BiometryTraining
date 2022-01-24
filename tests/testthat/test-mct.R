@@ -177,7 +177,11 @@ test_that("mct handles aliased results in asreml with a warning", {
     pred.asr$pvals$predicted.value[12] <- NA
     pred.asr$sed[12, ] <- NA
     pred.asr$sed[, 12] <- NA
-    expect_warning(mct.out(model.asr, pred.asr, classify = "Nitrogen:Variety"), NULL)
+    expect_warning(
+        expect_output(
+            print(mct.out(model.asr, pred.asr, classify = "Nitrogen:Variety")),
+            "Aliased level is:  0.6_cwt:Victory"),
+        NULL)
     pred.asr$pvals$predicted.value[11] <- NA
     pred.asr$sed[11, ] <- NA
     pred.asr$sed[, 11] <- NA

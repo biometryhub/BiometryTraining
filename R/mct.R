@@ -423,7 +423,7 @@ print.mct <- function(x, ...) {
     if(!is.null(attr(x, "aliased"))) {
         aliased <- attr(x, "aliased")
         if(length(aliased) > 1) {
-            cat("Aliased levels are: ", paste(aliased[1:(length(aliased)-1)], collapse = ", "), "and", aliased[length(aliased)], "\n\n")
+            cat("Aliased levels are:", paste(aliased[1:(length(aliased)-1)], collapse = ", "), "and", aliased[length(aliased)], "\n\n")
         }
         else {
             cat("Aliased level is: ", aliased, "\n\n")
