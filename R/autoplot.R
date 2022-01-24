@@ -10,7 +10,7 @@ ggplot2::autoplot
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
 #' @param margin Logical (default `FALSE`). A value of `FALSE` will expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
-#' @param colour_blind Logical or character (default `FALSE`). If `TRUE`, it will display the plot with colour blindness friendly colours. Alternative colour blind friendly palettes can be provided by using the options "viridis" (default option), "magma", "inferno", "plasma" or "cividis"
+#' @param palette Character specifying the colour scheme to use for plotting. Default is equivalent to "Spectral". Colour blind friendly palletes can also be provided via options `"colour blind"` (or `"color blind"`, both equivalent to `"viridis"`), `"magma"`, `"inferno"`, `"plasma"` or `"cividis"`. Other palettes from [scales::brewer_pal()] are also possible.
 #' @param ... Other arguments to be passed through.
 #'
 #' @name autoplot
@@ -66,7 +66,6 @@ autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...
 #' @importFrom farver decode_colour
 #' @importFrom grDevices colorRampPalette
 #' @importFrom ggplot2 ggplot geom_tile aes geom_text theme_bw scale_fill_manual scale_x_continuous scale_y_continuous scale_y_reverse
-#' @importFrom methods hasArg
 #' @importFrom scales brewer_pal reverse_trans viridis_pal
 #' @importFrom stringi stri_sort
 #' @export
@@ -76,29 +75,30 @@ autoplot.mct <- function(object, rotation = 0, size = 4, label_height = 0.1, ...
 #' autoplot(des.out)
 #'
 #' # Colour blind friendly colours
-#' autoplot(des.out, colour_blind = TRUE)
+#' autoplot(des.out, palette = "colour-blind")
 #'
 #' # Alternative colour scheme
-#' autoplot(des.out, colour_blind = "plasma")
-autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colour_blind = FALSE, ...) {
+#' autoplot(des.out, palette = "plasma")
+autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, palette = "default", ...) {
     stopifnot(inherits(object, "design"))
 
     if(inherits(object, "list")) {
         object <- object$design
     }
 
-    if(methods::hasArg(color_blind)) {
-        colour_blind <- list(...)$color_blind
-    }
-
     ntrt <- nlevels(as.factor(object$treatments))
 
     # create the colours for the graph
-    if(isFALSE(colour_blind)) {
+    if(palette == "default") {
         colour_palette <- grDevices::colorRampPalette(scales::brewer_pal(palette = "Spectral")(11))(ntrt)
         object$text_col <- "black"
     }
-    else if(isTRUE(colour_blind)) {
+    else if(palette %in% c("BrBG", "PiYG", "PRGn", "PuOr", "RdBu", "RdGy",
+                           "RdYlBu", "RdYlGn", "Spectral", "Set3", "Paired")) {
+        colour_palette <- grDevices::colorRampPalette(scales::brewer_pal(palette = palette)(11))(ntrt)
+        object$text_col <- "black"
+    }
+    else if(any(grepl("(colou?r([[:punct:]]|[[:space:]]?)blind)|cb|viridis", palette, ignore.case = T))) {
         colour_palette <- scales::viridis_pal(option = "viridis")(ntrt)
         # Set text colour to be light on dark colours
         hcl <- farver::decode_colour(colour_palette, "rgb", "hcl")
@@ -106,8 +106,8 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colo
                            text_col = ifelse(hcl[, "l"] > 50, "black", "white"))
         object <- merge(object, cols)
     }
-    else if(is.character(colour_blind) & colour_blind %in% c("viridis", "magma", "inferno", "cividis", "plasma")) {
-        colour_palette <- scales::viridis_pal(option = colour_blind)(ntrt)
+    else if(tolower(trimws(palette)) %in% c("magma", "inferno", "cividis", "plasma")) {
+        colour_palette <- scales::viridis_pal(option = palette)(ntrt)
         # Set text colour to be light on dark colours
         hcl <- farver::decode_colour(colour_palette, "rgb", "hcl")
         cols <- data.frame(treatments = levels(as.factor(object$treatments)),
@@ -115,7 +115,7 @@ autoplot.design <- function(object, rotation = 0, size = 4, margin = FALSE, colo
         object <- merge(object, cols)
     }
     else {
-        stop("Invalid value for colour_blind.")
+        stop("Invalid value for palette.")
     }
 
     if (!any(grepl("block", names(object)))) {

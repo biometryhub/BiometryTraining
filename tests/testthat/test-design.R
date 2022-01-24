@@ -582,8 +582,8 @@ test_that("Colour blind friendly plots work", {
 
     expect_snapshot_output(d1$satab)
     expect_snapshot_output(d2$satab)
-    vdiffr::expect_doppelganger(title = "CRD colour blind", autoplot(d1, colour_blind = T))
-    vdiffr::expect_doppelganger(title = "RCBD colour blind", autoplot(d2, colour_blind = T))
+    vdiffr::expect_doppelganger(title = "CRD colour blind", autoplot(d1, palette = "colour blind"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind", autoplot(d2, palette = "cb"))
 })
 
 test_that("Colour blind friendly viridis", {
@@ -597,8 +597,8 @@ test_that("Colour blind friendly viridis", {
                  seed = 42, quiet = TRUE, plot = FALSE)
 
 
-    vdiffr::expect_doppelganger(title = "CRD colour blind viridis", autoplot(d1, colour_blind = "viridis"))
-    vdiffr::expect_doppelganger(title = "RCBD colour blind viridis", autoplot(d2, colour_blind = "viridis"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind viridis", autoplot(d1, palette = "viridis"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind viridis", autoplot(d2, palette = "viridis"))
 })
 
 test_that("Colour blind friendly magma", {
@@ -612,8 +612,8 @@ test_that("Colour blind friendly magma", {
                  seed = 42, quiet = TRUE, plot = FALSE)
 
 
-    vdiffr::expect_doppelganger(title = "CRD colour blind magma", autoplot(d1, colour_blind = "magma"))
-    vdiffr::expect_doppelganger(title = "RCBD colour blind magma", autoplot(d2, colour_blind = "magma"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind magma", autoplot(d1, palette = "magma"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind magma", autoplot(d2, palette = "magma"))
 })
 
 test_that("Colour blind friendly inferno", {
@@ -627,8 +627,8 @@ test_that("Colour blind friendly inferno", {
                  seed = 42, quiet = TRUE, plot = FALSE)
 
 
-    vdiffr::expect_doppelganger(title = "CRD colour blind inferno", autoplot(d1, colour_blind = "inferno"))
-    vdiffr::expect_doppelganger(title = "RCBD colour blind inferno", autoplot(d2, colour_blind = "inferno"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind inferno", autoplot(d1, palette = "inferno"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind inferno", autoplot(d2, palette = "inferno"))
 })
 
 test_that("Colour blind friendly plasma", {
@@ -642,8 +642,8 @@ test_that("Colour blind friendly plasma", {
                  seed = 42, quiet = TRUE, plot = FALSE)
 
 
-    vdiffr::expect_doppelganger(title = "CRD colour blind plasma", autoplot(d1, colour_blind = "plasma"))
-    vdiffr::expect_doppelganger(title = "RCBD colour blind plasma", autoplot(d2, colour_blind = "plasma"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind plasma", autoplot(d1, palette = "plasma"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind plasma", autoplot(d2, palette = "plasma"))
 })
 
 test_that("Colour blind friendly cividis", {
@@ -657,11 +657,38 @@ test_that("Colour blind friendly cividis", {
                  seed = 42, quiet = TRUE, plot = FALSE)
 
 
-    vdiffr::expect_doppelganger(title = "CRD colour blind cividis", autoplot(d1, colour_blind = "cividis"))
-    vdiffr::expect_doppelganger(title = "RCBD colour blind cividis", autoplot(d2, colour_blind = "cividis"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind cividis", autoplot(d1, palette = "cividis"))
+    vdiffr::expect_doppelganger(title = "RCBD colour blind cividis", autoplot(d2, palette = "cividis"))
 })
 
-test_that("Colour blind friendly misspelt", {
+test_that("Various colour blind spellings and options", {
+    # CRD
+    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
+
+    # RCBD
+    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
+                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
+                 seed = 42, quiet = TRUE, plot = FALSE)
+
+    vdiffr::expect_doppelganger(title = "CRD colour blind option1", autoplot(d1, palette = "colour-blind"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind option2", autoplot(d1, palette = "colour blind"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind option3", autoplot(d1, palette = "colour_blind"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind option4", autoplot(d1, palette = "colour.blind"))
+    vdiffr::expect_doppelganger(title = "CRD colour blind option5", autoplot(d1, palette = "colourblind"))
+
+    vdiffr::expect_doppelganger(title = "CRD color blind option1", autoplot(d1, palette = "color-blind"))
+    vdiffr::expect_doppelganger(title = "CRD color blind option2", autoplot(d1, palette = "color blind"))
+    vdiffr::expect_doppelganger(title = "CRD color blind option3", autoplot(d1, palette = "color_blind"))
+    vdiffr::expect_doppelganger(title = "CRD color blind option4", autoplot(d1, palette = "color.blind"))
+    vdiffr::expect_doppelganger(title = "CRD color blind option5", autoplot(d1, palette = "colorblind"))
+
+    vdiffr::expect_doppelganger(title = "RCBD colour blind option1", autoplot(d2, palette = "colour-blind"))
+    vdiffr::expect_doppelganger(title = "RCBD color blind option1", autoplot(d2, palette = "color-blind"))
+
+})
+
+test_that("Alternative palattes work", {
     # CRD
     d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
                  nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
@@ -672,31 +699,22 @@ test_that("Colour blind friendly misspelt", {
                  seed = 42, quiet = TRUE, plot = FALSE)
 
 
-    vdiffr::expect_doppelganger(title = "CRD colour blind misspelt", autoplot(d1, color_blind = TRUE))
-    vdiffr::expect_doppelganger(title = "RCBD colour blind misspelt", autoplot(d2, color_blind = TRUE))
+    vdiffr::expect_doppelganger(title = "CRD RdBu palatte", autoplot(d1, palette = "RdBu"))
+    vdiffr::expect_doppelganger(title = "CRD Set3 palatte", autoplot(d1, palette = "Set3"))
+    vdiffr::expect_doppelganger(title = "CRD Paired palatte", autoplot(d1, palette = "Paired"))
+    vdiffr::expect_doppelganger(title = "RCBD RdBu palatte", autoplot(d2, palette = "RdBu"))
+    vdiffr::expect_doppelganger(title = "RCBD Set3 palatte", autoplot(d2, palette = "Set3"))
+    vdiffr::expect_doppelganger(title = "RCBD Paired palatte", autoplot(d2, palette = "Paired"))
 })
 
-test_that("Colour blind friendly misspelt with option", {
+test_that("Invalid palette option produces error", {
     # CRD
     d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
                  nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
 
-    # RCBD
-    d2 <- design("rcbd", treatments = LETTERS[1:11], reps = 4,
-                 nrows = 11, ncols = 4, brows = 11, bcols = 1,
-                 seed = 42, quiet = TRUE, plot = FALSE)
-
-
-    vdiffr::expect_doppelganger(title = "CRD colour blind misspelt cividis", autoplot(d1, color_blind = "cividis"))
-    vdiffr::expect_doppelganger(title = "RCBD colour blind misspelt cividis", autoplot(d2, color_blind = "cividis"))
-})
-
-test_that("Invalid colour blind option produces error", {
-    # CRD
-    d1 <- design("crd", treatments = LETTERS[1:11], reps = 4,
-                 nrows = 11, ncols = 4, seed = 42, quiet = TRUE, plot = FALSE)
-
-    expect_error(autoplot(d1, colour_blind = "abc"), "Invalid value for colour_blind.")
+    expect_error(autoplot(d1, palette = "abc"), "Invalid value for palette.")
+    expect_error(autoplot(d1, palette = "set3"), "Invalid value for palette.")
+    expect_error(autoplot(d1, palette = "spectral"), "Invalid value for palette.")
 })
 
 #
