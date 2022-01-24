@@ -441,7 +441,7 @@ test_that("factorial designs produce warnings when incorrect number of treatment
 
     expect_warning(design(type = "crossed:crd", treatments = c(2, 2, 2),
                           reps = 3, nrows = 6, ncols = 4,
-                          fac.names = list(Water = c("A", "B"), N = 1:2, Another = 1), quiet = T),
+                          fac.names = list(Water = c("A", "B"), N = 1:2, Another = 1), quiet = TRUE),
                    "Another must contain the correct number of elements. Elements have not been applied.")
 })
 
@@ -457,12 +457,12 @@ test_that("Area and treatment size mismatches produce warnings", {
     # Wrap this in supressWarnings to hide other warning message
     suppressWarnings(expect_warning(
         design(type = "crd", treatments = c(1, 5, 10, 20),
-               reps = 5, nrows = 4, ncols = 50, seed = 42, quiet = T),
+               reps = 5, nrows = 4, ncols = 50, seed = 42, quiet = TRUE),
         "Area provided is larger than treatments applied. Please check inputs."
     ))
     expect_warning(
         design(type = "crd", treatments = c(1, 5, 10, 20),
-               reps = 5, nrows = 2, ncols = 5, seed = 42, quiet = T),
+               reps = 5, nrows = 2, ncols = 5, seed = 42, quiet = TRUE),
         "Area provided is smaller than treatments applied. Please check inputs."
     )
 })

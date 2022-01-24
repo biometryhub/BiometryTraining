@@ -14,7 +14,7 @@ mct.out(
   offset = NA,
   decimals = 2,
   order = "default",
-  plot = F,
+  plot = FALSE,
   label_height = 0.1,
   rotation = 0,
   save = FALSE,

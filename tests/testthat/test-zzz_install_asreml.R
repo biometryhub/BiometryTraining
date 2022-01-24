@@ -15,16 +15,6 @@ test_that("Update function works", {
     expect_message(update_asreml(), "ASReml-R successfully installed!")
 })
 
-# test_that("Installation provides output on success", {
-#     # skip_if(R.version$status == "Under development (unstable)")
-#     skip_on_os("windows")
-#     if(requireNamespace("asreml", quietly = TRUE)){
-#         unloadNamespace("asreml")
-#         remove.packages("asreml")
-#     }
-#     expect_message(install_asreml(force = T), "ASReml-R successfully installed!")
-# })
-
 test_that("Returns true if asreml already installed", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_on_os("windows")
@@ -39,7 +29,7 @@ test_that("Prints message if asreml already installed", {
     skip_on_os("windows")
     # skip_on_cran()
     skip_on_ci()
-    install_asreml(quiet=T)
+    install_asreml(quiet = TRUE)
     expect_message(install_asreml(), "ASReml-R is already installed.")
 })
 

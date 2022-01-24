@@ -112,7 +112,7 @@ test_that("save produces output", {
 })
 
 test_that("Interaction terms work", {
-    skip_if_not(requireNamespace("asreml", quietly = T))
+    skip_if_not(requireNamespace("asreml", quietly = TRUE))
     quiet(library(asreml))
     load(test_path("data", "asreml_model.Rdata"), .GlobalEnv)
     output <- mct.out(model.asr, pred.asr, classify = "Nitrogen:Variety")
@@ -167,7 +167,7 @@ test_that("mct removes aliased treatments in aov", {
 
 
 test_that("mct handles aliased results in asreml with a warning", {
-    skip_if_not(requireNamespace("asreml", quietly = T))
+    skip_if_not(requireNamespace("asreml", quietly = TRUE))
     quiet(library(asreml))
     model.asr <- readRDS(test_path("data", "model_asr.rds"))
     pred.asr <- readRDS(test_path("data", "pred_asr.rds"))
@@ -205,7 +205,7 @@ test_that("Use of pred argument gives warning", {
 })
 
 test_that("Missing pred.obj object causes error", {
-    skip_if_not(requireNamespace("asreml", quietly = T))
+    skip_if_not(requireNamespace("asreml", quietly = TRUE))
     quiet(library(asreml))
     model.asr <- readRDS(test_path("data", "model_asr.rds"))
     dat <- readRDS(test_path("data", "oats_data.rds"))
@@ -214,9 +214,9 @@ test_that("Missing pred.obj object causes error", {
 })
 
 test_that("Forgetting sed = T in pred.obj object causes error", {
-    skip_if_not(requireNamespace("asreml", quietly = T))
+    skip_if_not(requireNamespace("asreml", quietly = TRUE))
     quiet(library(asreml))
-    dat.asr <- quiet(asreml(Petal.Width ~ Species, data = iris, trace = F))
+    dat.asr <- quiet(asreml(Petal.Width ~ Species, data = iris, trace = FALSE))
     pred.out <- predict.asreml(dat.asr, classify = "Species")
     expect_error(mct.out(dat.asr, pred.out, classify = "Species"),
                  "Prediction object \\(pred.obj\\) must be created with argument sed = TRUE\\.")
@@ -238,7 +238,7 @@ test_that("lme4 model works", {
 
 test_that("3 way interaction works", {
     des <- design(type = "crossed:crd", treatments = c(3, 3, 3),
-                  reps = 3, nrows = 9, ncols = 9, seed = 42, quiet = T)
+                  reps = 3, nrows = 9, ncols = 9, seed = 42, quiet = TRUE)
     des$design$response <- rnorm(81, 100)
     des$design$A <- factor(des$design$A)
     des$design$B <- factor(des$design$B)
@@ -255,7 +255,7 @@ test_that("3 way interaction works", {
 
 test_that("plots are produced when requested", {
     des <- design(type = "crossed:crd", treatments = c(3, 3, 3),
-                  reps = 3, nrows = 9, ncols = 9, seed = 42, quiet = T)
+                  reps = 3, nrows = 9, ncols = 9, seed = 42, quiet = TRUE)
     des$design$response <- rnorm(81, 100)
     des$design$A <- factor(des$design$A)
     des$design$B <- factor(des$design$B)
@@ -287,7 +287,7 @@ test_that("mct.out output has a class of 'mct'", {
 #     skip_if_not_installed("sommer")
 #     quiet(library(sommer))
 #     data("DT_yatesoats")
-#     dat.sommer <- mmer(Y ~ N*V, random = ~B + B/MP, data = DT_yatesoats, verbose = F)
+#     dat.sommer <- mmer(Y ~ N*V, random = ~B + B/MP, data = DT_yatesoats, verbose = FALSE)
 #     output <- mct.out(dat.sommer, classify = "N")
 #     expect_identical(output$predicted.value, c(0.25, 1.33, 2.03))
 #     skip_if(interactive())
