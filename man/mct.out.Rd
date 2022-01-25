@@ -14,6 +14,7 @@ mct.out(
   offset = NA,
   decimals = 2,
   order = "default",
+  plot = FALSE,
   label_height = 0.1,
   rotation = 0,
   save = FALSE,
@@ -40,6 +41,8 @@ mct.out(
 
 \item{order}{Order of the letters in the groups output. Options are \code{'default'}, \code{'ascending'} or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
 
+\item{plot}{Automatically produce a plot of the output of the multiple comparison test? Default is \code{FALSE}. This is maintained for backwards compatibility, but the preferred method now is to use \verb{autoplot(<mct.out outout>)}. See \code{\link[=autoplot.mct]{autoplot.mct()}} for more details.}
+
 \item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.1 (10\%) of the difference between upper and lower error bars above the top error bar.}
 
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Number between 0 and 360 (inclusive) - default 0}
@@ -60,7 +63,25 @@ A function for comparing and ranking predicted means with Tukey's Honest Signifi
 Some transformations require that data has a small offset applied, otherwise it will cause errors (for example taking a log of 0, or square root of negative values). In order to correctly reverse this offset, if the \code{trans} argument is supplied, an offset value must also be supplied. If there was no offset required for a transformation, then use a value of 0 for the \code{offset} argument.
 }
 \examples{
+# Fit aov model
+model <- aov(Petal.Length ~ Species, data = iris)
+
+# Display the ANOVA table for the model
+anova(model)
+
+# Determine ranking and groups according to Tukey's Test
+pred.out <- mct.out(model, classify = "Species")
+
+# Display the predicted values table
+pred.out
+
+# Show the predicted values plot
+autoplot(pred.out, label_height = 0.5)
+
+
+
 \dontrun{
+# ASReml-R Example
 library(asreml)
 
 #Fit ASReml Model
@@ -75,8 +96,8 @@ wald(model.asr) #Nitrogen main effect significant
 pred.asr <- predict(model.asr, classify = "Nitrogen", sed = TRUE)
 
 #Determine ranking and groups according to Tukey's Test
-pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr, sig = 0.05,
-                    int.type = "ci", classify = "Nitrogen", order = "descending", decimals = 5)
+pred.out <- mct.out(model.obj = model.asr, pred.obj = pred.asr,
+                    classify = "Nitrogen", order = "descending", decimals = 5)
 
 pred.out}
 

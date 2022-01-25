@@ -1,3 +1,20 @@
+# BiometryTraining 0.9.1
+
+## Major changes
+
+- Created a variogram function that does not rely on ASreml (#33)
+- Implemented `autoplot()` function for `design()` and `mct.out()`. (#60)
+- Coloured plots (`autoplot.design()` and `variogram()`) now gain a `colour_blind` argument to enable colour blind friendly colours in the plots if desired. (#85)
+
+## Minor changes
+
+- Enabled model call to be displayed on `resplot()` for easy comparison between several models (#81)
+
+## Bug fixes
+
+- More sanity checking of inputs in `design()` (#69)
+- Various bug fixes in `logl.test()` (#31 and #51)
+
 # BiometryTraining 0.9.0
 
 ## Major changes

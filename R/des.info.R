@@ -6,6 +6,9 @@
 #' @param brows For RCBD only. The number of rows in a block.
 #' @param bcols For RCBD only. The number of columns in a block.
 #' @param byrow For split-plot only. Logical (default: `TRUE`). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.
+#' @param fac.sep The separator used by `fac.names`. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.
+#' @param fac.names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
+#' @param plot Logical (default `TRUE`). If `TRUE`, display a plot of the generated design. A plot can always be produced later using [autoplot()].
 #' @param rotation Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.
 #' @param size Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.
 #' @param margin Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.
@@ -14,8 +17,6 @@
 #' @param plottype The type of file to save the plot as. Usually one of `"pdf"`, `"png"`, or `"jpg"`. See [ggplot2::ggsave()] for all possible options.
 #' @param return.seed Logical (default TRUE). Output the seed used in the design?
 #' @param quiet Logical (default FALSE). Return the objects without printing output.
-#' @param fac.names Allows renaming of the `A` level of factorial designs (i.e. those using [agricolae::design.ab()]) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.
-#' @param fac.sep The separator used by `fac.names`. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.
 #' @param ... Additional parameters passed to [ggplot2::ggsave()] for saving the plot.
 #'
 #' @details If `save = TRUE` (or `"both"`), both the plot and the workbook will be saved to the current working directory, with filename given by `savename`. If one of either `"plot"` or `"workbook"` is specified, only that output is saved. If `save = FALSE` (the default, or equivalently `"none"`), nothing will be output.
@@ -86,6 +87,9 @@ des.info <- function(design.obj,
                      brows = NA,
                      bcols = NA,
                      byrow = TRUE,
+                     fac.names = NULL,
+                     fac.sep = c("", " "),
+                     plot = TRUE,
                      rotation = 0,
                      size = 4,
                      margin = FALSE,
@@ -94,100 +98,482 @@ des.info <- function(design.obj,
                      plottype = "pdf",
                      return.seed = TRUE,
                      quiet = FALSE,
-                     fac.names = NULL,
-                     fac.sep = c("", " "),
                      ...) {
 
-  # Error checking of inputs
-  ellipsis::check_dots_used()
+    # Error checking of inputs
+    ellipsis::check_dots_used()
 
-  # Check design type is supported
-  if(design.obj$parameters$design %!in% c("crd", "rcbd", "lsd", "factorial", "split")) {
-    stop(paste0("Designs of type '", design.obj$parameters$design, "' are not supported."))
-  }
-
-  # Check brows and bcols supplied if necessary
-  if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
-    stop("Design has blocks so brows and bcols must be supplied.")
-  }
-  else if(design.obj$parameters$design == "factorial") {
-    if(design.obj$parameters$applied == "rcbd" & anyNA(c(brows, bcols))) {
-      stop("Design has blocks so brows and bcols must be supplied.")
+    # Check brows and bcols supplied if necessary
+    if(design.obj$parameters$design == "rcbd" & anyNA(c(brows, bcols))) {
+        stop("Design has blocks so brows and bcols must be supplied.")
     }
-
-    # If factorial design, and names are supplied, use them
-    if(!is.null(fac.names)) {
-      design.obj$book$A <- factor(design.obj$book$A, labels = fac.names[[1]])
-      design.obj$book$B <- factor(design.obj$book$B, labels = fac.names[[2]])
-      if(design.obj$parameters$applied == "lsd") {
-        colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
-      }
-      else {
-        colnames(design.obj$book)[3:4] <- names(fac.names)[1:2]
-      }
-    }
-  }
-  else if(design.obj$parameters$design == "split") {
-    if(design.obj$parameters$applied == "rcbd" & anyNA(c(brows, bcols))) {
-      stop("Design has blocks so brows and bcols must be supplied.")
-    }
-
-    # If names are supplied, use them
-    if(!is.null(fac.names)) {
-      if(is.list(fac.names)) {
-        colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
-
-        design.obj$book[,4] <- as.factor(design.obj$book[,4])
-        design.obj$book[,5] <- as.factor(design.obj$book[,5])
-
-        if(length(levels(design.obj$book[,4])) == length(fac.names[[1]])) {
-            levels(design.obj$book[,4]) <- fac.names[[1]]
+    else if(design.obj$parameters$design == "factorial") {
+        if(design.obj$parameters$applied == "rcbd" & anyNA(c(brows, bcols))) {
+            stop("Design has blocks so brows and bcols must be supplied.")
         }
-        if(length(levels(design.obj$book[,5])) == length(fac.names[[2]])) {
-            levels(design.obj$book[,5]) <- fac.names[[2]]
+
+        # If factorial design, and names are supplied, use them
+        n_facs <- ifelse(is.null(design.obj$book$C), 2, 3)
+        if(!is.null(fac.names)) {
+            if(length(fac.names) > n_facs) {
+                warning("fac.names contains ", length(fac.names), " elements but only the first ", n_facs, " have been used.", call. = FALSE)
+            }
+            else if(length(fac.names) < n_facs) {
+                warning("fac.names doesn't contain enough elements and has not been used.", call. = FALSE)
+            }
+            else {
+                if(is.list(fac.names)) {
+                    design.obj$book$A <- as.factor(design.obj$book$A)
+                    design.obj$book$B <- as.factor(design.obj$book$B)
+
+                    if(length(levels(design.obj$book$A)) == length(fac.names[[1]])) {
+                        levels(design.obj$book$A) <- fac.names[[1]]
+                    }
+                    else {
+                        warning(names(fac.names)[1], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
+                    }
+
+                    if(length(levels(design.obj$book$B)) == length(fac.names[[2]])) {
+                        levels(design.obj$book$B) <- fac.names[[2]]
+                    }
+                    else {
+                        warning(names(fac.names)[2], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
+                    }
+
+                    if(n_facs == 3) {
+                        design.obj$book$C <- as.factor(design.obj$book$C)
+
+                        if(length(levels(design.obj$book$C)) == length(fac.names[[3]])) {
+                            levels(design.obj$book$C) <- fac.names[[3]]
+                            colnames(design.obj$book)[which(colnames(design.obj$book)=="C")] <- names(fac.names)[3]
+                        }
+                        else {
+                            warning(names(fac.names)[3], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
+                        }
+                    }
+                }
+
+                colnames(design.obj$book)[which(colnames(design.obj$book)=="A")] <- names(fac.names)[1]
+                colnames(design.obj$book)[which(colnames(design.obj$book)=="B")] <- names(fac.names)[2]
+            }
+        }
+    }
+    else if(design.obj$parameters$design == "split") {
+        if(design.obj$parameters$applied == "rcbd" & anyNA(c(brows, bcols))) {
+            stop("Design has blocks so brows and bcols must be supplied.")
+        }
+
+        # If names are supplied, use them
+        if(!is.null(fac.names)) {
+
+            if(length(fac.names) > 2) {
+                warning("fac.names contains ", length(fac.names), " elements but only the first 2 have been used.", call. = FALSE)
+            }
+            else if(length(fac.names) < 2) {
+                warning("fac.names doesn't contain enough elements and has not been used.", call. = FALSE)
+            }
+            else {
+                if(is.list(fac.names)) {
+
+                    design.obj$book$treatments <- as.factor(design.obj$book$treatments)
+                    design.obj$book$sub_treatments <- factor(design.obj$book$sub_treatments)
+
+                    if(length(levels(design.obj$book$treatments)) == length(fac.names[[1]])) {
+                        levels(design.obj$book$treatments) <- fac.names[[1]]
+                    }
+                    else {
+                        warning(names(fac.names)[1], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
+                    }
+
+                    if(length(levels(design.obj$book$sub_treatments)) == length(fac.names[[2]])) {
+                        levels(design.obj$book$sub_treatments) <- fac.names[[2]]
+                    }
+                    else {
+                        warning(names(fac.names)[2], " must contain the correct number of elements. Elements have not been applied.", call. = FALSE)
+                    }
+
+                    colnames(design.obj$book)[4:5] <- names(fac.names)[1:2]
+                }
+                else if(is.character(fac.names)) {
+                    colnames(design.obj$book)[4:5] <- fac.names[1:2]
+                }
+            }
+        }
+    }
+
+    if(!missing(fac.sep) && length(fac.sep) == 1) {
+        fac.sep <- rep(fac.sep, times = ifelse(is.null(design.obj$book$C), 2, 3))
+    }
+
+    ifelse(design.obj$parameters$design == "factorial",
+           design <- paste("factorial", design.obj$parameters$applied, sep = "_"),
+           design <- design.obj$parameters$design
+    )
+
+    if (design == "crd") {
+        plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+        des <- cbind(plan, design.obj$book)
+
+        names(des)[names(des)=="r"] <- "rep"
+        # if(any(grepl("trt", names(des)))) {
+            # names(des)[names(des)=="trt"] <- "treatments"
+        # }
+        # else {
+        names(des)[ncol(des)] <- "treatments"
+        # }
+        ntrt <- nlevels(as.factor(des$treatments))
+    }
+
+    if (design == "rcbd") {
+        # names(design.obj$book)[names(design.obj$book)=="trt"] <- "treatments"
+        # names(design.obj$book)[ncol(design.obj$book)] <- "treatments"
+        ntrt <- nlevels(as.factor(design.obj$book[,ncol(design.obj$book)]))
+
+        # Calculate direction of blocking
+        xx <- c()
+        rr <- nrows / brows
+        cc <- ncols / bcols
+        # Blocking across rows: brows == ntrt in a single column
+        if (brows == ntrt) {
+            des <- design.obj$book
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols) # 2
+        }
+
+        # Blocking incomplete rows all columns
+        if (rr > 1 & cc == 1) {
+            des <- design.obj$book
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows) # 1
+        }
+
+
+        # Blocking incomplete rows and incomplete columns
+        if (rr > 1 & cc > 1) {
+            des <- design.obj$book
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (j in 1:rr) {
+                for (k in 1:cc) {
+                    plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                    plan$row[plan$block == i] <- pp$row + (brows * (j - 1))
+                    k <- k + 1
+                    i <- i + 1
+                }
+                j <- j + 1
+            }
+            plan$block <- NULL
+        } # 3
+
+
+        # Blocking across columns: bcols == ntrt in a single row
+        if (bcols == ntrt) {
+            des <- design.obj$book
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows)
+        } # 4
+
+
+        # Blocking incomplete columns all rows
+        if (cc > 1 & rr == 1) {
+            des <- design.obj$book
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (k in 1:cc) {
+                plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                plan$row[plan$block == i] <- pp$row
+                k <- k + 1
+                i <- i + 1
+            }
+            plan$block <- NULL
+        } # 5
+
+        des <- cbind(plan, des)
+        names(des)[ncol(des)] <- "treatments"
+    }
+
+    if (design == "lsd") {
+        des <- design.obj$book
+        des$row <- as.numeric(des$row)
+        des$col <- as.numeric(des$col)
+
+        names(des)[ncol(des)] <- "treatments"
+        ntrt <- nlevels(as.factor(des$treatments))
+    }
+
+    if (design == "factorial_crd") {
+        treatments <- NULL
+        plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+        des <- cbind(plan, design.obj$book, row.names = NULL)
+
+        for (i in 3:ncol(design.obj$book)) {
+            treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+        }
+
+        if(fac.sep[2] == "") {
+            des$treatments <- factor(trimws(treatments))
         }
         else {
-            warning("fac.names must contain the correct number of elements. Names have not been applied.")
+            des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
         }
-      }
-      else if(is.character(fac.names)) {
-        colnames(design.obj$book)[4:5] <- fac.names[1:2]
-      }
+        names(des)[names(des)=="r"] <- "reps"
+        ntrt <- nlevels(des$treatments)
     }
-  }
+
+    if (design == "factorial_rcbd") {
+        treatments <- NULL
+
+        for (i in 3:ncol(design.obj$book)) {
+            treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+        }
+
+        ntrt <- nlevels(as.factor(treatments))
+
+        # Calculate direction of blocking
+        xx <- c()
+        rr <- nrows / brows
+        cc <- ncols / bcols
+        # Blocking across rows: brows == ntrt in a single column
+        if (brows == ntrt) {
+            des <- design.obj$book
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols) # 2
+        }
+
+        # Blocking incomplete rows all columns
+        if (rr > 1 & cc == 1) {
+            des <- design.obj$book
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows) # 1
+        }
 
 
-  info <- plot.des(design.obj, nrows, ncols, brows, bcols, byrow, rotation, size, margin, return.seed = return.seed, fac.sep = fac.sep)
-  info$satab <- satab(design.obj)
+        # Blocking incomplete rows and incomplete columns
+        if (rr > 1 & cc > 1) {
+            des <- design.obj$book
 
-  if(!quiet) {
-    cat(info$satab)
-    plot(info$plot.des)
-  }
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
 
-  if(!is.logical(save)) {
-    output <- tolower(save)
-    if(output == "plot") {
-      ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-    }
-    else if(output == "workbook") {
-      write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
-    }
-    else if(output == "both") {
-      ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-      write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
-    }
-    else if(output == "none") {
-      # Do nothing
-    }
-    else {
-      stop("save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
-    }
-  }
-  else if(save) {
-    ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
-    write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
-  }
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
 
-  return(info)
+            i <- 1
+            for (j in 1:rr) {
+                for (k in 1:cc) {
+                    plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                    plan$row[plan$block == i] <- pp$row + (brows * (j - 1))
+                    k <- k + 1
+                    i <- i + 1
+                }
+                j <- j + 1
+            }
+            plan$block <- NULL
+        } # 3
+
+
+        # Blocking across columns: bcols == ntrt in a single row
+        if (bcols == ntrt) {
+            des <- design.obj$book
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows)
+        } # 4
+
+
+        # Blocking incomplete columns all rows
+        if (cc > 1 & rr == 1) {
+            des <- design.obj$book
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (k in 1:cc) {
+                plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                plan$row[plan$block == i] <- pp$row
+                k <- k + 1
+                i <- i + 1
+            }
+            plan$block <- NULL
+        } # 5
+
+        if(fac.sep[2] == "") {
+            des$treatments <- factor(trimws(treatments))
+        }
+        else {
+            des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+        }
+
+        des <- cbind(plan, des)
+    }
+
+    if (design == "factorial_lsd") {
+        treatments <- NULL
+        des <- design.obj$book
+
+        for (i in 4:ncol(design.obj$book)) {
+            treatments <- paste(treatments, paste(colnames(design.obj$book)[i], design.obj$book[, i], sep = fac.sep[1]), sep = fac.sep[2])
+        }
+
+        if(fac.sep[2] == "") {
+            des$treatments <- factor(trimws(treatments))
+        }
+        else {
+            des$treatments <- factor(trimws(substr(treatments, 2, nchar(treatments))))
+        }
+
+        ntrt <- nlevels(des$treatments)
+        des$row <- as.numeric(des$row)
+        des$col <- as.numeric(des$col)
+    }
+
+    if (design == "split") {
+        des <- design.obj$book
+        spfacs <- c("plots", "splots", "block")
+
+        trtNams <- names(des[!is.element(names(des), spfacs)])
+
+
+        des$treatments <- factor(paste(des[, trtNams[1]], des[, trtNams[2]], sep = "_"))
+
+        # Number of treatments
+        ntrt <- nlevels(des$treatments)
+
+
+        # Calculate direction of blocking
+        xx <- c()
+        rr <- nrows / brows
+        cc <- ncols / bcols
+        # Blocking across rows: brows == ntrt in a single column
+        if (brows == ntrt) {
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols) # 2
+        }
+
+        # Blocking incomplete rows all columns
+        if (rr > 1 & cc == 1) {
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows) # 1
+        }
+
+        # Blocking incomplete rows and incomplete columns
+        if (rr > 1 & cc > 1) {
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (j in 1:rr) {
+                for (k in 1:cc) {
+                    plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                    plan$row[plan$block == i] <- pp$row + (brows * (j - 1))
+                    k <- k + 1
+                    i <- i + 1
+                }
+                j <- j + 1
+            }
+            plan$block <- NULL
+        } # 3
+
+
+        # Blocking across columns: bcols == ntrt in a single row
+        if (bcols == ntrt) {
+            plan <- expand.grid(col = 1:ncols, row = 1:nrows)
+        } # 4
+
+
+        # Blocking incomplete columns all rows
+        if (cc > 1 & rr == 1) {
+
+            # set up empty columns in the plan data.frame
+            plan <- expand.grid(row = 1:nrows, col = 1:ncols)
+            plan$block <- des$block
+            plan$col <- NA
+            plan$row <- NA
+
+            pp <- expand.grid(col = 1:bcols, row = 1:brows)
+
+            i <- 1
+            for (k in 1:cc) {
+                plan$col[plan$block == i] <- pp$col + (k - 1) * bcols
+                plan$row[plan$block == i] <- pp$row
+                k <- k + 1
+                i <- i + 1
+            }
+            plan$block <- NULL
+        } # 5
+
+        des <- cbind(plan, des)
+        # Order by column within blocks, rather than row default
+        if(!byrow) {
+            des[,c("row", "col", "block")] <- des[order(des$block, des$col, des$row), c("row", "col", "block")]
+        }
+    }
+
+    des$treatments <- factor(des$treatments, levels = unique(stringi::stri_sort(des$treatments, numeric = TRUE)))
+
+    info <- list(design = des)
+    class(des) <- c("design", class(des))
+
+    if(plot) {
+        info$plot.des = autoplot(des, rotation = rotation, size = size, margin = margin)
+    }
+    info$satab <- satab(design.obj)
+
+    if(!quiet) {
+        cat(info$satab)
+        if(plot) {
+            plot(info$plot.des)
+        }
+    }
+
+    if(!is.logical(save)) {
+        output <- tolower(save)
+        if(output == "plot") {
+            ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+        }
+        else if(output == "workbook") {
+            write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
+        }
+        else if(output == "both") {
+            ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+            write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
+        }
+        else if(output == "none") {
+            # Do nothing
+        }
+        else {
+            stop("save must be one of 'none'/FALSE, 'both'/TRUE, 'plot', or 'workbook'.")
+        }
+    }
+    else if(save) {
+        ggplot2::ggsave(filename = paste0(savename, ".", plottype), ...)
+        write.csv(info$design, file = paste0(savename, ".csv"), row.names = FALSE)
+    }
+
+    if (return.seed) {
+        info$seed <- design.obj$parameters$seed
+    }
+
+    return(info)
 }

@@ -9,8 +9,10 @@
 #'
 #' @details The ASReml-R package file is downloaded from a shortlink, and if `keep_file` is `TRUE`, the package archive file will be saved in the current directory. If a valid path is provided in `keep_file`, the file will be saved to that path, but directory is assumed to exist and will not be created. If `keep_file` does not specify an existing, valid path, an error will be shown.
 #'
-#' @importFrom utils install.packages download.file remove.packages
+#' @importFrom utils install.packages installed.packages download.file remove.packages
 #' @importFrom curl curl_fetch_disk
+#' @importFrom withr local_file
+#' @importFrom rlang is_installed
 #'
 #' @export
 #'
@@ -26,152 +28,136 @@
 #' }
 #'
 install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALSE, keep_file = FALSE) {
-  if(requireNamespace("asreml", quietly = TRUE) & !force) {
-    if(!quiet) message("ASReml-R is already installed.")
-    invisible(TRUE)
-  }
-  else {
-    if(!quiet) {
-      message("\nDownloading and installing ASReml-R. This may take some time, depending on internet speed...\n")
-    }
-    if(force && isNamespaceLoaded("asreml")) {
-      unloadNamespace("asreml")
-    }
 
-    os <- switch(Sys.info()[['sysname']],
-                 Windows = "win",
-                 Linux   = "linux",
-                 Darwin  = "mac"
-    )
-
-    ver <- gsub("\\.", "", substr(getRversion(), 1, 3))
-
-    url <- paste0("https://link.biometryhubwaite.com/", os, "-", ver)
-    # url <- switch(ver,
-    #               # win_3.5 = {"https://link.biometryhubwaite.com/win-35"},
-    #               win_3.6 = {"https://link.biometryhubwaite.com/win-36"},
-    #               win_4.0 = {"https://link.biometryhubwaite.com/win-40"},
-    #               win_4.1 = {"https://link.biometryhubwaite.com/win-41"},
-    #               # mac_3.5 = {"https://link.biometryhubwaite.com/mac-35"},
-    #               mac_3.6 = {"https://link.biometryhubwaite.com/mac-36"},
-    #               mac_4.0 = {"https://link.biometryhubwaite.com/mac-40"},
-    #               mac_4.1 = {"https://link.biometryhubwaite.com/mac-41"},
-    #               # linux_3.5 = {"https://link.biometryhubwaite.com/linux-35"},
-    #               linux_3.6 = {"https://link.biometryhubwaite.com/linux-36"},
-    #               linux_4.0 = {"https://link.biometryhubwaite.com/linux-40"},
-    #               linux_4.1 = {"https://link.biometryhubwaite.com/linux-41"}
-    # )
-
-    # First check if file already exists, both in the current directory and temp folder
-    # Need to create a regex to check it's the correct file extension, so tests ignore .R files
-    temp_files <- list.files(tempdir(), pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
-    dir_files <- list.files(pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
-
-    if(length(temp_files) > 0) {
-      filename <- temp_files
-      save_file <- paste0(tempdir(), "/", filename)
-
-      if(keep_file == TRUE) {
-        install_file <- filename
-        # Copy to current working directory
-        file.copy(save_file, filename)
-      }
-
-      else if(is.character(keep_file)) {
-        if(!dir.exists(keep_file)) {
-          stop("Directory provided in keep_path does not exist. Please provide a path in the keep_file argument to save the package to.")
-        }
-        else {
-          install_file <- paste0(keep_file, "/", filename)
-          # If path has a trailing slash remove it
-          # install_file <- gsub("//", "/", install_file)
-          file.copy(save_file, install_file)
-        }
-      }
-      else {
-        install_file <- save_file
-      }
-    }
-    else if(length(dir_files) > 0) {
-      filename <- dir_files
-      save_file <- filename
-
-      if(is.character(keep_file)) {
-        if(!dir.exists(keep_file)) {
-          stop("Directory provided in keep_path does not exist. Please provide a path in the keep_file argument to save the package to.")
-        }
-        else {
-          install_file <- paste0(keep_file, "/", filename)
-          # If path had a trailing slash remove it
-          # install_file <- gsub("//", "/", install_file)
-          file.copy(save_file, install_file)
-          file.remove(save_file)
-        }
-      }
-      else {
-        install_file <- filename
-      }
-    }
-    # Can't find file, download
-    else {
-      #Create a temporary file to save the package
-      save_file <- tempfile("asreml_")
-
-      # Use httr to GET the file which also gives the expanded URL
-      response <- curl::curl_fetch_disk(url = url, save_file)
-
-      # Find position of the last / in the expanded URL
-      pos <- regexpr("\\/[^\\/]*$", response$url)
-
-      # Extract everything after the last / as the filename
-      filename <- substr(response$url, pos+1, nchar(response$url))
-
-      # If keep_file is true, copy asreml to current directory
-      if(keep_file == TRUE) {
-        install_file <- filename
-        file.copy(save_file, filename)
-      }
-      else if(!keep_file) {
-        install_file <- paste0(tempdir(), "/", filename)
-        file.rename(save_file, install_file)
-      }
-      else { # Assume keep_file is a path
-        if(!dir.exists(keep_file)) {
-          stop("Directory provided in keep_path does not exist. Please provide a valid path in the keep_file argument to save the package to.")
-        }
-        else {
-          install_file <- paste0(keep_file, "/", filename)
-          file.copy(save_file, install_file)
-        }
-      }
-    }
-
-    # If forcing installation, remove existing version to avoid errors on installation
-    if(force && requireNamespace("asreml", quietly = TRUE)) {
-      suppressMessages(remove.packages("asreml"))
-    }
-
-    # Check dependencies are installed first
-
-    deps <- c("data.table", "ggplot2", "jsonlite")
-    for(i in seq_along(deps)) {
-      if(!requireNamespace(deps[i], quietly = TRUE)) {
-        install.packages(deps[i], repos = "https://cloud.r-project.org")
-      }
-    }
-
-    # Install asreml
-    install.packages(install_file, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
-
-    if(requireNamespace("asreml", quietly = TRUE)) {
-      if(!quiet) message("ASReml-R successfully installed!")
+    if(rlang::is_installed("asreml") & !force) {
+        if(!quiet) message("ASReml-R is already installed.")
+        invisible(TRUE)
     }
     else {
-      if(!quiet) warning("There was a problem with installation and ASReml-R was not successfully installed.")
-      invisible(FALSE)
+        if(!quiet) {
+            message("\nDownloading and installing ASReml-R. This may take some time, depending on internet speed...\n")
+        }
+        if(force && isNamespaceLoaded("asreml")) {
+            unloadNamespace("asreml")
+        }
+
+        os <- switch(Sys.info()[['sysname']],
+                     Windows = "win",
+                     Linux   = "linux",
+                     Darwin  = "mac"
+        )
+
+        ver <- gsub("\\.", "", substr(getRversion(), 1, 3))
+        url <- paste0("https://link.biometryhubwaite.com/", os, "-", ver)
+
+        # First check if file already exists, both in the current directory and temp folder
+        # Need to create a regex to check it's the correct file extension, so tests ignore .R files
+        temp_files <- list.files(tempdir(), pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
+        dir_files <- list.files(pattern = "asreml+(([a-zA-Z0-9_.\\-])*)+(.zip|.tar.gz|.tgz)")
+
+        if(length(temp_files) > 0) {  # I don't think this will ever trigger, as I will clean up downloads from Temp
+            filename <- temp_files[length(temp_files)] #Get the alphabetically last file. Theoretically should be the latest version?
+            save_file <- paste0(tempdir(), "/", filename)
+        }
+        else if(length(dir_files) > 0) {
+            filename <- dir_files[length(dir_files)] # Get the alphabetically last one. Theoretically this should be the highest version number.
+            save_file <- filename
+        }
+
+        # Can't find file, download
+        else {
+            #Create a temporary file to save the package
+            save_file <- withr::local_file(tempfile("asreml_"))
+
+            # Use httr to GET the file which also gives the expanded URL
+            response <- curl::curl_fetch_disk(url = url, path = save_file)
+
+            # Extract everything after the last / as the filename
+            filename <- basename(response$url)#, pos+1, nchar(response$url))
+            file.rename(save_file, paste0(tempdir(), "/", filename))
+            save_file <- paste0(tempdir(), "/", filename)
+        }
+
+        # If forcing installation, remove existing version to avoid errors on installation
+        if(force && rlang::is_installed("asreml") && Sys.info()[["sysname"]] == "Windows") {
+            detach("package:asreml", unload = TRUE, force = TRUE)
+            suppressMessages(remove.packages("asreml", ))
+        }
+
+        # Check dependencies are installed first
+        pkgs <- rownames(installed.packages(lib.loc = library))
+        deps <- setdiff(c("data.table", "ggplot2", "jsonlite"), pkgs)
+
+        if(rlang::is_installed("data.table") && packageVersion("data.table") < "1.9.6") {
+            deps <- c(deps, "data.table")
+        }
+
+        if(length(deps) > 0) {
+            install.packages(deps, lib = library, repos = "https://cloud.r-project.org",
+                             Ncpus = ifelse(length(deps)>1,
+                                            max(ceiling(parallel::detectCores()/2), # Use multiple CPUs if available
+                                                ceiling(parallel::detectCores()-2)), 1))
+        }
+
+        # Install asreml
+        install.packages(save_file, lib = library, repos = NULL, quiet = quiet, type = ifelse(os == "win", "binary", "source"))
+
+        # If keep_file is true, copy asreml to current directory
+        if(keep_file == TRUE) {
+            result <- tryCatch(
+                expr = {
+                    file.rename(save_file, filename)
+                },
+                error = function(cond) {
+                    warning("Could not copy asreml install file to current working directory", call. = FALSE)
+                    file.remove(save_file)
+                    return(FALSE)
+                },
+                warning = function(cond) {
+                    warning("Could not copy asreml install file to current working directory", call. = FALSE)
+                    file.remove(save_file)
+                    return(FALSE)
+                }
+            )
+        }
+        else if(keep_file == FALSE) {
+            file.remove(save_file)
+        }
+        else if(is.character(keep_file) & length(keep_file) == 1) { # Assume keep_file is a path
+            if(dir.exists(keep_file)) {
+                result <- tryCatch(
+                    expr = {
+                        file.rename(save_file, paste0(keep_file, "/", filename))
+                    },
+                    error = function(cond) {
+                        warning("Could not copy asreml install file to provided directory.", call. = FALSE)
+                        file.remove(save_file)
+                        return(FALSE)
+                    },
+                    warning = function(cond) {
+                        warning("Could not copy asreml install file to provided directory.", call. = FALSE)
+                        file.remove(save_file)
+                        return(FALSE)
+                    }
+                )
+            }
+            else {
+                warning("Directory provided in keep_file does not exist. Please provide a valid path in the keep_file argument to save the package to.")
+            }
+        }
+        else {
+            warning("Argument keep_file should be provided as a path to a single directory or TRUE to save in current working directory. Downloaded file has not been kept.")
+        }
+
+        if(rlang::is_installed("asreml")) {
+            if(!quiet) message("ASReml-R successfully installed!")
+        }
+        else {
+            if(!quiet) warning("There was a problem with installation and ASReml-R was not successfully installed.")
+            invisible(FALSE)
+        }
+        invisible(TRUE)
     }
-    invisible(TRUE)
-  }
 }
 
 #' @rdname install_asreml
@@ -179,5 +165,5 @@ install_asreml <- function(library = .libPaths()[1], quiet = FALSE, force = FALS
 #'
 #' @export
 update_asreml <- function(...) {
-  install_asreml(force = TRUE, ...)
+    install_asreml(force = TRUE, ...)
 }

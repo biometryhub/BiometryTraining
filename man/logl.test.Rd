@@ -10,7 +10,7 @@ logl.test(
   resid.terms = NULL,
   decimals = 3,
   numeric = FALSE,
-  quiet = F
+  quiet = FALSE
 )
 }
 \arguments{
@@ -33,25 +33,22 @@ A dataframe containing the results of the test.
 Log-likelihood test for comparing terms in ASReml-R models
 }
 \details{
-Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation.
+Typically p-values cannot be 0, and are usually just below some threshold of accuracy in calculation of probability.
 }
 \examples{
 \dontrun{
-library(agridat)
-dat <- yates.oats
-dat$row <- factor(dat$row)
-dat$col <- factor(dat$col)
-dat$nitro <- factor(dat$nitro)
-dat$mplot <- factor(as.numeric(dat$gen))
-dat <- dat[order(dat$row, dat$col), ]
 library(asreml)
-dat.asr <- asreml(yield ~ gen + nitro + gen:nitro,
-  random = ~ block + block:mplot,
-  residual = ~ ar1(row):id(col), data = dat
-)
+dat <- asreml::oats
+dat <- dat[order(dat$Row, dat$Column),]
+
+#Fit ASReml Model
+model.asr <- asreml(yield ~ Nitrogen + Variety + Nitrogen:Variety,
+                    random = ~ Blocks + Blocks:Wplots,
+                    residual = ~ ar1(Row):ar1(Column),
+                    data = dat)
 oats.logl <- logl.test(
-  model.obj = dat.asr, rand.terms = c("block", "block:mplot"),
-  resid.terms = c("ar1(row)")
+  model.obj = model.asr, rand.terms = c("Blocks", "Blocks:Wplots"),
+  resid.terms = c("ar1(Row)", "ar1(Column)")
 )
 oats.logl
 }

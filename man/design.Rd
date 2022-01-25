@@ -14,6 +14,9 @@ design(
   bcols = NA,
   byrow = TRUE,
   sub_treatments = NULL,
+  fac.names = NULL,
+  fac.sep = c("", " "),
+  plot = TRUE,
   rotation = 0,
   size = 4,
   margin = FALSE,
@@ -22,13 +25,11 @@ design(
   plottype = "pdf",
   seed = TRUE,
   quiet = FALSE,
-  fac.names = NULL,
-  fac.sep = c("", " "),
   ...
 )
 }
 \arguments{
-\item{type}{The type of design. Supported design types are \code{crd}, \code{rcbd}, \code{lsd}, \code{split} and \verb{crossed:<type>} where \verb{<type>} is one of the previous types. See Details for more information.}
+\item{type}{The type of design. Supported design types are \code{crd}, \code{rcbd}, \code{lsd}, \verb{crossed:<type>} where \verb{<type>} is one of the previous types and \code{split}. See Details for more information.}
 
 \item{treatments}{A vector containing the treatment names or labels.}
 
@@ -42,15 +43,21 @@ design(
 
 \item{bcols}{For RCBD and Split Plot designs. The number of columns in a block.}
 
-\item{byrow}{For split-plot only. Logical (default: \code{TRUE}). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
+\item{byrow}{For split-plot only. Logical (default \code{TRUE}). Provides a way to arrange plots within whole-plots when there are multiple possible arrangements.}
 
 \item{sub_treatments}{A vector of treatments for subplots in a split plot design.}
+
+\item{fac.names}{Allows renaming of the \code{A} level of factorial designs (i.e. those using \code{\link[agricolae:design.ab]{agricolae::design.ab()}}) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.}
+
+\item{fac.sep}{The separator used by \code{fac.names}. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.}
+
+\item{plot}{Logical (default \code{TRUE}). If \code{TRUE}, display a plot of the generated design. A plot can always be produced later using \code{\link[=autoplot]{autoplot()}}.}
 
 \item{rotation}{Rotate the text output as Treatments within the plot. Allows for easier reading of long treatment labels. Takes positive and negative values being number of degrees of rotation from horizontal.}
 
 \item{size}{Increase or decrease the text size within the plot for treatment labels. Numeric with default value of 4.}
 
-\item{margin}{Logical (default FALSE). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.}
+\item{margin}{Logical (default \code{FALSE}). Expand the plot to the edges of the plotting area i.e. remove white space between plot and axes.}
 
 \item{save}{One of \code{FALSE} (default)/\code{"none"}, \code{TRUE}/\code{"both"}, \code{"plot"} or \code{"workbook"}. Specifies which output to save.}
 
@@ -58,13 +65,9 @@ design(
 
 \item{plottype}{The type of file to save the plot as. Usually one of \code{"pdf"}, \code{"png"}, or \code{"jpg"}. See \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for all possible options.}
 
-\item{seed}{If \code{TRUE} (the default), return the seed used to generate the design. If a numeric value, use that value as the seed for the design.}
+\item{seed}{Logical (default \code{TRUE}). If \code{TRUE}, return the seed used to generate the design. If a numeric value, use that value as the seed for the design.}
 
-\item{quiet}{Logical (default FALSE). Return the objects without printing output.}
-
-\item{fac.names}{Allows renaming of the \code{A} level of factorial designs (i.e. those using \code{\link[agricolae:design.ab]{agricolae::design.ab()}}) by passing (optionally named) vectors of new labels to be applied to the factors within a list. See examples and details for more information.}
-
-\item{fac.sep}{The separator used by \code{fac.names}. Used to combine factorial design levels. If a vector of 2 levels is supplied, the first separates factor levels and label, and the second separates the different factors.}
+\item{quiet}{Logical (default \code{FALSE}). Hide the output.}
 
 \item{...}{Additional parameters passed to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}} for saving the plot.}
 }
@@ -79,7 +82,7 @@ The designs currently supported by \code{type} are Completely Randomised designs
 
 If \code{save = TRUE} (or \code{"both"}), both the plot and the workbook will be saved to the current working directory, with filename given by \code{savename}. If one of either \code{"plot"} or \code{"workbook"} is specified, only that output is saved. If \code{save = FALSE} (the default, or equivalently \code{"none"}), nothing will be output.
 
-\code{fac.names} can be supplied to provide more intuitive names for factors and their levels in factorial designs. They should be specified in a list format, for example \code{fac.names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))}. This will result a design output with a column named \code{A_names} with levels \verb{a, b, c} and another named \code{B_names} with levels \verb{x, y, z}. Only the first two elements of the list will be used.
+\code{fac.names} can be supplied to provide more intuitive names for factors and their levels in factorial and split plot designs. They can be specified in a list format, for example \code{fac.names = list(A_names = c("a", "b", "c"), B_names = c("x", "y", "z"))}. This will result a design output with a column named \code{A_names} with levels \verb{a, b, c} and another named \code{B_names} with levels \verb{x, y, z}. Labels can also be supplied as a character vector (e.g. \code{c("A", "B")}) which will result in only the treatment column names being renamed. Only the first two elements of the list will be used, except in the case of a 3-way factorial design.
 
 \code{...} allows extra arguments to be passed to ggsave for output of the plot. The details of possible arguments can be found in  \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}.
 }
@@ -120,5 +123,10 @@ des.out <- design(type = "lsd", treatments = c("A1", "A2", "A3", "A4", "B1", "B2
 # Split plot design
 des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
                   reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2, seed = 42)
+
+# Alternative arangement of the same design as above
+des.out <- design(type = "split", treatments = c("A", "B"), sub_treatments = 1:4,
+                  reps = 4, nrows = 8, ncols = 4, brows = 4, bcols = 2,
+                  byrow = FALSE, seed = 42)
 
 }
