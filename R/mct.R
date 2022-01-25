@@ -412,7 +412,7 @@ mct.out <- function(model.obj,
 #' @return The original object invisibly.
 #' @seealso [mct.out()]
 #' @method print mct
-#' @export
+#' @keywords internal
 #' @examples
 #' dat.aov <- aov(Petal.Width ~ Species, data = iris)
 #' output <- mct.out(dat.aov, classify = "Species")
