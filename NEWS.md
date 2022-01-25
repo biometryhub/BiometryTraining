@@ -1,4 +1,4 @@
-# BiometryTraining 0.9.1
+# BiometryTraining 1.0.0
 
 ## Major changes
 
