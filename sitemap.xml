@@ -25,6 +25,9 @@
     <loc>https://biometryhub.github.io/BiometryTraining/reference/BiometryTraining.html</loc>
   </url>
   <url>
+    <loc>https://biometryhub.github.io/BiometryTraining/reference/autoplot.html</loc>
+  </url>
+  <url>
     <loc>https://biometryhub.github.io/BiometryTraining/reference/des.info.html</loc>
   </url>
   <url>
@@ -43,7 +46,7 @@
     <loc>https://biometryhub.github.io/BiometryTraining/reference/mct.out.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/BiometryTraining/reference/plot.des.html</loc>
+    <loc>https://biometryhub.github.io/BiometryTraining/reference/print.mct.html</loc>
   </url>
   <url>
     <loc>https://biometryhub.github.io/BiometryTraining/reference/quiet.html</loc>
@@ -53,5 +56,11 @@
   </url>
   <url>
     <loc>https://biometryhub.github.io/BiometryTraining/reference/satab.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/BiometryTraining/reference/vario_df.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/BiometryTraining/reference/variogram.html</loc>
   </url>
 </urlset>
