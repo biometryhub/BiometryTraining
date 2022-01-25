@@ -40,8 +40,6 @@ Imports:
     farver,
     ggplot2,
     lattice,
-    lucid,
-    methods,
     multcompView,
     predictmeans,
     rlang,
