@@ -4,7 +4,7 @@
       BiometryTraining:::.onAttach(pkg = "BiometryTraining")
     Message <packageStartupMessage>
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          |  BiometryTraining version 0.9.1                                   |
+          |  BiometryTraining version 1.0.0                                   |
           |  Authors: Sharon Nielsen, Sam Rogers, Annie Conway                |
           |  Developed at the University of Adelaide with funding provided    |
           |  by the Australian Grains Research and Development Corporation.   |
@@ -24,7 +24,7 @@
       BiometryTraining:::.onAttach(pkg = "BiometryTraining")
     Message <packageStartupMessage>
           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          |  BiometryTraining version 0.9.1                                   |
+          |  BiometryTraining version 1.0.0                                   |
           |  Authors: Sharon Nielsen, Sam Rogers, Annie Conway                |
           |  Developed at the University of Adelaide with funding provided    |
           |  by the Australian Grains Research and Development Corporation.   |
