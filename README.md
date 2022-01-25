@@ -19,6 +19,15 @@ version](https://img.shields.io/badge/R%3E%3D-3.6.0-6666ff.svg)](https://cran.r-
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fbiometryhub%2FBiometryTraining&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 <!-- badges: end -->
 
+## Final Release of BiometryTraining
+
+**This package will no longer be developed, however this repository and
+the associated website will remain. All future development work will be
+undertaken in the [biometryassist
+package](https://biometryhub.github.io/biometryassist/).**
+
+------------------------------------------------------------------------
+
 The goal of BiometryTraining is to provide functions to aid in the
 Design and Analysis of Agronomic-style experiments through easy access
 to documentation and helper functions, especially while teaching these

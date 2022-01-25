@@ -1,5 +1,9 @@
 # BiometryTraining 1.0.0
 
+## Final release of BiometryTraining
+
+This package will no longer be developed. All future development work will be undertaken in the [biometryassist package](https://biometryhub.github.io/biometryassist/).
+
 ## Major changes
 
 - Created a variogram function that does not rely on ASreml (#33)
