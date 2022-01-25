@@ -2,7 +2,7 @@
 % Please edit documentation in R/mct.R
 \name{print.mct}
 \alias{print.mct}
-\title{Print method for mct.out xs}
+\title{Print method for mct.out}
 \usage{
 \method{print}{mct}(x, ...)
 }
@@ -15,7 +15,7 @@
 The original object invisibly.
 }
 \description{
-Print method for mct.out xs
+Print method for mct.out
 }
 \examples{
 dat.aov <- aov(Petal.Width ~ Species, data = iris)

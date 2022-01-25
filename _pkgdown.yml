@@ -23,4 +23,5 @@ reference:
   desc: Other helper functions
 - contents:
   - autoplot
+  - print.mct
   - ends_with("asreml")
