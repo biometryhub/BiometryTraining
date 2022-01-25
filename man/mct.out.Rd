@@ -41,7 +41,7 @@ mct.out(
 
 \item{order}{Order of the letters in the groups output. Options are \code{'default'}, \code{'ascending'} or \code{'descending'}. Alternative options that are accepted are \code{increasing} and \code{decreasing}. Partial matching of text is performed, allowing entry of \code{'desc'} for example.}
 
-\item{plot}{Automatically produce a plot of the output of the multiple comparison test? Default is \code{FALSE}. This is maintained for backwards compatibility, but the preferred method now is to use \verb{autoplot(<mct.out outout>)}. See \code{\link[=autoplot.mct]{autoplot.mct()}} for more details.}
+\item{plot}{Automatically produce a plot of the output of the multiple comparison test? Default is \code{FALSE}. This is maintained for backwards compatibility, but the preferred method now is to use \verb{autoplot(<mct.out output>)}. See \code{\link[=autoplot.mct]{autoplot.mct()}} for more details.}
 
 \item{label_height}{Height of the text labels above the upper error bar on the plot. Default is 0.1 (10\%) of the difference between upper and lower error bars above the top error bar.}
 
