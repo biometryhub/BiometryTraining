@@ -1,7 +1,7 @@
 test_that("Installation works", {
     skip_on_os("windows")
     skip_on_os("mac")
-    # skip_on_cran()
+    skip_on_cran()
     # skip_on_ci()
     expect_message(install_asreml(force = TRUE), "ASReml-R successfully installed!")
     expect_equal(install_asreml(), TRUE)
@@ -10,7 +10,7 @@ test_that("Installation works", {
 test_that("Update function works", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_on_os("windows")
-    # skip_on_cran()
+    skip_on_cran()
     skip_on_ci()
     expect_message(update_asreml(), "ASReml-R successfully installed!")
 })
@@ -18,7 +18,7 @@ test_that("Update function works", {
 test_that("Returns true if asreml already installed", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_on_os("windows")
-    # skip_on_cran()
+    skip_on_cran()
     skip_on_ci()
     install_asreml(quiet=TRUE)
     expect_equal(install_asreml(), TRUE)
@@ -27,7 +27,7 @@ test_that("Returns true if asreml already installed", {
 test_that("Prints message if asreml already installed", {
     # skip_if(R.version$status == "Under development (unstable)")
     skip_on_os("windows")
-    # skip_on_cran()
+    skip_on_cran()
     skip_on_ci()
     install_asreml(quiet = TRUE)
     expect_message(install_asreml(), "ASReml-R is already installed.")
