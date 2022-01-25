@@ -23,7 +23,7 @@ min.r <- substr(description[,"Depends"], 7, 11)
 
 <!-- badges: start -->
 [![Project Status: Active:  The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Codecov test coverage](https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg)](https://codecov.io/gh/biometryhub/BiometryTraining?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/biometryhub/BiometryTraining/branch/master/graph/badge.svg)](https://app.codecov.io/gh/biometryhub/BiometryTraining?branch=master)
 [![R build status](https://github.com/biometryhub/BiometryTraining/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/BiometryTraining/actions)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-`r min.r`-6666ff.svg)](https://cran.r-project.org/)
 [![packageversion](https://img.shields.io/badge/Package%20version-`r gsub('-', '--', version)`-orange.svg?style=flat-square)](https://github.com/biometryhub/BiometryTraining/commits/master)
